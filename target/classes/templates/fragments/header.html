@@ -1,0 +1,12 @@
+<!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
+<header class="header" id="header" th:fragment="header">
+    <div class="header_toggle"><i class="bx bx-menu bx-md" id="header-toggle"></i></div>
+
+    <div class="container">
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" >
+            <button type="submit">Вийти</button>
+        </form>
+    </div>
+</header>
+<!--    </th:block>-->
