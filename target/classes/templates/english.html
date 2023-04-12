@@ -1,59 +1,71 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/head :: head}"></head>
-<body id="body-pd">
-<div class="top">
-    <div class="container">
-        <div class="row">
-            <header th:insert="~{fragments/header :: header}"></header>
-        </div>
-    </div>
-</div>
-<div th:insert="~{fragments/menu :: menu}"></div>
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
 <div class="wrapper">
-    <main>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section">
         <div class="container main-page">
             <div class="row">
-                <nav class="col-xl5 block-main">
-                    <div class="page">
-                        <div class="pcss3t pcss3t-effect-scale pcss3t-theme-1">
-                            <input type="radio" name="pcss3t" checked id="tab1" class="tab-content-first">
-                            <label for="tab1"><i class="icon-bolt"></i>Навчатися...</label>
-                            <input type="radio" name="pcss3t" id="tab2" class="tab-content-2">
-                            <label for="tab2"><i class="icon-picture"></i>Завантажити власний текст...</label>
-                            <ul>
-                                <li class="tab-content tab-content-first typography">
-                                    <h3>Переклади речення на англійську мову: </h3><br/>
-                                    <div id="ukr-text" class="text-show text-show-ukr">
-                                        <!--                                        <p th:text="${Ukrainian_text}"></p>-->
+                <nav class="col-xl-6 block-main">
+                    <div class="layout">
+                        <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
+                        <div class="page home-page">
+                            <div class="page-contents">
+                                <h3>Переклади речення на англійську мову: </h3><br/>
+                                <div id="ukr-text" class="text-show text-show-ukr">
+                                    <!--                                        <p th:text="${Ukrainian_text}"></p>-->
+                                </div>
+                                <br/><br/>
+                                <button class="content_toggle btn">Дивитися переклад...</button>
+                                <br/><br/>
+                                <div class="content_block" style="display: none;">
+                                    <div id="english-text" class="text-show text-show-eng">
+                                        <!--                                            <p th:text="${English_text}"/>-->
                                     </div>
-                                    <br/><br/>
-                                    <button class="content_toggle btn">Дивитися переклад...</button>
-                                    <br/><br/>
-                                    <div class="content_block" style="display: none;">
-                                        <div id="english-text" class="text-show text-show-eng">
-                                            <!--                                            <p th:text="${English_text}"/>-->
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <button id="reload">Нове речення</button>
-                                    </form>
-                                </li>
-                                <li class="tab-content tab-content-2 typography">
-                                    <h1>Leonardo da Vinci</h1>
-                                    <form id="form">
-                                        <textarea name="ukrText" rows="1"></textarea><br><br>
-                                        <textarea name="engText" rows="1"></textarea><br><br>
-                                        <input type="submit" value="Загрузити"><br><br>
-                                    </form>
-                                    <div id="result-success"></div>
-                                    <div id="result-error"></div>
-                                </li>
-                            </ul>
+                                </div>
+                                <br/>
+                                <button id="reload">Нове речення</button>
+                                </form>
+                            </div>
                         </div>
+                        <label class="nav" for="home">
+    <span>
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+           stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path
+              d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline
+              points="9 22 9 12 15 12 15 22"></polyline></svg>
+      Навчатися
+    </span>
+                        </label>
+
+                        <input name="nav" type="radio" class="about-radio" id="about"/>
+                        <div class="page about-page">
+                            <div class="page-contents">
+                                <h1>Завантажити</h1>
+                                <form id="form">
+                                    <textarea name="ukrText" rows="1"></textarea><br><br>
+                                    <textarea name="engText" rows="1"></textarea><br><br>
+                                    <input type="submit" value="Загрузити"><br><br>
+                                </form>
+                                <div id="result-success"></div>
+                                <div id="result-error"></div>
+                            </div>
+                        </div>
+                        <label class="nav" for="about">
+    <span>
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+         stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><path
+            d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
+    Завантажити
+      </span>
+                        </label>
                     </div>
                 </nav>
-                <aside class="col-md-2 col-xl-1 block-right">
+                <aside class="col-md-1 col-xl- block-right">
                     <h6>New block_3 New block New block New block New block New block New block New block New block New
                         block New block </h6>
                 </aside>

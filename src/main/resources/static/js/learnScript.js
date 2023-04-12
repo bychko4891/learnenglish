@@ -105,60 +105,60 @@ $(document).ready(function () {
 });
 // ------   log in   -------
 
-// $(function () {
-//     // var resultDivSuccess = $('#result-success');
-//     // var resultDivError = $('#result-error');
-//     $('#login').submit(function (e) {
-//         e.preventDefault();
-//         var data = $(this).serialize();
-//         // if ($('input[name="username"]').val() && $('input[name="password"]').val()) {
-//         //     var username = $('input[name="username"]').val();
-//         //     var password = $('input[name="password"]').val();
-//         //     // console.log(ukrTextTemp);
-//         //     if (username.length > 300 || password.length > 300) {
-//         //         alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
-//         //         return;
-//         //     }
-//             // якщо всі поля заповнені, виконуємо запит на сервер
-//             $.ajax({
-//                 type: "POST",
-//                 url: "/login1",
-//                 data: data,
-//                 success: function (result) {
-//                     // var status = result.status;
-//                     // if (status == "Success") {
-//                     //     $('textarea[name="ukrText"]').val('');
-//                     //     $('textarea[name="engText"]').val('');
-//                     //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-//                     //     resultDivSuccess.text(result.message);
-//                     //     setTimeout(hideMessageSuccess, 5000);
-//                     // } else {
-//                     //     resultDivError.text(result.message);
-//                     //     setTimeout(hideMessageError, 5000);
-//                     // }
-//                 },
-//                 error: function () {
-//                     let shel = {};
-//                     alert(Boolean(shel))
-//                     // Поміщаємо повідомлення про помилку в div-елемент
-//                     resultDivError.text('Помилка запиту на сервер');
-//                 }
-//             });
-//         // }
-//         // else {
-//         //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-//         //     alert('Будь ласка, заповніть поле вводу');
-//         //     return;
-//         // }
-//     });
-//
-//     function hideMessageSuccess() {
-//         resultDivSuccess.text('');
-//
-//     }
-//
-//     function hideMessageError() {
-//
-//         resultDivError.text('');
-//     }
-// });
+$(function () {
+    // var resultDivSuccess = $('#result-success');
+    // var resultDivError = $('#result-error');
+    $('#login_modal').submit(function (e) {
+        e.preventDefault();
+        var data = $(this).serialize();
+        // if ($('input[name="username"]').val() && $('input[name="password"]').val()) {
+        //     var username = $('input[name="username"]').val();
+        //     var password = $('input[name="password"]').val();
+        //     // console.log(ukrTextTemp);
+        //     if (username.length > 300 || password.length > 300) {
+        //         alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+        //         return;
+        //     }
+            // якщо всі поля заповнені, виконуємо запит на сервер
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: data,
+                success: function (result) {
+                    // var status = result.status;
+                    // if (status == "Success") {
+                    //     $('textarea[name="ukrText"]').val('');
+                    //     $('textarea[name="engText"]').val('');
+                    //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                    //     resultDivSuccess.text(result.message);
+                    //     setTimeout(hideMessageSuccess, 5000);
+                    // } else {
+                    //     resultDivError.text(result.message);
+                    //     setTimeout(hideMessageError, 5000);
+                    // }
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                    // Поміщаємо повідомлення про помилку в div-елемент
+                    resultDivError.text('Помилка запиту на сервер');
+                }
+            });
+        // }
+        // else {
+        //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+        //     alert('Будь ласка, заповніть поле вводу');
+        //     return;
+        // }
+    });
+
+    function hideMessageSuccess() {
+        resultDivSuccess.text('');
+
+    }
+
+    function hideMessageError() {
+
+        resultDivError.text('');
+    }
+});

@@ -1,12 +1,30 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<header class="header" id="header" th:fragment="header">
-    <div class="header_toggle"><i class="bx bx-menu bx-md" id="header-toggle"></i></div>
+<header th:fragment="header">
+    <div class="section">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <a href="#">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Запустите демо модального окна
+                    </button>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" >
+                        <button type="submit">Вийти</button>
+                    </form>
+        </div>
 
-    <div class="container">
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}" >
-            <button type="submit">Вийти</button>
-        </form>
     </div>
+    <script>
+        var hamburger = document.querySelector(".hamburger");
+        hamburger.addEventListener("click", function(){
+            document.querySelector("body").classList.toggle("active");
+        })
+    </script>
+
+
+
 </header>
 <!--    </th:block>-->

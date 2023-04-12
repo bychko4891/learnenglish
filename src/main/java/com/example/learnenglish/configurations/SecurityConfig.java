@@ -86,7 +86,8 @@ public class SecurityConfig {
                         .failureUrl(LOGIN_FAIL_URL)
                         .usernameParameter(USERNAME)
                         .passwordParameter(PASSWORD)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL))
+                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)

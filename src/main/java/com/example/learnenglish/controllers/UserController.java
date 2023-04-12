@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -15,25 +17,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/login")
-    public String login(){
+    @RequestMapping("/login")
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Не вірний логін, або пароль!");
+        } else if (logout != null) {
+            model.addAttribute("logout", "Ви вийшли із системи.");
+        }
         return "login";
     }
+
     @GetMapping("/registration")
-    public String registration(){
+    public String registration() {
         return "registration";
     }
+
     @PostMapping("/registration")
-    public String createUser(User user, Model model){
-        if(!userService.createUser(user)){
-            model.addAttribute("errorMessage","Пользователь с Email: " + user.getEmail() + " уже существует");
+    public String createUser(User user, Model model) {
+        if (!userService.createUser(user)) {
+            model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
             return "registration";
         }
 //        userService.createUser(user);
         return "redirect:/login";
     }
-    @GetMapping("/logout")
-    public String security(){
+
+    @RequestMapping("/logout")
+    public String logout() {
         return "redirect:/";
     }
 //    @RequestMapping("/login")
