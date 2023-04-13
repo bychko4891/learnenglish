@@ -7,23 +7,33 @@
                     <i class="fas fa-bars"></i>
                 </a>
             </div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Запустите демо модального окна
-                    </button>
-                    <form action="/logout" method="post">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" >
-                        <button type="submit">Вийти</button>
-                    </form>
+            <div style="right: 192px; position: absolute;">
+                <button class="btn_main" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Увійти
+                </button>
+            </div>
+            <div style="right: 183px; position: absolute; top: 5px; font-size: 30px;">
+                <p style="color: white;">/</p>
+            </div>
+            <div style="right: 40px; position: absolute;">
+                <form action="/registration" target="_parent">
+                    <button class="btn_main" >Зареєструватися</button>
+                </form>
+            </div>
+            <!--            <div style="right: 40px; position: absolute;">-->
+            <!--                <form action="/logout" method="post">-->
+            <!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">-->
+            <!--                    <button class="btn_main" type="submit">Вийти</button>-->
+            <!--                </form>-->
+            <!--            </div>-->
         </div>
 
     </div>
     <script>
         var hamburger = document.querySelector(".hamburger");
-        hamburger.addEventListener("click", function(){
+        hamburger.addEventListener("click", function () {
             document.querySelector("body").classList.toggle("active");
         })
     </script>
-
 
 
 </header>

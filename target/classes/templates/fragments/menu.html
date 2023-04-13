@@ -14,17 +14,18 @@
                 </a>
             </li>
             <li>
+                <a href="/about-the-app">
+                    <span class="icon"><i class="fas fa-user-friends"></i></span>
+                    <span class="item">About the App</span>
+                </a>
+            </li>
+            <li>
                 <a href="/english">
                     <span class="icon"><i class="fas fa-desktop"></i></span>
                     <span class="item">Lesson</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-user-friends"></i></span>
-                    <span class="item">People</span>
-                </a>
-            </li>
+
             <li>
                 <a href="#">
                     <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
@@ -58,23 +59,22 @@
         </ul>
     </div>
 
-        <script type="text/javascript">
-            $('document').ready(function() {
-                $('.main-menu a').each(function() {
-                    if ('https://localhost:8443'+$(this).attr('href') == window.location.href)
-                    {
-                        $(this).addClass('active');
-                    }
-                });
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $('.main-menu a').each(function () {
+                if ('https://localhost:8443' + $(this).attr('href') == window.location.href) {
+                    $(this).addClass('active');
+                }
             });
-        </script>
-<!--    <script type="text/javascript">-->
-<!--        $(".main-menu a").each(function () {-->
-<!--            if ((window.location.pathname.indexOf($(this).attr("href"))) > -1) {-->
-<!--                $(this).addClass("active");-->
-<!--            }-->
-<!--        });-->
-<!--    </script>-->
+        });
+    </script>
+    <!--    <script type="text/javascript">-->
+    <!--        $(".main-menu a").each(function () {-->
+    <!--            if ((window.location.pathname.indexOf($(this).attr("href"))) > -1) {-->
+    <!--                $(this).addClass("active");-->
+    <!--            }-->
+    <!--        });-->
+    <!--    </script>-->
 </div>
 
 <!--    </div>-->
