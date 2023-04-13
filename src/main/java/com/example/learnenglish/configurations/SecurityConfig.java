@@ -61,8 +61,10 @@ public class SecurityConfig {
     public static final String[] ENDPOINTS_WHITELIST = {
             "/css/**",
             "/js/**",
+            "/images/**",
             "/",
             "/login",
+            "/about-the-app",
 //            "/english",
             "/registration"
 
