@@ -16,62 +16,87 @@ $(document).ready(function () {
     });
 });
 //Додавання тексту в базу
-$(function () {
-    var resultDivSuccess = $('#result-success');
-    var resultDivError = $('#result-error');
-    $('#form').submit(function (e) {
-        e.preventDefault();
-        var data = $(this).serialize();
-        if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
-            var ukrTextTemp = $('textarea[name="ukrText"]').val();
-            var engTextTemp = $('textarea[name="engText"]').val();
-            // console.log(ukrTextTemp);
-            if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
-                alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
-                return;
-            }
-            // якщо всі поля заповнені, виконуємо запит на сервер
-            $.ajax({
-                type: "GET",
-                url: "/englishADD",
-                data: data,
-                success: function (result) {
-                    var status = result.status;
-                    if (status == "Success") {
-                        $('textarea[name="ukrText"]').val('');
-                        $('textarea[name="engText"]').val('');
-                        // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        resultDivSuccess.text(result.message);
-                        setTimeout(hideMessageSuccess, 5000);
-                    } else {
-                        resultDivError.text(result.message);
-                        setTimeout(hideMessageError, 5000);
-                    }
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
-                }
-            });
-        } else {
-            // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-            alert('Будь ласка, заповніть поле вводу');
-            return;
-        }
-    });
-
-    function hideMessageSuccess() {
-        resultDivSuccess.text('');
-
-    }
-
-    function hideMessageError() {
-
-        resultDivError.text('');
-    }
-});
+// $(function () {
+//     var resultDivSuccess = $('#result-success');
+//     var resultDivError = $('#result-error');
+//     $('#form').submit(function (e) {
+//         e.preventDefault();
+//         var data = $(this).serialize();
+//         if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
+//             var ukrTextTemp = $('textarea[name="ukrText"]').val();
+//             var engTextTemp = $('textarea[name="engText"]').val();
+//             // console.log(ukrTextTemp);
+//             if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
+//                 alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+//                 return;
+//             }
+//             // якщо всі поля заповнені, виконуємо запит на сервер
+//             $.ajax({
+//                 type: "GET",
+//                 url: "/englishADD",
+//                 data: data,
+//                 success: function (result) {
+//                     var status = result.status;
+//                     if (status == "Success") {
+//                         $('textarea[name="ukrText"]').val('');
+//                         $('textarea[name="engText"]').val('');
+//                         // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+//                         resultDivSuccess.text(result.message);
+//                         setTimeout(hideMessageSuccess, 5000);
+//                     } else {
+//                         resultDivError.text(result.message);
+//                         setTimeout(hideMessageError, 5000);
+//                     }
+//                 },
+//                 error: function () {
+//                     let shel = {};
+//                     alert(Boolean(shel))
+//                     // Поміщаємо повідомлення про помилку в div-елемент
+//                     resultDivError.text('Помилка запиту на сервер');
+//                 }
+//             });
+//         } else {
+//             // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+//             alert('Будь ласка, заповніть поле вводу');
+//             return;
+//         }
+//     });
+//
+//     function hideMessageSuccess() {
+//         resultDivSuccess.text('');
+//
+//     }
+//
+//     function hideMessageError() {
+//
+//         resultDivError.text('');
+//     }
+// });
+// $(document).ready(function() {
+//     $('#form').submit(function(event) {
+//         event.preventDefault(); // prevent page from refreshing after form submission
+//
+//         var formData = $(this).serializeArray();
+//         var jsonFormData = {};
+//         $(formData).each(function(index, obj){
+//             jsonFormData[obj.name] = obj.value;
+//         });
+//  console.log(formData);
+//  console.log(jsonFormData);
+//         $.ajax({
+//             url: "/englishADD",
+//             type: "POST",
+//             contentType: "application/json",
+//             data: JSON.stringify(jsonFormData),
+//             success: function(response) {
+//                 console.log(response);
+//             },
+//             error: function(xhr) {
+//                 console.log(xhr.responseText);
+//             }
+//         });
+//     });
+// });
 // Додаємо обробник події на кнопку відправки форми
 $('form').submit(function (event) {
     event.preventDefault();
@@ -119,31 +144,31 @@ $(function () {
         //         alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
         //         return;
         //     }
-            // якщо всі поля заповнені, виконуємо запит на сервер
-            $.ajax({
-                type: "POST",
-                url: "/login",
-                data: data,
-                success: function (result) {
-                    // var status = result.status;
-                    // if (status == "Success") {
-                    //     $('textarea[name="ukrText"]').val('');
-                    //     $('textarea[name="engText"]').val('');
-                    //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                    //     resultDivSuccess.text(result.message);
-                    //     setTimeout(hideMessageSuccess, 5000);
-                    // } else {
-                    //     resultDivError.text(result.message);
-                    //     setTimeout(hideMessageError, 5000);
-                    // }
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
-                }
-            });
+        // якщо всі поля заповнені, виконуємо запит на сервер
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            data: data,
+            success: function (result) {
+                // var status = result.status;
+                // if (status == "Success") {
+                //     $('textarea[name="ukrText"]').val('');
+                //     $('textarea[name="engText"]').val('');
+                //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                //     resultDivSuccess.text(result.message);
+                //     setTimeout(hideMessageSuccess, 5000);
+                // } else {
+                //     resultDivError.text(result.message);
+                //     setTimeout(hideMessageError, 5000);
+                // }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                // Поміщаємо повідомлення про помилку в div-елемент
+                resultDivError.text('Помилка запиту на сервер');
+            }
+        });
         // }
         // else {
         //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку

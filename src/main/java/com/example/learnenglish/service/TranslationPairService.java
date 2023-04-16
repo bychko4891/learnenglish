@@ -30,11 +30,8 @@ public class TranslationPairService {
         return repository.findById(id).get();
     }
 
-    public void saveTranslationPair(Lesson lesson_, TranslationPair translationPair) {
+    public void saveTranslationPair(TranslationPair translationPair) {
         repository.save(translationPair);
-
-
-
 //        String query = "INSERT INTO translation_pair (ukr_text, eng_text, audio_path) values (:a, :b, :c)";
 //        entityManager.createNativeQuery(query)
 //                        .setParameter("a", translationPair.getUkrText())
@@ -43,6 +40,7 @@ public class TranslationPairService {
 //                                .executeUpdate();
 //        return "OK";
     }
+
     public int countEntities() {
         int count = (int)repository.count();
         return count;

@@ -62,10 +62,10 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/images/**",
-            "/",
+            "/*",
             "/login",
             "/about-the-app",
-//            "/english",
+            "/englishADD",
             "/registration"
 
     };
@@ -78,6 +78,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable();
         http.authorizeRequests(request ->
                         request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
                                 .anyRequest().authenticated())

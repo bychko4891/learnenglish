@@ -9,9 +9,9 @@ public class TranslationPair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-    @Column(name="id_user_create")
-    private int idUserCreate;
+    private long id;
+    @Column(name="lesson_counter")
+    private int lessonCounter;
     @Column(name = "ukr_text")
     private String ukrText;
     @Column(name = "eng_text")
@@ -28,27 +28,12 @@ public class TranslationPair {
     public TranslationPair() {
     }
 
-    public TranslationPair(String ukrText, String engText) {
-        this.idUserCreate ++;
-        this.ukrText = ukrText;
-        this.engText = engText;
-        this.audioPath = "path/no";
+    public int getLessonCounter() {
+        return lessonCounter;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getIdUserCreate() {
-        return idUserCreate;
-    }
-
-    public void setIdUserCreate(int idUserCreate) {
-        this.idUserCreate = idUserCreate;
+    public void setLessonCounter(int lessonCounter) {
+        this.lessonCounter = lessonCounter;
     }
 
     public String getUkrText() {
@@ -89,19 +74,6 @@ public class TranslationPair {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "TranslationPair{" +
-                "id=" + id +
-                ", idUserCreate=" + idUserCreate +
-                ", ukrText='" + ukrText + '\'' +
-                ", engText='" + engText + '\'' +
-                ", audioPath='" + audioPath + '\'' +
-                ", lesson=" + lesson +
-                ", user=" + user +
-                '}';
     }
 }
 

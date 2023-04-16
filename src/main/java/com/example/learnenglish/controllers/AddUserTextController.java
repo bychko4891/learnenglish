@@ -1,23 +1,26 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.dto.CreateTranslationPair;
-import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.model.users.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-public class AddUserTextController {
-    private final CreateTranslationPair createTranslationPair;
+import java.security.Principal;
 
-    public AddUserTextController(CreateTranslationPair createTranslationPair) {
+@RestController
+@CrossOrigin(origins = "https://localhost:8443")
+public class AddUserTextController {
+    private final DtoTranslationPair createTranslationPair;
+
+    public AddUserTextController(DtoTranslationPair createTranslationPair) {
         this.createTranslationPair = createTranslationPair;
     }
-//    private final CheckingTextAndSaveService checkingTextAndSaveService;
-//    public AddUserTextController(CheckingTextAndSaveService checkingTextAndSaveService) {
+//    private final ValidationAndSaveTranslationPair checkingTextAndSaveService;
+//    public AddUserTextController(ValidationAndSaveTranslationPair checkingTextAndSaveService) {
 //        this.checkingTextAndSaveService = checkingTextAndSaveService;
 //    }
 
@@ -36,14 +39,22 @@ public class AddUserTextController {
 //        }
 ////            System.out.println("It is OK!!! " + ukrText + " " + engText);
 //    }
-    @RequestMapping(path = "/lesson/{lessonId}/user/{id}/englishADD")
-    public ResponseEntity textADD(@PathVariable("lessonId") Long lessonId, @PathVariable("id") Long id,
-                                  @RequestBody CreateTranslationPair createTranslationPair, Lesson lesson, User user, HttpServletRequest request) {
-        lessonId = lesson.getId();
-        id = user.getId();
-        String test = request.getRequestURI();
-        System.out.println(createTranslationPair + " | " + test);
+    @PostMapping (path = "/englishADD")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<String> textADD(@RequestBody DtoTranslationPair dtoTranslationPair, Model model, User user) {
+        System.out.println(dtoTranslationPair + " jcnjcnjkcncvvv ********************************");
+        model.addAttribute("user", user);
+//        String test = request.getRequestURI();
+//        System.out.println(dtoTranslationPair + " | " + test);
 //            System.out.println("It is OK!!! " + ukrText + " " + engText);
+//        if (principal != null) {
+//            // Отримати id залогіненого користувача
+//            userId = userService.findByEmail(principal.getName()).getId();
+//            User user = userService.findByEmail(principal.getName());
+//            model.addAttribute("userId", userId);
+//            model.addAttribute("user", user);
+////            return "user-info";
+//        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

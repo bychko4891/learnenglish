@@ -47,10 +47,46 @@
                             <div class="page-contents">
                                 <h1>Завантажити</h1>
                                 <form id="form">
-                                    <textarea name="ukrText" rows="1"></textarea><br><br>
-                                    <textarea name="engText" rows="1"></textarea><br><br>
+                                    <input name="ukrText" rows="1"><br><br>
+                                    <input name="engText" rows="1"><br><br>
+                                    <input type="hidden" name="lessonId" th:value="${lessonId}">
+                                    <input type="hidden" name="userId" th:value="${userId}">
+<!--                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
                                     <input type="submit" value="Загрузити"><br><br>
                                 </form>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#form').submit(function(event) {
+                                            event.preventDefault(); // prevent page from refreshing after form submission
+
+                                            // Get CSRF token from the meta tag
+                                            var csrfToken = $("meta[name='_csrf']").attr("content");
+                                            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+                                            var formData = $(this).serializeArray();
+                                            var jsonFormData = {};
+                                            $(formData).each(function(index, obj){
+                                                jsonFormData[obj.name] = obj.value;
+                                            });
+
+                                            $.ajax({
+                                                url: "/englishADD",
+                                                type: "POST",
+                                                contentType: "application/json",
+                                                data: JSON.stringify(jsonFormData),
+                                                beforeSend: function(xhr) {
+                                                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                                                },
+                                                success: function(response) {
+                                                    console.log(response);
+                                                },
+                                                error: function(xhr) {
+                                                    console.log(xhr.responseText);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
                                 <div id="result-success"></div>
                                 <div id="result-error"></div>
                             </div>
