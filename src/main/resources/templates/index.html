@@ -16,7 +16,6 @@
 
                             <h1 th:text="'Hello, ' + ${main_title} + '!'"></h1>
 
-
                         </div>
                     </div>
 
@@ -27,35 +26,35 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-<!-- Модальное окно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <p th:text="${error}"></p>
-            <p th:text="${logout}"></p>
-            <div class="modal-body">
-                <form id="login_modal">
+<!--&lt;!&ndash; Модальное окно &ndash;&gt;-->
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>-->
+<!--            </div>-->
+<!--            <p th:text="${error}"></p>-->
+<!--            <p th:text="${logout}"></p>-->
+<!--            <div class="modal-body">-->
+<!--                <form id="login_modal">-->
 
-                    Почта: <input type="email" name="username" placeholder="Username"/><br><br>
-                    Пароль: <input type="password" name="password" placeholder="Password"/><br><br>
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+<!--                    Почта: <input type="email" name="username" placeholder="Username"/><br><br>-->
+<!--                    Пароль: <input type="password" name="password" placeholder="Password"/><br><br>-->
+<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
 
-                    <input type="submit" value="Log in"/>
-                </form>
-                <div th:unless="${erorrMessage}">
-                    <h2 style="color: red" th:text="${errorMessage}"></h2>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Сохранить изменения</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--                    <input type="submit" value="Log in"/>-->
+<!--                </form>-->
+<!--                <div th:unless="${erorrMessage}">-->
+<!--                    <h2 style="color: red" th:text="${errorMessage}"></h2>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>-->
+<!--                <button type="button" class="btn btn-primary">Сохранить изменения</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 </body>
 </html>

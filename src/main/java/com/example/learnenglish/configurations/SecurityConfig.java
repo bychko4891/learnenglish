@@ -72,7 +72,7 @@ public class SecurityConfig {
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
-    public static final String DEFAULT_SUCCESS_URL = "/english";
+    public static final String DEFAULT_SUCCESS_URL = "/about-the-app";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
@@ -88,7 +88,7 @@ public class SecurityConfig {
                         .failureUrl(LOGIN_FAIL_URL)
                         .usernameParameter(USERNAME)
                         .passwordParameter(PASSWORD)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+//                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

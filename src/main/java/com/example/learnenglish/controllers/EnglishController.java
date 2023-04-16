@@ -3,14 +3,13 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.service.RandomTranslationPairService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Controller
+@RestController
 public class EnglishController {
 private final RandomTranslationPairService randomTranslationPairService;
 
@@ -19,11 +18,11 @@ private final RandomTranslationPairService randomTranslationPairService;
     }
 
 
-    @GetMapping("/english")
-    public String greeting(Model model) {
-        model.addAttribute("title", "English");
-        return "english";
-    }
+//    @GetMapping("/english")
+//    public String greeting(Model model) {
+//        model.addAttribute("title", "English");
+//        return "lesson";
+//    }
 
     @GetMapping(path = "/englishJSON")
     public void response2(HttpServletResponse response) {
@@ -32,7 +31,7 @@ private final RandomTranslationPairService randomTranslationPairService;
         PrintWriter printWriter = null;
         try {
             printWriter = response.getWriter();
-            printWriter.println(new ObjectMapper().writeValueAsString(randomTranslationPairService.translationPairRandom()));
+//            printWriter.println(new ObjectMapper().writeValueAsString(randomTranslationPairService.translationPairRandom()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

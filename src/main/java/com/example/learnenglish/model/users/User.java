@@ -1,14 +1,13 @@
 package com.example.learnenglish.model.users;
 
+import com.example.learnenglish.model.TranslationPair;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -17,7 +16,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private Long id;
     @Column
     private String name;
     @Column(name="first_name")
@@ -30,6 +29,8 @@ public class User implements UserDetails {
 //    private Image avatar;
     @Column(name = "password", length = 1000)
     private String password;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<TranslationPair> translationPairs = new ArrayList<>();
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -44,11 +45,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,6 +89,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public List<TranslationPair> getTranslationPairs() {
+        return translationPairs;
+    }
+
+    public void setTranslationPairs(List<TranslationPair> translationPairs) {
+        this.translationPairs = translationPairs;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -95,7 +104,6 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
 //    public LocalDateTime getDateOfCreated() {
 //        return dateOfCreated;
 //    }

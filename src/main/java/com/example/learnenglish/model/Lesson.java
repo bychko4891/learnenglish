@@ -4,21 +4,15 @@ import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "lesson_1")
+@Table(name = "lesson")
 public class Lesson {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "lesson_id")
-    private int lessonId;
-    @ManyToOne
-    private User user;
-
-
     public Lesson() {
-
     }
-
 
     public void setId(Long id) {
         this.id = id;

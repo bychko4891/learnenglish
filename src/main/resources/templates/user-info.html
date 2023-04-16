@@ -1,0 +1,28 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section">
+        <div class="container main-page">
+            <div class="content row">
+                <article class="col-md-11 col-xl-9">
+                    <h6> Name:</h6> <p th:text="${user.getName()}"></p><br>
+                    <h6>First name:</h6> <p th:text="${user.getFirstName()}"></p><br>
+<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+                    <td th:each="user : ${user}">
+                        <a th:if="${id == user.getId}" th:href="@{/user/{id}(id=${user.getId})}">Profile</a>
+                    </td>
+
+                </article>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

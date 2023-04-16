@@ -6,10 +6,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -48,15 +45,11 @@ public class UserController {
     public String logout() {
         return "redirect:/";
     }
-//    @RequestMapping("/login")
-//    public String login(HttpServletRequest request, HttpServletResponse response) {
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("application/json");
-//        String userName = request.getParameter("username");
-//        String userPassword = request.getParameter("password");
-//        System.out.println(userName + " : " + userPassword);
-//        translationPairService.findUserByEmail(userName);
-//        return "login";
+
+//@RequestMapping("/user/{id}")
+//    public String userInfo(@PathVariable("id") User user, Model model) {
+//        model.addAttribute("user", user);
+//        return "user-info";
 //    }
 }
 

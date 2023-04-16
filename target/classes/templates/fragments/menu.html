@@ -7,10 +7,16 @@
             <p>Designer</p>
         </div>
         <ul class="main-menu">
-            <li>
+            <li th:unless="${userId}">
                 <a href="/">
                     <span class="icon"><i class="fas fa-home"></i></span>
                     <span class="item">Home</span>
+                </a>
+            </li>
+            <li th:if="${userId}">
+                <a th:href="@{/user/{id}(id=${userId})}">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span class="item">Profile</span>
                 </a>
             </li>
             <li>
@@ -19,10 +25,12 @@
                     <span class="item">About the App</span>
                 </a>
             </li>
-            <li>
-                <a href="/english">
+            <li th:if="${userId}">
+                <!--                <a href="/lesson/1">-->
+                <a th:href="@{/user/{id}/lesson/1(id=${userId})}">
+                    <!--                <a href="/lesson/1">-->
                     <span class="icon"><i class="fas fa-desktop"></i></span>
-                    <span class="item">Lesson</span>
+                    <span class="item">Lessons</span>
                 </a>
             </li>
 
@@ -50,12 +58,12 @@
                     <span class="item">Admin</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-cog"></i></span>
-                    <span class="item">Settings</span>
-                </a>
-            </li>
+<!--            <li th:unless="${userId}">-->
+<!--                <a th:href="@{/user/{id}(id=${userId})}">-->
+<!--                    <span class="icon"><i class="fas fa-cog"></i></span>-->
+<!--                    <span class="item">Profile</span>-->
+<!--                </a>-->
+<!--            </li>-->
         </ul>
     </div>
 
