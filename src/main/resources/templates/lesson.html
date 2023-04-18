@@ -16,19 +16,24 @@
                         <div class="page home-page">
                             <div class="page-contents">
                                 <h3>Переклади речення на англійську мову: </h3><br/>
+
                                 <div id="ukr-text" class="text-show text-show-ukr">
-                                    <!--                                        <p th:text="${Ukrainian_text}"></p>-->
                                 </div>
+
                                 <br/><br/>
                                 <button class="content_toggle btn">Дивитися переклад...</button>
                                 <br/><br/>
                                 <div class="content_block" style="display: none;">
                                     <div id="english-text" class="text-show text-show-eng">
-                                        <!--                                            <p th:text="${English_text}"/>-->
                                     </div>
                                 </div>
                                 <br/>
-                                <button id="reload">Нове речення</button>
+                                <form id="reload"
+                                      th:action="@{/user/{userId}/lesson/{lessonId}/reload(userId=${userId},lessonId=${lessonId})}"
+                                      method="get">
+                                    <!--                                <form id="reload">-->
+                                    <input type="hidden" name="lessonId" th:value="${lessonId}">
+                                    <button type="submit">Нове речення</button>
                                 </form>
                             </div>
                         </div>
@@ -46,47 +51,15 @@
                         <div class="page about-page">
                             <div class="page-contents">
                                 <h1>Завантажити</h1>
-                                <form id="form">
-                                    <input name="ukrText" rows="1"><br><br>
-                                    <input name="engText" rows="1"><br><br>
+                                <form id="add-pair"
+                                      th:action="@{/user/{userId}/lesson/{lessonId}/add(userId=${userId},lessonId=${lessonId})}"
+                                      method="post">
+                                    <textarea name="ukrText" rows="1"></textarea><br><br>
+                                    <textarea name="engText" rows="1"></textarea><br><br>
                                     <input type="hidden" name="lessonId" th:value="${lessonId}">
                                     <input type="hidden" name="userId" th:value="${userId}">
-<!--                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
                                     <input type="submit" value="Загрузити"><br><br>
                                 </form>
-                                <script>
-                                    $(document).ready(function() {
-                                        $('#form').submit(function(event) {
-                                            event.preventDefault(); // prevent page from refreshing after form submission
-
-                                            // Get CSRF token from the meta tag
-                                            var csrfToken = $("meta[name='_csrf']").attr("content");
-                                            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-                                            var formData = $(this).serializeArray();
-                                            var jsonFormData = {};
-                                            $(formData).each(function(index, obj){
-                                                jsonFormData[obj.name] = obj.value;
-                                            });
-
-                                            $.ajax({
-                                                url: "/englishADD",
-                                                type: "POST",
-                                                contentType: "application/json",
-                                                data: JSON.stringify(jsonFormData),
-                                                beforeSend: function(xhr) {
-                                                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                                                },
-                                                success: function(response) {
-                                                    console.log(response);
-                                                },
-                                                error: function(xhr) {
-                                                    console.log(xhr.responseText);
-                                                }
-                                            });
-                                        });
-                                    });
-                                </script>
                                 <div id="result-success"></div>
                                 <div id="result-error"></div>
                             </div>
@@ -109,6 +82,6 @@
         </div>
     </main>
 </div>
-
+<!--<script th:href="@{/js/learnScript.js}"></script>-->
 </body>
 </html>

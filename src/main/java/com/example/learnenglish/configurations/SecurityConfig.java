@@ -62,7 +62,7 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/images/**",
-            "/*",
+            "/",
             "/login",
             "/about-the-app",
             "/englishADD",

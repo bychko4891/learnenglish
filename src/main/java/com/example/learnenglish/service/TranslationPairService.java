@@ -4,10 +4,10 @@ package com.example.learnenglish.service;
  *
  */
 
-import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,21 +32,14 @@ public class TranslationPairService {
 
     public void saveTranslationPair(TranslationPair translationPair) {
         repository.save(translationPair);
-//        String query = "INSERT INTO translation_pair (ukr_text, eng_text, audio_path) values (:a, :b, :c)";
-//        entityManager.createNativeQuery(query)
-//                        .setParameter("a", translationPair.getUkrText())
-//                        .setParameter("b", translationPair.getEngText())
-//                        .setParameter("c", translationPair.getAudioPath())
-//                                .executeUpdate();
-//        return "OK";
     }
 
-    public int countEntities() {
-        int count = (int)repository.count();
-        return count;
-    }
-   public boolean findUserByEmail(String email){
-        if(entityManager.createQuery("from User where email = email") == null) return false;
-        return true;
+    public int findByCountTranslationPairInLesson(int lessonId, long userId){
+        TypedQuery<Long> q = entityManager.createQuery(
+                "select count(tr) from TranslationPair tr where tr.user.id = :userId and tr.lesson.id = :lessonId", Long.class);
+        q.setParameter("userId", userId);
+        q.setParameter("lessonId", lessonId);
+        return q.getSingleResult().intValue();
+
     }
 }

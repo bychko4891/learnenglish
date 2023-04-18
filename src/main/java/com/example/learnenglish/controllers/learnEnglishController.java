@@ -2,39 +2,26 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 
 @Controller
 @RequestMapping(method = RequestMethod.GET)
 public class learnEnglishController {
-    private final UserRepository userRepository;
+
     private final UserService userService;
 
-    public learnEnglishController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public learnEnglishController(UserService userService) {
         this.userService = userService;
     }
 
-//    @GetMapping("/")
-//    public String mainPage(Model model, Principal principal) {
-//        model.addAttribute("title", "Learn English - Англійська за 16 годин.");
-//        model.addAttribute("main_title", "Main page");
-//        if(principal != null) {
-//            UserDetails userDetails = (UserDetails) ((Authentication) principal).getPrincipal();
-//            User user = userRepository.findByEmail(userDetails.getUsername());
-//            model.addAttribute("user", user);
-//        }
-////        model.addAttribute("user", user);
-//        return "index";
-//    }
 @GetMapping("/")
 public String index(Principal principal, Model model) {
     if (principal != null) {
@@ -50,20 +37,9 @@ public String index(Principal principal, Model model) {
         return "index";
     }
 }
-
-//    @GetMapping("/about-the-app")
-//    public String aboutApp(@PathVariable("id") Long id, User user, Model model) {
-//        id = user.getId();
-//        model.addAttribute("title", "About the app Learn English");
-//        model.addAttribute("main_title", "Main page");
-//        model.addAttribute("user", user);
-//        model.addAttribute("id", id);
-//        return "about";
-//    }
     @GetMapping("/about-the-app")
     public String aboutApp(Model model, Principal principal) {
         model.addAttribute("title", "About the app Learn English");
-        model.addAttribute("main_title", "Main page");
         if (principal != null) {
             // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
@@ -77,14 +53,12 @@ public String index(Principal principal, Model model) {
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("title", "About the app Learn English");
-        model.addAttribute("main_title", "Login page");
         return "login";
     }
 
     @GetMapping("/user/{id}")
     public String userPage(@PathVariable("id") Long userId, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
-        model.addAttribute("main_title", "User page");
         if (principal != null) {
             // Отримати id залогіненого користувача
             userId = userService.findByEmail(principal.getName()).getId();
@@ -96,18 +70,19 @@ public String index(Principal principal, Model model) {
         return "redirect:/login";
     }
 
-    @GetMapping("/user/{id}/lesson/{lessonId}")
-    public String lessonPage(@PathVariable("id") Long id, @PathVariable("lessonId") Long lessonId,
-                             Lesson lesson, User user, Model model) {
-        id = user.getId();
-        lessonId = lesson.getId();
+    @GetMapping("/user/{userId}/lesson/{lessonId}")
+    public String lessonPage(@PathVariable("userId") Long userId, @PathVariable("lessonId") Long lessonId,
+                             Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
-        model.addAttribute("main_title", "Lesson page");
-        model.addAttribute("lesson", lesson);
+        if (principal != null) {
+            // Отримати id залогіненого користувача
+            userId = userService.findByEmail(principal.getName()).getId();
+            model.addAttribute("userId", userId);
+            return "lesson";
+        }
+        lessonId = lesson.getId();
+//        model.addAttribute(lesson);
         model.addAttribute("lessonId", lessonId);
-        model.addAttribute("user", user);
-        model.addAttribute("userId", id);
-
         return "lesson";
     }
 

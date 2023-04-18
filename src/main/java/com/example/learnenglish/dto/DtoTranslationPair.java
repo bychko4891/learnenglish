@@ -8,15 +8,31 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class DtoTranslationPair {
     @NotNull
-    private String ukr_text;
+    private String ukrText;
     @NotNull
-    private String eng_text;
+    private String engText;
     @NotNull
     private Integer lessonId;
     @NotNull
     private long userId;
 
     public DtoTranslationPair() {
+    }
+
+    public String getUkrText() {
+        return ukrText;
+    }
+
+    public void setUkrText(String ukrText) {
+        this.ukrText = ukrText;
+    }
+
+    public String getEngText() {
+        return engText;
+    }
+
+    public void setEngText(String engText) {
+        this.engText = engText;
     }
 
     public Integer getLessonId() {
@@ -35,26 +51,13 @@ public class DtoTranslationPair {
         this.userId = userId;
     }
 
-    public String getUkr_text() {
-        return ukr_text;
-    }
-
-    public void setUkr_text(String ukr_text) {
-        this.ukr_text = ukr_text;
-    }
-
-    public String getEng_text() {
-        return eng_text;
-    }
-
-    public void setEng_text(String eng_text) {
-        this.eng_text = eng_text;
-    }
-
-    public DtoTranslationPair(String ukr_text, String eng_text, Integer lessonId, long userId) {
-        this.ukr_text = ukr_text;
-        this.eng_text = eng_text;
-        this.lessonId = lessonId;
-        this.userId = userId;
+    @Override
+    public String toString() {
+        return "DtoTranslationPair{" +
+                "ukrText='" + ukrText + '\'' +
+                ", engText='" + engText + '\'' +
+                ", lessonId=" + lessonId +
+                ", userId=" + userId +
+                '}';
     }
 }
