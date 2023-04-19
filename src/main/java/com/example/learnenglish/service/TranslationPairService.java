@@ -34,16 +34,12 @@ public class TranslationPairService {
         repository.save(translationPair);
     }
 
-    public int findByCountTranslationPairInLesson(int lessonId, long userId) {
-        TypedQuery<Long> q = entityManager.createQuery(
-                "select count(tr) from TranslationPair tr where tr.lesson.id = :userId and tr.user.id = :lessonId", Long.class);
-        q.setParameter("userId", userId);
-        q.setParameter("lessonId", lessonId);
-        return q.getSingleResult().intValue();
+    public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
+        return repository.findByCountTranslationPairInLesson(lessonId, userId);
 
     }
 
-    public TranslationPair pairForLesson(long lessonId, long userId, int lessonCounter) {
+    public TranslationPair pairForLesson(long lessonId, long userId, long lessonCounter) {
         return repository.findAllByUserAndLessonAndCounter(lessonId, userId, lessonCounter);
     }
 }

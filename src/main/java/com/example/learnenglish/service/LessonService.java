@@ -12,7 +12,9 @@ public class LessonService {
     public LessonService(LessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
     }
-    public Lesson findById(Integer id) {
-        return lessonRepository.findById(id).get();
+
+    public Lesson findById(long id) {
+        int lesson_id = (int)id;
+        return lessonRepository.findById(lesson_id).get();
     }
 }

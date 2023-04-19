@@ -15,12 +15,12 @@ public class TranslationPairRandomFromLessonService {
     }
 
     public DtoTranslationPairToUI translationPairRandom(long lessonId, long userId) {
-        int count = translationPairService.findByCountTranslationPairInLesson((int) lessonId, userId);
-        int lessonCounter= new Random().nextInt(1, count + 1);
-        return TranslationPairConvertToDto(translationPairService.pairForLesson(lessonId, userId, lessonCounter));
+        long count = translationPairService.findByCountTranslationPairInLesson(lessonId, userId);
+        long lessonCounter= new Random().nextLong(1, count + 1);
+        return translationPairConvertToDto(translationPairService.pairForLesson(lessonId, userId, lessonCounter));
     }
 
-    private DtoTranslationPairToUI TranslationPairConvertToDto(TranslationPair translationPair) {
+    private DtoTranslationPairToUI translationPairConvertToDto(TranslationPair translationPair) {
         DtoTranslationPairToUI toUi = new DtoTranslationPairToUI();
         toUi.setUkrText(translationPair.getUkrText());
         toUi.setEngText(translationPair.getEngText());

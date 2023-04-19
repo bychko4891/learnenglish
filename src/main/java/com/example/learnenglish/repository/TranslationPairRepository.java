@@ -10,10 +10,12 @@ import java.util.List;
 
 @Repository
 public interface TranslationPairRepository extends CrudRepository<TranslationPair, Integer> {
-    @Query("SELECT e.id FROM TranslationPair e WHERE e.user = :userId AND e.lesson = :lessonId")
+    @Query("SELECT e.id FROM TranslationPair e WHERE e.user.id = :userId AND e.lesson.id = :lessonId")
     List<Long> findAllIdsByUserAndLesson(@Param("userId") Long userId, @Param("lessonId") Long lessonId);
 
     @Query("SELECT e FROM TranslationPair e WHERE e.user.id = :userId AND e.lesson.id = :lessonId AND e.lessonCounter = :lessonCounter")
-    TranslationPair findAllByUserAndLessonAndCounter( @Param("lessonId") Long lessonId, @Param("userId") Long userId, @Param("lessonCounter") Integer lessonCounter);
+    TranslationPair findAllByUserAndLessonAndCounter(@Param("lessonId") Long lessonId, @Param("userId") Long userId, @Param("lessonCounter") Long lessonCounter);
 
+    @Query("SELECT COUNT(tr) FROM TranslationPair tr WHERE tr.lesson.id = :lessonId AND tr.user.id = :userId")
+    Long findByCountTranslationPairInLesson(@Param("lessonId") Long lessonId, @Param("userId") Long userId);
 }

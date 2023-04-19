@@ -11,7 +11,7 @@ public class TranslationPair {
     @Column(name = "id")
     private long id;
     @Column(name="lesson_counter")
-    private int lessonCounter;
+    private Long lessonCounter;
     @Column(name = "ukr_text")
     private String ukrText;
     @Column(name = "eng_text")
@@ -28,11 +28,11 @@ public class TranslationPair {
     public TranslationPair() {
     }
 
-    public int getLessonCounter() {
+    public Long getLessonCounter() {
         return lessonCounter;
     }
 
-    public void setLessonCounter(int lessonCounter) {
+    public void setLessonCounter(Long lessonCounter) {
         this.lessonCounter = lessonCounter;
     }
 

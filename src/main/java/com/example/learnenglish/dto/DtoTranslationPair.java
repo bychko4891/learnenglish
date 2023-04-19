@@ -12,9 +12,9 @@ public class DtoTranslationPair {
     @NotNull
     private String engText;
     @NotNull
-    private Integer lessonId;
+    private Long lessonId;
     @NotNull
-    private long userId;
+    private Long userId;
 
     public DtoTranslationPair() {
     }
@@ -35,19 +35,19 @@ public class DtoTranslationPair {
         this.engText = engText;
     }
 
-    public Integer getLessonId() {
+    public Long getLessonId() {
         return lessonId;
     }
 
-    public void setLessonId(Integer lessonId) {
+    public void setLessonId(Long lessonId) {
         this.lessonId = lessonId;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
