@@ -16,8 +16,8 @@ public class TranslationPairRandomFromLessonService {
 
     public DtoTranslationPairToUI translationPairRandom(long lessonId, long userId) {
         int count = translationPairService.findByCountTranslationPairInLesson((int) lessonId, userId);
-        int translationPairId = new Random().nextInt(1, count + 1);
-        return TranslationPairConvertToDto(translationPairService.findById(translationPairId));
+        int lessonCounter= new Random().nextInt(1, count + 1);
+        return TranslationPairConvertToDto(translationPairService.pairForLesson(lessonId, userId, lessonCounter));
     }
 
     private DtoTranslationPairToUI TranslationPairConvertToDto(TranslationPair translationPair) {

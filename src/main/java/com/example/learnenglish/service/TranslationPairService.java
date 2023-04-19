@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TranslationPairService {
-      private final EntityManager entityManager;
-      private final TranslationPairRepository repository;
+    private final EntityManager entityManager;
+    private final TranslationPairRepository repository;
 
     public TranslationPairService(TranslationPairRepository repository, EntityManager entityManager) {
         this.repository = repository;
@@ -34,12 +34,16 @@ public class TranslationPairService {
         repository.save(translationPair);
     }
 
-    public int findByCountTranslationPairInLesson(int lessonId, long userId){
+    public int findByCountTranslationPairInLesson(int lessonId, long userId) {
         TypedQuery<Long> q = entityManager.createQuery(
-                "select count(tr) from TranslationPair tr where tr.user.id = :userId and tr.lesson.id = :lessonId", Long.class);
+                "select count(tr) from TranslationPair tr where tr.lesson.id = :userId and tr.user.id = :lessonId", Long.class);
         q.setParameter("userId", userId);
         q.setParameter("lessonId", lessonId);
         return q.getSingleResult().intValue();
 
+    }
+
+    public TranslationPair pairForLesson(long lessonId, long userId, int lessonCounter) {
+        return repository.findAllByUserAndLessonAndCounter(lessonId, userId, lessonCounter);
     }
 }
