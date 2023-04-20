@@ -98,7 +98,7 @@ $(document).ready(function () {
                         setTimeout(hideMessageSuccess, 5000);
                     } else {
                         resultDivError.text(result.message);
-                        setTimeout(hideMessageError, 5000);
+                        setTimeout(hideMessageError, 10000);
                     }
                 },
                 error: function () {

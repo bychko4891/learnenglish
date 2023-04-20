@@ -363,7 +363,7 @@ input[type=radio]:checked + .page .page-contents > * {
 
 .page-contents {
     max-width: 100%;
-    width: 500px;
+    /*width: 500px;*/
     margin: 0 auto;
 }
 

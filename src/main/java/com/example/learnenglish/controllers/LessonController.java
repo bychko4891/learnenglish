@@ -37,7 +37,6 @@ public void randomTranslationPairToLesson(@PathVariable(value = "userId") long u
     response.setCharacterEncoding("UTF-8");
     response.setContentType("application/json");
     lessonId = Long.parseLong(request.getParameter("lessonId"));
-//    System.out.println(lessonId + " *********************************************************");
     PrintWriter printWriter = null;
     if (principal != null) {
         userId = userService.findByEmail(principal.getName()).getId();

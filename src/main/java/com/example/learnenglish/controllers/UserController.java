@@ -37,19 +37,14 @@ public class UserController {
             model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
             return "registration";
         }
-//        userService.createUser(user);
+        userService.createUser(user);
         return "redirect:/login";
     }
 
-    @RequestMapping("/logout")
-    public String logout() {
+    @RequestMapping("/logout")    public String logout() {
         return "redirect:/";
     }
 
-//@RequestMapping("/user/{id}")
-//    public String userInfo(@PathVariable("id") User user, Model model) {
-//        model.addAttribute("user", user);
-//        return "user-info";
-//    }
+
 }
 

@@ -2,9 +2,13 @@ package com.example.learnenglish.model;
 
 import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
-@Table(name="translation_pair")
+@Table(name="translation_pair")//, uniqueConstraints = {
+//        @UniqueConstr//aint(columnNames = {"ukr_text", "eng_text"})
+//        @UniqueConstraint(columnNames = {"id", "lesson_id"})
+//})
 public class TranslationPair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,12 +17,14 @@ public class TranslationPair {
     @Column(name="lesson_counter")
     private Long lessonCounter;
     @Column(name = "ukr_text")
+//    @ColumnTransformer(read = "ukr_text::citext", write = "?::citext")
     private String ukrText;
     @Column(name = "eng_text")
+//    @ColumnTransformer(read = "eng_text::citext", write = "?::citext")
     private String engText;
     @Column(name = "audio_path")
     private String audioPath;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -74,6 +80,19 @@ public class TranslationPair {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "TranslationPair{" +
+                "id=" + id +
+                ", lessonCounter=" + lessonCounter +
+                ", ukrText='" + ukrText + '\'' +
+                ", engText='" + engText + '\'' +
+                ", audioPath='" + audioPath + '\'' +
+                ", lessonId=" + lesson.getId() +
+                ", userId=" + user.getId() +
+                '}';
     }
 }
 

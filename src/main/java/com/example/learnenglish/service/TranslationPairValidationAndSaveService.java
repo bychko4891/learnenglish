@@ -3,6 +3,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.responsestatus.*;
 import com.example.learnenglish.model.TranslationPair;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -20,30 +21,32 @@ public class TranslationPairValidationAndSaveService {
     }
 
     public ResponseStatus validationTranslationPair(DtoTranslationPair dtoTranslationPair) {
-        String ukrText = dtoTranslationPair.getUkrText();
-        String engText = dtoTranslationPair.getEngText();
-        ukrText = ukrText.trim();
-        engText = engText.trim();
-        ukrText = ukrText.replaceAll("\\s{2,}", "");
-        engText = engText.replaceAll("\\s{2,}", "");
-        ukrText = ukrText.replaceAll("\\b\\s\\B", "");
-        engText = engText.replaceAll("\\b\\s\\B", "");
-        if (Pattern.matches("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
-                Pattern.matches("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
-                        "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
-
-            dtoTranslationPair.setUkrText(ukrText);
-            dtoTranslationPair.setEngText(engText);
-            return convertToTranslationPairEndSave(dtoTranslationPair);
+        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+        System.out.println(ukrText);
+        System.out.println(engText);
+        if (Pattern.matches
+                ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
+                        "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
+                Pattern.matches
+                        ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
+                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
+            if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
+//                System.out.println("YES  **************************************************************************************");
+                dtoTranslationPair.setUkrText(ukrText);
+                dtoTranslationPair.setEngText(engText);
+                return convertToTranslationPairEndSave(dtoTranslationPair);
+            }
         }
-        System.out.println("Eroor validationTranslationPair");
+        System.out.println("Error validationTranslationPair");
         return new ResponseStatus(Message.ERRORVALIDATETEXT);
     }
 
     private ResponseStatus convertToTranslationPairEndSave(DtoTranslationPair dtoTranslationPair) {
         TranslationPair pair = new TranslationPair();
-        pair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(),dtoTranslationPair.getUserId()) + 1);
+        pair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
         pair.setUkrText(dtoTranslationPair.getUkrText());
         pair.setEngText(dtoTranslationPair.getEngText());
         pair.setAudioPath("path/no");
