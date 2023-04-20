@@ -10,15 +10,61 @@
     <main class="section">
         <div class="container main-page">
             <div class="content row">
-                <article class="col-md-11 col-xl-9">
-                    <h6> Name:</h6> <p th:text="${user.getName()}"></p><br>
-                    <h6>First name:</h6> <p th:text="${user.getFirstName()}"></p><br>
-<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
-                    <td th:each="user : ${user}">
-                        <a th:if="${id == user.getId}" th:href="@{/user/{id}(id=${user.getId})}">Profile</a>
-                    </td>
+                                <article class="col-md-11 col-xl-9">
+                                    <div class="main_page">
+                                        <div class="main_content section">
+                <nav class="col-xl-6 block-user">
+                    <div class="layout">
+                        <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
+                        <div class="page home-page">
+                            <div class="page-contents" style="left: 0;">
 
-                </article>
+                                <p th:text="'Name: ' + ${user.getName()}"></p> <br>
+                                <p th:text="'First name: ' + ${user.getFirstName()}"></p><br>
+                                <p th:text="'Email: ' + ${user.getEmail()}"></p><br>
+
+
+                            </div>
+                        </div>
+                        <label class="nav" for="home">
+    <span>
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+           stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path
+              d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline
+              points="9 22 9 12 15 12 15 22"></polyline></svg>
+      Профіль
+    </span>
+                        </label>
+                        <input name="nav" type="radio" class="about-radio" id="about"/>
+                        <div class="page about-page">
+                            <div class="page-contents">
+                                <p th:text="'Name: ' + ${user.getName()}"></p> <br>
+                                <p th:text="'First name: ' + ${user.getFirstName()}"></p><br>
+                                <p th:text="'Email: ' + ${user.getEmail()}"></p><br>
+
+                            </div>
+                        </div>
+                        <label class="nav" for="about">
+    <span>
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+         stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><path
+            d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
+    Редагувати профіль
+      </span>
+                        </label>
+                    </div>
+                </nav>
+                <!--                <article class="col-md-11 col-xl-9">-->
+                <!--                    <div class="main_page">-->
+                <!--                        <div class="main_content section">-->
+                <!--                    <p th:text="'Name: ' + ${user.getName()}"></p> <br>-->
+                <!--                    <p th:text="'First name: ' + ${user.getFirstName()}"></p><br>-->
+                <!--&lt;!&ndash;                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>&ndash;&gt;-->
+
+                                        </div>
+                                    </div>
+
+                                </article>
             </div>
         </div>
     </main>

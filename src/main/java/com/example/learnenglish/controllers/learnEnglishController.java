@@ -43,6 +43,8 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("user", user);
             model.addAttribute("userId", userId);
             // Перенаправити на сторінку з профілем користувача з його id
             return "about";
@@ -60,7 +62,6 @@ public String index(Principal principal, Model model) {
     public String userPage(@PathVariable("id") Long userId, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            // Отримати id залогіненого користувача
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("userId", userId);
@@ -75,8 +76,9 @@ public String index(Principal principal, Model model) {
                              Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            // Отримати id залогіненого користувача
             userId = userService.findByEmail(principal.getName()).getId();
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("user", user);
             model.addAttribute("userId", userId);
             return "lesson";
         }

@@ -14,7 +14,7 @@
                     <div class="layout">
                         <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
                         <div class="page home-page">
-                            <div class="page-contents">
+                            <div class="page-contents" style="margin: 0 auto;">
                                 <h3>Переклади речення на англійську мову: </h3><br/>
 
                                 <div id="ukr-text" class="text-show text-show-ukr">
@@ -49,7 +49,7 @@
 
                         <input name="nav" type="radio" class="about-radio" id="about"/>
                         <div class="page about-page">
-                            <div class="page-contents">
+                            <div class="page-contents" style="margin: 0 auto;">
                                 <h1>Завантажити</h1>
                                 <form id="add-pair"
                                       th:action="@{/user/{userId}/lesson/{lessonId}/add(userId=${userId},lessonId=${lessonId})}"

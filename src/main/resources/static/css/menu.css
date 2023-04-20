@@ -28,6 +28,7 @@
 .wrapper .sidebar .profile {
     margin-bottom: 30px;
     text-align: center;
+    color: #FFFFFF;
 }
 
 .wrapper .sidebar .profile img {
@@ -38,7 +39,7 @@
     margin: 0 auto;
 }
 
-.wrapper .sidebar .profile h3 {
+.wrapper .sidebar .profile h3 h4 h5 h6{
     color: #ffffff;
     margin: 10px 0 5px;
 }
@@ -112,9 +113,9 @@
 
 .wrapper .section .main_content {
     position: fixed;
-    display: flex;
+    /*display: flex;*/
     height: calc(100vh - 140px);
-    background-color: rgba(47, 47, 47, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
     margin-top: 40px;
     left: 40px;
     right: 0;
