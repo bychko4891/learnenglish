@@ -7,16 +7,11 @@ import com.example.learnenglish.responsestatus.ResponseStatus;
 import com.example.learnenglish.service.TranslationPairRandomFromLessonService;
 import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.Principal;
 
 @RestController
@@ -31,26 +26,16 @@ public class LessonController {
         this.userService = userService;
     }
 
-@GetMapping(path = "/user/{userId}/lesson/{lessonId}/reload")
-public void randomTranslationPairToLesson(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
-                                          HttpServletResponse response, HttpServletRequest request, Principal principal) {
-    response.setCharacterEncoding("UTF-8");
-    response.setContentType("application/json");
-    lessonId = Long.parseLong(request.getParameter("lessonId"));
-    PrintWriter printWriter = null;
-    if (principal != null) {
-        userId = userService.findByEmail(principal.getName()).getId();
-        try {
-            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
-            printWriter = response.getWriter();
-            printWriter.println(new ObjectMapper().writeValueAsString(dtoTranslationPairToUI));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            printWriter.close();
+    @GetMapping(path = "/user/{userId}/lesson/{lessonId}/reload")
+    public ResponseEntity<DtoTranslationPairToUI> randomTranslationPairToLesson(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
+                                                                                @RequestParam("lessonId") Long lessonIdRequest, Principal principal) {
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+            lessonId = lessonIdRequest;
+            return ResponseEntity.ok(translationPairRandomFromLessonService.translationPairRandom(lessonId, userId));
         }
+        return ResponseEntity.notFound().build();
     }
-}
     @PostMapping(path = "/user/{userId}/lesson/{lessonId}/add")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ResponseStatus> textADD(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
@@ -62,5 +47,27 @@ public void randomTranslationPairToLesson(@PathVariable(value = "userId") long u
         }
         return ResponseEntity.ok(new ResponseStatus(Message.ERRORLOGIN));
     }
+    //@GetMapping(path = "/user/{userId}/lesson/{lessonId}/reload")
+//public void randomTranslationPairToLesson(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
+//                                          HttpServletResponse response, HttpServletRequest request, Principal principal) {
+//    response.setCharacterEncoding("UTF-8");
+//    response.setContentType("application/json");
+//    lessonId = Long.parseLong(request.getParameter("lessonId"));
+//    PrintWriter printWriter = null;
+//    if (principal != null) {
+//        userId = userService.findByEmail(principal.getName()).getId();
+//        try {
+//            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+//            printWriter = response.getWriter();
+//            printWriter.println(new ObjectMapper().writeValueAsString(dtoTranslationPairToUI));
+//        } catch (NullPointerException | IOException e) {
+////            throw new RuntimeException(e);
+//            System.out.println(e.getMessage() + " Null ********************************");
+//        } finally {
+//            printWriter.close();
+//        }
+//    }
+//}
+
 
 }
