@@ -1,6 +1,7 @@
 package com.example.learnenglish.controllers;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
@@ -8,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 
-@Controller
+
+@RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -40,6 +43,16 @@ public class UserController {
         userService.createUser(user);
         return "redirect:/login";
     }
+    @PostMapping("/user/{userId}/edit")
+    public ResponseEntity<User> userEditProfile(@PathVariable("userId") Long userId, Principal principal){
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
     @RequestMapping("/logout")    public String logout() {
         return "redirect:/";

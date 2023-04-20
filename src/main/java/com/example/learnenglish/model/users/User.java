@@ -104,13 +104,28 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-//    public LocalDateTime getDateOfCreated() {
-//        return dateOfCreated;
-//    }
+
+    public LocalDateTime getDateOfCreated() {
+        return dateOfCreated;
+    }
 //
 //    public void setDateOfCreated(LocalDateTime dateOfCreated) {
 //        this.dateOfCreated = dateOfCreated;
 //    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                ", password='" + password + '\'' +
+                ", translationPairs=" + translationPairs +
+                ", dateOfCreated=" + dateOfCreated +
+                '}';
+    }
 
     // -------    security     ---------- //
     @Override

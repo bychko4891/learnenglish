@@ -21,6 +21,7 @@
 
                                 <p th:text="'Name: ' + ${user.getName()}"></p> <br>
                                 <p th:text="'First name: ' + ${user.getFirstName()}"></p><br>
+                                <p th:text="'Registration Date : ' + ${user.getDateOfCreated}"></p><br>
                                 <p th:text="'Email: ' + ${user.getEmail()}"></p><br>
 
 
@@ -41,6 +42,9 @@
                                 <p th:text="'Name: ' + ${user.getName()}"></p> <br>
                                 <p th:text="'First name: ' + ${user.getFirstName()}"></p><br>
                                 <p th:text="'Email: ' + ${user.getEmail()}"></p><br>
+                                <form>
+                                    <button type="submit">Видалити профіль</button>
+                                </form>
 
                             </div>
                         </div>

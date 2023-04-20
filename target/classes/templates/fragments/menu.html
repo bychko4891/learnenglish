@@ -1,11 +1,18 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
 <div th:fragment="menu">
     <div class="sidebar">
-        <div class="profile">
-            <!--                <img src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg" alt="profile_picture">-->
-            <h3>Anamika Roy</h3>
-            <p>Designer</p>
+
+        <div class="profile" th:unless="${userId}">
+                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">
+            <h3 style="margin-top: 15px;">Learn English</h3>
+<!--            <p>Designer</p>-->
         </div>
+        <div class="profile" th:if="${userId}">
+                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">
+            <h6 th:text="${user.getFirstName()} + ' ' + ${user.getName()}" style="margin-top: 15px;"></h6>
+<!--            <p>Designer</p>-->
+        </div>
+
         <ul class="main-menu">
             <li th:unless="${userId}">
                 <a href="/">
@@ -37,7 +44,7 @@
             <li>
                 <a href="#">
                     <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                    <span class="item">Perfomance</span>
+                    <span class="item">Статистика</span>
                 </a>
             </li>
             <li>
