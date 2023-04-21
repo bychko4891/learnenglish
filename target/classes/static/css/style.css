@@ -181,12 +181,6 @@ textarea {
 * {
     font-family: "Work Sans", sans-serif;
 }
-
-/*html, body {*/
-/*    height: 100%;*/
-/*    color: #1a1b1c;*/
-/*}*/
-
 label, a {
     cursor: pointer;
     user-select: none;
@@ -379,8 +373,52 @@ input[type=radio]:checked + .page .page-contents > * {
     /*width: 500px;*/
     /*margin: 0 auto;*/
 }
-
 /*!*!* ----------     Tabs  END -------------*!*!*/
+
+/*  *********   profile edit start  ****************8       */
+.input,
+.input-buffer{
+    font-family: Arial, Verdana, sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+}
+
+.input{
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    min-width: 100px;
+}
+
+.input-buffer{
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    visibility: hidden;
+    white-space: nowrap;
+}
+.input:focus {
+    border: none;
+    border-bottom: 2px solid #007bff;
+}
+.profile-edit {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    padding: 10px;
+}
+
+.label-profile {
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+    margin-left: 10px;
+}
+/*  *********8   profile edit start   ********88      */
+
+
 
 /*!*!* ----------     Login and Registration  Start -------------*!*!*/
 

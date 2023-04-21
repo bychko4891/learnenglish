@@ -7,8 +7,8 @@
 <body>
 <h4>Регистрация</h4>
 <form th:action="@{/registration}" method="post">
-    Имя:<input type="text" required name="name"><br><br>
-    Фамилия:<input type="text" required name="firstName"><br><br>
+    Имя:<input type="text" required name="firstName"><br><br>
+    Фамилия:<input type="text" required name="lastName"><br><br>
     Почта:<input type="email" required name="email"><br><br>
     Пароль:<input type="password" required name="password"><br><br>
     <input type="hidden" name="_csrf" th:value="${_csrf}">
