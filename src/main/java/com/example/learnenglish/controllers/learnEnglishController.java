@@ -51,7 +51,10 @@ public String index(Principal principal, Model model) {
         }
         return "about";
     }
-
+    @GetMapping("/registration")
+    public String registration() {
+        return "registration";
+    }
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("title", "About the app Learn English");

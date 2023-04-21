@@ -2,13 +2,10 @@ package com.example.learnenglish.model;
 
 import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnTransformer;
+
 
 @Entity
-@Table(name="translation_pair")//, uniqueConstraints = {
-//        @UniqueConstr//aint(columnNames = {"ukr_text", "eng_text"})
-//        @UniqueConstraint(columnNames = {"id", "lesson_id"})
-//})
+@Table(name="translation_pair")
 public class TranslationPair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +13,10 @@ public class TranslationPair {
     private long id;
     @Column(name="lesson_counter")
     private Long lessonCounter;
-    @Column(name = "ukr_text")
+    @Column(name = "ukr_text", length = 1000)
 //    @ColumnTransformer(read = "ukr_text::citext", write = "?::citext")
     private String ukrText;
-    @Column(name = "eng_text")
+    @Column(name = "eng_text", length = 1000)
 //    @ColumnTransformer(read = "eng_text::citext", write = "?::citext")
     private String engText;
     @Column(name = "audio_path")

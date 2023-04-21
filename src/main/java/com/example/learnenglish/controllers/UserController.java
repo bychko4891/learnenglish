@@ -7,6 +7,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -29,10 +30,10 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/registration")
-    public String registration() {
-        return "registration";
-    }
+//    @GetMapping("/registration")
+//    public String registration() {
+//        return "registration";
+//    }
 
     @PostMapping("/registration")
     public String createUser(User user, Model model) {
@@ -43,8 +44,21 @@ public class UserController {
         userService.createUser(user);
         return "redirect:/login";
     }
-    @PostMapping("/user/{userId}/edit")
-    public ResponseEntity<User> userEditProfile(@PathVariable("userId") Long userId, Principal principal){
+
+    @PostMapping("/user/{userId}/update")
+    public ResponseEntity<User> userEditProfile(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
+                                                @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+            System.out.println("id " + userId + " " + firstName + " " + lastName + "*****************************************************8" );
+            userService.updateUser(userId, firstName, lastName);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/{userId}/delete")
+    public ResponseEntity<User> userDelete(@PathVariable("userId") Long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
 
@@ -53,8 +67,8 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-
-    @RequestMapping("/logout")    public String logout() {
+    @RequestMapping("/logout")
+    public String logout() {
         return "redirect:/";
     }
 

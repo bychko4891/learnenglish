@@ -1,6 +1,5 @@
 package com.example.learnenglish.model;
 
-import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
 
 @Entity

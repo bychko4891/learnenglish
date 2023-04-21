@@ -9,7 +9,7 @@
         </div>
         <div class="profile" th:if="${userId}">
                             <img src="https://via.placeholder.com/200x200" alt="Фото користувача">
-            <h6 th:text="${user.getFirstName()} + ' ' + ${user.getName()}" style="margin-top: 15px;"></h6>
+            <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>
 

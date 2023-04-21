@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -32,5 +34,23 @@ public class UserService {
     public User findById(long id){
      return userRepository.findById(id);
     }
+
+    public void updateUser(Long userId, String firstName, String lastName){
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            user.setLastName(lastName);
+            user.setFirstName(firstName);
+            userRepository.save(user);
+//            return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User with id " + userId + " not found");
+        }
+//        userRepository.save(user);
+    }
+
+
 
 }

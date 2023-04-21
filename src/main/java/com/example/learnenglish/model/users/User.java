@@ -17,11 +17,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @Column
-    private String name;
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "email", unique = true)
+    @Column(name="last_name")
+    private String lastName;
+    @Column(name = "email")
     private String email;
     @Column(name = "active")
     private boolean active;
@@ -53,14 +53,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -69,12 +61,24 @@ public class User implements UserDetails {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setDateOfCreated(LocalDateTime dateOfCreated) {
+        this.dateOfCreated = dateOfCreated;
     }
 
     public boolean isActive() {
@@ -117,8 +121,8 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", active=" + active +
                 ", password='" + password + '\'' +
