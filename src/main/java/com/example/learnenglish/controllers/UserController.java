@@ -50,11 +50,23 @@ public class UserController {
                                                 @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
-            System.out.println("id " + userId + " " + firstName + " " + lastName + "*****************************************************8" );
+            System.out.println("id " + userId + " " + firstName + " " + lastName + "*****************************************************8");
             userService.updateUser(userId, firstName, lastName);
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/{userId}/update-password")
+    public void userUpdatePassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
+                                   @RequestParam(value = "newPassword") String newPassword, Principal principal) {
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+//            System.out.println("id: " + userId + " old: " + oldPassword + " new: " + newPassword + " controller *****************************************************8");
+            userService.updateUserPassword(userId, oldPassword, newPassword);
+//            return ResponseEntity.notFound().build();
+        }
+//        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/user/{userId}/delete")

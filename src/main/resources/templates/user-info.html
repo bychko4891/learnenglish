@@ -39,36 +39,66 @@
                                     <input name="nav" type="radio" class="about-radio" id="about"/>
                                     <div class="page about-page">
                                         <div class="page-contents">
+                                            <h5>Змінити особисті данні</h5><br>
                                             <form id="update_profile" action="/user/1/update" method="post">
-                                            <table class="profile-edit">
-                                                <tr>
-                                                    <td>
-                                                        <label class="label-profile" for="first-name">First Name:</label>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="input" id="first-name" name="firstName" th:value="${user.getFirstName()}">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label for="last-name">Last Name:</label>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="input" id="last-name" name="lastName" th:value="${user.getLastName()}">
-                                                    </td>
-                                                </tr>
-<!--                                                <tr>-->
-<!--                                                    <td>-->
-<!--                                                        <label for="message">Повідомлення:</label>-->
-<!--                                                    </td>-->
-<!--                                                    <td>-->
-<!--                                                        <textarea id="message" name="message"></textarea>-->
-<!--                                                    </td>-->
-<!--                                                </tr>-->
-                                            </table>
-<!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
-                                                <button type="submit">Update</button>
+                                                <table class="profile-edit">
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label-profile" for="first-name">First
+                                                                Name:</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="input" id="first-name"
+                                                                   name="firstName" th:value="${user.getFirstName()}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label for="last-name">Last Name:</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="input" id="last-name"
+                                                                   name="lastName" th:value="${user.getLastName()}">
+                                                        </td>
+                                                    </tr>
+                                                    <!--                                                <tr>-->
+                                                    <!--                                                    <td>-->
+                                                    <!--                                                        <label for="message">Повідомлення:</label>-->
+                                                    <!--                                                    </td>-->
+                                                    <!--                                                    <td>-->
+                                                    <!--                                                        <textarea id="message" name="message"></textarea>-->
+                                                    <!--                                                    </td>-->
+                                                    <!--                                                </tr>-->
+                                                </table>
+                                                <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
+                                                <br><button type="submit">Update</button>
                                             </form>
+                                            <br><br><h5>Змінити пароль</h5><br>
+                                            <form id="update_password" action="/user/1/update-password" method="post">
+                                                <table class="profile-edit">
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label-profile" for="old-password">Password:</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="password" class="input" id="old-password"
+                                                                   name="password">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label for="new-password">New password:</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="password" class="input" id="new-password"
+                                                                   name="newPassword">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+<!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
+                                                <br><button type="submit">Update password</button>
+                                            </form>
+                                            <br>
                                             <form>
                                                 <button type="submit">Видалити профіль</button>
                                             </form>
