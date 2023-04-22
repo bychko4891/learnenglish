@@ -207,9 +207,79 @@ $(document).ready(function () {
 
 //********  Profile edit  END   *************** //
 
+//********  Update Password User  START  *************** //
+$(document).ready(function () {
+    // var resultDivSuccess = $('#result-success');
+    // var resultDivError = $('#result-error');
+    $('#update_password').submit(function (event) {
+        event.preventDefault(); // prevent page from refreshing after form submission-->
 
+        // Get CSRF token from the meta tag-->
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var url = $(this).attr('action');
+        var formData = $(this).serializeArray();
 
-
+        // if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
+        //     var ukrTextTemp = $('textarea[name="ukrText"]').val();
+        //     var engTextTemp = $('textarea[name="engText"]').val();
+        // console.log(ukrTextTemp);
+        // if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
+        //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+        //     return;
+        // }
+        // var jsonFormData = {};
+        // $(formData).each(function (index, obj) {
+        //     jsonFormData[obj.name] = obj.value;
+        // });
+        console.log(formData);
+        $.ajax({
+            url: url,
+            type: "POST",
+            // contentType: "application/json",
+            // data: JSON.stringify(jsonFormData),
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                console.log(result);
+                // var status = result.status;
+                // console.log(status);
+                // if (status == "Success") {
+                //     $('textarea[name="ukrText"]').val('');
+                //     $('textarea[name="engText"]').val('');
+                //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                //     resultDivSuccess.text(result.message);
+                //     setTimeout(hideMessageSuccess, 5000);
+                // } else {
+                //     resultDivError.text(result.message);
+                //     setTimeout(hideMessageError, 10000);
+                // }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                // Поміщаємо повідомлення про помилку в div-елемент
+                resultDivError.text('Помилка запиту на сервер');
+            }
+        });
+        // } else {
+        //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+        //     alert('Будь ласка, заповніть поле вводу');
+        //     return;
+        // }
+    });
+    // function hideMessageSuccess() {
+    //     resultDivSuccess.text('');
+    //
+    // }
+    // function hideMessageError() {
+    //
+    //     resultDivError.text('');
+    // }
+});
+//********  Update Password User  END  *************** //
 
 
 
