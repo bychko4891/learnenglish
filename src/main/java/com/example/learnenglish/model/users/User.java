@@ -3,12 +3,17 @@ package com.example.learnenglish.model.users;
 import com.example.learnenglish.model.TranslationPair;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.*;
-
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "users")
 @Data
@@ -43,92 +48,6 @@ public class User implements UserDetails {
     }
 
     public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setDateOfCreated(LocalDateTime dateOfCreated) {
-        this.dateOfCreated = dateOfCreated;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<TranslationPair> getTranslationPairs() {
-        return translationPairs;
-    }
-
-    public void setTranslationPairs(List<TranslationPair> translationPairs) {
-        this.translationPairs = translationPairs;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public LocalDateTime getDateOfCreated() {
-        return dateOfCreated;
-    }
-//
-//    public void setDateOfCreated(LocalDateTime dateOfCreated) {
-//        this.dateOfCreated = dateOfCreated;
-//    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", active=" + active +
-                ", password='" + password + '\'' +
-                ", translationPairs=" + translationPairs +
-                ", dateOfCreated=" + dateOfCreated +
-                '}';
     }
 
     // -------    security     ---------- //

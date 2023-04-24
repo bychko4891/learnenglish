@@ -37,13 +37,15 @@ public class UserController {
 //    }
 
     @PostMapping("/registration")
-    public String createUser(User user, Model model) {
+//    public String createUser(User user, Model model) {
+    public void createUser(@RequestBody User user, Model model) {
+        System.out.println(user);
         if (!userService.createUser(user)) {
             model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
-            return "registration";
+//            return "registration";
         }
         userService.createUser(user);
-        return "redirect:/login";
+//        return "redirect:/login";
     }
 
     @PostMapping("/user/{userId}/update")
