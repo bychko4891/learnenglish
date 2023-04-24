@@ -90,6 +90,17 @@ public String index(Principal principal, Model model) {
         model.addAttribute("lessonId", lessonId);
         return "lesson";
     }
-
+    @GetMapping("/user/{id}/statistics")
+    public String userPageStatistics(@PathVariable("id") Long userId, Principal principal, Model model) {
+        model.addAttribute("title", "About the app Learn English");
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("userId", userId);
+            model.addAttribute("user", user);
+            return "statistics";
+        }
+        return "redirect:/login";
+    }
 
 }
