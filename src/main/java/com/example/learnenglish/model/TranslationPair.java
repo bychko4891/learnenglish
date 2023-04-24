@@ -30,7 +30,7 @@ public class TranslationPair {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
     public TranslationPair() {

@@ -2,7 +2,9 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.users.Role;
 import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.repository.UserRepository;
+import com.example.learnenglish.repository.UserStatisticsRepository;
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserStatisticsRepository userStatisticsRepository;
 
     public boolean createUser(User user) {
         String email = user.getEmail();
@@ -26,6 +29,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
+        user.setStatistics(new UserStatistics());
         userRepository.save(user);
         return true;
     }
