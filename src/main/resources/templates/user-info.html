@@ -19,8 +19,8 @@
                                     <div class="page home-page">
                                         <div class="page-contents" style="left: 0;">
 
-                                            <p th:text="'Name: ' + ${user.getFirstName()}"></p> <br>
-                                            <p th:text="'First name: ' + ${user.getLastName()}"></p><br>
+                                            <p th:text="'Ім`я: ' + ${user.getFirstName()}"></p> <br>
+                                            <p th:text="'Призвіще: ' + ${user.getLastName()}"></p><br>
                                             <p>Дата реєстрації: <span
                                                     th:text="${#temporals.format(user.getDateOfCreated, 'dd.MM.yyyy')}"></span>
                                             </p><br>
@@ -44,8 +44,7 @@
                                                 <table class="profile-edit">
                                                     <tr>
                                                         <td>
-                                                            <label class="label-profile" for="first-name">First
-                                                                Name:</label>
+                                                            <label class="label-profile" for="first-name">Ім'я:</label>
                                                         </td>
                                                         <td>
                                                             <input type="text" class="input" id="first-name"
@@ -54,7 +53,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <label for="last-name">Last Name:</label>
+                                                            <label for="last-name">Призвіще:</label>
                                                         </td>
                                                         <td>
                                                             <input type="text" class="input" id="last-name"
@@ -71,32 +70,34 @@
                                                     <!--                                                </tr>-->
                                                 </table>
                                                 <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
-                                                <br><button type="submit">Update</button>
+                                                <br><button type="submit">Оновити данні</button>
                                             </form>
                                             <br><br><h5>Змінити пароль</h5><br>
                                             <form id="update_password" action="/user/1/update-password" method="post">
                                                 <table class="profile-edit">
                                                     <tr>
                                                         <td>
-                                                            <label class="label-profile" for="old-password">Password:</label>
+                                                            <label class="label-profile" for="old-password">Пароль:</label>
                                                         </td>
                                                         <td>
                                                             <input type="password" class="input" id="old-password"
                                                                    name="password">
+                                                            <div id="password-edit-error" style="color: red"></div>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <label for="new-password">New password:</label>
+                                                            <label for="newPassword">Новий пароль:</label>
                                                         </td>
                                                         <td>
-                                                            <input type="password" class="input" id="new-password"
+                                                            <input type="password" class="input" id="newPassword"
                                                                    name="newPassword">
+
                                                         </td>
                                                     </tr>
                                                 </table>
-<!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
-                                                <br><button type="submit">Update password</button>
+                                                <div id="password-edit-success" style="color: darkgreen"></div>
+                                                <br><button type="submit">Змінити пароль</button>
                                             </form>
                                             <br>
                                             <form>
@@ -125,7 +126,7 @@
                         </div>
                     </div>
 
-                </article>
+<!--                </article>-->
             </div>
         </div>
     </main>

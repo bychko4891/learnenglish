@@ -1,4 +1,4 @@
-//Заповнення сторінки першими данними при старті
+//Заповнення сторінки першими данними при старті Lesson
 $(document).ready(function () {
     // Виконуємо запит при першій загрузці сторінки
     var url = $('#reload').attr('action');
@@ -20,7 +20,7 @@ $(document).ready(function () {
             // console.log('Помилка запиту на сервер');
         }
     });
-// **********  Виконуємо запит при надсиланні форми користувачем *************** //
+// **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
     $('#reload').submit(function (e) {
         e.preventDefault();
         var data = $(this).serialize();
@@ -58,8 +58,7 @@ $(document).ready(function () {
     var resultDivSuccess = $('#result-success');
     var resultDivError = $('#result-error');
     $('#add-pair').submit(function (event) {
-        event.preventDefault(); // prevent page from refreshing after form submission-->
-
+        event.preventDefault();
         // Get CSRF token from the meta tag-->
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
@@ -114,10 +113,12 @@ $(document).ready(function () {
             return;
         }
     });
+
     function hideMessageSuccess() {
         resultDivSuccess.text('');
 
     }
+
     function hideMessageError() {
 
         resultDivError.text('');
@@ -137,81 +138,6 @@ $(document).ready(function () {
     // var resultDivSuccess = $('#result-success');
     // var resultDivError = $('#result-error');
     $('#update_profile').submit(function (event) {
-        event.preventDefault(); // prevent page from refreshing after form submission-->
-
-        // Get CSRF token from the meta tag-->
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        var url = $(this).attr('action');
-        var formData = $(this).serializeArray();
-
-        // if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
-        //     var ukrTextTemp = $('textarea[name="ukrText"]').val();
-        //     var engTextTemp = $('textarea[name="engText"]').val();
-            // console.log(ukrTextTemp);
-            // if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
-            //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
-            //     return;
-            // }
-            // var jsonFormData = {};
-            // $(formData).each(function (index, obj) {
-            //     jsonFormData[obj.name] = obj.value;
-            // });
-        console.log(formData);
-            $.ajax({
-                url: url,
-                type: "POST",
-                // contentType: "application/json",
-                // data: JSON.stringify(jsonFormData),
-                data: formData,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (result) {
-                    console.log(result);
-                    // var status = result.status;
-                    // console.log(status);
-                    // if (status == "Success") {
-                    //     $('textarea[name="ukrText"]').val('');
-                    //     $('textarea[name="engText"]').val('');
-                    //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                    //     resultDivSuccess.text(result.message);
-                    //     setTimeout(hideMessageSuccess, 5000);
-                    // } else {
-                    //     resultDivError.text(result.message);
-                    //     setTimeout(hideMessageError, 10000);
-                    // }
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
-                }
-            });
-        // } else {
-        //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-        //     alert('Будь ласка, заповніть поле вводу');
-        //     return;
-        // }
-    });
-    // function hideMessageSuccess() {
-    //     resultDivSuccess.text('');
-    //
-    // }
-    // function hideMessageError() {
-    //
-    //     resultDivError.text('');
-    // }
-});
-
-//********  Profile edit  END   *************** //
-
-//********  Update Password User  START  *************** //
-$(document).ready(function () {
-    // var resultDivSuccess = $('#result-success');
-    // var resultDivError = $('#result-error');
-    $('#update_password').submit(function (event) {
         event.preventDefault(); // prevent page from refreshing after form submission-->
 
         // Get CSRF token from the meta tag-->
@@ -279,11 +205,197 @@ $(document).ready(function () {
     //     resultDivError.text('');
     // }
 });
+
+//********  Profile edit  END   *************** //
+
+//********  Update Password User  START  *************** //
+$(document).ready(function () {
+    var resultDivSuccess = $('#password-edit-success');
+    var resultDivError = $('#password-edit-error');
+    $('#update_password').submit(function (event) {
+        event.preventDefault();
+        // Get CSRF token from the meta tag-->
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var url = $(this).attr('action');
+        var formData = $(this).serializeArray();
+        if ($('input[name="password"]').val() && $('input[name="newPassword"]').val()) {
+            console.log(formData);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    console.log(result);
+                    var status = result.status;
+                    console.log(status);
+                    if (status == "Success") {
+                        $('input[name="password"]').val('');
+                        $('input[name="newPassword"]').val('');
+                        // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                        resultDivSuccess.text(result.message);
+                        setTimeout(hideMessageSuccess, 5000);
+                    } else {
+                        resultDivError.text(result.message);
+                        setTimeout(hideMessageError, 5000);
+                    }
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                    // Поміщаємо повідомлення про помилку в div-елемент
+                    resultDivError.text('Помилка запиту на сервер');
+                }
+            });
+        } else {
+            // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+            alert('Будь ласка, заповніть поле вводу');
+            return;
+        }
+    });
+
+    function hideMessageSuccess() {
+        resultDivSuccess.text('');
+    }
+
+    function hideMessageError() {
+        resultDivError.text('');
+    }
+});
 //********  Update Password User  END  *************** //
+//********  Registration User  START   *************** //
+$(document).ready(function () {
+    // var resultDivSuccess = $('#result-success');
+    // var resultDivError = $('#result-error');
+    $('#registration').submit(function (event) {
+        event.preventDefault();
+        // Get CSRF token from the meta tag-->
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        // var url = $(this).attr('action');
+        var formData = $(this).serializeArray();
+        console.log(formData);
+        if ($('input[name="firstName"]').val() && $('input[name="lastName"]').val() &&
+            $('input[name="password"]').val() && $('input[name="cpassword"]').val() &&
+            $('input[name="email"]').val()) {
+            // var ukrTextTemp = $('textarea[name="ukrText"]').val();
+            // var engTextTemp = $('textarea[name="engText"]').val();
+            // // console.log(ukrTextTemp);
+            // if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
+            //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+            //     return;
+            // }
+            var jsonFormData = {};
+            $(formData).each(function (index, obj) {
+                jsonFormData[obj.name] = obj.value;
+            });
+            $.ajax({
+                url: "/registration",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(jsonFormData),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    console.log(result);
+                    // var status = result.status;
+                    // console.log(status);
+                    // if (status == "Success") {
+                    //     $('textarea[name="ukrText"]').val('');
+                    //     $('textarea[name="engText"]').val('');
+                    //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                    //     resultDivSuccess.text(result.message);
+                    //     setTimeout(hideMessageSuccess, 5000);
+                    // } else {
+                    //     resultDivError.text(result.message);
+                    //     setTimeout(hideMessageError, 10000);
+                    // }
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                    // Поміщаємо повідомлення про помилку в div-елемент
+                    resultDivError.text('Помилка запиту на сервер');
+                }
+            });
+        } else {
+            // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+            alert('Будь ласка, заповніть всі поля.');
+            return;
+        }
+    });
 
+    function hideMessageSuccess() {
+        resultDivSuccess.text('');
 
+    }
 
+    function hideMessageError() {
 
+        resultDivError.text('');
+    }
+});
+
+//********  Validate Password   START   *************** //
+// document.addEventListener('DOMContentLoaded', function() {
+// let pswd = document.getElementById('pswd');
+// let toggleBtn = document.getElementById('toggleBtn');
+// let lowerCase = document.getElementById('lover');
+// let upperCase = document.getElementById('upper');
+// let digit = document.getElementById('number');
+// let specialChar = document.getElementById('special');
+// let minLength = document.getElementById('length');
+
+// function checkPassword(data){
+//
+//     const lower = new  RegExp('(?=.*[a-z])');
+//     const upper = new  RegExp('(?=.*[A-Z])');
+//     const number = new  RegExp('(?=.*[0-9])');
+//     const special = new  RegExp('(?=.*[!@#\$%\^&\*])');
+//     const length = new  RegExp('(?=.{8,})');
+// if(lower.test(data)){
+//     lowerCase.classList.add('valid');
+// }else{
+//     lowerCase.classList.remove('valid');
+// }
+// if(upper.test(data)){
+//     upperCase.classList.add('valid');
+// }else{
+//     upperCase.classList.remove('valid');
+// }
+// if(number.test(data)){
+//     digit.classList.add('valid');
+// }else{
+//     digit.classList.remove('valid');
+// }
+// if(special.test(data)){
+//     specialChar.classList.add('valid');
+// }else{
+//     specialChar.classList.remove('valid');
+// }
+// if(length.test(data)){
+//     minLength.classList.add('valid');
+// }else{
+//     minLength.classList.remove('valid');
+// }
+//     console.log(data);
+// }
+
+// show password
+// toggleBtn.onclick = function (){
+//     if (pswd.type == 'password'){
+//         pswd.setAttribute('type', 'text');
+//         toggleBtn.classList.add('hide');
+//     } else {
+//         pswd.setAttribute('type', 'password');
+//         toggleBtn.classList.remove('hide');
+//     }
+// }
+// });
 // $(document).ready(function() {
 //     $('#form').submit(function(event) {
 //         event.preventDefault(); // prevent page from refreshing after form submission
@@ -389,42 +501,6 @@ $(document).ready(function () {
 //     event.preventDefault();
 //     sendMessage();
 // });
-// Новий текст по запросу
-// $(document).ready(function () {
-//     $(function () {
-//         $('#reload').submit(function (e) {
-//             e.preventDefault();
-//             var data = $(this).serialize();
-//             // var url = $(this).attr('action');
-//             var url = $('#reload').attr('action');
-//             var csrfToken = $("input[name='_csrf']").val();
-//             $.ajax({
-//                 type: "GET",
-//                 url: url,
-//                 data: data,
-//                 // dataType: "html", // Додатковий параметр
-//                 beforeSend: function (xhr) {
-//                     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-//                 },
-//                 success: function (result) {
-//                     console.log(result);
-//                     $('.content_block').hide();
-//                     $('#ukr-text').html(result.ukrText);
-//                     $('#english-text').html(result.engText);
-//                 }
-//                 // ,
-//                 // error: function () {
-//                 //     let shel = {};
-//                 //     alert(Boolean(shel))
-//                 //     // Поміщаємо повідомлення про помилку в div-елемент
-//                 //     resultDivError.text('Помилка запиту на сервер');
-//                 // }
-//             });
-//
-//         });
-//     });
-// });
-
 
 
 // ------   log in   -------

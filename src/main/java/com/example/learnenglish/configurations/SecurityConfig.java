@@ -45,19 +45,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
-
-    //    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .requiresChannel(channel ->
-//                        channel.anyRequest().requiresSecure())
-//                .authorizeRequests(authorize ->
-//                        authorize.anyRequest().permitAll())
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .permitAll())
-//                .build();
-//    }
     public static final String[] ENDPOINTS_WHITELIST = {
             "/css/**",
             "/js/**",
@@ -65,7 +52,6 @@ public class SecurityConfig {
             "/",
             "/login",
             "/about-the-app",
-            "/englishADD",
             "/registration"
 
     };

@@ -45,8 +45,8 @@
                                 <form action="/login" method="post">
 
                                     <div class="form-group">
-                                        <label for="username">Username</label>
-                                        <input type="email" name="username" required="required"/>
+                                        <label for="username">Email</label>
+                                        <input id="username" type="email" name="username" required="required"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
@@ -72,26 +72,31 @@
                             <div class="form-header">
                                 <h1>Register Account</h1>
                             </div>
-                            <div class="form-content">
-                                <form action="/login" method="post">
+                            <div class="form-content" >
+                                <form id="registration">
                                     <div class="form-group">
-                                        <label for="username">Username</label>
-                                        <input id="username" type="text" name="username" required="required"/>
+                                        <label for="firstName">Імʼя</label>
+                                        <input id="firstName" type="text" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input id="password" type="password" name="password" required="required"/>
+                                        <label for="lastName">Призвіще</label>
+                                        <input id="lastName" type="text" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="cpassword">Confirm Password</label>
-                                        <input id="cpassword" type="password" name="cpassword" required="required"/>
+                                        <label for="password">Пароль</label>
+                                        <input id="password" type="password" />
+                                    </div>
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="cpassword">Підтвердьте пароль</label>-->
+<!--                                        <input id="cpassword" type="password" />-->
+<!--                                    </div>-->
+                                    <div class="form-group">
+                                        <label for="email">Email адреса</label>
+                                        <input id="email" type="email" required name="email"/>
+                                        <input type="hidden" name="_csrf" th:value="${_csrf}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="email">Email Address</label>
-                                        <input id="email" type="email" name="email" required="required"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit">Register</button>
+                                        <button type="submit">Зареєструватися</button>
                                     </div>
                                 </form>
                             </div>

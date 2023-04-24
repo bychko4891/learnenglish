@@ -1,6 +1,7 @@
 package com.example.learnenglish.controllers;
 
-
+import com.example.learnenglish.responsestatus.Message;
+import com.example.learnenglish.responsestatus.ResponseStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import com.example.learnenglish.model.users.User;
@@ -58,15 +59,14 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/update-password")
-    public void userUpdatePassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
+    public ResponseEntity<ResponseStatus> userUpdatePassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
                                    @RequestParam(value = "newPassword") String newPassword, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
 //            System.out.println("id: " + userId + " old: " + oldPassword + " new: " + newPassword + " controller *****************************************************8");
-            userService.updateUserPassword(userId, oldPassword, newPassword);
-//            return ResponseEntity.notFound().build();
+            return  ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
         }
-//        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/user/{userId}/delete")

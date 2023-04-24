@@ -6,7 +6,9 @@ public enum Message {
             " Напишіть будь ласка про цю помилку адміністратору застосунка"),
     ERRORVALIDATETEXT("Error","Щось пішло не так! Можливо Ви дупистили десь помилку в знаках пунктуації. \n Або такий текст вже існує в цьому уроці"),
     ERRORNULLRELOAD("Error","Ви ще не завантажили жодного текста для навчання"),
-    ERRORLOGIN("Error", " Ви не авторизувались і не можете завантажувати текст");
+    ERRORLOGIN("Error", " Ви не авторизувались і не можете завантажувати текст"),
+    ERROR_UPDATEPASSWORD("Error", "Паролі не співпадають"),
+    SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено");
 
     private String status;
     private String message;

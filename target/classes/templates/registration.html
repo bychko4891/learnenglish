@@ -1,21 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<!--<body class="body-main">-->
 <body>
-<h4>Регистрация</h4>
-<form th:action="@{/registration}" method="post">
-    Имя:<input type="text" required name="firstName"><br><br>
-    Фамилия:<input type="text" required name="lastName"><br><br>
-    Почта:<input type="email" required name="email"><br><br>
-    Пароль:<input type="password" required name="password"><br><br>
-    <input type="hidden" name="_csrf" th:value="${_csrf}">
-    <input type="submit" value="Регистрация">
-</form>
-<div th:unless="${erorrMessage}">
-<h2 style="color: red" th:text="${errorMessage}"></h2>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <div class="section">
+<!--        <div class="container">-->
+<!--            <div class="content row">-->
+<!--                <article class="col-md-11 col-xl-9">-->
+<!--                    <div class="main_page">-->
+                        <div class="main_content section">
+                            <div class="box">
+                                <div class="box-registration">
+                                    <div class="form-registration">
+                                        <h3 style="color: white">Реєстрація</h3><br>
+                                        <form action="/registration" method="post">
+                                            <div class="inputBox">
+                                                <input type="text" required name="firstName">
+                                                <span class="span-text">Ім'я</span>
+                                            </div>
+                                            <br>
+                                            <div class="inputBox">
+                                                <input type="text" required name="lastName">
+                                                <span class="span-text">Призвіще</span>
+                                            </div>
+                                            <br>
+                                            <div class="inputBox">
+                                                <input type="email" required name="email">
+                                                <span class="span-text">Email</span>
+                                            </div>
+                                            <br>
+                                            <div class="inputBox">
+                                                <input type="password" required name="password" th:attr="id='pswd'"
+                                                       onkeyup="checkPassword(this.value)">
+                                                <span class="span-text">Пароль</span>
+                                                <span id="toggleBtn"></span>
+                                            </div>
+                                            <div class="validation">
+                                                <ul>
+                                                    <li id="lover">At least one lowercase character</li>
+                                                    <li id="upper">At least one uppercase character</li>
+                                                    <li id="number">At least one number</li>
+                                                    <li id="special">At least one special character</li>
+                                                    <li id="length">At least 8 character</li>
+                                                </ul>
+                                            </div>
+
+                                            <input type="hidden" name="_csrf" th:value="${_csrf}"><br>
+                                            <button type="submit">Зареєструватися</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                            <h1 th:text="'Зареєструватися ' + ${main_title} + '!'"></h1>-->
+
+                        </div>
+<!--                    </div>-->
+
+
+<!--                </article>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
+<script type="text/javascript">
+    let pswd = document.getElementById('pswd');
+    let toggleBtn = document.getElementById('toggleBtn');
+    let lowerCase = document.getElementById('lover');
+    let upperCase = document.getElementById('upper');
+    let digit = document.getElementById('number');
+    let specialChar = document.getElementById('special');
+    let minLength = document.getElementById('length');
+
+    function checkPassword(data) {
+
+        const lower = new RegExp('(?=.*[a-z])');
+        const upper = new RegExp('(?=.*[A-Z])');
+        const number = new RegExp('(?=.*[0-9])');
+        const special = new RegExp('(?=.*[!@#\$%\^&\*])');
+        const length = new RegExp('(?=.{8,})');
+        if (lower.test(data)) {
+            lowerCase.classList.add('valid');
+        } else {
+            lowerCase.classList.remove('valid');
+        }
+        if (upper.test(data)) {
+            upperCase.classList.add('valid');
+        } else {
+            upperCase.classList.remove('valid');
+        }
+        if (number.test(data)) {
+            digit.classList.add('valid');
+        } else {
+            digit.classList.remove('valid');
+        }
+        if (special.test(data)) {
+            specialChar.classList.add('valid');
+        } else {
+            specialChar.classList.remove('valid');
+        }
+        if (length.test(data)) {
+            minLength.classList.add('valid');
+        } else {
+            minLength.classList.remove('valid');
+        }
+        console.log(data);
+    }
+
+    toggleBtn.onclick = function () {
+        if (pswd.type == 'password') {
+            pswd.setAttribute('type', 'text');
+            toggleBtn.classList.add('hide');
+        } else {
+            pswd.setAttribute('type', 'password');
+            toggleBtn.classList.remove('hide');
+        }
+    }
+</script>
 </body>
 </html>
