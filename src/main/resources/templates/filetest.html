@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>File</h1>
+<!--<form action="/upload-avatar" method="post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="file" multiple class="form-control" accept=".jpg, .jpeg" >-->
+<!--    <input type="hidden" name="_csrf" th:value="${_csrf}">-->
+<!--    <button type="submit">Загрузить</button>-->
+<!--</form>-->
+<form method="post" enctype="multipart/form-data" action="/upload">
+    <table>
+        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            <input type="hidden" name="_csrf" th:value="${_csrf}">
+    </table>
+</form>
+</body>
+</html>

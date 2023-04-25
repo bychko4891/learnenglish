@@ -51,6 +51,7 @@ public class SecurityConfig {
             "/images/**",
             "/",
             "/login",
+            "/upload",
             "/about-the-app",
             "/registration"
 

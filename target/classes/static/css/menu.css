@@ -120,7 +120,8 @@
     margin-top: 40px;
     left: 40px;
     right: 0;
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
+    overflow-x: auto;
     clear: both;
 }
 
