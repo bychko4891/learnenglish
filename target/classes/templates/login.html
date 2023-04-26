@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input id="password-input" type="password" name="password" required="required"/>
+                                        <input id="password" type="password" name="password" required="required"/>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-remember">
@@ -68,39 +68,7 @@
                             </div>
 
                         </div>
-                        <div class="form-panel two">
-                            <div class="form-header">
-                                <h1>Register Account</h1>
-                            </div>
-                            <div class="form-content" >
-                                <form id="registration">
-                                    <div class="form-group">
-                                        <label for="firstName">Імʼя</label>
-                                        <input id="firstName" type="text" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lastName">Призвіще</label>
-                                        <input id="lastName" type="text" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Пароль</label>
-                                        <input id="password" type="password" />
-                                    </div>
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="cpassword">Підтвердьте пароль</label>-->
-<!--                                        <input id="cpassword" type="password" />-->
-<!--                                    </div>-->
-                                    <div class="form-group">
-                                        <label for="email">Email адреса</label>
-                                        <input id="email" type="email" required name="email"/>
-                                        <input type="hidden" name="_csrf" th:value="${_csrf}">
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit">Зареєструватися</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
                     </div>
                     <!--                    </div>-->
 
