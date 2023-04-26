@@ -102,12 +102,12 @@ public String index(Principal principal, Model model) {
         }
         return "redirect:/login";
     }
-//    @GetMapping("/upload")
-//    public String file( Model model) {
-//            model.addAttribute("title", "About the app Learn English");
-//            model.addAttribute("main_title", "Main page");
-//            // Перенаправити на сторінку з увійти / зареєструватися
-//            return "filetest";
-//
-//    }
+    @GetMapping("/upload")
+    public String file( Model model) {
+            model.addAttribute("title", "About the app Learn English");
+            model.addAttribute("main_title", "Main page");
+            // Перенаправити на сторінку з увійти / зареєструватися
+            return "filetest";
+
+    }
 }

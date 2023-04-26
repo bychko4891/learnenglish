@@ -47,27 +47,6 @@ public class LessonController {
         }
         return ResponseEntity.ok(new ResponseStatus(Message.ERRORLOGIN));
     }
-    //@GetMapping(path = "/user/{userId}/lesson/{lessonId}/reload")
-//public void randomTranslationPairToLesson(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
-//                                          HttpServletResponse response, HttpServletRequest request, Principal principal) {
-//    response.setCharacterEncoding("UTF-8");
-//    response.setContentType("application/json");
-//    lessonId = Long.parseLong(request.getParameter("lessonId"));
-//    PrintWriter printWriter = null;
-//    if (principal != null) {
-//        userId = userService.findByEmail(principal.getName()).getId();
-//        try {
-//            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
-//            printWriter = response.getWriter();
-//            printWriter.println(new ObjectMapper().writeValueAsString(dtoTranslationPairToUI));
-//        } catch (NullPointerException | IOException e) {
-////            throw new RuntimeException(e);
-//            System.out.println(e.getMessage() + " Null ********************************");
-//        } finally {
-//            printWriter.close();
-//        }
-//    }
-//}
 
 
 }

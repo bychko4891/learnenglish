@@ -1,22 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<!--<body class="body-main">-->
 <body>
-<h1>File</h1>
-<!--<form action="/upload-avatar" method="post" enctype="multipart/form-data">-->
-<!--    <input type="file" name="file" multiple class="form-control" accept=".jpg, .jpeg" >-->
-<!--    <input type="hidden" name="_csrf" th:value="${_csrf}">-->
-<!--    <button type="submit">Загрузить</button>-->
-<!--</form>-->
-<form method="post" enctype="multipart/form-data" action="/upload">
-    <table>
-        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-            <input type="hidden" name="_csrf" th:value="${_csrf}">
-    </table>
-</form>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section">
+        <div class="container">
+            <div class="content row">
+                <article class="col-md-11 col-xl-9">
+                    <div class="main_page">
+                        <div class="main_content section">
+                            <h1>File</h1>
+                            <!--<form action="/upload-avatar" method="post" enctype="multipart/form-data">-->
+                            <!--    <input type="file" name="file" multiple class="form-control" accept=".jpg, .jpeg" >-->
+                            <!--    <input type="hidden" name="_csrf" th:value="${_csrf}">-->
+                            <!--    <button type="submit">Загрузить</button>-->
+                            <!--</form>-->
+                            <form action="/upload" method="post" enctype="multipart/form-data" id="upload">
+                                <table>
+                                    <tr>
+                                        <td>File to upload:</td>
+                                        <td>
+                                            <input type="file" name="file" required="required" multiple accept=".jpg, .jpeg" />
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                        </td>
+                                    </tr>
+                                    <button type="submit">Upload</button>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <!--        <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+
+
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </article>
+            </div>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+<!--&lt;!&ndash; Модальное окно &ndash;&gt;-->
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>-->
+<!--            </div>-->
+<!--            <p th:text="${error}"></p>-->
+<!--            <p th:text="${logout}"></p>-->
+<!--            <div class="modal-body">-->
+<!--                <form id="login_modal">-->
+
+<!--                    Почта: <input type="email" name="username" placeholder="Username"/><br><br>-->
+<!--                    Пароль: <input type="password" name="password" placeholder="Password"/><br><br>-->
+<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+
+<!--                    <input type="submit" value="Log in"/>-->
+<!--                </form>-->
+<!--                <div th:unless="${erorrMessage}">-->
+<!--                    <h2 style="color: red" th:text="${errorMessage}"></h2>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>-->
+<!--                <button type="button" class="btn btn-primary">Сохранить изменения</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 </body>
 </html>

@@ -1,19 +1,16 @@
 package com.example.learnenglish.controllers;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.UUID;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 public class ImageController {
@@ -32,34 +29,23 @@ public class ImageController {
 //                .body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
 //    }
 
-//    @PostMapping("/user/{userId}/upload-avatar")
-//@GetMapping("/upload")
-//    public String userUploadAvatar(@RequestParam("file") MultipartFile file, Principal principal, Model model) throws IOException {
-////        if (file != null) {
-////            File uploadDir = new File(uploadPath);
-////            if (!uploadDir.exists()) uploadDir.mkdir();
-////            String uuidFile = UUID.randomUUID().toString();
-////            System.out.println(uuidFile + " *******************************************************");
-////            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-////            file.transferTo(new File(uploadPath + "/" + resultFilename));
-////        }
-//        return "filetest";
-//    }
-    @PostMapping("/uploadadd")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
-
-//        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "filetest";
+    //    @PostMapping("/user/{userId}/upload-avatar")
+    @RequestMapping("/upload")
+    public ResponseEntity<String> userUploadAvatar(@RequestParam(required = false, value = "file")
+                                                   MultipartFile file, Principal principal) throws IOException {
+        if (principal != null) {
+            System.out.println(" *******************************************************");
+            if (file != null) {
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                String uuidFile = UUID.randomUUID().toString();
+                System.out.println(uuidFile + " *******************************************************");
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+                System.out.println(resultFilename + " &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+            }
+        }
+        return ResponseEntity.ok("filetest");
     }
-//    public ResponseEntity<File> upload(@RequestParam MultipartFile attachment) {
-////        try {
-////            return new ResponseEntity<>(fileService.upload(attachment), HttpStatus.CREATED);
-////        } catch (IOException e) {
-////            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-////        }
-//    }
+
 }
