@@ -44,9 +44,7 @@ $(document).ready(function () {
             }
         });
     });
-});
 // ***************** Кнопка, щоб відкрити скритий текст *************** //
-$(document).ready(function () {
     $('.content_toggle').click(function () {
         $('.content_block').slideToggle(600);
         return false;
@@ -683,4 +681,35 @@ $(document).ready(function () {
     // function hideMessageError() {
     //     resultDivError.text('');
     // }
+});
+$(document).ready(function() {
+    var $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 200,
+            height: 200,
+            type: 'circle'
+        },
+        enableExif: true
+    });
+
+    $('#upload').on('change', function () {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $uploadCrop.croppie('bind', {
+                url: e.target.result
+            }).then(function(){
+                console.log('jQuery bind complete');
+            });
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    $('#crop').on('click', function() {
+        $uploadCrop.croppie('result', {
+            type: 'canvas',
+            size: 'viewport'
+        }).then(function (resp) {
+            $('#result').html('<img src="' + resp + '">');
+        });
+    });
 });

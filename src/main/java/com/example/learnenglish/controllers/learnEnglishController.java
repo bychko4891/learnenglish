@@ -3,22 +3,28 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
 @RequestMapping(method = RequestMethod.GET)
 public class learnEnglishController {
-
+    private final ResourceLoader resourceLoader;
     private final UserService userService;
 
-    public learnEnglishController(UserService userService) {
+    public learnEnglishController(ResourceLoader resourceLoader, UserService userService) {
+        this.resourceLoader = resourceLoader;
         this.userService = userService;
     }
 
@@ -38,7 +44,7 @@ public String index(Principal principal, Model model) {
     }
 }
     @GetMapping("/about-the-app")
-    public String aboutApp(Model model, Principal principal) {
+    public String aboutApp(Model model, Principal principal) throws IOException {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             // Отримати id залогіненого користувача
@@ -46,6 +52,8 @@ public String index(Principal principal, Model model) {
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("user", user);
             model.addAttribute("userId", userId);
+//            Resource resource = resourceLoader.getResource("/home/anatolii/Documents/learnEnglishImages" + user.getAvatarePath());
+//            model.addAttribute("avatareUser", resource.getURL().getPath());
             // Перенаправити на сторінку з профілем користувача з його id
             return "about";
         }
@@ -67,6 +75,7 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
+            model.addAttribute("avatareUser",user.getAvatarePath());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "user-info";
@@ -81,8 +90,9 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
+            model.addAttribute("avatareUser",user.getAvatarePath());
             model.addAttribute("userId", userId);
+            model.addAttribute("user", user);
             return "lesson";
         }
         lessonId = lesson.getId();

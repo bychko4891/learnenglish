@@ -30,8 +30,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "active")
     private boolean active;
-//    @Column(name = "image")
-//    private Image avatar;
+    @Column(name = "avatare_path", length = 1000)
+    private String avatarePath;
     @Column(name = "password", length = 1000)
     private String password;
     @OneToOne(cascade = CascadeType.ALL)

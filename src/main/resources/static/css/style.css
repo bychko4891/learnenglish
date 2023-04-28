@@ -17,43 +17,59 @@ p {
     font-size: 24px;
     font-family: Helvetica Arial sans-serif;
 }
-.block_left{
+
+.block_left {
     display: flex;
     padding-top: 40px;
     /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
 }
-.block_right{
+
+.block_right {
     padding: 40px 64px 20px 0;
     font-size: 1em;
     /*right: 20px;*/
 }
-.block_right p{
+
+.block_right p {
     font-size: 1em;
 
 }
+
 @media (min-width: 480px) {
-    .block_left{
+    .block_left {
         flex: 0 0 auto;
         width: 100%;
     }
-    .block_right{
+
+    .block_right {
         flex: 0 0 auto;
         width: 100%;
         padding-left: 40px;
     }
+
+    .page {
+        overflow-x: hidden;
+    }
 }
+
 @media (min-width: 1024px) {
-    .block_left{
+    .block_left {
         flex: 0 0 auto;
         width: 50%;
     }
-    .block_right{
+
+    .block_right {
         flex: 0 0 auto;
         width: 50%;
+    }
+
+    .page {
+        display: flex;
     }
 }
+
 /*.body-main {*/
 /*    !*background-image: url("main_page.jpg");*!*/
 /*    background-position: center;*/
@@ -240,6 +256,7 @@ label, a {
     display: grid;
     height: 100%;
     width: 100%;
+    padding-left: 0;
     overflow: hidden;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr 1fr;
@@ -295,7 +312,7 @@ label.nav svg {
     grid-row-start: 2;
     grid-column-end: span 3;
     padding: 20px 20px;
-    display: flex;
+    /*display: flex;*/
     align-items: center;
 }
 
@@ -465,7 +482,7 @@ td {
 
 
 /*!*!* ----------     Login and Registration  Start -------------*!*!*/
-.box{
+.box {
     position: relative;
     width: 380px;
     height: 620px;
@@ -473,7 +490,8 @@ td {
     /*border-radius: 8px;*/
     overflow: hidden;
 }
-.box::before{
+
+.box::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -484,7 +502,8 @@ td {
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
 }
-.box::after{
+
+.box::after {
     content: '';
     position: absolute;
     top: -50%;
@@ -496,21 +515,24 @@ td {
     animation: animate 6s linear infinite;
     animation-delay: -3s;
 }
+
 @keyframes animate {
-    0%{
+    0% {
         transform: rotate(0deg);
     }
-    100%{
+    100% {
         transform: rotate(360deg);
     }
 }
-.box-registration{
+
+.box-registration {
     position: absolute;
     inset: 2px;
     /*border-radius: 8px;*/
     background: #2c3034;
     z-index: 10;
 }
+
 .form-registration {
     position: relative;
     top: 40px;
@@ -605,48 +627,57 @@ td {
     font-weight: normal;
     font-style: normal;
 }
+
 .form-registration .inputBox #toggleBtn.hide::before {
     content: '\f070';
     font-family: fontAwesome;
     font-weight: normal;
     font-style: normal;
 }
-.validation{
+
+.validation {
     background: rgba(199, 199, 199, 0.8);
     padding: 10px;
     margin-top: 30px;
     border-radius: 8px;
-    box-shadow: 0 15px 25px rgba(0,0,0,0.25);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
 }
-.validation ul{
+
+.validation ul {
     position: relative;
     padding-left: 5px;
     display: flex;
     flex-direction: column;
     gap: 1px;
 }
-.validation ul li{
+
+.validation ul li {
     position: relative;
     list-style: none;
     color: #0800ff;
     font-size: 0.75em;
     transition: 0.5s;
 }
-.validation ul li.valid{
+
+.validation ul li.valid {
     color: #22721f;
     text-decoration: line-through;
 }
-.validation ul li::before{
+
+.validation ul li::before {
     content: '\f10c';
     font-family: fontAwesome;
     width: 20px;
     height: 10px;
     display: inline-flex;
 }
-.validation ul li.valid::before{
+
+.validation ul li.valid::before {
     content: '\f05d';
     color: #22721f;
 }
+
+
 /*.overlay, .form-panel.one:before {*/
 /*    position: absolute;*/
 /*    top: 0;*/

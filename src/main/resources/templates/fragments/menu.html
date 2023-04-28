@@ -8,7 +8,9 @@
 <!--            <p>Designer</p>-->
         </div>
         <div class="profile" th:if="${userId}">
-                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">
+<!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
+<!--                            <img th:src="@{${avatareUser}}" alt="Фото користувача">-->
+            <img th:src="@{${avatareUser}}" alt="Фото користувача"/>
             <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>
@@ -73,7 +75,6 @@
 <!--            </li>-->
         </ul>
     </div>
-
     <script type="text/javascript">
         $('document').ready(function () {
             $('.main-menu a').each(function () {
@@ -83,21 +84,5 @@
             });
         });
     </script>
-    <!--    <script type="text/javascript">-->
-    <!--        $(".main-menu a").each(function () {-->
-    <!--            if ((window.location.pathname.indexOf($(this).attr("href"))) > -1) {-->
-    <!--                $(this).addClass("active");-->
-    <!--            }-->
-    <!--        });-->
-    <!--    </script>-->
 </div>
-
-<!--    </div>-->
-<!--<script>-->
-<!--    var hamburger = document.querySelector(".hamburger");-->
-<!--    hamburger.addEventListener("click", function () {-->
-<!--        document.querySelector("body").classList.toggle("active");-->
-<!--    })-->
-<!--</script>-->
-<!--</div>-->
 <!--</th:block>-->
