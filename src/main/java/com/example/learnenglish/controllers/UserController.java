@@ -19,6 +19,7 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
 
+
     @RequestMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,

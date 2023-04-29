@@ -75,7 +75,7 @@ public void saveUserAvatar(Long userId, String avatarePath){
     Optional<User> optionalUser = userRepository.findById(userId);
     if (optionalUser.isPresent()) {
         User user = optionalUser.get();
-        user.setAvatarePath(avatarePath);
+//        user.setAvatarePath(avatarePath);
         userRepository.save(user);
 //            return userRepository.save(user);
     } else {

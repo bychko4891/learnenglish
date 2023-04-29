@@ -18,20 +18,20 @@ import java.util.UUID;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller
+//@Controller
 public class ImageController {
-    private final ServletContext servletContext;
-    private final ResourceLoader resourceLoader;
+//    private final ServletContext servletContext;
+//    private final ResourceLoader resourceLoader;
 
-    @Value("${upload.path}")
-    private String uploadPath;
-    private final UserService userService;
-
-    public ImageController(ServletContext servletContext, ResourceLoader resourceLoader, UserService userService) {
-        this.servletContext = servletContext;
-        this.resourceLoader = resourceLoader;
-        this.userService = userService;
-    }
+//    @Value("${upload.path}")
+//    private String uploadPath;
+//    private final UserService userService;
+//
+//    public ImageController(ServletContext servletContext, ResourceLoader resourceLoader, UserService userService) {
+//        this.servletContext = servletContext;
+//        this.resourceLoader = resourceLoader;
+//        this.userService = userService;
+//    }
 //    private final ImageRepository imageRepository;
 
 //    @GetMapping("/images/{id}")
@@ -45,37 +45,37 @@ public class ImageController {
 //    }
 
     //    @PostMapping("/user/{userId}/upload-avatar")
-    @RequestMapping("/upload")
-    public ResponseEntity<String> userUploadAvatar(@RequestParam(required = false, value = "file")
-                                                   MultipartFile file, Principal principal) throws IOException {
-        if (principal != null && file != null) {
-            System.out.println(" *******************************************************");
-            Long userId = userService.findByEmail(principal.getName()).getId();
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            Resource resource = resourceLoader.getResource("file:" + (uploadPath + "/" + resultFilename));
-            String relativePath = "";
-            try {
-                relativePath = resource.getURL().getPath();
-                relativePath = relativePath.replace("/home/anatolii/Documents/learnEnglishImages", "");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            return relativePath;
-            userService.saveUserAvatar(userId, relativePath);
-//            String realPath = servletContext.getRealPath("/");
-//            Path absolute = Paths.get(uploadPath + "/" + resultFilename);
-//            Path base = Paths.get(realPath);
-//            Path relative = base.relativize(absolute);
-////            "/" + relative.toString().replace('\\', '/');
-//            userService.saveUserAvatar(userId, "/" + relative.toString().replace('\\', '/'));
-
-        }
-        return ResponseEntity.ok("filetest");
-    }
+//    @RequestMapping("/upload")
+//    public ResponseEntity<String> userUploadAvatar(@RequestParam(required = false, value = "file")
+//                                                   MultipartFile file, Principal principal) throws IOException {
+//        if (principal != null && file != null) {
+//            System.out.println(" *******************************************************");
+//            Long userId = userService.findByEmail(principal.getName()).getId();
+//            File uploadDir = new File(uploadPath);
+//            if (!uploadDir.exists()) uploadDir.mkdir();
+//            String uuidFile = UUID.randomUUID().toString();
+//            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+//            file.transferTo(new File(uploadPath + "/" + resultFilename));
+//            Resource resource = resourceLoader.getResource("file:" + (uploadPath + "/" + resultFilename));
+//            String relativePath = "";
+//            try {
+//                relativePath = resource.getURL().getPath();
+//                relativePath = relativePath.replace("/home/anatolii/Documents/learnEnglishImages", "");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+////            return relativePath;
+//            userService.saveUserAvatar(userId, relativePath);
+////            String realPath = servletContext.getRealPath("/");
+////            Path absolute = Paths.get(uploadPath + "/" + resultFilename);
+////            Path base = Paths.get(realPath);
+////            Path relative = base.relativize(absolute);
+//////            "/" + relative.toString().replace('\\', '/');
+////            userService.saveUserAvatar(userId, "/" + relative.toString().replace('\\', '/'));
+//
+//        }
+//        return ResponseEntity.ok("filetest");
+//    }
 
 
 
