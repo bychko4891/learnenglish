@@ -184,7 +184,7 @@ $(document).ready(function () {
             error: function () {
                 let shel = {};
                 alert(Boolean(shel))
-                // Поміщаємо повідомлення про помилку в div-елемент
+                let resultDivError = $('#resultDivError');
                 resultDivError.text('Помилка запиту на сервер');
             }
         });

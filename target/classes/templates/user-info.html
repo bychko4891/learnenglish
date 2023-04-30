@@ -72,6 +72,7 @@
                                 <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
                                 <br><button type="submit">Оновити данні</button>
                             </form>
+                            <div id="resultDivError"></div>
 
                             <br><br><h5>Змінити пароль</h5><br>
                             <form id="update_password" action="/user/1/update-password" method="post">
@@ -112,17 +113,22 @@
 
                                     <h5>Завантажити аватар</h5>
                                     <div class="demo-wrap upload-demo">
-                                        <form>
+                                        <div class="actions">
+<!--                                        <form>-->
+                                            <a class="btn file-btn">
+                                                <span>Виберіть фото</span>
                                             <input type="file" id="upload" accept="image/*">
-                                        </form>
+                                            </a>
+                                            <!--                                        </form>-->
+                                            <button id="crop" >Готово</button>
+                                        </div>
                                         <div id="upload-demo-wrap">
                                             <div id="upload-demo"></div>
                                         </div><br><br>
-                                        <button id="crop" >Crop Image</button>
-                                        <div id="result"></div>
+<!--                                        <button id="crop" >Crop Image</button>-->
+<!--                                        <div id="result"></div>-->
                                     </div>
-                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>
-<!--                                    <img th:src="@{/avatar/012cd8f6-6c93-4117-8abb-667b2cd145ad.png}"/>-->
+<!--                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>-->
                                 <style>
                                     .upload-demo-wrap {
                                         display: block;

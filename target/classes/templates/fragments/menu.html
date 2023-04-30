@@ -3,14 +3,16 @@
     <div class="sidebar">
 
         <div class="profile" th:unless="${userId}">
-                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">
+                            <img id="avatar" src="https://via.placeholder.com/200x200" alt="Фото користувача">
             <h3 style="margin-top: 15px;">Learn English</h3>
 <!--            <p>Designer</p>-->
         </div>
         <div class="profile" th:if="${userId}">
 <!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
-<!--                            <img th:src="@{${avatareUser}}" alt="Фото користувача">-->
-            <img th:src="@{${avatareUser}}" alt="Фото користувача"/>
+
+            <img th:if="${avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}" alt="User avatar"/>
+            <img th:unless="${avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
+
             <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>
@@ -35,9 +37,7 @@
                 </a>
             </li>
             <li th:if="${userId}">
-                <!--                <a href="/lesson/1">-->
                 <a th:href="@{/user/{id}/lesson/1(id=${userId})}">
-                    <!--                <a href="/lesson/1">-->
                     <span class="icon"><i class="fas fa-desktop"></i></span>
                     <span class="item">Lessons</span>
                 </a>

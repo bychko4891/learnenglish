@@ -51,7 +51,6 @@ public class UserAvatarService {
             String resultFilename = uuidFile + ".png";
             Path targetLocation = this.fileStorageLocation.resolve(resultFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            deleteImageToDirektori(userId);
             saveUserAvatar(userId, resultFilename);
             return resultFilename;
         } catch (IOException ex) {
@@ -80,6 +79,7 @@ public class UserAvatarService {
         Optional<UserAvatar> optionalUserAvatar = userAvatarRepository.findById(userId);
         if (optionalUserAvatar.isPresent()) {
             UserAvatar avatar = optionalUserAvatar.get();
+            if (avatar.getAvatarName() != null) deleteImageToDirektori(avatar.getAvatarName());
             avatar.setAvatarName(userAvatarName);
             userAvatarRepository.save(avatar);
 //            return userRepository.save(user);
@@ -87,22 +87,14 @@ public class UserAvatarService {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
     }
-    private void deleteImageToDirektori(Long userId){
-        Optional<UserAvatar> optionalUserAvatar = userAvatarRepository.findById(userId);
-        if (optionalUserAvatar.isPresent()) {
-            UserAvatar avatar = optionalUserAvatar.get();
-            if(avatar.getAvatarName() != null){
-                Path targetLocation = this.fileStorageLocation.resolve(avatar.getAvatarName());
-                try {
-                    Files.delete(targetLocation);
-                } catch (IOException e) {
-                    throw new RuntimeException("Image not found");
-                }
-            }
-        } else {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
-        }
 
+    private void deleteImageToDirektori(String avatarName) {
+        Path targetLocation = this.fileStorageLocation.resolve(avatarName);
+        try {
+            Files.delete(targetLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("Image not found");
+        }
     }
 
 }

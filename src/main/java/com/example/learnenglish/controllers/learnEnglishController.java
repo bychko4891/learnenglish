@@ -47,8 +47,9 @@ public String index(Principal principal, Model model) {
             // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
+            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
+            model.addAttribute("user", user);
 //            Resource resource = resourceLoader.getResource("/home/anatolii/Documents/learnEnglishImages" + user.getAvatarePath());
 //            model.addAttribute("avatareUser", resource.getURL().getPath());
             // Перенаправити на сторінку з профілем користувача з його id
@@ -102,7 +103,7 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-//            model.addAttribute("avatareUser",user.getAvatarePath());
+            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "lesson";
@@ -118,13 +119,14 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
+            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "statistics";
         }
         return "redirect:/login";
     }
-    @GetMapping("/upload")
+//    @GetMapping("/upload")
     public String file( Model model) {
             model.addAttribute("title", "About the app Learn English");
             model.addAttribute("main_title", "Main page");

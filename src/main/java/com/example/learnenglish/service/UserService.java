@@ -25,7 +25,7 @@ public class UserService {
 
     public boolean createUser(User user) {
         String email = user.getEmail();
-        if (userRepository.findByEmail(email) != null) return false;
+        if (userRepository.findByEmail(email).isPresent()) return false;
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
