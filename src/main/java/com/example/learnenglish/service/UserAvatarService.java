@@ -2,8 +2,8 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.exception.MyFileNotFoundException;
-import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserAvatar;
+import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.UserAvatarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,18 +11,15 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.learnenglish.property.FileStorageProperties;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class UserAvatarService {
@@ -47,11 +44,9 @@ public class UserAvatarService {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
-            // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-            // Copy file to the target location (Replacing existing file with the same name)
             String uuidFile = UUID.randomUUID().toString();
             String resultFilename = uuidFile + ".png";
             Path targetLocation = this.fileStorageLocation.resolve(resultFilename);

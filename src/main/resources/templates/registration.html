@@ -12,123 +12,64 @@
         <div class="main_content section row">
 
             <main class="col-md-6 col-lg-7 block_left">
-            <div class="box">
-                <div class="box-registration">
-                    <div class="form-registration">
-                        <h3 style="color: white">Реєстрація</h3><br>
-                        <form action="/registration" method="post" id="registration">
-                            <div class="inputBox">
-                                <input type="text" required name="firstName">
-                                <span class="span-text">Ім'я</span>
-                            </div>
-                            <br>
-                            <div class="inputBox">
-                                <input type="text" required name="lastName">
-                                <span class="span-text">Призвіще</span>
-                            </div>
-                            <br>
-                            <div class="inputBox">
-                                <input type="email" required name="email">
-                                <span class="span-text">Email</span>
-                            </div>
-                            <br>
-                            <div class="inputBox">
-                                <input type="password" required name="password" th:attr="id='psw'">
-<!--                                       onkeyup="checkPassword(this.value)">-->
-                                <span class="span-text">Пароль</span>
-                                <span id="toggleBtn"></span>
-                            </div>
-                            <div class="validation">
-                                <ul>
-                                    <li id="lover">At least one lowercase character</li>
-                                    <li id="upper">At least one uppercase character</li>
-                                    <li id="number">At least one number</li>
-                                    <li id="special">At least one special character</li>
-                                    <li id="length">At least 8 character</li>
-                                </ul>
-                            </div>
-<!--                            <input type="hidden" name="_csrf" th:value="${_csrf}"><br>-->
-                            <button type="submit">Зареєструватися</button>
-                        </form>
+                <div class="box">
+                    <div class="box-registration">
+                        <div class="form-registration">
+                            <h3 style="color: white">Реєстрація</h3><br>
+                            <form action="/registration" method="post" id="registration">
+                                <div class="inputBox">
+                                    <input type="text" required name="firstName">
+                                    <span class="span-text">Ім'я</span>
+                                </div>
+                                <br>
+                                <div class="inputBox">
+                                    <input type="text" required name="lastName">
+                                    <span class="span-text">Призвіще</span>
+                                </div>
+                                <br>
+                                <div class="inputBox">
+                                    <input type="email" required name="email">
+                                    <span class="span-text">Email</span>
+                                </div>
+                                <br>
+                                <div class="inputBox">
+                                    <input type="password" required name="password" th:attr="id='psw'">
+                                    <!--                                       onkeyup="checkPassword(this.value)">-->
+                                    <span class="span-text">Пароль</span>
+                                    <span id="toggleBtn"></span>
+                                </div>
+                                <div class="validation">
+                                    <ul>
+                                        <li id="lover">At least one lowercase character</li>
+                                        <li id="upper">At least one uppercase character</li>
+                                        <li id="number">At least one number</li>
+                                        <li id="special">At least one special character</li>
+                                        <li id="length">At least 8 character</li>
+                                    </ul>
+                                </div>
+                                <!--                            <input type="hidden" name="_csrf" th:value="${_csrf}"><br>-->
+                                <button type="submit">Зареєструватися</button>
+                            </form>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-                <br><p style="font-size: 16px;">Під час реєстрації Ви погоджуєтусь з умовами нашого додатку.</p>
+                <br>
+                <p style="font-size: 16px;">Під час реєстрації Ви погоджуєтусь з умовами нашого додатку.</p>
             </main>
 
             <div class="col-md-6 col-lg-5 block_right">
                 <div class="row">
-                    <!-- ASIDE #1 -->
-<!--                    <aside class="col-sm-6 col-md-12" style="width: 100%">-->
-                        <h4>Умови реєстрації на Learn English</h4><br>
-                        <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К
-                            акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>
-<!--                    </aside>-->
+                    <h4>Умови реєстрації на Learn English</h4><br>
+                    <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К
+                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>
 
                 </div>
             </div>
-            <!--                            <h1 th:text="'Зареєструватися ' + ${main_title} + '!'"></h1>-->
-
         </div>
-
     </div>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-<script type="text/javascript">
-
-    // let psw = document.getElementById('psw');
-    // let toggleBtn = document.getElementById('toggleBtn');
-    // let lowerCase = document.getElementById('lover');
-    // let upperCase = document.getElementById('upper');
-    // let digit = document.getElementById('number');
-    // let specialChar = document.getElementById('special');
-    // let minLength = document.getElementById('length');
-    //
-    // function checkPassword(data) {
-    //
-    //     const lower = new RegExp('(?=.*[a-z])');
-    //     const upper = new RegExp('(?=.*[A-Z])');
-    //     const number = new RegExp('(?=.*[0-9])');
-    //     const special = new RegExp('(?=.*[!@#\$%\^&\*])');
-    //     const length = new RegExp('(?=.{8,})');
-    //     if (lower.test(data)) {
-    //         lowerCase.classList.add('valid');
-    //     } else {
-    //         lowerCase.classList.remove('valid');
-    //     }
-    //     if (upper.test(data)) {
-    //         upperCase.classList.add('valid');
-    //     } else {
-    //         upperCase.classList.remove('valid');
-    //     }
-    //     if (number.test(data)) {
-    //         digit.classList.add('valid');
-    //     } else {
-    //         digit.classList.remove('valid');
-    //     }
-    //     if (special.test(data)) {
-    //         specialChar.classList.add('valid');
-    //     } else {
-    //         specialChar.classList.remove('valid');
-    //     }
-    //     if (length.test(data)) {
-    //         minLength.classList.add('valid');
-    //     } else {
-    //         minLength.classList.remove('valid');
-    //     }
-    //     console.log(data);
-    // }
-    //
-    // toggleBtn.onclick = function () {
-    //     if (psw.type == 'password') {
-    //         psw.setAttribute('type', 'text');
-    //         toggleBtn.classList.add('hide');
-    //     } else {
-    //         psw.setAttribute('type', 'password');
-    //         toggleBtn.classList.remove('hide');
-    //     }
-    // }
-</script>
+<script type="text/javascript" th:src="@{/js/checkPassword.js}"></script>
 </body>
 </html>

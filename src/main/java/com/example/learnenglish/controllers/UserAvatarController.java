@@ -20,10 +20,8 @@ import java.security.Principal;
 @RestController
 public class UserAvatarController {
     private static final Logger logger = LoggerFactory.getLogger(UserAvatarController.class);
-
     private final UserAvatarService userAvatarService;
     private final UserService userService;
-
     public UserAvatarController(UserAvatarService userAvatarService, UserService userService) {
         this.userAvatarService = userAvatarService;
         this.userService = userService;
@@ -43,7 +41,6 @@ public class UserAvatarController {
                     .path("/user/"+ userId+ "/avatar/")
                     .path(fileName)
                     .toUriString();
-            System.out.println(fileDownloadUri + " URI ******************************");
 
 //        return new UserAvatar(avatarUri);
         }
@@ -66,17 +63,7 @@ public class UserAvatarController {
 
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
-//    @PostMapping("/uploadFile")
-//    public UserAvatar uploadFile(@RequestParam("file") MultipartFile file) {
-//        String fileName = userAvatarService.storeFile(file);
-//
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/downloadFile/")
-//                .path(fileName)
-//                .toUriString();
-//
-//        return new UserAvatar(avatarUri);
-//    }
+
 
     @ExceptionHandler(FileFormatException.class)
     public String handleFileFormatException(FileFormatException ex, Model model) {
