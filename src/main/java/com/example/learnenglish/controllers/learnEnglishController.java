@@ -7,10 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
@@ -63,9 +60,23 @@ public String index(Principal principal, Model model) {
     public String registration() {
         return "registration";
     }
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("title", "About the app Learn English");
+
+
+//    @GetMapping("/login")
+//    public String loginPage(Model model) {
+//        model.addAttribute("title", "About the app Learn English");
+//        return "login";
+//    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Не вірний логін, або пароль!");
+        } else if (logout != null) {
+            model.addAttribute("logout", "Ви вийшли із системи.");
+        }
         return "login";
     }
 

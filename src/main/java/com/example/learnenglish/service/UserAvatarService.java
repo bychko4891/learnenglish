@@ -87,23 +87,22 @@ public class UserAvatarService {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
     }
-    private void deleteImageToDirektori(Long userId) throws IOException {                   //потрібно буде десь обробити на всяк випадок
+    private void deleteImageToDirektori(Long userId){
         Optional<UserAvatar> optionalUserAvatar = userAvatarRepository.findById(userId);
         if (optionalUserAvatar.isPresent()) {
             UserAvatar avatar = optionalUserAvatar.get();
             if(avatar.getAvatarName() != null){
                 Path targetLocation = this.fileStorageLocation.resolve(avatar.getAvatarName());
-                Files.delete(targetLocation);
+                try {
+                    Files.delete(targetLocation);
+                } catch (IOException e) {
+                    throw new RuntimeException("Image not found");
+                }
             }
         } else {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
 
     }
-    public String avatareName(Long userId){
-        Optional<UserAvatar> optionalUserAvatar = userAvatarRepository.findById(userId);
-        UserAvatar avatar = optionalUserAvatar.get();
 
-        return avatar.getAvatarName();
-    }
 }

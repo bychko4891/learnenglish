@@ -37,11 +37,11 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).get();
     }
 
     public User findById(long id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id).get();
     }
 
     public void updateUser(Long userId, String firstName, String lastName) {

@@ -37,10 +37,10 @@ public class UserAvatarController {
             }
             String fileName = userAvatarService.storeFile(file, userId);
 
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/user/"+ userId+ "/avatar/")
-                    .path(fileName)
-                    .toUriString();
+//            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                    .path("/user/"+ userId+ "/avatar/")
+//                    .path(fileName)
+//                    .toUriString();
 
 //        return new UserAvatar(avatarUri);
         }
