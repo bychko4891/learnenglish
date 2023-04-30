@@ -50,7 +50,7 @@ public String index(Principal principal, Model model) {
             // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-//            model.addAttribute("user", user);
+            model.addAttribute("user", user);
             model.addAttribute("userId", userId);
 //            Resource resource = resourceLoader.getResource("/home/anatolii/Documents/learnEnglishImages" + user.getAvatarePath());
 //            model.addAttribute("avatareUser", resource.getURL().getPath());
@@ -75,7 +75,8 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-//            model.addAttribute("avatareUser",user.getAvatarePath());
+//            user.getUserAvatar().getAvatarName();
+            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "user-info";
@@ -92,7 +93,7 @@ public String index(Principal principal, Model model) {
             User user = userService.findByEmail(principal.getName());
 //            model.addAttribute("avatareUser",user.getAvatarePath());
             model.addAttribute("userId", userId);
-//            model.addAttribute("user", user);
+            model.addAttribute("user", user);
             return "lesson";
         }
         lessonId = lesson.getId();

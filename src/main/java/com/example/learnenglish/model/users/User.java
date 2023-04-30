@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "users")
-@Data
+//@Data
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

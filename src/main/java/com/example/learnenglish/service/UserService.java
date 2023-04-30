@@ -2,6 +2,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.users.Role;
 import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.model.users.UserAvatar;
 import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.repository.UserStatisticsRepository;
@@ -30,6 +31,7 @@ public class UserService {
         user.getRoles().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
         user.setStatistics(new UserStatistics());
+        user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
         return true;
     }
@@ -71,11 +73,11 @@ public class UserService {
         }
 //        userRepository.save(user);
     }
-public void saveUserAvatar(Long userId, String avatarePath){
+public void saveUserAvatar(Long userId, String userAvatarName){
     Optional<User> optionalUser = userRepository.findById(userId);
     if (optionalUser.isPresent()) {
         User user = optionalUser.get();
-//        user.setAvatarePath(avatarePath);
+//        user.setUserAvatar(userAvatarName);
         userRepository.save(user);
 //            return userRepository.save(user);
     } else {

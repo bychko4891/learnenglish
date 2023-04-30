@@ -14,8 +14,8 @@ public class UserAvatar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "avatar_uri", length = 1000)
-    private String avatarUri;
+    @Column(name = "avatar_name", length = 1000)
+    private String avatarName;
     @OneToOne(mappedBy = "userAvatar", cascade = CascadeType.ALL)
     private User user;
 

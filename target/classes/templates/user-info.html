@@ -118,10 +118,11 @@
                                         <div id="upload-demo-wrap">
                                             <div id="upload-demo"></div>
                                         </div><br><br>
-                                        <button id="crop">Crop Image</button>
+                                        <button id="crop" >Crop Image</button>
                                         <div id="result"></div>
                                     </div>
-
+                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>
+<!--                                    <img th:src="@{/avatar/012cd8f6-6c93-4117-8abb-667b2cd145ad.png}"/>-->
                                 <style>
                                     .upload-demo-wrap {
                                         display: block;

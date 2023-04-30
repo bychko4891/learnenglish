@@ -332,69 +332,70 @@ $(document).ready(function () {
 
         resultDivError.text('');
     }
+
 // });
 /////////////////////////////////////////////////////////////////////////////
 // $(document).ready(function () {
-let psw = document.getElementById('psw');
-let toggleBtn = document.getElementById('toggleBtn');
-let lowerCase = document.getElementById('lover');
-let upperCase = document.getElementById('upper');
-let digit = document.getElementById('number');
-let specialChar = document.getElementById('special');
-let minLength = document.getElementById('length');
+    let psw = document.getElementById('psw');
+    let toggleBtn = document.getElementById('toggleBtn');
+    let lowerCase = document.getElementById('lover');
+    let upperCase = document.getElementById('upper');
+    let digit = document.getElementById('number');
+    let specialChar = document.getElementById('special');
+    let minLength = document.getElementById('length');
 
-function checkPassword(data) {
+    function checkPassword(data) {
 
-    const lower = new RegExp('(?=.*[a-z])');
-    const upper = new RegExp('(?=.*[A-Z])');
-    const number = new RegExp('(?=.*[0-9])');
-    const special = new RegExp('(?=.*[!@#\$%\^&\*])');
-    const length = new RegExp('(?=.{8,})');
-    let isValid = true;
-    if (!lower.test(data)) {
-        lowerCase.classList.remove('valid');
-        isValid = false;
-    } else {
-        lowerCase.classList.add('valid');
+        const lower = new RegExp('(?=.*[a-z])');
+        const upper = new RegExp('(?=.*[A-Z])');
+        const number = new RegExp('(?=.*[0-9])');
+        const special = new RegExp('(?=.*[!@#\$%\^&\*])');
+        const length = new RegExp('(?=.{8,})');
+        let isValid = true;
+        if (!lower.test(data)) {
+            lowerCase.classList.remove('valid');
+            isValid = false;
+        } else {
+            lowerCase.classList.add('valid');
+        }
+        if (!upper.test(data)) {
+            upperCase.classList.remove('valid');
+            isValid = false;
+        } else {
+            upperCase.classList.add('valid');
+        }
+        if (!number.test(data)) {
+            digit.classList.remove('valid');
+            isValid = false;
+        } else {
+            digit.classList.add('valid');
+        }
+        if (!special.test(data)) {
+            specialChar.classList.remove('valid');
+            isValid = false;
+        } else {
+            specialChar.classList.add('valid');
+        }
+        if (!length.test(data)) {
+            minLength.classList.remove('valid');
+            isValid = false;
+        } else {
+            minLength.classList.add('valid');
+        }
+        // console.log(data);
+        return isValid;
     }
-    if (!upper.test(data)) {
-        upperCase.classList.remove('valid');
-        isValid = false;
-    } else {
-        upperCase.classList.add('valid');
-    }
-    if (!number.test(data)) {
-        digit.classList.remove('valid');
-        isValid = false;
-    } else {
-        digit.classList.add('valid');
-    }
-    if (!special.test(data)) {
-        specialChar.classList.remove('valid');
-        isValid = false;
-    } else {
-        specialChar.classList.add('valid');
-    }
-    if (!length.test(data)) {
-        minLength.classList.remove('valid');
-        isValid = false;
-    } else {
-        minLength.classList.add('valid');
-    }
-    // console.log(data);
-    return isValid;
-}
 
-toggleBtn.onclick = function () {
-    if (psw.type == 'password') {
-        psw.setAttribute('type', 'text');
-        toggleBtn.classList.add('hide');
-    } else {
-        psw.setAttribute('type', 'password');
-        toggleBtn.classList.remove('hide');
+    toggleBtn.onclick = function () {
+        if (psw.type == 'password') {
+            psw.setAttribute('type', 'text');
+            toggleBtn.classList.add('hide');
+        } else {
+            psw.setAttribute('type', 'password');
+            toggleBtn.classList.remove('hide');
+        }
     }
-}
-    psw.addEventListener('keyup', function() {
+    psw.addEventListener('keyup', function () {
         checkPassword(this.value);
     });
 });
@@ -634,39 +635,39 @@ $(document).ready(function () {
         var formData = new FormData($('#upload2')[0]);
         // if ($('input[name="password"]').val() && $('input[name="newPassword"]').val()) {
         //     console.log(formData);
-            $.ajax({
-                url: "/upload",
-                type: "post",
-                data: formData,
-                processData: false,
-                contentType: false,
-                // enctype: "multipart/form-data",
-                // types: "multipart/form-data",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (result) {
-                    console.log(result);
-                    // var status = result.status;
-                    // console.log(status);
-                    // if (status == "Success") {
-                    //     $('input[name="password"]').val('');
-                    //     $('input[name="newPassword"]').val('');
-                    //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                    //     resultDivSuccess.text(result.message);
-                    //     setTimeout(hideMessageSuccess, 5000);
-                    // } else {
-                    //     resultDivError.text(result.message);
-                    //     setTimeout(hideMessageError, 5000);
-                    // }
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
-                }
-            });
+        $.ajax({
+            url: "/upload",
+            type: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+            // enctype: "multipart/form-data",
+            // types: "multipart/form-data",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                console.log(result);
+                // var status = result.status;
+                // console.log(status);
+                // if (status == "Success") {
+                //     $('input[name="password"]').val('');
+                //     $('input[name="newPassword"]').val('');
+                //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                //     resultDivSuccess.text(result.message);
+                //     setTimeout(hideMessageSuccess, 5000);
+                // } else {
+                //     resultDivError.text(result.message);
+                //     setTimeout(hideMessageError, 5000);
+                // }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                // Поміщаємо повідомлення про помилку в div-елемент
+                resultDivError.text('Помилка запиту на сервер');
+            }
+        });
         // } else {
         //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
         //     alert('Будь ласка, заповніть поле вводу');
@@ -682,7 +683,165 @@ $(document).ready(function () {
     //     resultDivError.text('');
     // }
 });
-$(document).ready(function() {
+// $(document).ready(function() {
+//     var $uploadCrop = $('#upload-demo').croppie({
+//         viewport: {
+//             width: 200,
+//             height: 200,
+//             type: 'circle'
+//         },
+//         enableExif: true
+//     });
+//
+//     $('#upload').on('change', function () {
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $uploadCrop.croppie('bind', {
+//                 url: e.target.result
+//             }).then(function(){
+//                 console.log('jQuery bind complete');
+//             });
+//         }
+//         reader.readAsDataURL(this.files[0]);
+//     });
+//
+//     $('#crop').on('click', function() {
+//         $uploadCrop.croppie('result', {
+//             type: 'canvas',
+//             size: 'viewport'
+//         }).then(function (resp) {
+//             $('#result').html('<img src="' + resp + '">');
+//         });
+//     });
+//     // $('#crop').on('click', function() {
+//     // $uploadCrop.croppie('result', {
+//     //     type: 'canvas',
+//     //     size: 'viewport'
+//     // }).then(function (resp) {
+//     //     // створюємо об'єкт FormData для передачі на сервер
+//     //     var formData = new FormData(resp);
+//     //     // formData.append('avatar', dataURItoBlob(resp));
+//     //
+//     //     // додаємо CSRF токен до запиту
+//     //     formData.append(csrfHeader, csrfToken);
+//     //     var url = $(this).attr('action');
+//     //     console.log(url);
+//     //     // відправляємо запит на сервер
+//     //     $.ajax({
+//     //         type: 'POST',
+//     //         url: url,
+//     //         data: formData,
+//     //         processData: false,
+//     //         contentType: false,
+//     //         success: function(data) {
+//     //             // оброблюємо відповідь від сервера
+//     //             console.log(data);
+//     //         },
+//     //         error: function(xhr, textStatus, errorThrown) {
+//     //             // оброблюємо помилки
+//     //             console.log(xhr.responseText);
+//     //         }
+//     //     });
+//     // });
+//     // });
+//
+// });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+// $(document).ready(function() {
+//     var $uploadCrop = $('#upload-demo').croppie({
+//         viewport: {
+//             width: 200,
+//             height: 200,
+//             type: 'circle'
+//         },
+//         enableExif: true
+//     });
+//
+//     $('#upload').on('change', function () {
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $uploadCrop.croppie('bind', {
+//                 url: e.target.result
+//             }).then(function(){
+//                 console.log('jQuery bind complete');
+//             });
+//         }
+//         reader.readAsDataURL(this.files[0]);
+//     });
+// $('#crop').on('click', function() {
+//     $uploadCrop.croppie('result', {
+//         type: 'canvas',
+//         size: 'viewport'
+//     }).then(function (resp) {
+//
+//         // Розділяємо заголовок та вміст
+//         const parts = resp.split(';base64,');
+//         const contentType = parts[0].split(':')[1];
+//         const content = atob(parts[1]);
+//
+//         // Створюємо об'єкт типу File
+//         const file = new File([content], "filename", { type: contentType });
+//
+//         // Створюємо об'єкт типу FormData та додаємо до нього файл
+//         const formData = new FormData();
+//         formData.append('file', file);
+//
+//
+//         // // перетворюємо рядок dataURL в об'єкт Blob
+//         // var blob = new Blob([resp], {type: 'image/png'});
+//         // // створюємо об'єкт FormData для передачі на сервер
+//         // var formData = new FormData();
+//         // formData.append('file', blob );
+//
+//         var csrfToken = $("meta[name='_csrf']").attr("content");
+//         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+//         // додаємо CSRF токен до запиту
+//         var userId = window.location.href.split('/').pop();
+//
+//         // var url = '/user/'+ userId +'/upload-avatar';
+//         // відправляємо запит на сервер
+//         $.ajax({
+//             type: 'POST',
+//             url: '/user/1/upload-avatar',
+//             data: formData,
+//             // enctype: "multipart/form-data",
+//             processData: false,
+//             contentType: false,
+//             beforeSend: function (xhr) {
+//                 xhr.setRequestHeader(csrfHeader, csrfToken);
+//             },
+//             success: function(data) {
+//                 // оброблюємо відповідь від сервера
+//                 console.log(data);
+//             },
+//             error: function(xhr, textStatus, errorThrown) {
+//                 // оброблюємо помилки
+//                 console.log(xhr.responseText);
+//             }
+//         });
+//     });
+// });
+//***********************
+//     $('#crop').on('click', function() {
+//         $uploadCrop.croppie('result', {
+//             type: 'canvas',
+//             size: 'viewport'
+//         }).then(function (resp) {
+//             // створюємо посилання для завантаження
+//             var link = document.createElement('a');
+//             link.href = resp;
+//             link.download = 'cropped_image.png';
+//             link.style.display = 'none';
+//             document.body.appendChild(link);
+//             link.click();
+//             document.body.removeChild(link);
+//         });
+//     });
+// });
+//********************
+$(document).ready(function () {
     var $uploadCrop = $('#upload-demo').croppie({
         viewport: {
             width: 200,
@@ -697,19 +856,102 @@ $(document).ready(function() {
         reader.onload = function (e) {
             $uploadCrop.croppie('bind', {
                 url: e.target.result
-            }).then(function(){
+            }).then(function () {
                 console.log('jQuery bind complete');
             });
         }
         reader.readAsDataURL(this.files[0]);
     });
 
-    $('#crop').on('click', function() {
+    $('#crop').on('click', function () {
         $uploadCrop.croppie('result', {
-            type: 'canvas',
+            type: 'blob',
             size: 'viewport'
-        }).then(function (resp) {
-            $('#result').html('<img src="' + resp + '">');
+        }).then(function (blob) {
+            var formData = new FormData();
+            formData.append('file', blob, 'image.png');
+            // var userId = window.location.href.split('/').pop();
+            var url = window.location.href;
+
+            var userId = url.match(/user\/(\d+)/)[1];
+
+            var url = '/user/' + userId + '/upload-avatar';
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr.responseText);
+                }
+            });
         });
     });
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// $(document).ready(function() {
+//     var $uploadCrop = $('#upload-demo').croppie({
+//         viewport: {
+//             width: 200,
+//             height: 200,
+//             type: 'circle'
+//         },
+//         enableExif: true
+//     });
+//
+//     $('#upload').on('change', function () {
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $uploadCrop.croppie('bind', {
+//                 url: e.target.result
+//             }).then(function(){
+//                 console.log('jQuery bind complete');
+//             });
+//         }
+//         reader.readAsDataURL(this.files[0]);
+//     });
+//
+//     $('#crop').on('click', function() {
+//         $uploadCrop.croppie('result', {
+//             type: 'canvas',
+//             size: 'viewport'
+//         }).then(function (resp) {
+//             // відправляємо запит на сервер з URL-адресою зображення
+//             var csrfToken = $("meta[name='_csrf']").attr("content");
+//             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+//             var userId = window.location.href.split('/').pop();
+//             var url = '/user/'+ userId +'/upload-avatar';
+//
+//             $.ajax({
+//                 type: 'POST',
+//                 url: url,
+//                 data: {image: resp}, // передаємо URL-адресу зображення
+//                 enctype: "multipart/form-data",
+//                 beforeSend: function (xhr) {
+//                     xhr.setRequestHeader(csrfHeader, csrfToken);
+//                 },
+//                 success: function(data) {
+//                     // оброблюємо відповідь від сервера
+//                     console.log(data);
+//                 },
+//                 error: function(xhr, textStatus, errorThrown) {
+//                     // оброблюємо помилки
+//                     console.log(xhr.responseText);
+//                 }
+//             });
+//         });
+//     });
+// });
+window.onload = function () {
+
+
+}
