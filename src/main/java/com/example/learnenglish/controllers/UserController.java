@@ -50,13 +50,13 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/update")
-    public ResponseEntity<User> userEditProfile(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
+    public ResponseEntity<String> userEditProfile(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
                                                 @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
-            System.out.println("id " + userId + " " + firstName + " " + lastName + "*****************************************************8");
+            User user = userService.findByEmail(principal.getName());
             userService.updateUser(userId, firstName, lastName);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("Інформація успішно оновлена");
         }
         return ResponseEntity.notFound().build();
     }

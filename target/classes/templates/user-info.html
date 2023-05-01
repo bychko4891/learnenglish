@@ -73,6 +73,7 @@
                                 <br><button type="submit">Оновити данні</button>
                             </form>
                             <div id="resultDivError"></div>
+                            <div id="resultDivSuccess" style="color: #0f5132"></div>
 
                             <br><br><h5>Змінити пароль</h5><br>
                             <form id="update_password" action="/user/1/update-password" method="post">
@@ -82,20 +83,37 @@
                                             <label class="label-profile" for="old-password">Пароль:</label>
                                         </td>
                                         <td>
-                                            <input type="password" class="input" id="old-password"
-                                                   name="password">
+                                            <input type="password" class="input" id="old-password" name="password">
                                             <div id="password-edit-error" style="color: red"></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="newPassword">Новий пароль:</label>
+                                            <label >Новий пароль:</label>
                                         </td>
                                         <td>
-                                            <input type="password" class="input" id="newPassword"
-                                                   name="newPassword">
+                                            <input type="password" class="input" th:attr="id='psw'" name="newPassword">
+                                            <span id="toggleBtn"></span>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <!--                                            <label for="newPassword">Новий пароль:</label>-->
+                                        </td>
+                                        <td>
+                                            <div class="validation">
+                                                <ul>
+                                                    <li id="lover">At least one lowercase character</li>
+                                                    <li id="upper">At least one uppercase character</li>
+                                                    <li id="number">At least one number</li>
+                                                    <li id="special">At least one special character</li>
+                                                    <li id="length">At least 8 character</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
                                 </table>
                                 <div id="password-edit-success" style="color: darkgreen"></div>
                                 <br><button type="submit">Змінити пароль</button>
@@ -105,14 +123,15 @@
                                 <button type="submit">Видалити профіль</button>
                             </form>
                         </main>
-                        <div class="col-md-6 col-lg-5 block_right">
-                            <div class="row">
+                        <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+<!--                            <div class="row">-->
                                 <!-- ASIDE #1 -->
 <!--                                <aside class="col-sm-6 col-md-12" style="width: 100%">-->
 
 
-                                    <h5>Завантажити аватар</h5>
+
                                     <div class="demo-wrap upload-demo">
+                                        <h5>Завантажити аватар</h5><br>
                                         <div class="actions">
 <!--                                        <form>-->
                                             <a class="btn file-btn">
@@ -168,7 +187,7 @@
                                 </style>
 <!--                                </aside>-->
 <!--                            </div>-->
-                        </div>
+<!--                        </div>-->
                     </div>
                 </div>
                 <label class="nav" for="about">
@@ -189,5 +208,6 @@
 </div>
 <script type="text/javascript"  th:src="@{/js/croppie.js}"></script>
 <script type="text/javascript"  th:src="@{/js/cropAndUploadAvatart.js}"></script>
+<script type="text/javascript" th:src="@{/js/userInfoEdit.js}"></script>
 </body>
 </html>

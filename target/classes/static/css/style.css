@@ -60,9 +60,13 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .block_right {
-    padding: 40px 64px 20px 0;
+    display: flex;
+    padding-top: 40px;
+    /*padding: 40px 64px 20px 0;*/
     font-size: 1em;
     /*right: 20px;*/
+    align-items: center;
+    flex-direction: column;
 }
 
 .block_right p {
