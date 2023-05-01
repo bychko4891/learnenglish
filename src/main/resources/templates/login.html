@@ -7,118 +7,46 @@
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-    <main class="section">
-        <div class="container main-page">
-            <div class="content row">
-                <article class="col-md-11 col-xl-9">
-                    <!--                    <h1>Please Log In</h1>-->
-
-                    <!--<div th:if="${param.error}">-->
-                    <!--  Invalid username and password.</div>-->
-                    <!--<div th:if="${param.logout}">-->
-                    <!--  You have been logged out.</div>-->
-                    <!--<form th:action="@{/login}" method="post">-->
-                    <!--  <div>-->
-                    <!--    <input type="text" name="username" placeholder="Username"/>-->
-                    <!--  </div>-->
-                    <!--  <div>-->
-                    <!--    <input type="password" name="password" placeholder="Password"/>-->
-                    <!--  </div>-->
-                    <!--  <input type="submit" value="Log in" />-->
-                    <!--</form>-->
-                    <!--                    <form action="/login" method="post">-->
-
-                    <!--                        Почта: <input type="email" name="username" placeholder="Username"/><br><br>-->
-
-                    <!--                        Пароль: <input type="password" name="password" placeholder="Password"/><br><br>-->
-
-                    <!--                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
-                    <!--                        <input type="submit" value="Log in"/>-->
-                    <!--                    </form>-->
-                    <div class="form">
-                        <div class="form-toggle"></div>
-                        <div class="form-panel one">
-                            <div class="form-header">
-                                <h1>Account Login</h1>
-                            </div>
-                            <div class="form-content">
-                                <form action="/login" method="post">
-
-                                    <div class="form-group">
-                                        <label for="username">Email</label>
-                                        <input id="username" type="email" name="username" required="required"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input id="password" type="password" name="password" required="required"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-remember">
-                                            <input type="checkbox" class="password-checkbox"/>Показати пароль
-                                        </label><a class="form-recovery" href="#">Forgot Password?</a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                                        <button type="submit">Log In</button>
-                                    </div>
-                                </form>
-                                <div style=" padding-top: 15px; display: flex;  align-items: center; justify-content: center">
-                                    <p style="color: #22721f" th:text="${logout}"></p>
-                                    <p style="color: #fc0505" th:text="${error}"></p></div>
-                            </div>
+    <main class="section main_content ">
+        <div class="container layout_page row">
+            <main class="col-md-6 col-lg-7 block_left">
+                <div class="box">
+                    <div class="box-registration">
+                        <div class="form-registration">
+                            <h3 style="color: white">Увійти в додаток</h3><br>
+                            <form action="/login" method="post">
+                                <br>
+                                <div class="inputBox">
+                                    <input type="email" required name="username">
+                                    <span class="span-text">Email</span>
+                                </div>
+                                <br>
+                                <div class="inputBox">
+                                    <input type="password" required name="password" th:attr="id='psw'">
+                                    <!--                                       onkeyup="checkPassword(this.value)">-->
+                                    <span class="span-text">Пароль</span>
+                                    <span id="toggleBtn"></span>
+                                </div>
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                <br><br><button type="submit">Увійти</button>
+                            </form>
 
                         </div>
-
                     </div>
-                    <!--                    </div>-->
+                </div>
+            </main>
+            <div class="col-md-6 col-lg-5 block_right">
+                <div class="row">
+                    <h4>Умови реєстрації на Learn English</h4><br>
+                    <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К
+                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>
 
-                    <script type="text/javascript">
-                        $(document).ready(function () {
-                            var panelOne = $(".form-panel.two").height(),
-                                panelTwo = $(".form-panel.two")[0].scrollHeight;
-
-                            $(".form-panel.two")
-                                .not(".form-panel.two.active")
-                                .on("click", function (e) {
-                                    e.preventDefault();
-
-                                    $(".form-toggle").addClass("visible");
-                                    $(".form-panel.one").addClass("hidden");
-                                    $(".form-panel.two").addClass("active");
-                                    $(".form").animate(
-                                        {
-                                            height: panelTwo
-                                        },
-                                        200
-                                    );
-                                });
-
-                            $(".form-toggle").on("click", function (e) {
-                                e.preventDefault();
-                                $(this).removeClass("visible");
-                                $(".form-panel.one").removeClass("hidden");
-                                $(".form-panel.two").removeClass("active");
-                                $(".form").animate(
-                                    {
-                                        height: panelOne
-                                    },
-                                    200
-                                );
-                            });
-                        });
-                        $('body').on('click', '.password-checkbox', function(){
-                            if ($(this).is(':checked')){
-                                $('#password-input').attr('type', 'text');
-                            } else {
-                                $('#password-input').attr('type', 'password');
-                            }
-                        });
-                    </script>
-                </article>
+                </div>
             </div>
         </div>
     </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-
+<script type="text/javascript" th:src="@{/js/checkPassword.js}"></script>
 </body>
 </html>

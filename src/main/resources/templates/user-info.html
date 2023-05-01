@@ -13,14 +13,18 @@
 
             <div class="layout">
                 <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
-                <div class="page home-page">
-                    <div class="page-contents" style="left: 0;">
+                <div class="page about-page">
+                    <!--                    <div class="page-contents">-->
+                    <main class="col-md-6 col-lg-7 block_left">
                         <p th:text="'Ім`я: ' + ${user.getFirstName()}"></p> <br>
                         <p th:text="'Призвіще: ' + ${user.getLastName()}"></p><br>
                         <p>Дата реєстрації:
                             <span th:text="${#temporals.format(user.getDateOfCreated, 'dd.MM.yyyy')}"></span>
                         </p><br>
                         <p th:text="'Email: ' + ${user.getEmail()}"></p><br>
+                    </main>
+                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+                        <p> Rfrjq nj ntrcnRfrjq nj ntrcnRfrjq nj ntrcnRfrjq nj ntrcnRfrjq nj ntrcnRfrjq nj ntrcn</p>
                     </div>
                 </div>
                 <label class="nav" for="home">
