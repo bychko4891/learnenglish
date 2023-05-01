@@ -8,9 +8,8 @@
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-    <div class="section container">
-        <div class="main_content section row">
-
+    <main class="section main_content ">
+        <div class="container layout_page row">
             <main class="col-md-6 col-lg-7 block_left">
                 <div class="box">
                     <div class="box-registration">
@@ -57,7 +56,6 @@
                 <br>
                 <p style="font-size: 16px;">Під час реєстрації Ви погоджуєтусь з умовами нашого додатку.</p>
             </main>
-
             <div class="col-md-6 col-lg-5 block_right">
                 <div class="row">
                     <h4>Умови реєстрації на Learn English</h4><br>
@@ -67,7 +65,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script type="text/javascript" th:src="@{/js/checkPassword.js}"></script>
