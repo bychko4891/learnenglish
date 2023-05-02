@@ -23,13 +23,15 @@ p {
     /*display: block;*/
     max-width: 100%;
     width: calc(100% - 40px);
-    /*height: 100%;*/
-    height: calc(100vh - 130px);
+    height: calc(100vh - 120px);
+    padding-left: 0;
+    padding-right: 0;
     margin-left: 40px;
     margin-top: 40px;
     margin-bottom: 40px;
     background: rgba(255, 255, 255, 0.7);
     overflow-x: hidden;
+
 }
 
 button,
@@ -261,7 +263,7 @@ label, a {
     display: grid;
     height: 100%;
     width: 100%;
-    padding-left: 40px;
+    padding-left: 0;
     padding-right: 0;
     overflow: hidden;
     grid-template-rows: 50px 1fr;
@@ -319,7 +321,7 @@ label.nav svg {
     grid-column-end: span 3;
     padding: 20px 20px;
     /*display: flex;*/
-    align-items: center;
+    /*align-items: center;*/
 }
 
 .page-profile {
@@ -492,7 +494,7 @@ td {
 .box {
     position: relative;
     width: 380px;
-    height: 620px;
+    height: 680px;
     background: #1c1c1c;
     /*border-radius: 8px;*/
     overflow: hidden;
@@ -504,7 +506,7 @@ td {
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 620px;
+    height: 680px;
     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -516,7 +518,7 @@ td {
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 620px;
+    height: 680px;
     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -542,7 +544,7 @@ td {
 
 .form-registration {
     position: relative;
-    top: 40px;
+    top: 20px;
     /*width: 320px;*/
     display: flex;
     justify-content: center;
