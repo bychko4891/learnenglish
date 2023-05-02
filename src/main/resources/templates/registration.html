@@ -14,7 +14,7 @@
                 <div class="box">
                     <div class="box-registration">
                         <div class="form-registration">
-                            <h3 style="color: white">Реєстрація</h3><br>
+                            <h3 style="color: white">Реєстрація</h3>
                             <form action="/registration" method="post" id="registration">
                                 <div class="inputBox">
                                     <input type="text" required name="firstName">
@@ -36,6 +36,11 @@
                                     <!--                                       onkeyup="checkPassword(this.value)">-->
                                     <span class="span-text">Пароль</span>
                                     <span id="toggleBtn"></span>
+
+                                </div>
+                                <div class="inputBox" style="top: 20px;">
+                                    <input type="password" required name="confirmPassword" th:attr="id='confirmPassword'">
+                                    <span class="span-text">confirmPassword</span>
                                 </div>
                                 <div class="validation">
                                     <ul>
@@ -46,8 +51,11 @@
                                         <li id="length">At least 8 character</li>
                                     </ul>
                                 </div>
-                                <!--                            <input type="hidden" name="_csrf" th:value="${_csrf}"><br>-->
-                                <button type="submit">Зареєструватися</button>
+                                <div style="padding-left: 38px; padding-top: 15px;">
+                                    <button type="submit">Зареєструватися</button>
+                                    <div id="result-success"></div>
+                                    <div id="result-error"></div>
+                                </div>
                             </form>
 
                         </div>

@@ -28,9 +28,13 @@
                                     <span id="toggleBtn"></span>
                                 </div>
                                 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                                <br><br><button type="submit">Увійти</button>
+                                <div style="padding-left: 65px; padding-top: 50px;">
+                                    <button type="submit">Увійти</button>
+                                </div>
                             </form>
-
+                            <br>
+                            <div th:text="${error}" style="color: red"></div>
+                            <div th:text="${logout}"style="color: darkgreen"></div>
                         </div>
                     </div>
                 </div>

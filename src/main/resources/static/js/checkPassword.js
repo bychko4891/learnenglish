@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     $(document).ready(function () {
-        // var resultDivSuccess = $('#result-success');
-        // var resultDivError = $('#result-error');
+        var resultDivSuccess = $('#result-success');
+        var resultDivError = $('#result-error');
         $('#registration').submit(function (event) {
             event.preventDefault();
             // Get CSRF token from the meta tag-->
@@ -12,63 +12,99 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // var url = $(this).attr('action');
             var formData = $(this).serializeArray();
+            delete formData.confirmPassword;
             // console.log(formData);
             if (isValid) {
-                var jsonFormData = {};
-                $(formData).each(function (index, obj) {
-                    jsonFormData[obj.name] = obj.value;
-                });
-                // console.log(jsonFormData);
-                $.ajax({
-                    url: "/registration",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(jsonFormData),
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(csrfHeader, csrfToken);
-                    },
-                    success: function (result) {
-                        console.log(result);
-                        // var status = result.status;
-                        // console.log(status);
-                        // if (status == "Success") {
-                        //     $('textarea[name="ukrText"]').val('');
-                        //     $('textarea[name="engText"]').val('');
-                        //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        //     resultDivSuccess.text(result.message);
-                        //     setTimeout(hideMessageSuccess, 5000);
-                        // } else {
-                        //     resultDivError.text(result.message);
-                        //     setTimeout(hideMessageError, 10000);
-                        // }
-                        // window.location.replace('https://example.com/newpage');
-                    },
-                    error: function () {
-                        let shel = {};
-                        alert(Boolean(shel))
-                        // Поміщаємо повідомлення про помилку в div-елемент
-                        resultDivError.text('Помилка запиту на сервер');
-                    }
-                });
-            } else {
-                // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+                if ($("#confirmPassword").val() === $("#psw").val()) {
+                    var jsonFormData = {};
+                    $(formData).each(function (index, obj) {
+                        jsonFormData[obj.name] = obj.value;
+                    });
+                    // console.log(jsonFormData);
+                    $.ajax({
+                        url: "/registration",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(jsonFormData),
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function (result, textStatus, jqXHR) {
+                            if (jqXHR.status === 200) {
+                                console.log("Success:", result);
+                                resultDivSuccess.text(result);
+                                document.getElementById("registration").reset();
+                                setTimeout(function () {
+                                    window.location.href = "/login";
+                                }, 5000);
+                            }
+
+                            // else if (jqXHR.status === 409) {
+                            //     console.log("Conflict:", result);
+                            //     resultDivError.text(result);
+                            //     // setTimeout(hideMessageError, 5000);
+                            //     // Обробка конфлікту (ResponseEntity.status(HttpStatus.CONFLICT))
+                            // }
+                            // }
+                            // },error: function (jqXHR, textStatus, errorThrown) {
+                            //     console.log(jqXHR.responseText);
+                            //     resultDivError.text(jqXHR.responseText);
+                            // }
+
+                            // },
+
+
+                            // error: function (jqXHR, textStatus, errorThrown) {
+                            //     console.log("Error:", jqXHR.responseText);
+                            //     // Обробка помилки
+                            // }
+                            // var status = result.status;
+                            // console.log(status);
+                            // if (status == "Success") {
+                            //     $('textarea[name="ukrText"]').val('');
+                            //     $('textarea[name="engText"]').val('');
+                            //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                            //     resultDivSuccess.text(result.message);
+                            //     setTimeout(hideMessageSuccess, 5000);
+                            // } else {
+                            //     resultDivError.text(result.message);
+                            //     setTimeout(hideMessageError, 10000);
+                            // }
+                            // window.location.replace('https://example.com/newpage');
+                            // },
+
+                        }, error: function () {
+                            // let shel = {};
+                            // alert(Boolean(shel)) //  <--вікно підвердження
+                            // Поміщаємо повідомлення про помилку в div-елемент
+                            resultDivError.text('Юзер з таким Email вже існує');
+                        }
+
+                    });
+                } else {
+                    // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+                    alert('Пароль не співпадають!');
+                    return;
+                }
+            }else {
                 alert('Пароль не відповідає вимогам безпеки!');
                 return;
             }
         });
 
-        function hideMessageSuccess() {
-            resultDivSuccess.text('');
+        // function hideMessageSuccess() {
+        //     resultDivSuccess.text('');
+        //
+        // }
 
-        }
-
-        function hideMessageError() {
-
-            resultDivError.text('');
-        }
+        // function hideMessageError() {
+        //
+        //     resultDivError.text('');
+        // }
 
 
         let psw = document.getElementById('psw');
+        let confirmPassword = document.getElementById('confirmPassword');
         let toggleBtn = document.getElementById('toggleBtn');
         let lowerCase = document.getElementById('lover');
         let upperCase = document.getElementById('upper');
@@ -119,12 +155,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         toggleBtn.onclick = function () {
+            confPassword();
             if (psw.type === 'password') {
                 psw.setAttribute('type', 'text');
                 toggleBtn.classList.add('hide');
             } else {
                 psw.setAttribute('type', 'password');
                 toggleBtn.classList.remove('hide');
+            }
+        }
+        function confPassword() {
+            if (confirmPassword.type === 'password') {
+                confirmPassword.setAttribute('type', 'text');
+                // toggleBtn.classList.add('hide');
+            } else {
+                confirmPassword.setAttribute('type', 'password');
+                // toggleBtn.classList.remove('hide');
             }
         }
         psw.addEventListener('keyup', function () {

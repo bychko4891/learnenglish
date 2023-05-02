@@ -2,6 +2,7 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import com.example.learnenglish.model.users.User;
@@ -39,14 +40,15 @@ public class UserController {
 
     @PostMapping("/registration")
 //    public String createUser(User user, Model model) {
-    public void createUser(@RequestBody User user, Model model) {
-        System.out.println(user);
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+//        System.out.println(user);
         if (!userService.createUser(user)) {
-            model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
-//            return "registration";
+//            model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Юзер з таким Email: " + user.getEmail() + " вже існує");
         }
         userService.createUser(user);
 //        return "redirect:/login";
+        return ResponseEntity.ok("Ви успішно створили аккаунт");
     }
 
     @PostMapping("/user/{userId}/update")

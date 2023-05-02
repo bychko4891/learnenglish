@@ -1,15 +1,16 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<!--<body class="body-main">-->
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-    <div class="section container">
-        <div class="main_content section row">
+<!--    <div class="section container">-->
+<!--        <div class="main_content section row">-->
+    <main class="section main_content ">
+        <div class="container layout_page row">
 
             <div class="layout">
                 <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
@@ -128,12 +129,6 @@
                             </form>
                         </main>
                         <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
-<!--                            <div class="row">-->
-                                <!-- ASIDE #1 -->
-<!--                                <aside class="col-sm-6 col-md-12" style="width: 100%">-->
-
-
-
                                     <div class="demo-wrap upload-demo">
                                         <h5>Завантажити аватар</h5><br>
                                         <div class="actions">
@@ -148,8 +143,6 @@
                                         <div id="upload-demo-wrap">
                                             <div id="upload-demo"></div>
                                         </div><br><br>
-<!--                                        <button id="crop" >Crop Image</button>-->
-<!--                                        <div id="result"></div>-->
                                     </div>
 <!--                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>-->
                                 <style>
@@ -206,8 +199,12 @@
                     </span>
                 </label>
             </div>
-        </div>
-    </div>
+
+<!--        </div> //-->
+<!--    </div> //-->
+    </div> //
+    </main> //
+
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script type="text/javascript"  th:src="@{/js/croppie.js}"></script>
