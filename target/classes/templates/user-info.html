@@ -11,7 +11,6 @@
     <!--        <div class="main_content section row">-->
     <main class="section main_content ">
         <div class="container layout_page row">
-
             <div class="layout">
                 <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
                 <div class="page about-page">
@@ -47,7 +46,7 @@
                                     <label for="last-name">Email:</label>
                                 </td>
                                 <td>
-                                    <p th:text="'Email: ' + ${user.getEmail()}"></p>
+                                    <p th:text="${user.getEmail()}"></p>
                                 </td>
                             </tr>
                             <!--                                                <tr>-->
@@ -118,7 +117,7 @@
                             </table>
                             <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
                             <br>
-                            <button type="submit">Оновити данні</button>
+                            <button type="submit" id="save-button">Оновити данні</button>
                         </form>
                         <div id="resultDivError"></div>
                         <div id="resultDivSuccess" style="color: #0f5132"></div>
@@ -227,8 +226,15 @@
                                 left: 50%;
                                 transform: translate(-50%, -50%);
                             }
-
-
+                            input[type=range]::-webkit-slider-thumb {
+                                background-color: #189094;
+                            }
+                            input[type=range]::-moz-range-thumb {
+                                background-color: #189094;
+                            }
+                            input[type=range]::-ms-thumb {
+                                background-color: #189094;
+                            }
 
                         </style>
                         <!--                                </aside>-->
@@ -259,9 +265,14 @@
 <script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script>
 <script>
     var availableDates = [];
-
-    $.getJSON('/training-day', function (data) {
-        availableDates = data.map(function (dateStr) {
+    var url = window.location.href;
+    var userId = url.match(/user\/(\d+)/)[1];
+    console.log(userId);
+     url = '/user/' + userId + '/training-days';
+    $.getJSON(url, function (data) {
+        var count = data.length;
+        console.log(count);
+                availableDates = data.map(function (dateStr) {
             var dateParts = dateStr.split('-');
             return new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
         });

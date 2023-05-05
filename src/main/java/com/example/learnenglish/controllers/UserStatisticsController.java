@@ -5,6 +5,7 @@ import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -20,12 +21,11 @@ public class UserStatisticsController {
         this.userService = userService;
     }
 
-    @GetMapping("/training-day")
-    public ResponseEntity<List> calendarDays(Principal principal){
+    @GetMapping("/user/{userId}/training-days")
+    public ResponseEntity<List> calendarDays(@PathVariable(value = "userId") long userId, Principal principal) {
         if (principal != null) {
-          Long  userId = userService.findByEmail(principal.getName()).getId();
-                     return ResponseEntity.ok(userStatisticsService.trainingDays(userId));
-
+            userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(userStatisticsService.trainingDays(userId));
         }
         return ResponseEntity.notFound().build();
     }

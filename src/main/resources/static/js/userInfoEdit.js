@@ -1,4 +1,17 @@
 //********  Profile edit  START  *************** //
+const firstNameInput = document.getElementById('first-name');
+const lastNameInput = document.getElementById('last-name');
+var initialFirstNameValue;
+var initialLastNameValue;
+$(document).ready(function () {
+    initialFirstNameValue = firstNameInput.value;
+    initialLastNameValue = lastNameInput.value;
+});
+function reloadValue() {
+    initialFirstNameValue = firstNameInput.value;
+    initialLastNameValue = lastNameInput.value;
+}
+
 $(document).ready(function () {
     var resultDivSuccess = $('#resultDivSuccess');
     var resultDivError = $('#resultDivError');
@@ -9,39 +22,58 @@ $(document).ready(function () {
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var url = $(this).attr('action');
         var formData = $(this).serializeArray();
-        if ($('#first-name').val() || $('#last-name').val()) {     //доработать !!!!
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: formData,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (result) {
-                    // console.log(result);
-                    resultDivSuccess.text(result);
-                    setTimeout(hideMessageSuccess, 5000);
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    resultDivError.text('Помилка запиту на сервер');
-                    setTimeout(hideMessageError, 5000);
-                }
-            });
+        if (checkUserInfo(formData)) {
+            if ($('#first-name').val() || $('#last-name').val()) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
+                    success: function (result) {
+                        reloadValue();
+                        // console.log(result);
+                        resultDivSuccess.text(result);
+                        setTimeout(hideMessageSuccess, 5000);
+                    },
+                    error: function () {
+                        let shel = {};
+                        alert(Boolean(shel))
+                        resultDivError.text('Помилка запиту на сервер');
+                        setTimeout(hideMessageError, 5000);
+                    }
+                });
+            } else {
+                // якщо не всі поля не заповнені, не виконуємо запит на сервер і виводимо помилку
+                alert('Будь ласка, заповніть поле вводу');
+                return;
+            }
         } else {
-            // якщо не всі поля не заповнені, не виконуємо запит на сервер і виводимо помилку
-            alert('Будь ласка, заповніть поле вводу');
-            return;
+            console.log("console info: Інформація успішно оновлена");
+            resultDivSuccess.text("Інформація успішно оновлена");
+            setTimeout(hideMessageSuccess, 5000);
         }
     });
+
     function hideMessageSuccess() {
         resultDivSuccess.text('');
     }
+
     function hideMessageError() {
         resultDivError.text('');
     }
 });
+
+function checkUserInfo(data) {
+    const firstName = data.find(field => field.name === 'firstName').value;
+    const lastName = data.find(field => field.name === 'lastName').value;
+    if (initialFirstNameValue === firstName && initialLastNameValue === lastName) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 //********  Profile edit  END   *************** //
 
@@ -93,6 +125,7 @@ $(document).ready(function () {
             return;
         }
     });
+
 
     function hideMessageSuccess() {
         resultDivSuccess.text('');

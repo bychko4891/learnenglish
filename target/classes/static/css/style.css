@@ -29,7 +29,7 @@ p {
     margin-left: 40px;
     margin-top: 40px;
     margin-bottom: 40px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(237, 241, 244, 0.85);
     overflow-x: hidden;
 
 }
@@ -65,9 +65,7 @@ a.btn {
 .actions button {
     margin-right: 5px;
 }
-input[type=range]::-webkit-slider-thumb {
-    background-color: #189094;
-}
+
 .block_left {
     display: flex;
     padding-top: 20px;
@@ -498,6 +496,7 @@ td {
     background: #323232;
     /*border-radius: 8px;*/
     overflow: hidden;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),  -5px -5px 10px rgba(255, 255, 255, 1);
 }
 
 .box::before {

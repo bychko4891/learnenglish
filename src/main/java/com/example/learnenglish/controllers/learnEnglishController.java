@@ -88,6 +88,19 @@ public String index(Principal principal, Model model) {
         }
         return "redirect:/login";
     }
+    @GetMapping("/user/{userId}/statistics")
+    public String userStatisticsPage(@PathVariable("userId") Long userId, Principal principal, Model model) {
+        model.addAttribute("title", "About the app Learn English");
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+            model.addAttribute("userId", userId);
+            model.addAttribute("user", user);
+            return "statistics";
+        }
+        return "redirect:/login";
+    }
 
     @GetMapping("/user/{userId}/lesson/{lessonId}")
     public String lessonPage(@PathVariable("userId") Long userId, @PathVariable("lessonId") Long lessonId,
@@ -105,26 +118,5 @@ public String index(Principal principal, Model model) {
 //        model.addAttribute(lesson);
         model.addAttribute("lessonId", lessonId);
         return "lesson";
-    }
-    @GetMapping("/user/{id}/statistics")
-    public String userPageStatistics(@PathVariable("id") Long userId, Principal principal, Model model) {
-        model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-            model.addAttribute("userId", userId);
-            model.addAttribute("user", user);
-            return "statistics";
-        }
-        return "redirect:/login";
-    }
-//    @GetMapping("/upload")
-    public String file( Model model) {
-            model.addAttribute("title", "About the app Learn English");
-            model.addAttribute("main_title", "Main page");
-            // Перенаправити на сторінку з увійти / зареєструватися
-            return "filetest";
-
     }
 }
