@@ -5,6 +5,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,6 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-//            user.getUserAvatar().getAvatarName();
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);

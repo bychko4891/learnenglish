@@ -7,8 +7,6 @@
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-    <!--    <div class="section container">-->
-    <!--        <div class="main_content section row">-->
     <main class="section main_content ">
         <div class="container layout_page row">
             <div class="layout">
@@ -19,7 +17,7 @@
                         <table class="profile-edit">
                             <tr>
                                 <td>
-                                    <label class="label-profile">Ім'я:</label>
+                                    <label class="label-profile"><b>Ім'я:</b></label>
                                 </td>
                                 <td>
                                     <p th:text="${user.getFirstName()}"></p>
@@ -27,7 +25,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="last-name">Призвіще:</label>
+                                    <label for="last-name"><b>Призвіще:</b></label>
                                 </td>
                                 <td>
                                     <p th:text="${user.getLastName()}"></p>
@@ -35,7 +33,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="last-name">Дата реєстрації:</label>
+                                    <label for="last-name"><b>Дата реєстрації:</b></label>
                                 </td>
                                 <td>
                                     <p th:text="${#temporals.format(user.getDateOfCreated, 'dd.MM.yyyy')}"></p>
@@ -43,7 +41,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="last-name">Email:</label>
+                                    <label for="last-name"><b>Email:</b></label>
                                 </td>
                                 <td>
                                     <p th:text="${user.getEmail()}"></p>
@@ -65,7 +63,7 @@
                             <div class="container_calendar">
                                 <div id="calendar"></div>
                             </div>
-
+                            <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +84,7 @@
 
                         <h5>Змінити особисті данні</h5><br>
 
-                        <form id="update_profile" action="/user/1/update" method="post">
+                        <form id="update_profile" action="/user/1/edit" method="post">
                             <table class="profile-edit">
                                 <tr>
                                     <td>
@@ -106,14 +104,6 @@
                                                name="lastName" th:value="${user.getLastName()}">
                                     </td>
                                 </tr>
-                                <!--                                                <tr>-->
-                                <!--                                                    <td>-->
-                                <!--                                                        <label for="message">Повідомлення:</label>-->
-                                <!--                                                    </td>-->
-                                <!--                                                    <td>-->
-                                <!--                                                        <textarea id="message" name="message"></textarea>-->
-                                <!--                                                    </td>-->
-                                <!--                                                </tr>-->
                             </table>
                             <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
                             <br>
@@ -237,9 +227,6 @@
                             }
 
                         </style>
-                        <!--                                </aside>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
                     </div>
                 </div>
                 <label class="nav" for="about">
@@ -263,32 +250,5 @@
 <script type="text/javascript" th:src="@{/js/cropAndUploadAvatart.js}"></script>
 <script type="text/javascript" th:src="@{/js/userInfoEdit.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script>
-<script>
-    var availableDates = [];
-    var url = window.location.href;
-    var userId = url.match(/user\/(\d+)/)[1];
-    console.log(userId);
-     url = '/user/' + userId + '/training-days';
-    $.getJSON(url, function (data) {
-        var count = data.length;
-        console.log(count);
-                availableDates = data.map(function (dateStr) {
-            var dateParts = dateStr.split('-');
-            return new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-        });
-        // після отримання даних з сервера, ініціалізуємо календар
-        $('#calendar').datepicker({
-            beforeShowDay: function (date) {
-                var dateString = $.datepicker.formatDate('yy-mm-dd', date);
-                var isAvailable = availableDates.findIndex(function (date) {
-                    return $.datepicker.formatDate('yy-mm-dd', date) == dateString;
-                }) >= 0;
-                var cssClass = isAvailable ? 'highlight' : 'disabled';
-                return [isAvailable, cssClass];
-            }
-        });
-    });
-</script>
-
 </body>
 </html>

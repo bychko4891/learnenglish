@@ -26,6 +26,11 @@ public class UserStatistics {
     private Long countDownloadPair;
     @Column(name = "training_time")
     private Long trainingTime;
+//    @ElementCollection
+//    @CollectionTable(name = "training_time_two_week",
+//            joinColumns = @JoinColumn(name = "user_statistics_id"))
+//    @Column(name = "training_time")
+//    private List<Integer> trainingTimeTwoWeek;
     @Column(name = "repetitions_count")
     private Long repetitionsCount;
     @Column(name = "repetitions_count_prev")

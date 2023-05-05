@@ -21,25 +21,21 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/registration")
-//    public String createUser(User user, Model model) {
     public ResponseEntity<String> createUser(@RequestBody User user) {
-//        System.out.println(user);
         if (!userService.createUser(user)) {
-//            model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Юзер з таким Email: " + user.getEmail() + " вже існує");
         }
         userService.createUser(user);
-//        return "redirect:/login";
         return ResponseEntity.ok("Ви успішно створили аккаунт");
     }
 
-    @PostMapping("/user/{userId}/update")
-    public ResponseEntity<String> userEditProfile(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
+    @PostMapping("/user/{userId}/edit")
+    public ResponseEntity<String> userDetailsEdit(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
                                                 @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            userService.updateUser(userId, firstName, lastName);
+            userService.updateUserInfo(userId, firstName, lastName);
             return ResponseEntity.ok("Інформація успішно оновлена");
         }
         return ResponseEntity.notFound().build();

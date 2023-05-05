@@ -200,3 +200,28 @@ $(document).ready(function () {
 
 });
 //********  Update Password User  END  *************** //
+var availableDates = [];
+var url = window.location.href;
+var userId = url.match(/user\/(\d+)/)[1];
+console.log(userId);
+url = '/user/' + userId + '/training-days';
+$.getJSON(url, function (data) {
+    var numberOfDays = data.length;
+    console.log(numberOfDays);
+    $('#numberOfDaysUser').text("Ви вже займаєтесь " + numberOfDays + " днів.");
+    availableDates = data.map(function (dateStr) {
+        var dateParts = dateStr.split('-');
+        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+    });
+    // після отримання даних з сервера, ініціалізуємо календар
+    $('#calendar').datepicker({
+        beforeShowDay: function (date) {
+            var dateString = $.datepicker.formatDate('yy-mm-dd', date);
+            var isAvailable = availableDates.findIndex(function (date) {
+                return $.datepicker.formatDate('yy-mm-dd', date) == dateString;
+            }) >= 0;
+            var cssClass = isAvailable ? 'highlight' : 'disabled';
+            return [isAvailable, cssClass];
+        }
+    });
+});

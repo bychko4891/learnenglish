@@ -5,11 +5,10 @@ import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.repository.UserStatisticsRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,6 @@ public class UserStatisticsService {
                 throw new IllegalArgumentException("Error training Days In Month ArrayList");
         }
     }
-
     @Transactional
     public void addTrainingDayInList(User user) {
 //        select count(training_day) from training_days_mount where user_statistics_id = '1';
@@ -47,19 +45,26 @@ public class UserStatisticsService {
             st.setTrainingDaysInMonth(Arrays.asList(date));
             userStatisticsRepository.save(st);
         } else {
-            try {
-                String querySearch = "SELECT training_day FROM training_days_mount WHERE user_statistics_id = :id AND training_day = :day";
-                entityManager.createNativeQuery(querySearch)
-                        .setParameter("id", user.getId())
-                        .setParameter("day", date)
-                        .getSingleResult();
-            } catch (NoResultException e) {
-                UserStatistics st = user.getStatistics();
-                st = entityManager.find(UserStatistics.class, st.getId());
-                st.getTrainingDaysInMonth().add(LocalDate.now());
-                entityManager.flush();
-                // запис не існує
-            }
+//            try {
+//                String querySearch = "SELECT training_day FROM training_days_mount WHERE user_statistics_id = :id AND training_day = :day";
+//                entityManager.createNativeQuery(querySearch)
+//                        .setParameter("id", user.getId())
+//                        .setParameter("day", date)
+//                        .getSingleResult();
+//            } catch (NoResultException e) {
+//               String queryAdd = "INSERT INTO training_days_mount (user_statistics_id, training_day) VALUES (:stId, :date)";
+               String queryAdd = "INSERT INTO training_days_mount (user_statistics_id, training_day) \n" +
+                       "SELECT :stId, :date \n" +
+                       "WHERE NOT EXISTS (SELECT 1 FROM training_days_mount WHERE user_statistics_id = :stId AND training_day = :date)";
+                entityManager.createNativeQuery(queryAdd)
+                        .setParameter("stId", user.getId())
+                        .setParameter("date", date)
+                        .executeUpdate();
+//                UserStatistics st = user.getStatistics();
+//                st = entityManager.find(UserStatistics.class, st.getId());
+//                st.getTrainingDaysInMonth().add(LocalDate.now());
+//                entityManager.flush();
+//            }
         }
     }
 
