@@ -30,23 +30,23 @@
                     <span class="item">Профіль</span>
                 </a>
             </li>
-            <li>
-                <a href="/about-the-app">
-                    <span class="icon"><i class="fas fa-user-friends"></i></span>
-                    <span class="item">Про додаток</span>
+            <li th:if="${userId}">
+                <a th:href="@{/user/{id}/statistics(id=${userId})}">
+                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <span class="item">Статистика</span>
                 </a>
             </li>
+
             <li th:if="${userId}">
                 <a th:href="@{/user/{id}/lesson/1(id=${userId})}">
                     <span class="icon"><i class="fas fa-desktop"></i></span>
                     <span class="item">Заняття</span>
                 </a>
             </li>
-
             <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                    <span class="item">Статистика</span>
+                <a href="/about-the-app">
+                    <span class="icon"><i class="fas fa-user-friends"></i></span>
+                    <span class="item">Про додаток</span>
                 </a>
             </li>
             <li>

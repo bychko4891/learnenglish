@@ -40,7 +40,7 @@ $(document).ready(function () {
             // var userId = window.location.href.split('/').pop();
             var url = window.location.href;
             var userId = url.match(/user\/(\d+)/)[1];
-            var url = '/user/' + userId + '/upload-avatar';
+            url = '/user/' + userId + '/upload-avatar';
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             $.ajax({
