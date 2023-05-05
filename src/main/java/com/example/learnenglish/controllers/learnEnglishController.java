@@ -50,9 +50,6 @@ public String index(Principal principal, Model model) {
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
-//            Resource resource = resourceLoader.getResource("/home/anatolii/Documents/learnEnglishImages" + user.getAvatarePath());
-//            model.addAttribute("avatareUser", resource.getURL().getPath());
-            // Перенаправити на сторінку з профілем користувача з його id
             return "about";
         }
         return "about";
@@ -63,21 +60,17 @@ public String index(Principal principal, Model model) {
     }
 
 
-//    @GetMapping("/login")
-//    public String loginPage(Model model) {
-//        model.addAttribute("title", "About the app Learn English");
-//        return "login";
-//    }
 
     @PostMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
-                        Model model) {
-        if (error != null) {
-            model.addAttribute("error", "Не вірний логін, або пароль!");
-        } else if (logout != null) {
-            model.addAttribute("logout", "Ви вийшли із системи.");
-        }
+                        Model model, Principal principal) {
+        model.addAttribute("title", "About the app Learn English");
+            if (error != null) {
+                model.addAttribute("error", "Не вірний логін, або пароль!");
+            } else if (logout != null) {
+                model.addAttribute("logout", "Ви вийшли із системи.");
+            }
         return "login";
     }
 

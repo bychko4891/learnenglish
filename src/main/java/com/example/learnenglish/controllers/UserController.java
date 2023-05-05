@@ -20,24 +20,6 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
 
-
-//    @RequestMapping("/login")
-//    public String login(@RequestParam(value = "error", required = false) String error,
-//                        @RequestParam(value = "logout", required = false) String logout,
-//                        Model model) {
-//        if (error != null) {
-//            model.addAttribute("error", "Не вірний логін, або пароль!");
-//        } else if (logout != null) {
-//            model.addAttribute("logout", "Ви вийшли із системи.");
-//        }
-//        return "login";
-//    }
-
-//    @GetMapping("/registration")
-//    public String registration() {
-//        return "registration";
-//    }
-
     @PostMapping("/registration")
 //    public String createUser(User user, Model model) {
     public ResponseEntity<String> createUser(@RequestBody User user) {

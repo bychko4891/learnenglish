@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -35,6 +38,20 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
+//public boolean createUser(User user) {
+//    String email = user.getEmail();
+//    if (userRepository.findByEmail(email).isPresent()) return false;
+//    user.setActive(true);
+//    user.setPassword(passwordEncoder.encode(user.getPassword()));
+//    user.getRoles().add(Role.ROLE_USER);
+//    log.info("Saving new User with email: {}", email);
+//    UserStatistics userStatistics = new UserStatistics();
+//    userStatistics.setTrainingDaysInMonth(new ArrayList<>()); // створюємо пустий ArrayList
+//    user.setStatistics(userStatistics);
+//    user.setUserAvatar(new UserAvatar());
+//    userRepository.save(user);
+//    return true;
+//}
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).get();

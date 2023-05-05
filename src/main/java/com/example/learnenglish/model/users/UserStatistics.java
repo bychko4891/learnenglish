@@ -1,17 +1,20 @@
 package com.example.learnenglish.model.users;
 
 import jakarta.persistence.*;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "user_statistics")
-@Data
+
 public class UserStatistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +28,15 @@ public class UserStatistics {
     private Long trainingTime;
     @Column(name = "repetitions_count")
     private Long repetitionsCount;
+    @Column(name = "repetitions_count_prev")
+    private Long repetitionsCountPrev;
     @Column(name = "days_count")
     private Long daysInARowCount;
+    @ElementCollection
+    @CollectionTable(name = "training_days_mount",
+            joinColumns = @JoinColumn(name = "user_statistics_id"))
+    @Column(name = "training_day")
+    private List<LocalDate> trainingDaysInMonth = new ArrayList<>();
     @Column(name = "error_count")
     private Long errorCount;
 

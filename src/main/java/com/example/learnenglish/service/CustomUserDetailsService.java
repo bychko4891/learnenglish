@@ -13,12 +13,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-private final UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserStatisticsService userStatisticsService;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser.isEmpty())   throw new UsernameNotFoundException("User with name not found");
-
+        if (optionalUser.isEmpty()) throw new UsernameNotFoundException("User with name not found");
+        userStatisticsService.addTrainingDayInList(optionalUser.get());
         return optionalUser.get();
     }
 }

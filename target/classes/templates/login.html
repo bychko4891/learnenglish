@@ -22,8 +22,7 @@
                                 </div>
                                 <br>
                                 <div class="inputBox">
-                                    <input type="password" required name="password" th:attr="id='psw'">
-                                    <!--                                       onkeyup="checkPassword(this.value)">-->
+                                    <input type="password" required name="password" th:attr="id='pswLogin'">
                                     <span class="span-text">Пароль</span>
                                     <span id="toggleBtn"></span>
                                 </div>
@@ -34,7 +33,7 @@
                             </form>
                             <br>
                             <div th:text="${error}" style="color: red"></div>
-                            <div th:text="${logout}"style="color: darkgreen"></div>
+                            <div th:text="${logout}"style="color: #47f847"></div>
                         </div>
                     </div>
                 </div>
@@ -51,6 +50,17 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-<script type="text/javascript" th:src="@{/js/checkPassword.js}"></script>
+<script>
+    let pswLogin = document.getElementById('pswLogin');
+    let toggleBtn = document.getElementById('toggleBtn');
+
+    toggleBtn.onclick = function () {
+        if (pswLogin.type === 'password') {
+            pswLogin.setAttribute('type', 'text');
+        } else {
+            pswLogin.setAttribute('type', 'password');
+        }
+    }
+</script>
 </body>
 </html>

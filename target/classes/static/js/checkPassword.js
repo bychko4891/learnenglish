@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     $(document).ready(function () {
         var resultDivSuccess = $('#result-success');
         var resultDivError = $('#result-error');
@@ -37,59 +37,26 @@ document.addEventListener('DOMContentLoaded', function() {
                                 setTimeout(function () {
                                     window.location.href = "/login";
                                 }, 5000);
-
-                                // Обробка успішної відповіді (ResponseEntity.ok())
                             }
-
-                            // else if (jqXHR.status === 409) {
-                            //     console.log("Conflict:", result);
-                            //     resultDivError.text(result);
-                            //     // setTimeout(hideMessageError, 5000);
-                            //     // Обробка конфлікту (ResponseEntity.status(HttpStatus.CONFLICT))
-                            // }
-                            // }
-                            // },error: function (jqXHR, textStatus, errorThrown) {
-                            //     console.log(jqXHR.responseText);
-                            //     resultDivError.text(jqXHR.responseText);
-                            // }
-
-                            // },
-
-
-                            // error: function (jqXHR, textStatus, errorThrown) {
-                            //     console.log("Error:", jqXHR.responseText);
-                            //     // Обробка помилки
-                            // }
-                            // var status = result.status;
-                            // console.log(status);
-                            // if (status == "Success") {
-                            //     $('textarea[name="ukrText"]').val('');
-                            //     $('textarea[name="engText"]').val('');
-                            //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                            //     resultDivSuccess.text(result.message);
-                            //     setTimeout(hideMessageSuccess, 5000);
-                            // } else {
-                            //     resultDivError.text(result.message);
-                            //     setTimeout(hideMessageError, 10000);
-                            // }
-                            // window.location.replace('https://example.com/newpage');
-                            // },
-
-                        }, error: function () {
-                            let shel = {};
-                            alert(Boolean(shel))
-                            // Поміщаємо повідомлення про помилку в div-елемент
-                            resultDivError.text('Помилка запиту на сервер');
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                            // let shel = {};
+                            // alert(Boolean(shel)) //  <--вікно підвердження
+                            resultDivError.text(xhr.responseText);
+                            setTimeout(hideMessageError, 5000);
                         }
-
                     });
                 } else {
-                    // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-                    alert('Пароль не співпадають!');
+                    // alert('Пароль не співпадають!');
+                    resultDivError.text('Пароль не співпадають!');
+                    setTimeout(hideMessageError, 4000);
                     return;
                 }
-            }else {
-                alert('Пароль не відповідає вимогам безпеки!');
+            } else {
+                // alert('Пароль не відповідає вимогам безпеки!');
+                resultDivError.text('Пароль не відповідає вимогам безпеки!');
+                setTimeout(hideMessageError, 4000);
                 return;
             }
         });
@@ -99,11 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
         //
         // }
 
-        // function hideMessageError() {
-        //
-        //     resultDivError.text('');
-        // }
+        function hideMessageError() {
 
+            resultDivError.text('');
+        }
 
         let psw = document.getElementById('psw');
         let confirmPassword = document.getElementById('confirmPassword');
@@ -166,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 toggleBtn.classList.remove('hide');
             }
         }
+
         function confPassword() {
             if (confirmPassword.type === 'password') {
                 confirmPassword.setAttribute('type', 'text');
@@ -175,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // toggleBtn.classList.remove('hide');
             }
         }
+
         psw.addEventListener('keyup', function () {
             checkPassword(this.value);
         });
