@@ -1,0 +1,90 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page row">
+            <div class="layout">
+                <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
+                <div class="page about-page">
+                    <!--                    <div class="page-contents">-->
+                    <main class="col-md-6 col-lg-7 block_left">
+                        <h3>Переклади речення на англійську мову: </h3><br/>
+                        <div id="ukr-text" class="text-show text-show-ukr"></div>
+                        <br/><br/>
+                        <button class="content_toggle btn">Дивитися переклад...</button>
+                        <br/><br/>
+                        <div class="content_block" style="display: none;">
+                            <div id="english-text" class="text-show text-show-eng">
+                            </div>
+                        </div>
+                        <br/>
+                        <form id="reload"
+                              th:action="@{/user/{userId}/lesson/{lessonId}/reload(userId=${userId},lessonId=${lessonId})}"
+                              method="get">
+                            <!--                                <form id="reload">-->
+                            <input type="hidden" name="lessonId" th:value="${lessonId}">
+                            <button type="submit">Оновити</button>
+                        </form>
+
+                    </main>
+                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+                        <p> Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст </p>
+                    </div>
+                </div>
+                <label class="nav" for="home">
+                    <span>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                             fill="none"
+                             stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path
+                                d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline
+                                points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        Навчатися
+                    </span>
+                </label>
+                <input name="nav" type="radio" class="about-radio" id="about"/>
+                <div class="page about-page">
+                    <!--                    <div class="page-contents">-->
+                    <main class="col-md-6 col-lg-7 block_left">
+                        <h1>Завантажити</h1>
+                        <form id="add-pair"
+                              th:action="@{/user/{userId}/lesson/{lessonId}/add(userId=${userId},lessonId=${lessonId})}"
+                              method="post">
+                            <textarea name="ukrText" rows="1" placeholder="Текст українською"></textarea><br><br>
+                            <textarea name="engText" rows="1" placeholder="In English"></textarea><br><br>
+                            <input type="hidden" name="lessonId" th:value="${lessonId}">
+                            <input type="hidden" name="userId" th:value="${userId}">
+                            <button type="submit">Завантажити</button>
+                            <br><br>
+                        </form>
+                        <div id="result-success"></div>
+                        <div id="result-error"></div>
+                    </main>
+                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+
+                        <p> Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст </p>
+                    </div>
+                </div>
+                <label class="nav" for="about">
+                    <span>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                             fill="none"
+                             stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12"
+                                                                                                       r="10"></circle><path
+                                d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12"
+                                                                                      y2="17"></line></svg>
+                         Завантажити
+                    </span>
+                </label>
+            </div>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+</body>
+</html>

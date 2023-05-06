@@ -1,0 +1,37 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page">
+<!--            <div class="layout_about">-->
+<!--            <article class="col-md-11 col-xl-9 layout_page">-->
+                <h1 th:text="'Hello, ' + ${main_title} + '!'"></h1>
+            <p style="font-style:italic"><span style="font-family:Verdana,Geneva,sans-serif"><span
+                    style="font-size:14px">
+Вітаємо вас на сторінці проекту Learn English! Цей додаток створений для вивчення англійської мови пометодиці відомого поліглота Дмитра Юрійовича Петрова &quot;Англійська за 16 годин&quot;.
+<br/>
+Цей додаток в першу чергу цілком для самостійного вивчення англійської мови, де тільки від користувачавсе залежить зокрема і успіх в здобутті нових мовних навичок.<br/>
+Користувач сам завантажує тексти для вивчення англійскої мови залежно від заняття.На кожне заняття є детальний опис, щоб розуміти, що потрібно завантажувати та які навички тренуються.
+<br/>
+Цей додаток базується на сучасних технологіях програмування, які дозволяють нам забезпечити швидку та ефективну роботу додатку та надійне
+зберігання даних користувачів.
+<br/>
+Для розробки додатку ми використовуємо мову програмування Java та Spring Boot фреймворк. Java є однією з найбільш популярних мов програмування у світі, і її використання забезпечує
+нам високу продуктивність та надійність додатку.</span></span></p>
+            <br/>
+            Spring Boot є одним з найбільш використовуваних фреймворків у світі для розробки веб-додатків. Віндозволяє нам швидко створювати складні веб-додатки зі значною кількістю функціональності</span></span>
+            </p>
+<!--            </div>-->
+<!--            </article>-->
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+</body>
+</html>
