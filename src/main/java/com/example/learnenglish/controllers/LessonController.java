@@ -48,5 +48,4 @@ public class LessonController {
         return ResponseEntity.ok(new ResponseStatus(Message.ERRORLOGIN));
     }
 
-
 }

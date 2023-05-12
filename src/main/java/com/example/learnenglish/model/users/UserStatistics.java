@@ -2,8 +2,10 @@ package com.example.learnenglish.model.users;
 
 import jakarta.persistence.*;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Columns;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,11 +28,11 @@ public class UserStatistics {
     private Long countDownloadPair;
     @Column(name = "training_time")
     private Long trainingTime;
-//    @ElementCollection
-//    @CollectionTable(name = "training_time_two_week",
-//            joinColumns = @JoinColumn(name = "user_statistics_id"))
-//    @Column(name = "training_time")
-//    private List<Integer> trainingTimeTwoWeek;
+    @ElementCollection
+    @CollectionTable(name = "training_time_two_week",
+            joinColumns = @JoinColumn(name = "user_statistics_id"))
+    @OrderColumn
+    private List<TrainingTimeUsersEmbeddable> trainingTimeTwoWeek = new ArrayList<>();
     @Column(name = "repetitions_count")
     private Long repetitionsCount;
     @Column(name = "repetitions_count_prev")
