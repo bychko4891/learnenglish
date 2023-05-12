@@ -112,6 +112,7 @@ public String index(Principal principal, Model model) {
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
+            model.addAttribute("lesson", lesson);
             return "lesson";
         }
         lessonId = lesson.getId();

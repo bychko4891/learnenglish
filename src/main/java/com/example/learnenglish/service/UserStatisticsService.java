@@ -67,5 +67,11 @@ public class UserStatisticsService {
 //            }
         }
     }
+    @Transactional
+    public void saveTrainingUserTime (){
+        String query = "INSERT INTO training_days_mount (user_statistics_id, training_day) \\n\" +\n" +
+                "                       \"SELECT :stId, :date \\n\" +\n" +
+                "                       \"WHERE NOT EXISTS (SELECT 1 FROM training_days_mount WHERE user_statistics_id = :stId AND training_day = :date)";
+    }
 
 }

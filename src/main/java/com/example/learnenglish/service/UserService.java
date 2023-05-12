@@ -90,16 +90,16 @@ public class UserService {
         }
 //        userRepository.save(user);
     }
-public void saveUserAvatar(Long userId, String userAvatarName){
-    Optional<User> optionalUser = userRepository.findById(userId);
-    if (optionalUser.isPresent()) {
-        User user = optionalUser.get();
-//        user.setUserAvatar(userAvatarName);
-        userRepository.save(user);
-//            return userRepository.save(user);
-    } else {
-        throw new IllegalArgumentException("User with id " + userId + " not found");
-    }
-}
+//public void saveUserAvatar(Long userId, String userAvatarName){
+//    Optional<User> optionalUser = userRepository.findById(userId);
+//    if (optionalUser.isPresent()) {
+//        User user = optionalUser.get();
+////        user.setUserAvatar(userAvatarName);
+//        userRepository.save(user);
+////            return userRepository.save(user);
+//    } else {
+//        throw new IllegalArgumentException("User with id " + userId + " not found");
+//    }
+//}
 
 }
