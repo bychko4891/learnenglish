@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Lesson</title>
+    <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+            referrerpolicy="origin"></script>
+</head>
+<body>
+<h1>Edit Lesson</h1>
+<form method="post" th:action="@{/lessons/lesson/{id}/edit(id=${lesson.id})}" th:object="${lesson}">
+    <label for="name">Lesson Name:</label>
+    <input type="text" id="name" name="name" th:value="${lesson.name}" required>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <label for="lessonInfo">Lesson Info:</label>
+    <textarea id="lessonInfo" name="lessonInfo" th:text="${lesson.lessonInfo}" th:attr="data-default-value=${lesson.lessonInfo}" required></textarea>
+    <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>
+
+    <script>
+        var lessonInfo = document.getElementById("lessonInfo");
+        if (!lessonInfo.value) {
+            lessonInfo.value = lessonInfo.getAttribute('data-default-value');
+        }
+        tinymce.init({
+            selector: 'textarea#lessonInfo',
+            height: 500,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tiny.cloud/css/codepen.min.css'
+            ],
+            api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
+            menubar: false,
+            statusbar: false,
+            branding: false
+        });
+    </script>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
