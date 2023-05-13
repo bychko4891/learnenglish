@@ -12,10 +12,14 @@
     <input type="text" id="name" name="name" th:value="${lesson.name}" required>
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
     <label for="lessonInfo">Lesson Info:</label>
-    <textarea id="lessonInfo" name="lessonInfo" th:field="${lesson.lessonInfo}" required></textarea>
+    <textarea id="lessonInfo" name="lessonInfo" th:text="${lesson.lessonInfo}" th:attr="data-default-value=${lesson.lessonInfo}" required></textarea>
     <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>
 
     <script>
+        var lessonInfo = document.getElementById("lessonInfo");
+        if (!lessonInfo.value) {
+            lessonInfo.value = lessonInfo.getAttribute('data-default-value');
+        }
         tinymce.init({
             selector: 'textarea#lessonInfo',
             height: 500,
