@@ -4,6 +4,7 @@ import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
@@ -30,6 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/edit")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<String> userDetailsEdit(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
                                                 @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
@@ -42,6 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/update-password")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ResponseStatus> userUpdatePassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
                                    @RequestParam(value = "newPassword") String newPassword, Principal principal) {
         if (principal != null) {
@@ -53,6 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/delete")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<User> userDelete(@PathVariable("userId") Long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();

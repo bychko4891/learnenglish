@@ -17,7 +17,7 @@
     <tr th:each="lesson : ${lessons}">
         <td th:text="${lesson.name}"></td>
         <td>
-            <a th:href="@{/lessons/lesson/{id}(id=${lesson.id})}" class="btn btn-primary">Edit</a>
+            <a th:href="@{/admin/lessons/lesson/{id}(id=${lesson.id})}" class="btn btn-primary">Edit</a>
         </td>
     </tr>
     </tbody>

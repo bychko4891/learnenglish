@@ -2,14 +2,12 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.io.IOException;
@@ -20,10 +18,12 @@ import java.security.Principal;
 public class learnEnglishController {
     private final ResourceLoader resourceLoader;
     private final UserService userService;
+    private final LessonService lessonService;
 
-    public learnEnglishController(ResourceLoader resourceLoader, UserService userService) {
+    public learnEnglishController(ResourceLoader resourceLoader, UserService userService, LessonService lessonService) {
         this.resourceLoader = resourceLoader;
         this.userService = userService;
+        this.lessonService = lessonService;
     }
 
 @GetMapping("/")
@@ -107,6 +107,7 @@ public String index(Principal principal, Model model) {
                              Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
+            lesson = lessonService.findById(lessonId);
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());

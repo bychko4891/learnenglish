@@ -69,8 +69,8 @@ public class SecurityConfig {
             "/images/**",
             "/",
             "/login",
-            "/tiny",
-            "/lessons/**",
+//            "/tiny",
+//            "/lessons/**",
             "/about-the-app",
             "/registration"
 
@@ -88,13 +88,13 @@ public class SecurityConfig {
         //        http.csrf().disable();
         http.authorizeRequests(request ->
                         request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+//                                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                                .requestMatchers("/user/**").hasRole("USER")
                                 .anyRequest()
                                 .authenticated()
                                 .and()
-//                                .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
                                 .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
 //                                .antMatchers("/api/test/**").addFilterBefore(customRequestLoggingFilter.getFilter(), BasicAuthenticationFilter.class)
-
                 )
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)

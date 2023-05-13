@@ -37,7 +37,7 @@ public class LessonController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping(path = "/user/{userId}/lesson/{lessonId}/add")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ResponseStatus> textADD(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
                                                   @Validated @RequestBody DtoTranslationPair dtoTranslationPair, Principal principal) {
         if (principal != null) {
