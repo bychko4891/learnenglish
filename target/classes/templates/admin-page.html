@@ -1,0 +1,23 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div class="wrapper">
+  <header th:replace="~{fragments/header :: header}"></header>
+  <div class="sidebar">
+    <div th:replace="~{fragments/menu :: menu}"></div>
+  </div>
+  <main class="section main_content ">
+    <div class="container layout_page">
+        <a href="/admin-page/lessons">Уроки </a>
+      <!--            <div class="layout_about">-->
+      <!--            <article class="col-md-11 col-xl-9 layout_page">-->
+
+      <!--            </div>-->
+      <!--            </article>-->
+    </div>
+  </main>
+  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+</body>
+</html>
