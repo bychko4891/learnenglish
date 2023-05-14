@@ -3,7 +3,7 @@ package com.example.learnenglish.model.users;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    USER, ADMIN, DEMO;
+    ROLE_USER, ROLE_ADMIN, ROLE_DEMO;
 
     @Override
     public String getAuthority() {

@@ -1,44 +1,43 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<div th:fragment="menu">
+<div th:fragment="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="sidebar">
 
-        <div class="profile" th:unless="${userId}">
+        <div class="profile" sec:authorize="isAnonymous()">
                             <img id="avatar" src="/images/logo.png" alt="Фото користувача">
             <h3 style="margin-top: 15px;">Learn English</h3>
 <!--            <p>Designer</p>-->
         </div>
-        <div class="profile" th:if="${userId}">
+        <div class="profile" sec:authorize="isAuthenticated()">
 <!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
 
             <img th:if="${avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}" alt="User avatar"/>
             <img th:unless="${avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
-
             <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>
 
         <ul class="main-menu">
-            <li th:unless="${userId}">
+            <li sec:authorize="isAnonymous()">
                 <a href="/">
                     <span class="icon"><i class="fas fa-home"></i></span>
                     <span class="item">Home</span>
                 </a>
             </li>
-            <li th:if="${userId}">
-                <a th:href="@{/user/{id}(id=${userId})}">
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}(id=${user.getId})}">
                     <span class="icon"><i class="fas fa-home"></i></span>
                     <span class="item">Профіль</span>
                 </a>
             </li>
-            <li th:if="${userId}">
-                <a th:href="@{/user/{id}/statistics(id=${userId})}">
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}/statistics(id=${user.getId})}">
                     <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                     <span class="item">Статистика</span>
                 </a>
             </li>
 
-            <li th:if="${userId}">
-                <a th:href="@{/user/{id}/lesson/1(id=${userId})}">
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}/lesson/1(id=${user.getId})}">
                     <span class="icon"><i class="fas fa-desktop"></i></span>
                     <span class="item">Заняття</span>
                 </a>
@@ -61,12 +60,14 @@
                     <span class="item">Reports</span>
                 </a>
             </li>
-            <li>
-                <a href="/admin/lessons">
+<!--            <th:block th:if="${userRole == 'ADMIN'}">-->
+            <li sec:authorize="hasRole('ROLE_ADMIN')">>
+                <a href="/admin-page">
                     <span class="icon"><i class="fas fa-user-shield"></i></span>
                     <span class="item">Admin</span>
                 </a>
             </li>
+<!--            </th:block>-->
 <!--            <li th:unless="${userId}">-->
 <!--                <a th:href="@{/user/{id}(id=${userId})}">-->
 <!--                    <span class="icon"><i class="fas fa-cog"></i></span>-->

@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/edit")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<String> userDetailsEdit(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
                                                 @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/update-password")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseStatus> userUpdatePassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
                                    @RequestParam(value = "newPassword") String newPassword, Principal principal) {
         if (principal != null) {
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/delete")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<User> userDelete(@PathVariable("userId") Long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();

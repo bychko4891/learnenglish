@@ -49,7 +49,8 @@ public String index(Principal principal, Model model) {
             Long userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-            model.addAttribute("userId", userId);
+//            model.addAttribute("userId", userId);
+//            model.addAttribute("userRole", user.getAuthority());
             model.addAttribute("user", user);
             return "about";
         }
@@ -82,7 +83,6 @@ public String index(Principal principal, Model model) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-            model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "user-info";
         }
@@ -95,7 +95,6 @@ public String index(Principal principal, Model model) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-            model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             return "statistics";
         }
@@ -111,14 +110,10 @@ public String index(Principal principal, Model model) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-            model.addAttribute("userId", userId);
             model.addAttribute("user", user);
             model.addAttribute("lesson", lesson);
             return "lesson";
         }
-        lessonId = lesson.getId();
-//        model.addAttribute(lesson);
-        model.addAttribute("lessonId", lessonId);
-        return "lesson";
+        return "redirect:/login";
     }
 }

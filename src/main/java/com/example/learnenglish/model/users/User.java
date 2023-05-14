@@ -35,15 +35,19 @@ public class User implements UserDetails {
     private UserAvatar userAvatar;
     @Column(name = "password", length = 1000)
     private String password;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "statistics_id")
     private UserStatistics statistics;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<TranslationPair> translationPairs = new ArrayList<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> authority = new HashSet<>();
+
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
     @PrePersist
@@ -57,7 +61,7 @@ public class User implements UserDetails {
     // -------    security     ---------- //
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return authority;
     }
 
     public String getPassword() {

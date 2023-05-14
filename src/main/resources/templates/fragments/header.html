@@ -1,5 +1,5 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<header th:fragment="header">
+<header th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="section">
         <div class="top_navbar">
             <div class="hamburger">
@@ -7,21 +7,21 @@
                     <i class="fas fa-bars"></i>
                 </a>
             </div>
-            <div style="right: 195px; position: absolute;" th:unless="${userId}">
+            <div style="right: 195px; position: absolute;" sec:authorize="isAnonymous()">
                 <form action="/login" target="_parent">
                     <button class="btn_main" type="submit">Увійти</button>
                 </form>
             </div>
-            <div style="right: 185px; position: absolute; top: 5px; font-size: 30px;" th:unless="${userId}">
+            <div style="right: 185px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">
                 <p style="color: white;">/</p>
             </div>
-            <div style="right: 38px; position: absolute;" th:unless="${userId}">
+            <div style="right: 38px; position: absolute;" sec:authorize="isAnonymous()">
                 <form action="/registration" target="_parent">
                     <button class="btn_main">Зареєструватися</button>
                 </form>
             </div>
 
-            <div style="right: 40px; position: absolute;" th:if="${userId}">
+            <div style="right: 40px; position: absolute;" sec:authorize="isAuthenticated()">
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <button class="btn_main" type="submit">Вийти</button>

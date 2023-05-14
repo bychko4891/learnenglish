@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Edit Lesson</h1>
-<form method="post" th:action="@{/lessons/lesson/{id}/edit(id=${lesson.id})}" th:object="${lesson}">
+<form method="post" th:action="@{/admin-page/lessons/lesson/{id}/edit(id=${lesson.id})}" th:object="${lesson}">
     <label for="name">Lesson Name:</label>
     <input type="text" id="name" name="name" th:value="${lesson.name}" required>
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>

@@ -34,8 +34,7 @@ import java.util.Arrays;
         prePostEnabled = true)
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
-//    @Autowired
-//    private FilterRegistrationBean<CustomRequestLoggingFilter> customRequestLoggingFilter;
+
 
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
@@ -88,7 +87,7 @@ public class SecurityConfig {
         //        http.csrf().disable();
         http.authorizeRequests(request ->
                         request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/admin-page/**").hasRole("ADMIN")
 //                                .requestMatchers("/user/**").hasRole("USER")
                                 .anyRequest()
                                 .authenticated()
