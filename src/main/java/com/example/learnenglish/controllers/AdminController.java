@@ -31,9 +31,18 @@ public class AdminController {
 //        model.addAttribute("user", user);
 //        return "user-info";
 //    }
+//    @GetMapping("/*")
+//    public void useraddPage(Model model, Principal principal){
+//        if (principal != null) {
+//            User user = userService.findByEmail(principal.getName());
+//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+//            model.addAttribute("user", user);
+//        }
+//    }
     @GetMapping
     public String adminPage(Model model, Principal principal) {
         if (principal != null) {
+
             User user = userService.findByEmail(principal.getName());
             List<Lesson> lessons = lessonService.lessonsListToAdminPage();
             model.addAttribute("user", user);

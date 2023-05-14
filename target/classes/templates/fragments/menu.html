@@ -10,8 +10,8 @@
         <div class="profile" sec:authorize="isAuthenticated()">
 <!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
 
-            <img th:if="${avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}" alt="User avatar"/>
-            <img th:unless="${avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
+            <img th:if="${session.avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
+            <img th:unless="${session.avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
             <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>

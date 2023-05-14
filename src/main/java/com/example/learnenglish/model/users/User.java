@@ -27,12 +27,14 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name = "email")
     private String email;
+
     @Column(name = "active")
     private boolean active;
 //    @Column(name = "avatare_path", length = 1000)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")
     private UserAvatar userAvatar;
+
     @Column(name = "password", length = 1000)
     private String password;
 

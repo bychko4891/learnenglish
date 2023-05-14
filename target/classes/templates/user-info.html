@@ -65,8 +65,13 @@
                             </div>
                             <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
                         </div>
-                        Roles: <span sec:authentication="principal.authorities">[USER, ADMIN]</span>
+                        Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
                         Logged user: <span sec:authentication="name"></span>
+                        <p>Welcome, <span th:text="${session.username}"></span>!</p>
+                        <p>Your roles: <span th:each="authority : ${session.authorities}" th:text="${authority.authority} + ' '"></span></p>
+                        <p>Your avatar name: <span th:text="${session.avatarName}"></span></p>
+
+
                     </div>
                 </div>
                 <label class="nav" for="home">

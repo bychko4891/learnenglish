@@ -25,7 +25,6 @@ public class learnEnglishController {
         this.userService = userService;
         this.lessonService = lessonService;
     }
-
 @GetMapping("/")
 public String index(Principal principal, Model model) {
     if (principal != null) {
@@ -48,7 +47,7 @@ public String index(Principal principal, Model model) {
             // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
 //            model.addAttribute("userId", userId);
 //            model.addAttribute("userRole", user.getAuthority());
             model.addAttribute("user", user);
@@ -82,7 +81,7 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("user", user);
             return "user-info";
         }
@@ -94,7 +93,7 @@ public String index(Principal principal, Model model) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("user", user);
             return "statistics";
         }
@@ -109,7 +108,7 @@ public String index(Principal principal, Model model) {
             lesson = lessonService.findById(lessonId);
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
+//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
             model.addAttribute("user", user);
             model.addAttribute("lesson", lesson);
             return "lesson";

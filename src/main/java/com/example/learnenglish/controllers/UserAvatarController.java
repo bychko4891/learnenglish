@@ -29,6 +29,7 @@ public class UserAvatarController {
         this.userService = userService;
     }
     @PostMapping("/user/{userId}/upload-avatar")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public void uploadFile(@PathVariable("userId") Long userId, @RequestParam("file") MultipartFile file, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
@@ -50,6 +51,7 @@ public class UserAvatarController {
 
 
     @GetMapping("/avatar/{fileName:.+}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN', 'ROLE_DEMO')")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
         // Load file as Resource | Завантажити файл як ресурс
 //        String name = userAvatarService.avatareName(fileName);

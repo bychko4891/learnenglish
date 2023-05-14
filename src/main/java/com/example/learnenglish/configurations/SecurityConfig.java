@@ -1,7 +1,10 @@
 package com.example.learnenglish.configurations;
 
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.CustomUserDetailsService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import java.util.Arrays;
@@ -41,7 +46,6 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
 
     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -102,6 +106,14 @@ public class SecurityConfig {
                                 .usernameParameter(USERNAME)
                                 .passwordParameter(PASSWORD)
 //                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+                                .successHandler((request, response, authentication) -> {
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("username", authentication.getName());
+                                    session.setAttribute("authorities", authentication.getAuthorities());
+                                    User user = (User) authentication.getPrincipal();
+                                    session.setAttribute("avatarName", user.getUserAvatar().getAvatarName());
+                                    response.sendRedirect("/");
+                                })
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
