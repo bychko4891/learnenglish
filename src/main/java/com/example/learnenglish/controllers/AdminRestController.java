@@ -1,6 +1,8 @@
 package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.responsestatus.Message;
+import com.example.learnenglish.responsestatus.ResponseStatus;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +34,11 @@ public class AdminRestController {
         return ResponseEntity.ok("No");
     }
     @PostMapping("/lessons/add-new-lesson")
-    public ResponseEntity<String> createLessons(@RequestBody Lesson lesson, Principal principal) {
+    public ResponseEntity<ResponseStatus> createLessons(@RequestBody Lesson lesson, Principal principal) {
         if (principal != null) {
 //            lessonService.createLesson(lesson);
-            if(lessonService.createLesson(lesson)) return ResponseEntity.ok("Ok");
+            if(lessonService.createLesson(lesson)) return ResponseEntity.ok(new ResponseStatus(Message.SUCCESS_CREATELESSON));
         }
-        return ResponseEntity.ok("No");
+        return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CREATELESSON));
     }
 }

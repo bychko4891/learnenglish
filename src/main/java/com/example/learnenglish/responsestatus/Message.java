@@ -8,7 +8,9 @@ public enum Message {
     ERRORNULLRELOAD("Error","Ви ще не завантажили жодного текста для навчання"),
     ERRORLOGIN("Error", " Ви не авторизувались і не можете завантажувати текст"),
     ERROR_UPDATEPASSWORD("Error", "Паролі не співпадають"),
-    SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено");
+    SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено"),
+    SUCCESS_CREATELESSON("Success", "Нове заняття створено"),
+    ERROR_CREATELESSON("Success", "Виникла помилка в створенні заняття");
 
     private String status;
     private String message;

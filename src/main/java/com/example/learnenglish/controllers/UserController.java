@@ -2,6 +2,7 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final HttpSession session;
 
     @PostMapping("/registration")
     public ResponseEntity<String> createUser(@RequestBody User user) {
@@ -38,6 +40,8 @@ public class UserController {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             userService.updateUserInfo(userId, firstName, lastName);
+            session.setAttribute("userFirstName", firstName);
+            session.setAttribute("userLastName", lastName);
             return ResponseEntity.ok("Інформація успішно оновлена");
         }
         return ResponseEntity.notFound().build();

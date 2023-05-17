@@ -16,6 +16,8 @@
 <!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
                     <button type="submit">New lesson</button>
                 </form>
+                <div id="result-success"></div>
+                <div id="result-error"></div>
             </div>
             <table>
                 <thead>
@@ -41,8 +43,8 @@
 <script>
     // ************   Додавання тексту в базу   *************** //
     $(document).ready(function () {
-        // var resultDivSuccess = $('#result-success');
-        // var resultDivError = $('#result-error');
+        var resultDivSuccess = $('#result-success');
+        var resultDivError = $('#result-error');
         $('#createLesson').submit(function (event) {
             event.preventDefault();
             // Get CSRF token from the meta tag-->
@@ -63,19 +65,15 @@
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function (result) {
-                    console.log(result);
-
-
-                    // if (status == "Success") {
-                        // $('textarea[name="ukrText"]').val('');
-                        // $('textarea[name="engText"]').val('');
-                        // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        // resultDivSuccess.text(result.message);
-                        // setTimeout(hideMessageSuccess, 5000);
-                    // } else {
-                        // resultDivError.text(result.message);
-                        // setTimeout(hideMessageError, 10000);
-                    // }
+                    var status = result.status;
+                    // location.reload();
+                    if (status == "Success") {
+                        resultDivSuccess.text(result.message);
+                        setTimeout(hideMessageSuccess, 3000);
+                    } else {
+                        resultDivError.text(result.message);
+                        setTimeout(hideMessageError, 3000);
+                    }
                 },
                 error: function () {
                     let shel = {};
@@ -89,11 +87,10 @@
 
         function hideMessageSuccess() {
             resultDivSuccess.text('');
-
+            location.reload();
         }
 
         function hideMessageError() {
-
             resultDivError.text('');
         }
     });

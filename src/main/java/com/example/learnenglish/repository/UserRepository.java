@@ -11,6 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(long id);
     @Query("select u.password from User u where u.email = :username")
     String getPasswordByUsername(String username);
-//    @Query("select u from User u where u.authority = :role_admin")
-//    boolean existsByUsernameAdmin(String role_admin);
+
 }
