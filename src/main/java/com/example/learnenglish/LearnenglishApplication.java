@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 		FileStorageProperties.class
 })
 public class LearnenglishApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(LearnenglishApplication.class, args);
 	}

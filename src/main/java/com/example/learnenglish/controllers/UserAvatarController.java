@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
 @RestController
-@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class UserAvatarController {
     private static final Logger logger = LoggerFactory.getLogger(UserAvatarController.class);
     private final UserAvatarService userAvatarService;
@@ -54,7 +53,6 @@ public class UserAvatarController {
 
 
     @GetMapping("/avatar/{fileName:.+}")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN', 'ROLE_DEMO')")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
         // Load file as Resource | Завантажити файл як ресурс
 //        String name = userAvatarService.avatareName(fileName);
