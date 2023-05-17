@@ -12,7 +12,7 @@
 
             <img th:if="${session.avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
             <img th:unless="${session.avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
-            <h6 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" style="margin-top: 15px;"></h6>
+            <h6 th:text="${session.userFirstName} + ' ' + ${session.userLastName}" style="margin-top: 15px;"></h6>
 <!--            <p>Designer</p>-->
         </div>
 
@@ -24,20 +24,20 @@
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/{id}(id=${user.getId})}">
+                <a th:href="@{/user/{id}(id=${session.userId})}">
                     <span class="icon"><i class="fas fa-home"></i></span>
                     <span class="item">Профіль</span>
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/{id}/statistics(id=${user.getId})}">
+                <a th:href="@{/user/{id}/statistics(id=${session.userId})}">
                     <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                     <span class="item">Статистика</span>
                 </a>
             </li>
 
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/{id}/lesson/1(id=${user.getId})}">
+                <a th:href="@{/user/{id}/lesson/1(id=${session.userId})}">
                     <span class="icon"><i class="fas fa-desktop"></i></span>
                     <span class="item">Заняття</span>
                 </a>
@@ -61,7 +61,7 @@
                 </a>
             </li>
 <!--            <th:block th:if="${userRole == 'ADMIN'}">-->
-            <li sec:authorize="hasRole('ROLE_ADMIN')">>
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <a href="/admin-page">
                     <span class="icon"><i class="fas fa-user-shield"></i></span>
                     <span class="item">Admin</span>

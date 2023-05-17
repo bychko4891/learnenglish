@@ -1,26 +1,33 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-
+<head th:replace="~{fragments/head :: head}"></head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="lesson : ${lessons}">
-        <td th:text="${lesson.name}"></td>
-        <td>
-            <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}" class="btn btn-primary">Edit</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="lesson : ${lessons}">
+                    <td th:text="${lesson.name}"></td>
+                    <td>
+                        <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
 </body>
 </html>

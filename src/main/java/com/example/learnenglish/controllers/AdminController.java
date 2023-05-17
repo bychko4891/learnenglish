@@ -4,6 +4,7 @@ import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +45,9 @@ public class AdminController {
         if (principal != null) {
 
             User user = userService.findByEmail(principal.getName());
-            List<Lesson> lessons = lessonService.lessonsListToAdminPage();
+//            List<Lesson> lessons = lessonService.lessonsListToAdminPage();
             model.addAttribute("user", user);
-            model.addAttribute("lessons", lessons);
+//            model.addAttribute("lessons", lessons);
             return "admin-page";
         }
         return "redirect:/login";
@@ -62,16 +63,7 @@ public class AdminController {
         return "redirect:/login";
     }
 
-    @RequestMapping("/lessons/lesson/{id}/edit")
-    public String lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
-        if (principal != null) {
-            id = lesson.getId();
-            lessonService.lessonSave(lesson);
-            model.addAttribute("lesson", lesson);
-            return "lesson-edit";
-        }
-        return "redirect:/login";
-    }
+
 
     @GetMapping("/lessons/lesson/{id}")
     public String lessonEditPage(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {

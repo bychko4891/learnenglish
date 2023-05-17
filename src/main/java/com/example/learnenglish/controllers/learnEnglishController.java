@@ -115,4 +115,18 @@ public String index(Principal principal, Model model) {
         }
         return "redirect:/login";
     }
+
+    // ******************  Admin page  ********* //
+    @GetMapping("/lessons/lesson/{id}/edit")
+    public String lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
+
+//        model.addAttribute("lesson", lesson);
+        if (principal != null) {
+//            id = lesson.getId();
+//            lessonService.lessonSave(lesson);
+
+            return "lesson-edit";
+        }
+        return "redirect:/login";
+    }
 }

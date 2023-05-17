@@ -112,6 +112,9 @@ public class SecurityConfig {
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     User user = (User) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getAvatarName());
+                                    session.setAttribute("userFirstName", user.getFirstName());
+                                    session.setAttribute("userLastName", user.getLastName());
+                                    session.setAttribute("userId", user.getId());
                                     response.sendRedirect("/");
                                 })
                 )
