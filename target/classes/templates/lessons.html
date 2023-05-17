@@ -9,6 +9,14 @@
     </div>
     <main class="section main_content ">
         <div class="container layout_page">
+            <div>
+                <form method="post" action="/admin-page/lessons/add-new-lesson" id="createLesson">
+                    <input type="hidden" name="name" value="newLesson">
+                    <input type="hidden" name="lessonInfo" value="lessonInfo">
+<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+                    <button type="submit">New lesson</button>
+                </form>
+            </div>
             <table>
                 <thead>
                 <tr>
@@ -20,7 +28,8 @@
                 <tr th:each="lesson : ${lessons}">
                     <td th:text="${lesson.name}"></td>
                     <td>
-                        <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}" class="btn btn-primary">Edit</a>
+                        <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}"
+                           class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
                 </tbody>
@@ -29,5 +38,65 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
+<script>
+    // ************   Додавання тексту в базу   *************** //
+    $(document).ready(function () {
+        // var resultDivSuccess = $('#result-success');
+        // var resultDivError = $('#result-error');
+        $('#createLesson').submit(function (event) {
+            event.preventDefault();
+            // Get CSRF token from the meta tag-->
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var url = $(this).attr('action');
+            var formData = $(this).serializeArray();
+            var jsonFormData = {};
+            $(formData).each(function (index, obj) {
+                jsonFormData[obj.name] = obj.value;
+            });
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(jsonFormData),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    console.log(result);
+
+
+                    // if (status == "Success") {
+                        // $('textarea[name="ukrText"]').val('');
+                        // $('textarea[name="engText"]').val('');
+                        // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                        // resultDivSuccess.text(result.message);
+                        // setTimeout(hideMessageSuccess, 5000);
+                    // } else {
+                        // resultDivError.text(result.message);
+                        // setTimeout(hideMessageError, 10000);
+                    // }
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                    // Поміщаємо повідомлення про помилку в div-елемент
+                    resultDivError.text('Помилка запиту на сервер');
+                }
+            });
+
+        });
+
+        function hideMessageSuccess() {
+            resultDivSuccess.text('');
+
+        }
+
+        function hideMessageError() {
+
+            resultDivError.text('');
+        }
+    });
+</script>
 </body>
 </html>

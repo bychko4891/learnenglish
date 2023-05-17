@@ -18,15 +18,31 @@ public class LessonService {
     public Lesson findById(long id) {
         return lessonRepository.findById(id).get();
     }
-    public List<Lesson> lessonsListToAdminPage(){
+
+    public List<Lesson> lessonsListToAdminPage() {
         return (List<Lesson>) lessonRepository.findAll();
     }
-    public void lessonSave(Lesson lesson){
+
+    public void lessonEdit(Lesson lesson) {
         Optional<Lesson> optionalLesson = lessonRepository.findById(lesson.getId());
         if (!optionalLesson.isPresent()) {
             throw new IllegalArgumentException("Lesson with id " + lesson.getId() + " not found");
-        }else {
-            lessonRepository.save(lesson);
+        } else {
+            Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
+            if (lessonOptional.isPresent()) {
+                Lesson lessonFromBase = lessonOptional.get();
+                lessonFromBase.setName(lesson.getName());
+                lessonFromBase.setLessonInfo(lesson.getLessonInfo());
+                lessonRepository.save(lessonFromBase);
+            }
         }
     }
+
+    public boolean createLesson(Lesson lesson) {
+        System.out.println(lesson.toString());
+        lessonRepository.save(lesson);
+        return true;
+    }
+
+
 }

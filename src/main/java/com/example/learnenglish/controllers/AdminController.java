@@ -70,12 +70,12 @@ public class AdminController {
         if (principal != null) {
             id = lesson.getId();
             lesson = lessonService.findById(id);
-            if (lesson.getLessonInfo() != null) {
+            if (lesson.getLessonInfo() == null || lesson.getName().equals("newLesson")) {
+                lesson.setName("Заняття № " + lesson.getId());
+                lesson.setLessonInfo("Опис заняття");
                 model.addAttribute("lesson", lesson);
                 return "lesson-edit";
             } else {
-                lesson.setName("Заняття № " + lesson.getId());
-                lesson.setLessonInfo("Опис заняття");
                 model.addAttribute("lesson", lesson);
                 return "lesson-edit";
             }

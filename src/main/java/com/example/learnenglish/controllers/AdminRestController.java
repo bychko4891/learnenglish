@@ -6,9 +6,7 @@ import com.example.learnenglish.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 @RestController
@@ -22,15 +20,22 @@ public class AdminRestController {
         this.userService = userService;
     }
 
-    @RequestMapping("/lessons/lesson/{id}/edit")
+    @PostMapping("/lessons/lesson/{id}/edit")
     public ResponseEntity<String> lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
 
 //        model.addAttribute("lesson", lesson);
         if (principal != null) {
             id = lesson.getId();
-            lessonService.lessonSave(lesson);
-
+            lessonService.lessonEdit(lesson);
             return ResponseEntity.ok("Ok");
+        }
+        return ResponseEntity.ok("No");
+    }
+    @PostMapping("/lessons/add-new-lesson")
+    public ResponseEntity<String> createLessons(@RequestBody Lesson lesson, Principal principal) {
+        if (principal != null) {
+//            lessonService.createLesson(lesson);
+            if(lessonService.createLesson(lesson)) return ResponseEntity.ok("Ok");
         }
         return ResponseEntity.ok("No");
     }
