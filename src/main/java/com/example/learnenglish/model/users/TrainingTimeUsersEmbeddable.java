@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 @Embeddable
 public class TrainingTimeUsersEmbeddable {
+//    @Column(name = "statistic_id")
+//    private Long statisticId;
     @Column(name = "training_time_start")
     private LocalDateTime trainingTimeStart;
 

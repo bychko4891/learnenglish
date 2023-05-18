@@ -10,6 +10,7 @@ import org.hibernate.annotations.Columns;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -28,14 +29,17 @@ public class UserStatistics {
     @Column(name = "count_pair")
     private Long countDownloadPair;
 
-    @Column(name = "training_time")
-    private Long trainingTime;
+    @ElementCollection
+    @CollectionTable(name = "study_time_in_two_weeks",
+            joinColumns = @JoinColumn(name = "user_statistics_id"))
+    @Column(name = "amount_of_time_per_day")
+    private List<Integer> studyTimeInTwoWeeks = new ArrayList<>();
 
     @ElementCollection
-    @CollectionTable(name = "training_time_two_week",
+    @CollectionTable(name = "training_time_start_end",
             joinColumns = @JoinColumn(name = "user_statistics_id"))
-    @OrderColumn
     private List<TrainingTimeUsersEmbeddable> trainingTimeTwoWeek = new ArrayList<>();
+
     @Column(name = "repetitions_count")
     private Long repetitionsCount;
 

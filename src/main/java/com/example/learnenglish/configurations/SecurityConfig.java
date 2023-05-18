@@ -139,13 +139,7 @@ public class SecurityConfig {
         return filter;
     }
 
-//    @Bean
-//    public FilterRegistrationBean<CustomRequestLoggingFilter> customLoggingFilter() {
-//        FilterRegistrationBean<CustomRequestLoggingFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new CustomRequestLoggingFilter());
-//        registrationBean.setUrlPatterns(Arrays.asList("/user/*/lesson/*"));
-//        return registrationBean;
-//    }
+
 //    @Bean
 //    public CommonsRequestLoggingFilter requestLoggingFilter() {
 //        CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();

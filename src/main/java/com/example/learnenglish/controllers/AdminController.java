@@ -27,19 +27,7 @@ public class AdminController {
         this.userService = userService;
     }
 
-    //    @RequestMapping(path = {"/","/user/{user}"})
-//    public String userInfo(@PathVariable("user") User user, Model model) {
-//        model.addAttribute("user", user);
-//        return "user-info";
-//    }
-//    @GetMapping("/*")
-//    public void useraddPage(Model model, Principal principal){
-//        if (principal != null) {
-//            User user = userService.findByEmail(principal.getName());
-//            model.addAttribute("avatarName",user.getUserAvatar().getAvatarName());
-//            model.addAttribute("user", user);
-//        }
-//    }
+
     @GetMapping
     public String adminPage(Model model, Principal principal) {
         if (principal != null) {
@@ -79,6 +67,15 @@ public class AdminController {
                 model.addAttribute("lesson", lesson);
                 return "lesson-edit";
             }
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/lessons/lesson/{id}/edit")
+    public String lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
+        if (principal != null) {
+            lesson = lessonService.findById(id);
+            model.addAttribute("lesson", lesson);
+            return "lesson-edit";
         }
         return "redirect:/login";
     }

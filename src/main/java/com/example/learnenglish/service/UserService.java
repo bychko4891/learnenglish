@@ -1,9 +1,6 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.model.users.Role;
-import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.model.users.UserAvatar;
-import com.example.learnenglish.model.users.UserStatistics;
+import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.repository.UserStatisticsRepository;
 import com.example.learnenglish.responsestatus.Message;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +31,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
-        user.setStatistics(new UserStatistics());
+        UserStatistics userStatistics = new UserStatistics();
+        List<TrainingTimeUsersEmbeddable> list = new ArrayList<>();
+        userStatistics.setTrainingTimeTwoWeek(list);
+        user.setStatistics(userStatistics);
         user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
         return true;

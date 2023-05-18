@@ -54,13 +54,9 @@ public class UserAvatarController {
 
     @GetMapping("/avatar/{fileName:.+}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
-        // Load file as Resource | Завантажити файл як ресурс
-//        String name = userAvatarService.avatareName(fileName);
         Resource resource = userAvatarService.loadFileAsResource(fileName);
-
         InputStream in = resource.getInputStream();
         byte[] imageBytes = IOUtils.toByteArray(in);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG); // встановити тип контенту як image/jpeg, або image/png, залежно від формату зображення
         headers.setContentLength(imageBytes.length);
