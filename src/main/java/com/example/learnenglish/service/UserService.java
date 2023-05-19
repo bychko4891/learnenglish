@@ -31,10 +31,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
-        UserStatistics userStatistics = new UserStatistics();
-        List<TrainingTimeUsersEmbeddable> list = new ArrayList<>();
-        userStatistics.setTrainingTimeTwoWeek(list);
-        user.setStatistics(userStatistics);
+        user.setStatistics(new UserStatistics());
         user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
         return true;
