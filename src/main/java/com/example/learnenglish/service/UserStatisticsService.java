@@ -1,5 +1,6 @@
 package com.example.learnenglish.service;
 
+import com.example.learnenglish.dto.DtoUserStatisticsToUi;
 import com.example.learnenglish.model.users.TrainingTimeUsersEmbeddable;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserStatistics;
@@ -27,13 +28,29 @@ public class UserStatisticsService {
         this.entityManager = entityManager;
     }
 
+    public DtoUserStatisticsToUi trainingStatistics(Long userId) {
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent()) {
+            UserStatistics userStatistics = userStatisticsOptional.get();
+            DtoUserStatisticsToUi  dtoUserStatisticsToUi = new DtoUserStatisticsToUi();
+            dtoUserStatisticsToUi.setStudyTimeInTwoWeeks(userStatistics.getStudyTimeInTwoWeeks());
+            dtoUserStatisticsToUi.setRepetitionsCount(userStatistics.getRepetitionsCount());
+            dtoUserStatisticsToUi.setRepetitionsCountPrev(userStatistics.getRepetitionsCountPrev());
+            dtoUserStatisticsToUi.setRepetitionsCountNow(userStatistics.getRepetitionsCountNow());
+            dtoUserStatisticsToUi.setDaysInARowCount(userStatistics.getDaysInARowCount());
+            dtoUserStatisticsToUi.setErrorCount(userStatistics.getErrorCount());
+            return dtoUserStatisticsToUi;
+        } else {
+            throw new IllegalArgumentException("Error training Days In Month ArrayList");
+        }
+    }
     public List trainingDays(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             List trainingDaysInMonth = userStatisticsOptional.get().getTrainingDaysInMonth();
             return trainingDaysInMonth;
         } else {
-            throw new IllegalArgumentException("Error training Days In Month ArrayList");
+            throw new IllegalArgumentException("Error training Days In trainingStatistics method");
         }
     }
 
@@ -124,16 +141,15 @@ public class UserStatisticsService {
             UserStatistics userStatistics = userStatisticsOptional.get();
             List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
             int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size() - 1);
-            double timeNowInSeconds = (localDateTimeNow.getHour() * 3600) + (localDateTimeNow.getMinute() * 60) + (localDateTimeNow.getSecond());
-            double timeBaseInSeconds = (localDateTimeBase.getHour() * 3600) + (localDateTimeBase.getMinute() * 60) + (localDateTimeBase.getSecond());
-            double result = Math.ceil(timeNowInSeconds - timeBaseInSeconds) / 60;
-            System.out.println(result);
-            studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + (int) (Math.ceil((timeNowInSeconds - timeBaseInSeconds) / 60)));
+            int timeNowInSeconds = (localDateTimeNow.getHour() * 3600) + (localDateTimeNow.getMinute() * 60) + (localDateTimeNow.getSecond());
+            int timeBaseInSeconds = (localDateTimeBase.getHour() * 3600) + (localDateTimeBase.getMinute() * 60) + (localDateTimeBase.getSecond());
+            studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + ((timeNowInSeconds - timeBaseInSeconds)));
             userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
             userStatisticsRepository.save(userStatistics);
         } else if (userStatisticsOptional.isPresent() && day.equals("new day")) {
             UserStatistics userStatistics = userStatisticsOptional.get();
             List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+            saveRepetitionsCountPrev(userStatistics);
             if (studyTimeInTwoWeeks.size() < 14) {
                 studyTimeInTwoWeeks.add(0);
                 userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
@@ -148,15 +164,51 @@ public class UserStatisticsService {
         } else System.out.println("Error -> public void countTimeInWeeks  ");
 
     }
-public List timeWeeks(Long userId){
-    Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
-    if (userStatisticsOptional.isPresent()) {
+
+    public List timeWeeks(Long userId) {
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent()) {
 //        List studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-        return userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-    } else {
-        throw new IllegalArgumentException("Error training Days In Month ArrayList");
+            return userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+        } else {
+            throw new IllegalArgumentException("Error training Days In Month ArrayList");
+        }
     }
-}
+
+    public void repetitionsCountSave(Long userId) {
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent()) {
+            UserStatistics userStatistics = userStatisticsOptional.get();
+            saveRepetitionsCountNow(userStatistics);
+            try{
+                userStatistics.setRepetitionsCount(userStatistics.getRepetitionsCount() + 1);
+                userStatisticsRepository.save(userStatistics);
+            }catch (NullPointerException e){
+                userStatistics.setRepetitionsCount(1);
+                userStatisticsRepository.save(userStatistics);
+            }
+        } else {
+            throw new IllegalArgumentException("Error training Days In Month ArrayList");
+        }
+    }
+
+    public void saveRepetitionsCountNow(UserStatistics userStatistics){
+        try{
+            userStatistics.setRepetitionsCountNow(userStatistics.getRepetitionsCountNow() + 1);
+            userStatisticsRepository.save(userStatistics);
+        }catch (NullPointerException e){
+            userStatistics.setRepetitionsCountNow(1);
+            userStatisticsRepository.save(userStatistics);
+        }
+    }
+    public void saveRepetitionsCountPrev(UserStatistics userStatistics){
+        userStatistics.setRepetitionsCountPrev(userStatistics.getRepetitionsCountNow());
+        userStatistics.setRepetitionsCountNow(0);
+
+        userStatistics.setDaysInARowCount(1);
+        userStatistics.setErrorCount(1);
+        userStatisticsRepository.save(userStatistics);
+    }
 
     @Transactional
     public void saveTrainingUserTime() {

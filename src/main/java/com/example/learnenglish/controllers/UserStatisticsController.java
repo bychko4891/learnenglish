@@ -1,5 +1,6 @@
 package com.example.learnenglish.controllers;
 
+import com.example.learnenglish.dto.DtoUserStatisticsToUi;
 import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
@@ -29,12 +30,22 @@ public class UserStatisticsController {
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/user/{userId}/training-time")
-    public ResponseEntity<List> trainingsTwoWeeks(@PathVariable(value = "userId") long userId, Principal principal) {
+    @GetMapping("/user/{userId}/user-statistics")
+    public ResponseEntity<DtoUserStatisticsToUi> trainingUserStatistics(@PathVariable(value = "userId") long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
-            return ResponseEntity.ok(userStatisticsService.timeWeeks(userId));
+//            UserStatistics userStatistics = userStatisticsService.trainingStatistics(userId);
+            return ResponseEntity.ok(userStatisticsService.trainingStatistics(userId));
         }
         return ResponseEntity.notFound().build();
     }
+//    @GetMapping("/user/{userId}/training-time")
+//    public ResponseEntity<List> trainingsTwoWeeks(@PathVariable(value = "userId") long userId, Principal principal) {
+//        if (principal != null) {
+//            userId = userService.findByEmail(principal.getName()).getId();
+//            return ResponseEntity.ok(userStatisticsService.timeWeeks(userId));
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
+
 }

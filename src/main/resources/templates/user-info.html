@@ -5,7 +5,8 @@
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
+<!--        <div th:replace="~{fragments/menu :: menu}"></div>       -->
+        <div th:replace="fragments/menu.html :: menu"> </div>
     </div>
     <main class="section main_content ">
         <div class="container layout_page row">

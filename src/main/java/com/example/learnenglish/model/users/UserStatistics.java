@@ -23,41 +23,41 @@ public class UserStatistics {
     @Column
     private Long id;
 
-    @Column(name = "last_visit")
-    private LocalDateTime lastVisit; // текстове поле
+//    @Column(name = "last_visit")
+//    private LocalDateTime lastVisit; // текстове поле
 
-    @Column(name = "count_pair")
-    private Long countDownloadPair; // к-сть текстів текстове поле
+//    @Column(name = "count_pair")
+//    private Integer countDownloadPair; // к-сть текстів текстове поле
 
     @ElementCollection
     @CollectionTable(name = "study_time_in_two_weeks",
             joinColumns = @JoinColumn(name = "user_statistics_id"))
     @Column(name = "amount_of_time_per_day")
-    private List<Integer> studyTimeInTwoWeeks = new ArrayList<>(); // графік
+    private List<Integer> studyTimeInTwoWeeks = new ArrayList<>(); // графік ||
 
     @Column(name = "training_time_start_end")
     private LocalDateTime trainingTimeStartEnd; // не виводиться
 
     @Column(name = "repetitions_count")
-    private Long repetitionsCount;  // 1 в круговий графік
+    private Integer repetitionsCount;  // 1 в круговий графік ||
 
-    @Column(name = "repetitions_count_prev") //  1 в стовбці графік з двух стовпців
-    private Long repetitionsCountPrev;
+    @Column(name = "repetitions_count_prev") //  1 в стовбці графік з двух стовпців ||
+    private Integer repetitionsCountPrev;
 
-    @Column(name = "repetitions_count_now") // 2 стовбець графік
-    private Long repetitionsCountNow;
+    @Column(name = "repetitions_count_now") // 2 стовбець графік  ||
+    private Integer repetitionsCountNow;
 
     @Column(name = "days_count")
-    private Long daysInARowCount; // к-сть днів підряд - текстове поле
+    private Integer daysInARowCount; // к-сть днів підряд - текстове поле
 
     @ElementCollection
     @CollectionTable(name = "training_days_mount",
             joinColumns = @JoinColumn(name = "user_statistics_id"))
     @Column(name = "training_day")
-    private List<LocalDate> trainingDaysInMonth = new ArrayList<>(); // виводиться в календар
+    private List<LocalDate> trainingDaysInMonth = new ArrayList<>(); // виводиться в календар ||
 
     @Column(name = "error_count")
-    private Long errorCount; // 2 в круговий графік
+    private Integer errorCount; // 2 в круговий графік
 
     @OneToOne(mappedBy = "statistics",
             cascade = CascadeType.ALL)
