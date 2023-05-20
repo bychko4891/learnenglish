@@ -35,8 +35,8 @@ public class UserStatistics {
     @Column(name = "amount_of_time_per_day")
     private List<Integer> studyTimeInTwoWeeks = new ArrayList<>();
 
-    @Embedded
-    private TrainingTimeUsersEmbeddable trainingTimeStartEnd;
+    @Column(name = "training_time_start_end")
+    private LocalDateTime trainingTimeStartEnd;
 
     @Column(name = "repetitions_count")
     private Long repetitionsCount;

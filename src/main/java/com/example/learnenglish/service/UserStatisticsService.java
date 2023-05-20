@@ -69,45 +69,46 @@ public class UserStatisticsService {
 //                st = entityManager.find(UserStatistics.class, st.getId());
 //                st.getTrainingDaysInMonth().add(LocalDate.now());
 //                entityManager.flush();
-//            }
+//            }flush()add(LocalDate.now())
         }
     }
 
     @Transactional
-    public void learnUserTime(Long userId, LocalDateTime localDateTime) {
-        String queryTimeStart = "SELECT training_time_start FROM user_statistics WHERE id = :userId";
+    public void learnUserTime(Long userId, LocalDateTime localDateTimeNow) {
+        String queryTimeStart = "SELECT training_time_start_end FROM user_statistics WHERE id = :userId";
         try {
             java.sql.Timestamp timestamp = (java.sql.Timestamp) entityManager.createNativeQuery(queryTimeStart)
                     .setParameter("userId", userId)
                     .getSingleResult();
-            LocalDateTime timeStart = timestamp.toLocalDateTime();
-            if (timeStart.getMonthValue() == localDateTime.getMonthValue() && timeStart.getDayOfMonth() == localDateTime.getDayOfMonth()) {
-                if (((localDateTime.getHour() * 60) + localDateTime.getMinute()) - ((timeStart.getHour() * 60) + timeStart.getMinute()) <= 10) {
-                    String q = "UPDATE user_statistics SET training_time_end = :d WHERE id = :id";
+            LocalDateTime localDateTimeBase = timestamp.toLocalDateTime();
+            if (localDateTimeBase.getMonthValue() == localDateTimeNow.getMonthValue() && localDateTimeBase.getDayOfMonth() == localDateTimeNow.getDayOfMonth()) {
+                if (((localDateTimeNow.getHour() * 60) + localDateTimeNow.getMinute()) - ((localDateTimeBase.getHour() * 60) + localDateTimeBase.getMinute()) <= 5) {
+                    String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
                     entityManager.createNativeQuery(q)
-                            .setParameter("d", localDateTime)
+                            .setParameter("d", localDateTimeNow)
                             .setParameter("id", userId)
                             .executeUpdate();
+                    countTimeInWeeks(userId, localDateTimeNow, localDateTimeBase, "today");
                 } else {
-                    countTimeInWeeks(userId, timeStart, "today");
-                    String q = "UPDATE user_statistics SET training_time_start = :d WHERE id = :id";
+                    String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
                     entityManager.createNativeQuery(q)
-                            .setParameter("d", localDateTime)
+                            .setParameter("d", localDateTimeNow)
                             .setParameter("id", userId)
                             .executeUpdate();
                 }
             } else {
-                String q = "UPDATE user_statistics SET training_time_start = :d WHERE id = :id";
+                String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
                 entityManager.createNativeQuery(q)
-                        .setParameter("d", localDateTime)
+                        .setParameter("d", localDateTimeNow)
                         .setParameter("id", userId)
                         .executeUpdate();
+                countTimeInWeeks(userId, localDateTimeNow, localDateTimeBase, "new day");
             }
-        } catch (NoResultException e) {
-            String q = "INSERT INTO user_statistics (training_time_start, training_time_end) VALUES (:d, :d2)";
+        } catch (NullPointerException | NoResultException e) {
+            String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :userId";
             entityManager.createNativeQuery(q)
-                    .setParameter("d", localDateTime)
-                    .setParameter("d2", localDateTime)
+                    .setParameter("d", localDateTimeNow)
+                    .setParameter("userId", userId)
                     .executeUpdate();
             createStudyTimeInTwoWeeks(userId);
         }
@@ -115,25 +116,51 @@ public class UserStatisticsService {
 
     @Transactional
     public void createStudyTimeInTwoWeeks(Long userId) {
-        String q = "INSERT INTO study_time_in_two_weeks (user_statistics_id, amount_of_time_per_day) VALUES (:id, :a)";
-        entityManager.createNativeQuery(q)
-                .setParameter("id", userId)
-                .setParameter("a", 0)
-                .executeUpdate();
+        try {
+            String queryTimeStart = "SELECT * FROM study_time_in_two_weeks WHERE user_statistics_id = :userId";
+            entityManager.createNativeQuery(queryTimeStart)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            String q = "INSERT INTO study_time_in_two_weeks (user_statistics_id, amount_of_time_per_day) VALUES (:id, :a)";
+            entityManager.createNativeQuery(q)
+                    .setParameter("id", userId)
+                    .setParameter("a", 0)
+                    .executeUpdate();
+
+        }
     }
 
-    public void countTimeInWeeks(Long userId, LocalDateTime localDateTime, String day) {
-        if (day.equals("today")) {
+
+    public void countTimeInWeeks(Long userId, LocalDateTime localDateTimeNow, LocalDateTime localDateTimeBase, String day) {
             Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
-            if (userStatisticsOptional.isPresent()) {
+            if (userStatisticsOptional.isPresent() && day.equals("today")) {
+                UserStatistics userStatistics = userStatisticsOptional.get();
                 List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-//                List<TrainingTimeUsersEmbeddable> timeEndList= userStatisticsOptional.get().getTrainingTimeTwoWeek();
-//                LocalDateTime timeEnd = (LocalDateTime) timeEndList.get(2);
-//                int countTime = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size() - 1);
-//                int startTime = (localDateTime.getHour()*60)+localDateTime.getMinute()
-//                studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTime) =
-            }
-        }
+                int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size()-1);
+                double timeNowInSeconds = (localDateTimeNow.getHour()*3600) + (localDateTimeNow.getMinute()*60) + (localDateTimeNow.getSecond());
+                double timeBaseInSeconds = (localDateTimeBase.getHour()*3600) + (localDateTimeBase.getMinute()*60) + (localDateTimeBase.getSecond());
+                double result = Math.ceil(timeNowInSeconds - timeBaseInSeconds) / 60;
+                System.out.println(result);
+                studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + (int)(Math.ceil((timeNowInSeconds - timeBaseInSeconds) / 60)));
+                userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+                userStatisticsRepository.save(userStatistics);
+            } else if (userStatisticsOptional.isPresent() && day.equals("new day")) {
+                UserStatistics userStatistics = userStatisticsOptional.get();
+                List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+                if(studyTimeInTwoWeeks.size() < 14){
+                    studyTimeInTwoWeeks.add(0);
+                    userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+                    userStatisticsRepository.save(userStatistics);
+                } else {
+                    studyTimeInTwoWeeks.remove(0);
+                    studyTimeInTwoWeeks.add(0);
+                    userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+                    userStatisticsRepository.save(userStatistics);
+                }
+
+            }else System.out.println("Error -> public void countTimeInWeeks  ");
+
     }
 
 
