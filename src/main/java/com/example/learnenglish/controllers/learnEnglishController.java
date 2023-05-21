@@ -94,9 +94,6 @@ public class learnEnglishController {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             lesson = lessonService.findById(lessonId);
-//            userId = userService.findByEmail(principal.getName()).getId();
-//            User user = userService.findByEmail(principal.getName());
-//            model.addAttribute("user", user);
             model.addAttribute("lesson", lesson);
             return "lesson";
         }
