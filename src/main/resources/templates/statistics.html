@@ -11,15 +11,17 @@
     </div>
     <main class="section main_content ">
         <div class="container layout_page row">
-            <main class="col-md-6 col-lg-7 block_left" style="padding: 21px 21px 20px 60px !important;">
+            <div class="col-md-6 col-lg-7 block_left">
                 <h4>Час тренувань в хвилинах за 14 днів занять</h4>
-                <canvas id="myChart"></canvas>
-
-            </main>
+                <canvas id="myChart" style="height: 400px;"></canvas>
+            </div>
             <div class="col-md-6 col-lg-5 block_right">
-                <div class="row">
-                    <h4>К-сть повторень текстів</h4><br>
+                    <h4>К-сть повторень текстів за вчора та сьогодні</h4>
                     <canvas id="myChart2"></canvas>
+                    <br>
+                    <div>
+                        <h4>К-сть всього повторень та помилок</h4>
+                    <canvas id="myChart3"></canvas>
                 </div>
             </div>
         </div>
@@ -105,54 +107,25 @@
         });
 
 
+        var ctx = document.getElementById('myChart3').getContext('2d');
+        var myChart3 = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Повторення', 'Помилки'],
+                datasets: [{
+                    data: [repetitionsCount, errorCount], // Замініть ці значення на ваші дані
+                    backgroundColor: ['green', 'red']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+
 
     });
 
-
-
-    // var availableDates = [];
-    // var url = window.location.href;
-    // var userId = url.match(/user\/(\d+)/)[1];
-    // // console.log(userId);
-    // url = '/user/' + userId + '/training-time';
-    // $.getJSON(url, function (data) {
-    //     var yData = data.map(function(element) {
-    //         return Math.round(element / 60);
-    //     });
-    //     var xData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-    //     // Знаходження максимального значення у списку
-    //     var maxValue = Math.max(...yData);
-    //     // Отримання елементу canvas за його ідентифікатором
-    //     var ctx = document.getElementById('myChart').getContext('2d');
-    //     // Створення лінійного графіка
-    //     var myChart = new Chart(ctx, {
-    //         type: 'line',
-    //         data: {
-    //             labels: xData,
-    //             datasets: [{
-    //                 label: 'Хвилин',
-    //                 data: yData,
-    //                 borderColor: 'rgb(48,124,124)',
-    //                 backgroundColor: 'rgba(75, 192, 192, 0.7)',
-    //                 fill: true,
-    //                 borderWidth:1,
-    //                 pointStyle: 'rectRot',
-    //                 pointRadius: 5,
-    //                 pointBorderColor: 'rgb(0, 0, 0)'
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true,
-    //                     max: Math.ceil(maxValue / 20) * 20, // Максимальне значення на осі Y (заокруглене до ближчого кратного 20)
-    //                     stepSize: 20 // Крок на осі Y
-    //                 }
-    //             }
-    //         }
-    //     });
-    //
-    // });
 </script>
 </body>
 </html>

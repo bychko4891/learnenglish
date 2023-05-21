@@ -68,7 +68,7 @@ a.btn {
 
 .block_left {
     display: flex;
-    padding-top: 20px;
+    padding: 20px 1px 20px 40px;
     /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
@@ -76,10 +76,8 @@ a.btn {
 
 .block_right {
     display: flex;
-    /*padding-top: 20px;*/
-    padding: 20px 64px 20px 0;
+    padding: 20px 1px 20px 1px;
     font-size: 1em;
-    /*right: 20px;*/
     align-items: center;
     flex-direction: column;
 }
@@ -317,7 +315,7 @@ label.nav svg {
     grid-column-start: 1;
     grid-row-start: 2;
     grid-column-end: span 3;
-    padding: 20px 20px;
+    /*padding: 20px 20px;*/
     /*display: flex;*/
     /*align-items: center;*/
 }
@@ -484,7 +482,13 @@ td {
     text-align: left;
     margin-left: 10px;
 }
-
+.inline-container {
+    display: flex;
+    align-items: center;
+}
+.inline-container .checkbox {
+    margin-right: 10px;
+}
 /*  *********8   profile edit start   ********88      */
 
 

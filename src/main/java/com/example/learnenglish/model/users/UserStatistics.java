@@ -33,7 +33,7 @@ public class UserStatistics {
     @CollectionTable(name = "study_time_in_two_weeks",
             joinColumns = @JoinColumn(name = "user_statistics_id"))
     @Column(name = "amount_of_time_per_day")
-    private List<Integer> studyTimeInTwoWeeks = new ArrayList<>(); // графік ||
+    private List<Integer> studyTimeInTwoWeeks = new ArrayList<>(); // графік || -----
 
     @Column(name = "training_time_start_end")
     private LocalDateTime trainingTimeStartEnd; // не виводиться
@@ -41,10 +41,10 @@ public class UserStatistics {
     @Column(name = "repetitions_count")
     private Integer repetitionsCount;  // 1 в круговий графік ||
 
-    @Column(name = "repetitions_count_prev") //  1 в стовбці графік з двух стовпців ||
+    @Column(name = "repetitions_count_prev") //  1 в стовбці графік з двух стовпців ||-----
     private Integer repetitionsCountPrev;
 
-    @Column(name = "repetitions_count_now") // 2 стовбець графік  ||
+    @Column(name = "repetitions_count_now") // 2 стовбець графік  || ----
     private Integer repetitionsCountNow;
 
     @Column(name = "days_count")
@@ -54,7 +54,7 @@ public class UserStatistics {
     @CollectionTable(name = "training_days_mount",
             joinColumns = @JoinColumn(name = "user_statistics_id"))
     @Column(name = "training_day")
-    private List<LocalDate> trainingDaysInMonth = new ArrayList<>(); // виводиться в календар ||
+    private List<LocalDate> trainingDaysInMonth = new ArrayList<>(); // виводиться в календар || -----
 
     @Column(name = "error_count")
     private Integer errorCount; // 2 в круговий графік
