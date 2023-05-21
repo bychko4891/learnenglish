@@ -5,8 +5,8 @@
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="sidebar">
-<!--        <div th:replace="~{fragments/menu :: menu}"></div>       -->
-        <div th:replace="fragments/menu.html :: menu"> </div>
+        <div th:replace="~{fragments/menu :: menu}"></div>
+<!--        <div th:replace="fragments/menu.html :: menu"> </div>-->
     </div>
     <main class="section main_content ">
         <div class="container layout_page row">
@@ -22,7 +22,7 @@
                                     <label class="label-profile"><b>Ім'я:</b></label>
                                 </td>
                                 <td>
-                                    <p th:text="${user.getFirstName()}"></p>
+                                    <p th:text="${session.userFirstName}"></p>
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                     <label for="last-name"><b>Призвіще:</b></label>
                                 </td>
                                 <td>
-                                    <p th:text="${user.getLastName()}"></p>
+                                    <p th:text="${session.userLastName}"></p>
                                 </td>
                             </tr>
                             <tr>
@@ -38,7 +38,7 @@
                                     <label for="last-name"><b>Дата реєстрації:</b></label>
                                 </td>
                                 <td>
-                                    <p th:text="${#temporals.format(user.getDateOfCreated, 'dd.MM.yyyy')}"></p>
+                                    <p th:text="${#temporals.format(session.userDateOfCreated, 'dd.MM.yyyy')}"></p>
                                 </td>
                             </tr>
                             <tr>
@@ -46,7 +46,7 @@
                                     <label for="last-name"><b>Email:</b></label>
                                 </td>
                                 <td>
-                                    <p th:text="${user.getEmail()}"></p>
+                                    <p th:text="${session.username}"></p>
                                 </td>
                             </tr>
                             <!--                                                <tr>-->
@@ -90,7 +90,7 @@
                     <main class="col-md-6 col-lg-7 block_left">
 
                         <h5>Змінити особисті данні</h5>
-                        <form id="update_profile" action="/user/1/edit" method="post">
+                        <form id="update_profile" th:action="@{/user/{id}/edit(id = ${session.userId})}" method="post">
                             <table class="profile-edit">
                                 <tr>
                                     <td>
@@ -119,7 +119,7 @@
                         <div id="resultDivSuccess" style="color: #0f5132"></div>
 
                         <br><h5>Змінити пароль</h5>
-                        <form id="update_password" action="/user/1/update-password" method="post">
+                        <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}" method="post">
                             <table class="profile-edit">
                                 <tr>
                                     <td>
@@ -161,18 +161,9 @@
                             <button type="submit">Змінити пароль</button>
                         </form>
                         <br>
-<!--                        <style>-->
-<!--                            .inline-container {-->
-<!--                                display: flex;-->
-<!--                                align-items: center;-->
-<!--                            }-->
-<!--                            .inline-container .checkbox {-->
-<!--                                margin-right: 10px;-->
-<!--                            }-->
-<!--                        </style>-->
                         <h5>Видалити профіль</h5>
                         <p style="font-size: 14px;"><strong><span style="color: #e03e2d; font-size: 16px;">Увага, цю дію неможливо буде відмінити!</span> </strong>
-                            Якщо Ви видалите свій аккаунт, видалиться вся інформація пов'язана з вашим профілем і відновити її не буде можливості.</p>
+                            Якщо Ви видалите свій аккаунт, також буде видалена вся інформація, пов'язана з вашим профілем і відновити її не буде можливості.</p>
                         <form class="inline-container">
                             <span>Підтвердити видалення&nbsp;</span>
                             <input type="checkbox" class="checkbox" style="margin-right: 230px;">

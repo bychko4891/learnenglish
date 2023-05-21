@@ -88,12 +88,14 @@ public class UserAvatarService {
         }
     }
 
-    private void deleteImageToDirektori(String avatarName) {
-        Path targetLocation = this.fileStorageLocation.resolve(avatarName);
+    private void deleteImageToDirektori(String avatarNameDelete) {
+        Path targetLocation = this.fileStorageLocation.resolve(avatarNameDelete);
         try {
             Files.delete(targetLocation);
         } catch (IOException e) {
-            throw new RuntimeException("Image not found");
+//            throw new RuntimeException("Image not found");
+            System.out.println(e.getMessage());
+//            return;
         }
     }
 

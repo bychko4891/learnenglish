@@ -43,16 +43,9 @@ public class learnEnglishController {
     }
 
     @GetMapping("/about-the-app")
-    public String aboutApp(Model model, Principal principal) throws IOException {
+    public String aboutApp(Model model) {
         model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            // Отримати id залогіненого користувача
-            Long userId = userService.findByEmail(principal.getName()).getId();
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
-            return "about";
-        }
-        return "about";
+        return "about-the-app";
     }
 
     @GetMapping("/registration")
@@ -90,9 +83,6 @@ public class learnEnglishController {
     public String userStatisticsPage(@PathVariable("userId") Long userId, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
             return "statistics";
         }
         return "redirect:/login";
@@ -104,9 +94,9 @@ public class learnEnglishController {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             lesson = lessonService.findById(lessonId);
-            userId = userService.findByEmail(principal.getName()).getId();
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
+//            userId = userService.findByEmail(principal.getName()).getId();
+//            User user = userService.findByEmail(principal.getName());
+//            model.addAttribute("user", user);
             model.addAttribute("lesson", lesson);
             return "lesson";
         }
