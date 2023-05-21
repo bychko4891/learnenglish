@@ -35,32 +35,33 @@ $(document).ready(function () {
             size: 'viewport'
         }).then(function (blob) {
             avatarAdd();
-            var formData = new FormData();
-            formData.append('file', blob, 'image.png');
-            // var userId = window.location.href.split('/').pop();
-            var url = window.location.href;
-            var userId = url.match(/user\/(\d+)/)[1];
-            url = '/user/' + userId + '/upload-avatar';
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.log(xhr.responseText);
-                }
-            });
+            fetch('/sessionData')
+                .then(response => response.json())
+                .then(data => {
+                    var userId = data.userId;
+                    var formData = new FormData();
+                    formData.append('file', blob, 'image.png');
+                    var url = '/user/' + userId + '/upload-avatar';
+                    var csrfToken = $("meta[name='_csrf']").attr("content");
+                    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                });
         });
     });
 });
-
 //********  Croppie and upload avatar END *************** //

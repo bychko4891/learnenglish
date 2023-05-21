@@ -95,7 +95,7 @@ public class UserAvatarService {
         } catch (IOException e) {
 //            throw new RuntimeException("Image not found");
             System.out.println(e.getMessage());
-//            return;
+            return;
         }
     }
 
