@@ -15,6 +15,7 @@
                 <div class="page about-page">
                     <!--                    <div class="page-contents">-->
                     <main class="col-md-6 col-lg-7 block_left">
+                        <h3>Особиста інформація</h3>
                         <table class="profile-edit">
                             <tr>
                                 <td>
@@ -59,8 +60,8 @@
                         </table>
                     </main>
                     <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
-                        <h3>Календар занять</h3><br><br>
-                        <div class="box_calendar"><br>
+                        <h3>Календар занять</h3>
+                        <div class="box_calendar" style="padding-top: 10px;">
                             <div class="container_calendar">
                                 <div id="calendar"></div>
                             </div>
@@ -88,8 +89,7 @@
                     <!--                    <div class="page-contents">-->
                     <main class="col-md-6 col-lg-7 block_left">
 
-                        <h5>Змінити особисті данні</h5><br>
-
+                        <h5>Змінити особисті данні</h5>
                         <form id="update_profile" action="/user/1/edit" method="post">
                             <table class="profile-edit">
                                 <tr>
@@ -118,7 +118,7 @@
                         <div id="resultDivError"></div>
                         <div id="resultDivSuccess" style="color: #0f5132"></div>
 
-                        <br><br><h5>Змінити пароль</h5><br>
+                        <br><h5>Змінити пароль</h5>
                         <form id="update_password" action="/user/1/update-password" method="post">
                             <table class="profile-edit">
                                 <tr>
@@ -154,29 +154,39 @@
                                             </ul>
                                         </div>
                                     </td>
-
                                 </tr>
-
                             </table>
                             <div id="password-edit-success" style="color: darkgreen"></div>
                             <br>
                             <button type="submit">Змінити пароль</button>
                         </form>
                         <br>
-                        <form>
-                            <button type="submit">Видалити профіль</button>
+<!--                        <style>-->
+<!--                            .inline-container {-->
+<!--                                display: flex;-->
+<!--                                align-items: center;-->
+<!--                            }-->
+<!--                            .inline-container .checkbox {-->
+<!--                                margin-right: 10px;-->
+<!--                            }-->
+<!--                        </style>-->
+                        <h5>Видалити профіль</h5>
+                        <p style="font-size: 14px;"><strong><span style="color: #e03e2d; font-size: 16px;">Увага, цю дію неможливо буде відмінити!</span> </strong>
+                            Якщо Ви видалите свій аккаунт, видалиться вся інформація пов'язана з вашим профілем і відновити її не буде можливості.</p>
+                        <form class="inline-container">
+                            <span>Підтвердити видалення&nbsp;</span>
+                            <input type="checkbox" class="checkbox" style="margin-right: 230px;">
+                            <button type="button">Видалити профіль</button>
                         </form>
                     </main>
                     <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+                        <h5>Завантажити аватар</h5><br>
                         <div class="demo-wrap upload-demo">
-                            <h5>Завантажити аватар</h5><br>
                             <div class="actions">
-                                <!--                                        <form>-->
                                 <a class="btn file-btn">
                                     <span>Виберіть фото</span>
                                     <input type="file" id="upload" accept="image/*">
                                 </a>
-                                <!--                                        </form>-->
                                 <button id="crop">Готово</button>
                             </div>
                             <div id="upload-demo-wrap">
