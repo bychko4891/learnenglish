@@ -10,10 +10,9 @@
     <main class="section main_content ">
         <div class="container layout_page">
             <div>
-                <form method="post" action="/admin-page/lessons/add-new-lesson" id="createLesson">
+                <form method="post" th:action="@{/admin-page/lessons/add-new-lesson}" id="createLesson">
                     <input type="hidden" name="name" value="newLesson">
                     <input type="hidden" name="lessonInfo" value="lessonInfo">
-<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
                     <button type="submit">New lesson</button>
                 </form>
                 <div id="result-success"></div>
@@ -41,7 +40,6 @@
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script>
-    // ************   Додавання тексту в базу   *************** //
     $(document).ready(function () {
         var resultDivSuccess = $('#result-success');
         var resultDivError = $('#result-error');

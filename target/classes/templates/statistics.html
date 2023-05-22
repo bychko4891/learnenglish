@@ -1,6 +1,8 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
+<script th:src="@{/js/chart.umd.js}"></script>
+<!--<script th:src="@{/js/chart.js}"></script>-->
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
@@ -10,7 +12,9 @@
     <main class="section main_content ">
         <div class="container layout_page row">
             <main class="col-md-6 col-lg-7 block_left">
-<h1>Якийсь текст</h1>
+                <h3>Час тренувань в хвилинах за 14 днів занять</h3>
+                <canvas id="myChart"></canvas>
+
             </main>
             <div class="col-md-6 col-lg-5 block_right">
                 <div class="row">
@@ -25,5 +29,47 @@
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 
+<script>
+    var availableDates = [];
+    var url = window.location.href;
+    var userId = url.match(/user\/(\d+)/)[1];
+    // console.log(userId);
+    url = '/user/' + userId + '/training-time';
+    $.getJSON(url, function (data) {
+        // var yData = [50, 80, 70, 90, 120, 100, 80, 60, 70, 110, 90, 100, 80, 95];
+        var xData = Array.from({length: data.length}, (_, i) => i + 1);
+
+        // Знаходження максимального значення у списку
+        var maxValue = Math.max(...data);
+
+        // Отримання елементу canvas за його ідентифікатором
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        // Створення лінійного графіка
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data,
+                datasets: [{
+                    label: 'Хвилини',
+                    data: data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true
+                    // lineTension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: Math.ceil(maxValue / 20) * 20, // Максимальне значення на осі Y (заокруглене до ближчого кратного 20)
+                        stepSize: 20 // Крок на осі Y
+                    }
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

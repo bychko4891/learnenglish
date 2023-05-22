@@ -29,4 +29,12 @@ public class UserStatisticsController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/user/{userId}/training-time")
+    public ResponseEntity<List> trainingsTwoWeeks(@PathVariable(value = "userId") long userId, Principal principal) {
+        if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(userStatisticsService.timeWeeks(userId));
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

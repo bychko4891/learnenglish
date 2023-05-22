@@ -199,11 +199,11 @@ $(document).ready(function () {
     });
 
 });
-//********  Update Password User  END  *************** //
+//********   User  CALENDAR  *************** //
 var availableDates = [];
 var url = window.location.href;
 var userId = url.match(/user\/(\d+)/)[1];
-console.log(userId);
+// console.log(userId);
 url = '/user/' + userId + '/training-days';
 $.getJSON(url, function (data) {
     var numberOfDays = data.length;
@@ -224,4 +224,14 @@ $.getJSON(url, function (data) {
             return [isAvailable, cssClass];
         }
     });
+});
+
+//    //    //
+var availableDates = [];
+var url = window.location.href;
+var userId = url.match(/user\/(\d+)/)[1];
+// console.log(userId);
+url = '/user/' + userId + '/training-time';
+$.getJSON(url, function (data) {
+
 });

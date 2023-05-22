@@ -39,7 +39,6 @@ public class UserStatisticsService {
 
     @Transactional
     public void addTrainingDayInList(User user) {
-//        select count(training_day) from training_days_mount where user_statistics_id = '1';
         String query = "SELECT COUNT(training_day) FROM training_days_mount WHERE user_statistics_id = :id";
         Long countDays = (Long) entityManager.createNativeQuery(query)
                 .setParameter("id", user.getId())
@@ -50,14 +49,6 @@ public class UserStatisticsService {
             st.setTrainingDaysInMonth(Arrays.asList(date));
             userStatisticsRepository.save(st);
         } else {
-//            try {
-//                String querySearch = "SELECT training_day FROM training_days_mount WHERE user_statistics_id = :id AND training_day = :day";
-//                entityManager.createNativeQuery(querySearch)
-//                        .setParameter("id", user.getId())
-//                        .setParameter("day", date)
-//                        .getSingleResult();
-//            } catch (NoResultException e) {
-//               String queryAdd = "INSERT INTO training_days_mount (user_statistics_id, training_day) VALUES (:stId, :date)";
             String queryAdd = "INSERT INTO training_days_mount (user_statistics_id, training_day) \n" +
                     "SELECT :stId, :date \n" +
                     "WHERE NOT EXISTS (SELECT 1 FROM training_days_mount WHERE user_statistics_id = :stId AND training_day = :date)";
@@ -65,11 +56,6 @@ public class UserStatisticsService {
                     .setParameter("stId", user.getId())
                     .setParameter("date", date)
                     .executeUpdate();
-//                UserStatistics st = user.getStatistics();
-//                st = entityManager.find(UserStatistics.class, st.getId());
-//                st.getTrainingDaysInMonth().add(LocalDate.now());
-//                entityManager.flush();
-//            }flush()add(LocalDate.now())
         }
     }
 
@@ -132,37 +118,45 @@ public class UserStatisticsService {
     }
 
 
-    public void countTimeInWeeks(Long userId, LocalDateTime localDateTimeNow, LocalDateTime localDateTimeBase, String day) {
-            Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
-            if (userStatisticsOptional.isPresent() && day.equals("today")) {
-                UserStatistics userStatistics = userStatisticsOptional.get();
-                List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-                int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size()-1);
-                double timeNowInSeconds = (localDateTimeNow.getHour()*3600) + (localDateTimeNow.getMinute()*60) + (localDateTimeNow.getSecond());
-                double timeBaseInSeconds = (localDateTimeBase.getHour()*3600) + (localDateTimeBase.getMinute()*60) + (localDateTimeBase.getSecond());
-                double result = Math.ceil(timeNowInSeconds - timeBaseInSeconds) / 60;
-                System.out.println(result);
-                studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + (int)(Math.ceil((timeNowInSeconds - timeBaseInSeconds) / 60)));
+    private void countTimeInWeeks(Long userId, LocalDateTime localDateTimeNow, LocalDateTime localDateTimeBase, String day) {
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent() && day.equals("today")) {
+            UserStatistics userStatistics = userStatisticsOptional.get();
+            List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+            int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size() - 1);
+            double timeNowInSeconds = (localDateTimeNow.getHour() * 3600) + (localDateTimeNow.getMinute() * 60) + (localDateTimeNow.getSecond());
+            double timeBaseInSeconds = (localDateTimeBase.getHour() * 3600) + (localDateTimeBase.getMinute() * 60) + (localDateTimeBase.getSecond());
+            double result = Math.ceil(timeNowInSeconds - timeBaseInSeconds) / 60;
+            System.out.println(result);
+            studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + (int) (Math.ceil((timeNowInSeconds - timeBaseInSeconds) / 60)));
+            userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+            userStatisticsRepository.save(userStatistics);
+        } else if (userStatisticsOptional.isPresent() && day.equals("new day")) {
+            UserStatistics userStatistics = userStatisticsOptional.get();
+            List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+            if (studyTimeInTwoWeeks.size() < 14) {
+                studyTimeInTwoWeeks.add(0);
                 userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
                 userStatisticsRepository.save(userStatistics);
-            } else if (userStatisticsOptional.isPresent() && day.equals("new day")) {
-                UserStatistics userStatistics = userStatisticsOptional.get();
-                List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-                if(studyTimeInTwoWeeks.size() < 14){
-                    studyTimeInTwoWeeks.add(0);
-                    userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-                    userStatisticsRepository.save(userStatistics);
-                } else {
-                    studyTimeInTwoWeeks.remove(0);
-                    studyTimeInTwoWeeks.add(0);
-                    userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-                    userStatisticsRepository.save(userStatistics);
-                }
+            } else {
+                studyTimeInTwoWeeks.remove(0);
+                studyTimeInTwoWeeks.add(0);
+                userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+                userStatisticsRepository.save(userStatistics);
+            }
 
-            }else System.out.println("Error -> public void countTimeInWeeks  ");
+        } else System.out.println("Error -> public void countTimeInWeeks  ");
 
     }
-
+public List timeWeeks(Long userId){
+    Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+    if (userStatisticsOptional.isPresent()) {
+//        List studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+        return userStatisticsOptional.get().getStudyTimeInTwoWeeks();
+    } else {
+        throw new IllegalArgumentException("Error training Days In Month ArrayList");
+    }
+}
 
     @Transactional
     public void saveTrainingUserTime() {
