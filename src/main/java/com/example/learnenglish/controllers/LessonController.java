@@ -4,26 +4,30 @@ import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
-import com.example.learnenglish.service.TranslationPairRandomFromLessonService;
-import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
-import com.example.learnenglish.service.UserService;
-import com.example.learnenglish.service.UserStatisticsService;
+import com.example.learnenglish.service.*;
+import org.springframework.ui.Model;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Random;
 
 @RestController
 public class LessonController {
+    private String ukrTextCheck;
+    private String engTextCheck;
+    private final LessonService lessonService;
     private final TranslationPairRandomFromLessonService translationPairRandomFromLessonService;
 
     private final TranslationPairValidationAndSaveService validationTranslationPair;
     private final UserStatisticsService userStatisticsService;
     private final UserService userService;
 
-    public LessonController(TranslationPairRandomFromLessonService translationPairRandomFromLessonService, UserStatisticsService userStatisticsService, TranslationPairValidationAndSaveService validationTranslationPair, UserService userService) {
+    public LessonController(LessonService lessonService, TranslationPairRandomFromLessonService translationPairRandomFromLessonService,
+                            UserStatisticsService userStatisticsService, TranslationPairValidationAndSaveService validationTranslationPair, UserService userService) {
+        this.lessonService = lessonService;
         this.translationPairRandomFromLessonService = translationPairRandomFromLessonService;
         this.userStatisticsService = userStatisticsService;
         this.validationTranslationPair = validationTranslationPair;
@@ -32,12 +36,44 @@ public class LessonController {
 
     @GetMapping(path = "/user/{userId}/lesson/{lessonId}/reload")
     public ResponseEntity<DtoTranslationPairToUI> randomTranslationPairToLesson(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
-                                                                                @RequestParam("lessonId") Long lessonIdRequest, Principal principal) {
+//                                                                                @RequestParam("lessonId") Long lessonIdRequest,
+                                                                                Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
-            lessonId = lessonIdRequest;
+            lessonId = lessonService.findById(lessonId).getId();
             userStatisticsService.repetitionsCountSave(userId);
-            return ResponseEntity.ok(translationPairRandomFromLessonService.translationPairRandom(lessonId, userId));
+            int generateNumber = new Random().nextInt(1, 4);
+            if (generateNumber == 1){
+                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+                engTextCheck = dtoTranslationPairToUI.getEngText();
+                dtoTranslationPairToUI.setFragment("Content 1");
+                return ResponseEntity.ok(dtoTranslationPairToUI);
+            }else if(generateNumber == 2){
+                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+                dtoTranslationPairToUI.setFragment("Content 2");
+                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
+                return ResponseEntity.ok(dtoTranslationPairToUI);
+            }else{
+                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+                dtoTranslationPairToUI.setFragment("Content 3");
+//                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
+                return ResponseEntity.ok(dtoTranslationPairToUI);
+            }
+//            return ResponseEntity.ok(translationPairRandomFromLessonService.translationPairRandom(lessonId, userId));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @GetMapping(path = "/user/{userId}/lesson/{lessonId}/check")
+    public ResponseEntity<String> textCheck(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
+                                            @RequestParam("textCheck") String text, Principal principal, Model model){
+        if(principal != null){
+            if(text.equalsIgnoreCase(ukrTextCheck)){
+                return ResponseEntity.ok("Yes");
+            } else if (text.equalsIgnoreCase(engTextCheck)) {
+                return ResponseEntity.ok("Yes");
+            }else {
+                return ResponseEntity.ok("No");
+            }
         }
         return ResponseEntity.notFound().build();
     }

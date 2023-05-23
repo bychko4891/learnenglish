@@ -6,8 +6,17 @@ import org.springframework.stereotype.Component;
 public class DtoTranslationPairToUI {
     private String ukrText;
     private String engText;
+    private String fragment;
 
     public DtoTranslationPairToUI() {
+    }
+
+    public String getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
     public String getUkrText() {

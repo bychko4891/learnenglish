@@ -1,55 +1,129 @@
 //Заповнення сторінки першими данними при старті Lesson
+// $(document).ready(function () {
+//     // Виконуємо запит при першій загрузці сторінки
+//     var url = $('#reload').attr('action');
+//     var csrfToken = $("input[name='_csrf']").val();
+//     $.ajax({
+//         type: "GET",
+//         url: url,
+//         data: $('#reload').serialize(),
+//         beforeSend: function (xhr) {
+//             xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+//         },
+//         success: function (result) {
+//             // console.log(result);
+//             $('.content_block').hide();
+//             $('#ukr-text').html(result.ukrText);
+//             $('#english-text').html(result.engText);
+//         },
+//         error: function () {
+//             // console.log('Помилка запиту на сервер');
+//         }
+//     });
+
 $(document).ready(function () {
-    // Виконуємо запит при першій загрузці сторінки
-    var url = $('#reload').attr('action');
-    var csrfToken = $("input[name='_csrf']").val();
+    var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    var userId = document.getElementById('userId').getAttribute('data-user-id');
+    var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
         url: url,
-        data: $('#reload').serialize(),
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-        },
         success: function (result) {
-            // console.log(result);
-            $('.content_block').hide();
-            $('#ukr-text').html(result.ukrText);
-            $('#english-text').html(result.engText);
+            console.log(result.fragment);
+            var div = document.getElementById('buttonCheck');
+            var reloadButton = document.getElementById('reloadButton');
+            if (result.fragment === "Content 1") {
+                $('#replace_div').load("/content/content1", function () {
+                    reloadButton.classList.add('disabled');
+                    reloadButton.setAttribute('disabled', 'disabled');
+                        div.innerHTML ="<button onclick=\"getData2()\" class='button'>Перевірити</button>";
+                        $('#ukr-text').html(result.ukrText);
+                });
+            } else if(result.fragment === "Content 2"){
+                $('#replace_div').load("/content/content2", function () {
+                    $('#eng-text').html(result.engText);
+                });
+            } else {
+                $('#replace_div').load("/content/content3", function () {
+                    $('#ukr-text').html(result.ukrText);
+                    $('#eng-text').html(result.engText);
+                });
+            }
         },
         error: function () {
             // console.log('Помилка запиту на сервер');
         }
     });
-// **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
-    $('#reload').submit(function (e) {
-        e.preventDefault();
-        var data = $(this).serialize();
-        var url = $(this).attr('action');
-        var csrfToken = $("input[name='_csrf']").val();
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: data,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-            },
-            success: function (result) {
-                // console.log(result);
-                $('.content_block').hide();
-                $('#ukr-text').html(result.ukrText);
-                $('#english-text').html(result.engText);
-            },
-            error: function () {
-                // console.log('Помилка запиту на сервер');
-            }
-        });
-    });
-// ***************** Кнопка, щоб відкрити скритий текст *************** //
-    $('.content_toggle').click(function () {
-        $('.content_block').slideToggle(600);
-        return false;
-    });
 });
+
+// **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
+
+function getData() {
+    var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    var userId = document.getElementById('userId').getAttribute('data-user-id');
+    var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (result) {
+            console.log(result.fragment);
+            if (result.fragment === "Content 1") {
+                $('#replace_div').load("/content/content1", function () {
+                    $('#ukr-text').html(result.ukrText);
+                });
+            } else if(result.fragment === "Content 2"){
+                $('#replace_div').load("/content/content2", function () {
+                    $('#eng-text').html(result.engText);
+                });
+            } else {
+                $('#replace_div').load("/content/content3", function () {
+                    $('#ukr-text').html(result.ukrText);
+                    $('#eng-text').html(result.engText);
+                });
+            }
+        },
+        error: function () {
+            // console.log('Помилка запиту на сервер');
+        }
+    });
+    // });
+// ***************** Кнопка, щоб відкрити скритий текст *************** //
+//     $('.content_toggle').click(function () {
+//         $('.content_block').slideToggle(600);
+//         return false;
+//     });
+}
+
+
+//     $('#reload').submit(function (e) {
+//         e.preventDefault();
+//         var data = $(this).serialize();
+//         var url = $(this).attr('action');
+//         var csrfToken = $("input[name='_csrf']").val();
+//         $.ajax({
+//             type: "GET",
+//             url: url,
+//             data: data,
+//             beforeSend: function (xhr) {
+//                 xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+//             },
+//             success: function (result) {
+//                 // console.log(result);
+//                 $('.content_block').hide();
+//                 $('#ukr-text').html(result.ukrText);
+//                 $('#english-text').html(result.engText);
+//             },
+//             error: function () {
+//                 // console.log('Помилка запиту на сервер');
+//             }
+//         });
+//     // });
+// // ***************** Кнопка, щоб відкрити скритий текст *************** //
+//     $('.content_toggle').click(function () {
+//         $('.content_block').slideToggle(600);
+//         return false;
+//     });
+// });
 
 // ************   Додавання тексту в базу   *************** //
 $(document).ready(function () {

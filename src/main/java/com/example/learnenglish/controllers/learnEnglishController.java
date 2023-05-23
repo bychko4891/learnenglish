@@ -93,11 +93,17 @@ public class learnEnglishController {
                              Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
+            userId = userService.findByEmail(principal.getName()).getId();
             lesson = lessonService.findById(lessonId);
+            model.addAttribute("lessonId", lesson.getId());
             model.addAttribute("lesson", lesson);
+            model.addAttribute("userId", userId);
             return "lesson";
         }
         return "redirect:/login";
     }
-
+    @RequestMapping("/website")
+    public String loadContent() {
+        return "website";
+    }
 }
