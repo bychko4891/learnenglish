@@ -54,7 +54,7 @@ $(document).ready(function () {
             } else {
                 $('#replace_div').load("/content/content3", function () {
                     var buttonCheck = document.getElementById('buttonCheck');
-                    buttonChek.style.visibility = 'hidden';
+                    buttonCheck.classList.add( 'hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });
@@ -77,23 +77,30 @@ function handleButtonClick(reloadButton) {
         url: url,
         success: function (result) {
             console.log(result.fragment);
-            // var reloadButton = document.getElementById('reloadButton');
+            var buttonCheck = document.getElementById('buttonCheck');
             if (result.fragment === "Content 1") {
                 $('#replace_div').load("/content/content1", function () {
+                    buttonCheck.classList.remove( 'hidden');
+                    var reloadButton = document.getElementById('reloadButton');
                     reloadButton.classList.add('disabled');
                     reloadButton.setAttribute('disabled', 'disabled');
-                    div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
+
+                    // div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if(result.fragment === "Content 2"){
                 $('#replace_div').load("/content/content2", function () {
+                    buttonCheck.classList.remove( 'hidden');
+                    var reloadButton = document.getElementById('reloadButton');
                     reloadButton.classList.add('disabled');
                     reloadButton.setAttribute('disabled', 'disabled');
-                    div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
+                    buttonCheck.classList.remove( 'hidden');
+                    // div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
                     $('#eng-text').html(result.engText);
                 });
             } else {
                 $('#replace_div').load("/content/content3", function () {
+                    buttonCheck.classList.add( 'hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });

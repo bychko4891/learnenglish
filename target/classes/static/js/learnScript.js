@@ -20,31 +20,41 @@
 //             // console.log('Помилка запиту на сервер');
 //         }
 //     });
-
+var reloadButton;
+var div;
+var lessonId;
+var userId;
 $(document).ready(function () {
-    var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    var userId = document.getElementById('userId').getAttribute('data-user-id');
+    lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    userId = document.getElementById('userId').getAttribute('data-user-id');
+    // div = document.getElementById('buttonCheck');
+    reloadButton = document.getElementById('reloadButton');
     var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
         url: url,
         success: function (result) {
             console.log(result.fragment);
-            var div = document.getElementById('buttonCheck');
-            var reloadButton = document.getElementById('reloadButton');
+
             if (result.fragment === "Content 1") {
                 $('#replace_div').load("/content/content1", function () {
                     reloadButton.classList.add('disabled');
                     reloadButton.setAttribute('disabled', 'disabled');
-                        div.innerHTML ="<button onclick=\"getData2()\" class='button'>Перевірити</button>";
+
+                        // div.innerHTML ="<button id='checkButton' onclick=\"getData()\" >Перевірити</button>";
                         $('#ukr-text').html(result.ukrText);
                 });
             } else if(result.fragment === "Content 2"){
                 $('#replace_div').load("/content/content2", function () {
+                    reloadButton.classList.add('disabled');
+                    reloadButton.setAttribute('disabled', 'disabled');
+                    // div.innerHTML ="<button id='checkButton' onclick=\"getData2()\" >Перевірити</button>";
                     $('#eng-text').html(result.engText);
                 });
             } else {
                 $('#replace_div').load("/content/content3", function () {
+                    var buttonCheck = document.getElementById('buttonCheck');
+                    buttonCheck.classList.add( 'hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });
@@ -58,25 +68,39 @@ $(document).ready(function () {
 
 // **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
 
-function getData() {
-    var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    var userId = document.getElementById('userId').getAttribute('data-user-id');
+function handleButtonClick(reloadButton) {
+    // var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    // var userId = document.getElementById('userId').getAttribute('data-user-id');
     var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
         url: url,
         success: function (result) {
             console.log(result.fragment);
+            var buttonCheck = document.getElementById('buttonCheck');
             if (result.fragment === "Content 1") {
                 $('#replace_div').load("/content/content1", function () {
+                    buttonCheck.classList.remove( 'hidden');
+                    var reloadButton = document.getElementById('reloadButton');
+                    reloadButton.classList.add('disabled');
+                    reloadButton.setAttribute('disabled', 'disabled');
+
+                    // div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if(result.fragment === "Content 2"){
                 $('#replace_div').load("/content/content2", function () {
+                    buttonCheck.classList.remove( 'hidden');
+                    var reloadButton = document.getElementById('reloadButton');
+                    reloadButton.classList.add('disabled');
+                    reloadButton.setAttribute('disabled', 'disabled');
+                    buttonCheck.classList.remove( 'hidden');
+                    // div.innerHTML ="<button id='checkButton' onclick=\"getResult()\" >Перевірити</button>";
                     $('#eng-text').html(result.engText);
                 });
             } else {
                 $('#replace_div').load("/content/content3", function () {
+                    buttonCheck.classList.add( 'hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });
@@ -86,6 +110,81 @@ function getData() {
             // console.log('Помилка запиту на сервер');
         }
     });
+
+
+    function getResult() {
+        var resultDivSuccess = $('#result-success');
+        var resultDivError = $('#result-error');
+        // $('#textCheck').submit(function (event) {
+        //     event.preventDefault();
+        // var url = window.location.href;
+        // var lessonId = url.match(/lesson\/(\d+)/)[1];
+        // url = $(this).attr('action') + lessonId + "/check";
+        var url = "/user/" + userId + "/lesson/" + lessonId + "/check";
+
+        // if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
+        //   var ukrTextTemp = $('textarea[name="ukrText"]').val();
+        //   var engTextTemp = $('textarea[name="engText"]').val();
+        //   if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
+        //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+        //     return;
+        //   }
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: $('#textCheck').serialize(),
+            // beforeSend: function (xhr) {
+            //     xhr.setRequestHeader(csrfHeader, csrfToken);
+            // },
+            success: function (result) {
+                var reloadButton = document.getElementById('reloadButton');
+                var checkButton = document.getElementById('checkButton');
+                reloadButton.classList.remove('disabled');
+                reloadButton.removeAttribute('disabled');
+                checkButton.classList.add('disabled');
+                checkButton.setAttribute('disabled', 'disabled');
+                $('#result').html(result);
+                // $('#reloadButton').removeAttribute('disabled');
+                console.log(result);
+                // if (status == "Success") {
+                //   $('textarea[name="ukrText"]').val('');
+                //   $('textarea[name="engText"]').val('');
+                //   // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+                //   resultDivSuccess.text(result.message);
+                //   setTimeout(hideMessageSuccess, 5000);
+                // } else {
+                //   resultDivError.text(result.message);
+                //   setTimeout(hideMessageError, 10000);
+                // }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                // Поміщаємо повідомлення про помилку в div-елемент
+                resultDivError.text('Помилка запиту на сервер');
+            }
+        });
+        // } else {
+        //   // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+        //   alert('Будь ласка, заповніть поле вводу');
+        //   return;
+        // }
+        // }
+
+        function hideMessageSuccess() {
+            resultDivSuccess.text('');
+
+        }
+
+        function hideMessageError() {
+
+            resultDivError.text('');
+        }
+    }
+
+
+
+
     // });
 // ***************** Кнопка, щоб відкрити скритий текст *************** //
 //     $('.content_toggle').click(function () {
