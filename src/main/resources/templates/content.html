@@ -6,78 +6,87 @@
 <div th:fragment="content1">
     <div id="ukr-text" class="text-show text-show-ukr"></div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
-        <textarea name="textCheck" rows="1" placeholder="Перевод"></textarea><br><br>
-        <button type="submit">Перевірити</button>
+        <textarea name="textCheck" rows="1" placeholder="Переклад"></textarea><br><br>
+<!--        <button type="submit">Перевірити</button>-->
     </form>
     <script>
-        $(document).ready(function () {
-            var resultDivSuccess = $('#result-success');
-            var resultDivError = $('#result-error');
-            $('#textCheck').submit(function (event) {
-                event.preventDefault();
-                var url = window.location.href;
-                var lessonId = url.match(/lesson\/(\d+)/)[1];
-                 url = $(this).attr('action') + lessonId + "/check";
-
-
-                // if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
-                //   var ukrTextTemp = $('textarea[name="ukrText"]').val();
-                //   var engTextTemp = $('textarea[name="engText"]').val();
-                //   if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
-                //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
-                //     return;
-                //   }
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    data: $('#textCheck').serialize(),
-                    // beforeSend: function (xhr) {
-                    //     xhr.setRequestHeader(csrfHeader, csrfToken);
-                    // },
-                    success: function (result) {
-                        console.log(result);
-                        // if (status == "Success") {
-                        //   $('textarea[name="ukrText"]').val('');
-                        //   $('textarea[name="engText"]').val('');
-                        //   // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        //   resultDivSuccess.text(result.message);
-                        //   setTimeout(hideMessageSuccess, 5000);
-                        // } else {
-                        //   resultDivError.text(result.message);
-                        //   setTimeout(hideMessageError, 10000);
-                        // }
-                    },
-                    error: function () {
-                        let shel = {};
-                        alert(Boolean(shel))
-                        // Поміщаємо повідомлення про помилку в div-елемент
-                        resultDivError.text('Помилка запиту на сервер');
-                    }
-                });
-                // } else {
-                //   // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-                //   alert('Будь ласка, заповніть поле вводу');
-                //   return;
-                // }
-            });
-
-            function hideMessageSuccess() {
-                resultDivSuccess.text('');
-
-            }
-
-            function hideMessageError() {
-
-                resultDivError.text('');
-            }
-        });
+        // function getResult() {
+        //     var resultDivSuccess = $('#result-success');
+        //     var resultDivError = $('#result-error');
+        //     // $('#textCheck').submit(function (event) {
+        //     //     event.preventDefault();
+        //         var url = window.location.href;
+        //         var lessonId = url.match(/lesson\/(\d+)/)[1];
+        //          url = $(this).attr('action') + lessonId + "/check";
+        //
+        //
+        //         // if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
+        //         //   var ukrTextTemp = $('textarea[name="ukrText"]').val();
+        //         //   var engTextTemp = $('textarea[name="engText"]').val();
+        //         //   if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
+        //         //     alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+        //         //     return;
+        //         //   }
+        //         $.ajax({
+        //             url: url,
+        //             type: "GET",
+        //             data: $('#textCheck').serialize(),
+        //             // beforeSend: function (xhr) {
+        //             //     xhr.setRequestHeader(csrfHeader, csrfToken);
+        //             // },
+        //             success: function (result) {
+        //                 var reloadButton = document.getElementById('reloadButton');
+        //                 var checkButton = document.getElementById('checkButton');
+        //                 reloadButton.classList.remove('disabled');
+        //                 reloadButton.removeAttribute('disabled');
+        //                 checkButton.classList.add('disabled');
+        //                 checkButton.setAttribute('disabled', 'disabled');
+        //                 $('#result').html(result);
+        //                 // $('#reloadButton').removeAttribute('disabled');
+        //                 console.log(result);
+        //                 // if (status == "Success") {
+        //                 //   $('textarea[name="ukrText"]').val('');
+        //                 //   $('textarea[name="engText"]').val('');
+        //                 //   // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
+        //                 //   resultDivSuccess.text(result.message);
+        //                 //   setTimeout(hideMessageSuccess, 5000);
+        //                 // } else {
+        //                 //   resultDivError.text(result.message);
+        //                 //   setTimeout(hideMessageError, 10000);
+        //                 // }
+        //             },
+        //             error: function () {
+        //                 let shel = {};
+        //                 alert(Boolean(shel))
+        //                 // Поміщаємо повідомлення про помилку в div-елемент
+        //                 resultDivError.text('Помилка запиту на сервер');
+        //             }
+        //         });
+        //         // } else {
+        //         //   // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
+        //         //   alert('Будь ласка, заповніть поле вводу');
+        //         //   return;
+        //         // }
+        //     // }
+        //
+        //     function hideMessageSuccess() {
+        //         resultDivSuccess.text('');
+        //
+        //     }
+        //
+        //     function hideMessageError() {
+        //
+        //         resultDivError.text('');
+        //     }
+        // }
     </script>
 </div>
 
 
 <div th:fragment="content2">
     <div id="eng-text" class="text-show text-show-ukr"></div>
-    <form id="textCheck" action="/user/1/lesson/1/check" method="get">
+    <div id="result"></div>
+    <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
         <textarea name="textCheck" rows="1" placeholder="Перевод"></textarea><br><br>
         <button type="submit">Перевірити</button>
     </form>
@@ -102,12 +111,20 @@
                 $.ajax({
                     url: url,
                     type: "GET",
-                    // data: $('#textCheck').serialize(),
+                    data: $('#textCheck').serialize(),
                     // beforeSend: function (xhr) {
                     //     xhr.setRequestHeader(csrfHeader, csrfToken);
                     // },
                     success: function (result) {
+                        var reloadButton = document.getElementById('reloadButton');
+                        var checkButton = document.getElementById('checkButton');
+                        reloadButton.classList.remove('disabled');
+                        reloadButton.removeAttribute('disabled');
+                        checkButton.classList.add('disabled');
+                        checkButton.setAttribute('disabled', 'disabled');
                         console.log(result);
+                        $('#result').html(result);
+
                         // if (status == "Success") {
                         //   $('textarea[name="ukrText"]').val('');
                         //   $('textarea[name="engText"]').val('');

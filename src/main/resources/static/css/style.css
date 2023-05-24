@@ -53,6 +53,9 @@ button.disabled {
     cursor: not-allowed;
     background-color: #414141;
 }
+button.hidden{
+    visibility: hidden;
+}
 /*.disabled {*/
 /*    opacity: 0.5;*/
 /*    cursor: not-allowed !important;*/

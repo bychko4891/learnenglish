@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @RestController
 public class LessonController {
@@ -68,11 +69,13 @@ public class LessonController {
                                             @RequestParam("textCheck") String text, Principal principal, Model model){
         if(principal != null){
             if(text.equalsIgnoreCase(ukrTextCheck)){
-                return ResponseEntity.ok("Yes");
+                return ResponseEntity.ok("Вітаю, відповідь вірна");
             } else if (text.equalsIgnoreCase(engTextCheck)) {
-                return ResponseEntity.ok("Yes");
+                return ResponseEntity.ok("Вітаю, відповідь вірна");
             }else {
-                return ResponseEntity.ok("No");
+                if(Pattern.matches("[a-zA-Z]+", text)){
+                    ResponseEntity.ok("Нажаль відповідь не вірна: " + engTextCheck);
+                } else return ResponseEntity.ok("Нажаль відповідь не вірна: " + ukrTextCheck);
             }
         }
         return ResponseEntity.notFound().build();
