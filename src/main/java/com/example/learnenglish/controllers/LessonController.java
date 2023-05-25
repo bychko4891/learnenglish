@@ -46,6 +46,7 @@ public class LessonController {
             int generateNumber = new Random().nextInt(1, 4);
             if (generateNumber == 1){
                 DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
                 engTextCheck = dtoTranslationPairToUI.getEngText();
                 dtoTranslationPairToUI.setFragment("Content 1");
                 return ResponseEntity.ok(dtoTranslationPairToUI);
@@ -53,6 +54,8 @@ public class LessonController {
                 DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
                 dtoTranslationPairToUI.setFragment("Content 2");
                 ukrTextCheck = dtoTranslationPairToUI.getUkrText();
+                engTextCheck = dtoTranslationPairToUI.getEngText();
+
                 return ResponseEntity.ok(dtoTranslationPairToUI);
             }else{
                 DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
@@ -69,13 +72,13 @@ public class LessonController {
                                             @RequestParam("textCheck") String text, Principal principal, Model model){
         if(principal != null){
             if(text.equalsIgnoreCase(ukrTextCheck)){
-                return ResponseEntity.ok("Вітаю, відповідь вірна");
+                return ResponseEntity.ok("Чудово, гарна робота");
             } else if (text.equalsIgnoreCase(engTextCheck)) {
-                return ResponseEntity.ok("Вітаю, відповідь вірна");
+                return ResponseEntity.ok("Чудово, гарна робота");
             }else {
                 if(Pattern.matches("[a-zA-Z]+", text)){
-                    ResponseEntity.ok("Нажаль відповідь не вірна: " + engTextCheck);
-                } else return ResponseEntity.ok("Нажаль відповідь не вірна: " + ukrTextCheck);
+                    ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>" + engTextCheck + "</p>");
+                } else return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>" + ukrTextCheck + "</p>");
             }
         }
         return ResponseEntity.notFound().build();

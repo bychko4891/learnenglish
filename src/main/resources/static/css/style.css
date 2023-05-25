@@ -34,8 +34,9 @@ p {
 
 }
 
-button,
-a.btn {
+
+
+button, .btn{
     background-color: #189094;
     color: white;
     padding: 10px 15px;
@@ -47,6 +48,21 @@ a.btn {
     text-shadow: none;
     display: inline-block;
     cursor: pointer;
+}
+
+button:hover, .btn:hover {
+    color: white !important;
+    background-color: #189094 !important;
+    border: 1px solid rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+button:active, .btn:active {
+    background-color: #136669;
+    transform: translate(0em, 0.2em);
+}
+button:active::before, .btn:active::before {
+    box-shadow: 0 0 0 2px #a60b4b, 0 0 #1ee01e;
+    transform: translate3d(0, 0, -0.5em);
 }
 button.disabled {
     opacity: 0.5;
@@ -115,6 +131,9 @@ button.hidden{
     .page {
         overflow-x: hidden;
     }
+    .row {
+        display: block;
+    }
 }
 
 @media (min-width: 1280px) {
@@ -131,6 +150,9 @@ button.hidden{
     .page {
         display: flex;
         overflow-x: hidden;
+    }
+    .row {
+        display: flex;
     }
 }
 
@@ -175,17 +197,17 @@ textarea {
 }
 
 /*!*   Кнопка яка показує скритий текст START  *!*/
-.btn {
-    background-color: white;
-    color: black;
-    border: 2px solid #4CAF50; /* Green */
-}
+/*.btn {*/
+/*    background-color: white;*/
+/*    color: black;*/
+/*    border: 2px solid #4CAF50; !* Green *!*/
+/*}*/
 
-.btn:hover {
-    background-color: white;
-    color: #4a576c;
-    border: 2px solid #8807f3; /* Green */
-}
+/*.btn:hover {*/
+/*    background-color: white;*/
+/*    color: #4a576c;*/
+/*    border: 2px solid #8807f3; !* Green *!*/
+/*}*/
 
 .btn_main {
     background-color: rgba(50, 50, 50, 0);
@@ -448,7 +470,14 @@ input[type=radio]:checked + .page .page-contents > * {
     /*width: 500px;*/
     /*margin: 0 auto;*/
 }
-
+.resultLesson {
+    position: relative;
+    min-width: 400px;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 18px;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1), -15px -15px 30px #FFFFFF;
+}
 /*!*!* ----------     Tabs  END -------------*!*!*/
 
 /*  *********   profile edit start  ****************8       */

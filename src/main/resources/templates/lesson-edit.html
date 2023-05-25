@@ -27,20 +27,12 @@
                             selector: 'textarea#lessonInfo',
                             height: 500,
                             plugins: [
-                                // 'advlist autolink lists link image charmap print preview anchor',
-                                // 'searchreplace visualblocks code fullscreen',
-                                // 'insertdatetime media table paste code help wordcount'
-                                'anchor autolink charmap codesample emoticons image link lists media ',
+                                'anchor autolink charmap codesample emoticons link lists media ',
                                 'searchreplace table visualblocks wordcount checklist mediaembed ',
                                 'casechange export formatpainter pageembed linkchecker a11ychecker ',
-                                'tinymcespellchecker permanentpen powerpaste advtable advcode editimage ',
-                                'tableofcontents footnotes mergetags autocorrect typography inlinecss'
+                                'tinymcespellchecker permanentpen powerpaste advtable advcode '
                             ],
                             toolbar:
-                                // 'undo redo | formatselect | ' +
-                                // 'bold italic backcolor | alignleft aligncenter ' +
-                                // 'alignright alignjustify | bullist numlist outdent indent | ' +
-                                // 'removeformat | help'
                             'undo redo | formatselect |' +
                                 ' bold italic underline forecolor | link image media table mergetags |' +
                                 ' addcomment showcomments | spellcheckdialog code typography |' +
@@ -58,14 +50,12 @@
                         });
                         $('#myForm').submit(function (event) {
                             event.preventDefault(); // Заборонити звичайну поведінку форми (наприклад, перезавантаження сторінки)
-
                             // Відправити дані форми на сервер
                             $.ajax({
                                 url: $(this).attr('action'), // URL для відправки запиту
                                 type: $(this).attr('method'), // Метод запиту (POST)
                                 data: $(this).serialize(), // Дані форми
                                 success: function (response) {
-                                    // Вставити відповідь сервера в <div>
                                     $('#responseDiv').text(response);
                                 },
                                 error: function () {
@@ -79,30 +69,6 @@
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                 <button type="submit">Save</button>
             </form>
-
-            <!-- Скрипт для обробки відправки форми і отримання відповіді -->
-<!--            <script>-->
-<!--                $(document).ready(function () {-->
-<!--                    $('#myForm').submit(function (event) {-->
-<!--                        event.preventDefault(); // Заборонити звичайну поведінку форми (наприклад, перезавантаження сторінки)-->
-
-<!--                        // Відправити дані форми на сервер-->
-<!--                        $.ajax({-->
-<!--                            url: $(this).attr('action'), // URL для відправки запиту-->
-<!--                            type: $(this).attr('method'), // Метод запиту (POST)-->
-<!--                            data: $(this).serialize(), // Дані форми-->
-<!--                            success: function (response) {-->
-<!--                                // Вставити відповідь сервера в <div>-->
-<!--                                $('#responseDiv').text(response);-->
-<!--                            },-->
-<!--                            error: function () {-->
-<!--                                // Обробка помилки, якщо відповідь сервера не отримана або є помилка-->
-<!--                                alert('Помилка при відправці запиту');-->
-<!--                            }-->
-<!--                        });-->
-<!--                    });-->
-<!--                });-->
-<!--            </script>-->
             <div id="responseDiv"></div>
         </div>
     </main>
