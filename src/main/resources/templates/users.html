@@ -3,102 +3,89 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <div class="wrapper">
-  <header th:replace="~{fragments/header :: header}"></header>
-  <div class="sidebar">
-    <div th:replace="~{fragments/menu :: menu}"></div>
-  </div>
-  <main class="section main_content ">
-    <div class="container layout_page">
-      <div style="overflow-x: auto; height: calc(100% - 40px);">
-        <table>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Email</th>
-<!--            <th>Name</th>-->
-            <th>Active</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.active}"></td>
-            <td>
-              <a th:href="@{/admin-page/users/user/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- відображення пагінації -->
-      <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
-        <a th:href="@{/admin-page/users(page=(${currentPage} - 1))}">Previous</a>
-        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <div style="overflow-x: auto; height: calc(100% - 40px);">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>IP</th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.userIp}"></td>
+                        <td>
+                            <form>
+                                <input type="checkbox" th:checked="${user.active}" class="user-checkbox"
+                                       name="userActive" th:data-user-id="${user.id}"/>
+                                <input type="hidden" name="userId" th:value="${user.id}"/>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="check-button checkbox" th:data-user-id="${user.id}">Зберегти зміни</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- відображення пагінації -->
+            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+                <a th:href="@{/admin-page/users(page=(${currentPage} - 1))}">Previous</a>
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/users(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
-        <a th:href="@{/admin-page/users(page=(${currentPage} + 1))}">Next</a>
-      </div>
-    </div>
+                <a th:href="@{/admin-page/users(page=(${currentPage} + 1))}">Next</a>
+            </div>
+        </div>
 
 
-  </main>
-  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script>
-  $(document).ready(function () {
-    var resultDivSuccess = $('#result-success');
-    var resultDivError = $('#result-error');
-    $('#createLesson').submit(function (event) {
-      event.preventDefault();
-      // Get CSRF token from the meta tag-->
-      var csrfToken = $("meta[name='_csrf']").attr("content");
-      var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-      var url = $(this).attr('action');
-      var formData = $(this).serializeArray();
-      var jsonFormData = {};
-      $(formData).each(function (index, obj) {
-        jsonFormData[obj.name] = obj.value;
-      });
-      $.ajax({
-        url: url,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(jsonFormData),
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(csrfHeader, csrfToken);
-        },
-        success: function (result) {
-          var status = result.status;
-          // location.reload();
-          if (status == "Success") {
-            resultDivSuccess.text(result.message);
-            setTimeout(hideMessageSuccess, 3000);
-          } else {
-            resultDivError.text(result.message);
-            setTimeout(hideMessageError, 3000);
-          }
-        },
-        error: function () {
-          let shel = {};
-          alert(Boolean(shel))
-          // Поміщаємо повідомлення про помилку в div-елемент
-          resultDivError.text('Помилка запиту на сервер');
-        }
-      });
-
+    $(document).ready(function () {
+        $('.check-button').on('click', function () {
+            var userId = $(this).data('user-id');
+            // var form = $('form').find('[data-user-id="' + userId + '"]');
+            var form = $('form').has('[data-user-id="' + userId + '"]');
+            var url = "/admin-page/users/user/user-active";
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var isChecked = form.find('input[name="userActive"]').prop('checked');
+            // console.log(form);
+            // console.log(userId);
+            // console.log(isChecked);
+            // console.log(url);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    userActive: isChecked,
+                    userId: userId
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    // Обробка успішного відгуку
+                },
+                error: function (xhr, status, error) {
+                    // Обробка помилки
+                }
+            });
+        });
     });
-
-    function hideMessageSuccess() {
-      resultDivSuccess.text('');
-      location.reload();
-    }
-
-    function hideMessageError() {
-      resultDivError.text('');
-    }
-  });
 </script>
 </body>
 </html>

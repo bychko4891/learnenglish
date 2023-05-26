@@ -41,4 +41,15 @@ public class AdminRestController {
         }
         return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CREATELESSON));
     }
+    @PostMapping("/users/user/user-active")
+    @ResponseBody
+    public void userFieldActive(@RequestParam("userActive") boolean userActive,
+                                @RequestParam("userId") Long userId, Principal principal) {
+        if (principal != null) {
+            userService.userActiveEdit(userId, userActive);
+            System.out.println(userActive);
+//                return ResponseEntity.ok(new ResponseStatus(Message.SUCCESS_CREATELESSON));
+        }
+//        return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CREATELESSON));
+    }
 }

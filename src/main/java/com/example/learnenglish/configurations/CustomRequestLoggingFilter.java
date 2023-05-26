@@ -2,6 +2,7 @@ package com.example.learnenglish.configurations;
 
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserStatisticsService;
+import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,10 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
     @Autowired
     private UserStatisticsService userStatisticsService;
 
+    @Autowired
+    private UserService userService;
+
+
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -23,7 +28,6 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
                 long userId = ((User) principal).getId();
-                Integer userIdInt = (int) userId;
                 LocalDateTime timeStartUserActivity = LocalDateTime.now();
                 userStatisticsService.learnUserTime(userId, timeStartUserActivity);
 
@@ -34,6 +38,14 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
 //            System.out.println(request + " afterRequest  залогінився ");
 //            System.out.println(message);
          // не обробляйте запити незалогінених користувачів
+        } else if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : GET /user/[0-9]+.+", message)){
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof User) {
+                long userId = ((User) principal).getId();
+                String ipAddress = request.getRemoteAddr();
+                userService.saveUserIp(userId, ipAddress);
+                System.out.println("IP Address юзера: " + ipAddress);
+            }
         }
     }
 

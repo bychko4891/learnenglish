@@ -96,6 +96,30 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
     }
+    public void userActiveEdit(Long userId, boolean userActive){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setActive(userActive);
+            userRepository.save(user);
+//            return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User with id " + userId + " not found");
+        }
+    }
+
+    public void saveUserIp(long userId, String ipAddress) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserIp(ipAddress);
+            userRepository.save(user);
+//            return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User with id " + userId + " not found");
+        }
+
+    }
 //public void saveUserAvatar(Long userId, String userAvatarName){
 //    Optional<User> optionalUser = userRepository.findById(userId);
 //    if (optionalUser.isPresent()) {
