@@ -2,6 +2,9 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.repository.LessonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +22,12 @@ public class LessonService {
         return lessonRepository.findById(id).get();
     }
 
-    public List<Lesson> lessonsListToAdminPage() {
-        return (List<Lesson>) lessonRepository.findAll();
+//    public List<Lesson> lessonsListToAdminPage() {
+//        return (List<Lesson>) lessonRepository.findAll();
+//    }
+    public Page<Lesson> getLessonsPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return lessonRepository.findAll(pageable);
     }
 
     public void lessonEdit(Lesson lesson) {

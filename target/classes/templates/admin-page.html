@@ -3,21 +3,31 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <div class="wrapper">
-  <header th:replace="~{fragments/header :: header}"></header>
-  <div class="sidebar">
-    <div th:replace="~{fragments/menu :: menu}"></div>
-  </div>
-  <main class="section main_content ">
-    <div class="container layout_page">
-        <a href="/admin-page/lessons">Уроки </a>
-      <!--            <div class="layout_about">-->
-      <!--            <article class="col-md-11 col-xl-9 layout_page">-->
-
-      <!--            </div>-->
-      <!--            </article>-->
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-  </main>
-  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <div th:class="admin_page">
+                <div th:class="navigation_admin_page">
+                    <a href="/admin-page/lessons">Уроки </a>
+                </div>
+                <div th:class="navigation_admin_page">
+                    <a href="/admin-page/users">Юзери </a>
+                </div>
+                <div th:class="navigation_admin_page">
+                    <a href="/admin-page/lessons">Описи сторінок </a>
+                </div>
+            </div><hr>
+            <!--            <div class="layout_about">-->
+            <!--            <article class="col-md-11 col-xl-9 layout_page">-->
+
+            <!--            </div>-->
+            <!--            </article>-->
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 </body>
 </html>

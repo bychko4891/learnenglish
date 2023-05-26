@@ -525,15 +525,22 @@ td {
     margin-left: 10px;
 }
 .inline-container {
-    /*display: inherit;*/
+    display: flex;
     left: 10px;
     /*align-items: center;*/
 }
-.inline-container .checkbox {
-    margin-right: 10px;
+.checkbox{
+    margin-left: 10px;
 }
-.inline-container .check {
-    margin-right: 10px;
+.admin_page{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 90px 1px 90px ;
+    width: 100%;
+}
+.navigation_admin_page {
+    border: 2px solid #4d5154;
+    padding: 15px 40px;
 }
 /*  *********8   profile edit start   ********88      */
 

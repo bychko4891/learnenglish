@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OrderBy
     @Column(name = "id")
     private Long id;
     @Column(name = "name")

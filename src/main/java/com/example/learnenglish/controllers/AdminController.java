@@ -4,6 +4,7 @@ import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -42,16 +44,32 @@ public class AdminController {
     }
 
     @GetMapping("/lessons")
-    public String listLessons(Model model, Principal principal) {
+    public String lessonsListAdminPage(Model model, Principal principal,
+                              @RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "10", required=false) int size) {
         if (principal != null) {
-            List<Lesson> lessons = lessonService.lessonsListToAdminPage();
-            model.addAttribute("lessons", lessons);
+            Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
+            model.addAttribute("lessons", lessonPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", lessonPage.getTotalPages());
             return "lessons";
         }
         return "redirect:/login";
     }
 
-
+    @GetMapping("/users")
+    public String usersListAdminPage(Model model, Principal principal,
+                              @RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "10", required=false) int size) {
+        if (principal != null) {
+            Page<User> userPage = userService.getUsersPage(page, size);
+            model.addAttribute("users", userPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", userPage.getTotalPages());
+            return "users";
+        }
+        return "redirect:/login";
+    }
 
     @GetMapping("/lessons/lesson/{id}")
     public String lessonEditPage(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
@@ -70,6 +88,7 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/lessons/lesson/{id}/edit")
     public String lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
         if (principal != null) {

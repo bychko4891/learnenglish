@@ -9,6 +9,7 @@
     </div>
     <main class="section main_content ">
         <div class="container layout_page">
+            <div style="overflow-x: auto; height: calc(100% - 40px);">
             <div>
                 <form method="post" th:action="@{/admin-page/lessons/add-new-lesson}" id="createLesson">
                     <input type="hidden" name="name" value="newLesson">
@@ -35,7 +36,18 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
+            <!-- відображення пагінації -->
+            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+                <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
+                <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
+            </div>
         </div>
+
+
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>

@@ -1,5 +1,6 @@
 package com.example.learnenglish.service;
 
+import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.repository.UserStatisticsRepository;
@@ -7,6 +8,9 @@ import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +91,10 @@ public class UserService {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
 //        userRepository.save(user);
+    }
+    public Page<User> getUsersPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
     }
 //public void saveUserAvatar(Long userId, String userAvatarName){
 //    Optional<User> optionalUser = userRepository.findById(userId);
