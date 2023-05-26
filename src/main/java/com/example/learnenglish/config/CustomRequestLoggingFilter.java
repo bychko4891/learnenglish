@@ -1,4 +1,4 @@
-package com.example.learnenglish.configurations;
+package com.example.learnenglish.config;
 
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserStatisticsService;
