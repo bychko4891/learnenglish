@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
 import java.time.LocalDateTime;
@@ -41,8 +43,10 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
         } else if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : GET /user/[0-9]+.+", message)){
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
+               request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+                String ipAddress = request.getHeader("X-Forwarded-For");
                 long userId = ((User) principal).getId();
-                String ipAddress = request.getRemoteAddr();
+//                String ipAddress = request.getRemoteAddr();
                 userService.saveUserIp(userId, ipAddress);
                 System.out.println("IP Address юзера: " + ipAddress);
             }
