@@ -43,10 +43,8 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
         } else if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : GET /user/[0-9]+.+", message)){
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
-               request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-                String ipAddress = request.getHeader("X-Forwarded-For");
                 long userId = ((User) principal).getId();
-//                String ipAddress = request.getRemoteAddr();
+                String ipAddress = request.getRemoteAddr();
                 userService.saveUserIp(userId, ipAddress);
                 System.out.println("IP Address юзера: " + ipAddress);
             }
