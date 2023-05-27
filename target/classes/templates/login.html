@@ -14,7 +14,7 @@
                     <div class="box-registration">
                         <div class="form-registration">
                             <h3 style="color: white">Увійти в додаток</h3><br>
-                            <form action="/login" method="post">
+                            <form th:action="@{/login}" method="post">
                                 <br>
                                 <div class="inputBox">
                                     <input type="email" required name="username">
@@ -26,7 +26,7 @@
                                     <span class="span-text">Пароль</span>
                                     <span id="toggleBtn"></span>
                                 </div>
-                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+<!--                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
                                 <div style="padding-left: 65px; padding-top: 50px;">
                                     <button type="submit">Увійти</button>
                                 </div>

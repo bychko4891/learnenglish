@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             var password = document.getElementById("psw").value;
             var isValid = checkPassword(password); // викликаємо функцію з другого скрипту
-
-            // var url = $(this).attr('action');
             var formData = $(this).serializeArray();
             delete formData.confirmPassword;
             // console.log(formData);
@@ -20,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     $(formData).each(function (index, obj) {
                         jsonFormData[obj.name] = obj.value;
                     });
-                    // console.log(jsonFormData);
                     $.ajax({
                         url: "/registration",
                         type: "POST",

@@ -18,9 +18,6 @@ $(document).ready(function () {
     var resultDivError = $('#resultDivError');
     $('#update_profile').submit(function (event) {
         event.preventDefault();
-        // Get CSRF token from the meta tag-->
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var url = $(this).attr('action');
         var formData = $(this).serializeArray();
         if (checkUserInfo(formData)) {
@@ -29,12 +26,8 @@ $(document).ready(function () {
                     url: url,
                     type: "POST",
                     data: formData,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(csrfHeader, csrfToken);
-                    },
                     success: function (result) {
                         reloadValue();
-                        // console.log(result);
                         resultDivSuccess.text(result);
                         setTimeout(hideMessageSuccess, 5000);
                     },
@@ -84,9 +77,6 @@ $(document).ready(function () {
     var resultDivError = $('#password-edit-error');
     $('#update_password').submit(function (event) {
         event.preventDefault();
-        // Get CSRF token from the meta tag-->
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var url = $(this).attr('action');
         var formData = $(this).serializeArray();
         if ($('input[name="password"]').val() && $('input[name="newPassword"]').val()) {
@@ -95,9 +85,6 @@ $(document).ready(function () {
                 url: url,
                 type: "POST",
                 data: formData,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
                 success: function (result) {
                     // console.log(result);
                     var status = result.status;

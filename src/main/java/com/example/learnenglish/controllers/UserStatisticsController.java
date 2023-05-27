@@ -23,7 +23,7 @@ public class UserStatisticsController {
     }
 
     @GetMapping("/user/{userId}/training-days")
-    public ResponseEntity<List> calendarDays(@PathVariable(value = "userId") long userId, Principal principal) {
+    public ResponseEntity<List> getUserCalendarDays(@PathVariable(value = "userId") long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(userStatisticsService.trainingDays(userId));
@@ -31,7 +31,7 @@ public class UserStatisticsController {
         return ResponseEntity.notFound().build();
     }
     @GetMapping("/user/{userId}/user-statistics")
-    public ResponseEntity<DtoUserStatisticsToUi> trainingUserStatistics(@PathVariable(value = "userId") long userId, Principal principal) {
+    public ResponseEntity<DtoUserStatisticsToUi> getTrainingUserStatistics(@PathVariable(value = "userId") long userId, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
 //            UserStatistics userStatistics = userStatisticsService.trainingStatistics(userId);

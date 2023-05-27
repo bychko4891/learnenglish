@@ -44,45 +44,33 @@ public class LessonController {
             lessonId = lessonService.findById(lessonId).getId();
             userStatisticsService.repetitionsCountSave(userId);
             int generateNumber = new Random().nextInt(1, 4);
-            if (generateNumber == 1){
-                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
-                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
-                engTextCheck = dtoTranslationPairToUI.getEngText();
-                dtoTranslationPairToUI.setFragment("Content 1");
-                return ResponseEntity.ok(dtoTranslationPairToUI);
-            }else if(generateNumber == 2){
-                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
-                dtoTranslationPairToUI.setFragment("Content 2");
-                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
-                engTextCheck = dtoTranslationPairToUI.getEngText();
-
-                return ResponseEntity.ok(dtoTranslationPairToUI);
-            }else{
-                DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
-                dtoTranslationPairToUI.setFragment("Content 3");
-//                ukrTextCheck = dtoTranslationPairToUI.getUkrText();
-                return ResponseEntity.ok(dtoTranslationPairToUI);
-            }
-//            return ResponseEntity.ok(translationPairRandomFromLessonService.translationPairRandom(lessonId, userId));
+            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
+            ukrTextCheck = dtoTranslationPairToUI.getUkrText();
+            engTextCheck = dtoTranslationPairToUI.getEngText();
+            dtoTranslationPairToUI.setFragment("Content " + generateNumber);
+            return ResponseEntity.ok(dtoTranslationPairToUI);
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping(path = "/user/{userId}/lesson/{lessonId}/check")
     public ResponseEntity<String> textCheck(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
-                                            @RequestParam("textCheck") String text, Principal principal, Model model){
-        if(principal != null){
-            if(text.equalsIgnoreCase(ukrTextCheck)){
+                                            @RequestParam("textCheck") String text, Principal principal, Model model) {
+        if (principal != null) {
+            if (text.equalsIgnoreCase(ukrTextCheck)) {
                 return ResponseEntity.ok("Чудово, гарна робота");
             } else if (text.equalsIgnoreCase(engTextCheck)) {
                 return ResponseEntity.ok("Чудово, гарна робота");
-            }else {
-                if(Pattern.matches("[a-zA-Z]+", text)){
+            } else {
+                if (Pattern.matches("[a-zA-Z]+", text)) {
                     ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>" + engTextCheck + "</p>");
-                } else return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>" + ukrTextCheck + "</p>");
+                } else
+                    return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>" + ukrTextCheck + "</p>");
             }
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping(path = "/user/{userId}/lesson/{lessonId}/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseStatus> textADD(@PathVariable(value = "userId") long userId, @PathVariable(value = "lessonId") long lessonId,
