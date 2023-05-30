@@ -30,14 +30,7 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
                 long userId = ((User) principal).getId();
                 LocalDateTime timeStartUserActivity = LocalDateTime.now();
                 userStatisticsService.learnUserTime(userId, timeStartUserActivity);
-
             }
-//            User user = (User) authentication.getPrincipal();
-//            System.out.println(user.toString());
-//            System.out.println(message);
-//            System.out.println(request + " afterRequest  залогінився ");
-//            System.out.println(message);
-         // не обробляйте запити незалогінених користувачів
         } else if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : GET /user/[0-9]+.+", message)){
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {

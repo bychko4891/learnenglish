@@ -17,16 +17,16 @@ $(document).ready(function () {
         success: function (result) {
             console.log(result.fragment);
 
-            if (result.fragment === "Content 1") {
-                $('#replace_div').load("/content/content1", function () {
+            if (result.fragment === "Fragment 1") {
+                $('#replace_div').load("/lessonFragments/fragment1", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
                     $('#ukr-text').html(result.ukrText);
                 });
-            } else if (result.fragment === "Content 2") {
-                $('#replace_div').load("/content/content2", function () {
+            } else if (result.fragment === "Fragment 2") {
+                $('#replace_div').load("/lessonFragments/fragment2", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
@@ -34,7 +34,7 @@ $(document).ready(function () {
                     $('#eng-text').html(result.engText);
                 });
             } else {
-                $('#replace_div').load("/content/content3", function () {
+                $('#replace_div').load("/lessonFragments/fragment3", function () {
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
@@ -63,16 +63,16 @@ $('#nextText').submit(function (e) {
             console.log(result.fragment);
             var checkButton = document.getElementById('checkButton');
             var nextButton = document.getElementById('nextButton');
-            if (result.fragment === "Content 1") {
-                $('#replace_div').load("/content/content1", function () {
+            if (result.fragment === "Fragment 1") {
+                $('#replace_div').load("/lessonFragments/fragment1", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
                     $('#ukr-text').html(result.ukrText);
                 });
-            } else if (result.fragment === "Content 2") {
-                $('#replace_div').load("/content/content2", function () {
+            } else if (result.fragment === "Fragment 2") {
+                $('#replace_div').load("/lessonFragments/fragment2", function () {
                     textShow.classList.add('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
@@ -80,7 +80,7 @@ $('#nextText').submit(function (e) {
                     $('#eng-text').html(result.engText);
                 });
             } else {
-                $('#replace_div').load("/content/content3", function () {
+                $('#replace_div').load("/lessonFragments/fragment3", function () {
                     nextButton.classList.remove('disabled');
                     nextButton.removeAttribute('disabled');
                     checkButton.classList.add('hidden');

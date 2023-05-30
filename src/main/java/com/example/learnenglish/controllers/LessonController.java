@@ -47,7 +47,7 @@ public class LessonController {
             DtoTranslationPairToUI dtoTranslationPairToUI = translationPairRandomFromLessonService.translationPairRandom(lessonId, userId);
             ukrTextCheck = dtoTranslationPairToUI.getUkrText();
             engTextCheck = dtoTranslationPairToUI.getEngText();
-            dtoTranslationPairToUI.setFragment("Content " + generateNumber);
+            dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
             return ResponseEntity.ok(dtoTranslationPairToUI);
         }
         return ResponseEntity.notFound().build();

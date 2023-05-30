@@ -1,7 +1,9 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.users.*;
+import com.example.learnenglish.model.users.Role;
+import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.model.users.UserAvatar;
+import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.repository.UserStatisticsRepository;
 import com.example.learnenglish.responsestatus.Message;
@@ -14,10 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,20 +38,7 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
-//public boolean createUser(User user) {
-//    String email = user.getEmail();
-//    if (userRepository.findByEmail(email).isPresent()) return false;
-//    user.setActive(true);
-//    user.setPassword(passwordEncoder.encode(user.getPassword()));
-//    user.getRoles().add(Role.ROLE_USER);
-//    log.info("Saving new User with email: {}", email);
-//    UserStatistics userStatistics = new UserStatistics();
-//    userStatistics.setTrainingDaysInMonth(new ArrayList<>()); // створюємо пустий ArrayList
-//    user.setStatistics(userStatistics);
-//    user.setUserAvatar(new UserAvatar());
-//    userRepository.save(user);
-//    return true;
-//}
+
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).get();
@@ -120,16 +105,5 @@ public class UserService {
         }
 
     }
-//public void saveUserAvatar(Long userId, String userAvatarName){
-//    Optional<User> optionalUser = userRepository.findById(userId);
-//    if (optionalUser.isPresent()) {
-//        User user = optionalUser.get();
-////        user.setUserAvatar(userAvatarName);
-//        userRepository.save(user);
-////            return userRepository.save(user);
-//    } else {
-//        throw new IllegalArgumentException("User with id " + userId + " not found");
-//    }
-//}
 
 }

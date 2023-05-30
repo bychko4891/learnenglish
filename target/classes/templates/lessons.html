@@ -11,10 +11,8 @@
         <div class="container layout_page">
             <div style="overflow-x: auto; height: calc(100% - 40px);">
             <div>
-                <form method="post" th:action="@{/admin-page/lessons/add-new-lesson}" id="createLesson">
-                    <input type="hidden" name="name" value="newLesson">
-                    <input type="hidden" name="lessonInfo" value="lessonInfo">
-                    <button type="submit">New lesson</button>
+                <form action="/admin-page/lessons/new-lesson">
+                        <button type="submit">New lesson</button>
                 </form>
                 <div id="result-success"></div>
                 <div id="result-error"></div>
@@ -30,7 +28,7 @@
                 <tr th:each="lesson : ${lessons}">
                     <td th:text="${lesson.name}"></td>
                     <td>
-                        <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}"
+                        <a th:href="@{/admin-page/lesson/{id}/lesson-in-editor(id=${lesson.id})}"
                            class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
@@ -52,58 +50,58 @@
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script>
-    $(document).ready(function () {
-        var resultDivSuccess = $('#result-success');
-        var resultDivError = $('#result-error');
-        $('#createLesson').submit(function (event) {
-            event.preventDefault();
-            // Get CSRF token from the meta tag-->
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            var url = $(this).attr('action');
-            var formData = $(this).serializeArray();
-            var jsonFormData = {};
-            $(formData).each(function (index, obj) {
-                jsonFormData[obj.name] = obj.value;
-            });
-            $.ajax({
-                url: url,
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(jsonFormData),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (result) {
-                    var status = result.status;
-                    // location.reload();
-                    if (status == "Success") {
-                        resultDivSuccess.text(result.message);
-                        setTimeout(hideMessageSuccess, 3000);
-                    } else {
-                        resultDivError.text(result.message);
-                        setTimeout(hideMessageError, 3000);
-                    }
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
-                }
-            });
-
-        });
-
-        function hideMessageSuccess() {
-            resultDivSuccess.text('');
-            location.reload();
-        }
-
-        function hideMessageError() {
-            resultDivError.text('');
-        }
-    });
+    // $(document).ready(function () {
+    //     var resultDivSuccess = $('#result-success');
+    //     var resultDivError = $('#result-error');
+    //     $('#createLesson').submit(function (event) {
+    //         event.preventDefault();
+    //         // Get CSRF token from the meta tag-->
+    //         var csrfToken = $("meta[name='_csrf']").attr("content");
+    //         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    //         var url = $(this).attr('action');
+    //         var formData = $(this).serializeArray();
+    //         var jsonFormData = {};
+    //         $(formData).each(function (index, obj) {
+    //             jsonFormData[obj.name] = obj.value;
+    //         });
+    //         $.ajax({
+    //             url: url,
+    //             type: "POST",
+    //             contentType: "application/json",
+    //             data: JSON.stringify(jsonFormData),
+    //             beforeSend: function (xhr) {
+    //                 xhr.setRequestHeader(csrfHeader, csrfToken);
+    //             },
+    //             success: function (result) {
+    //                 var status = result.status;
+    //                 // location.reload();
+    //                 if (status == "Success") {
+    //                     resultDivSuccess.text(result.message);
+    //                     setTimeout(hideMessageSuccess, 3000);
+    //                 } else {
+    //                     resultDivError.text(result.message);
+    //                     setTimeout(hideMessageError, 3000);
+    //                 }
+    //             },
+    //             error: function () {
+    //                 let shel = {};
+    //                 alert(Boolean(shel))
+    //                 // Поміщаємо повідомлення про помилку в div-елемент
+    //                 resultDivError.text('Помилка запиту на сервер');
+    //             }
+    //         });
+    //
+    //     });
+    //
+    //     function hideMessageSuccess() {
+    //         resultDivSuccess.text('');
+    //         location.reload();
+    //     }
+    //
+    //     function hideMessageError() {
+    //         resultDivError.text('');
+    //     }
+    // });
 </script>
 </body>
 </html>

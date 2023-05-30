@@ -22,34 +22,29 @@ public class LessonService {
         return lessonRepository.findById(id).get();
     }
 
-//    public List<Lesson> lessonsListToAdminPage() {
-//        return (List<Lesson>) lessonRepository.findAll();
-//    }
     public Page<Lesson> getLessonsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return lessonRepository.findAll(pageable);
     }
 
     public void lessonEdit(Lesson lesson) {
-        Optional<Lesson> optionalLesson = lessonRepository.findById(lesson.getId());
-        if (!optionalLesson.isPresent()) {
-            throw new IllegalArgumentException("Lesson with id " + lesson.getId() + " not found");
+        Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
+        if (!lessonOptional.isPresent()) {
+            lessonSave(lesson);
         } else {
-            Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
-            if (lessonOptional.isPresent()) {
-                Lesson lessonFromBase = lessonOptional.get();
-                lessonFromBase.setName(lesson.getName());
-                lessonFromBase.setLessonInfo(lesson.getLessonInfo());
-                lessonRepository.save(lessonFromBase);
-            }
+            Lesson lessonFromBase = lessonOptional.get();
+            lessonFromBase.setName(lesson.getName());
+            lessonFromBase.setLessonInfo(lesson.getLessonInfo());
+            lessonRepository.save(lessonFromBase);
         }
     }
 
-    public boolean createLesson(Lesson lesson) {
-        System.out.println(lesson.toString());
+    public void lessonSave(Lesson lesson) {
         lessonRepository.save(lesson);
-        return true;
     }
 
 
+    public Long countLessons() {
+        return lessonRepository.count();
+    }
 }

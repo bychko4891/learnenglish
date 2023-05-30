@@ -55,17 +55,18 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/texts-of-app-pages/new-app-text-page")
     public String appInfoListAdminPage(Model model, Principal principal) {
         if (principal != null) {
             Long count = textOfAppPageService.countTextOfAppPage() + 1;
-            return "redirect:/admin-page/text-of-app-page/" + count + "/new-app-text-page";
+            return "redirect:/admin-page/text-of-app-page/" + count + "/new-text-of-app-page-in-editor";
         }
         return "redirect:/login";
     }
 
-    @GetMapping("/text-of-app-page/{id}/new-app-text-page")
-    public String lessonsEdit1(@PathVariable("id") Long id, Model model, Principal principal) {
+    @GetMapping("/text-of-app-page/{id}/new-text-of-app-page-in-editor")
+    public String newTextOfAppPage(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
 //            lesson = lessonService.findById(id);
             TextOfAppPage textOfAppPage = new TextOfAppPage();
@@ -73,23 +74,20 @@ public class AdminController {
             textOfAppPage.setName("Enter name");
             textOfAppPage.setText("Enter text");
             model.addAttribute("textOfAppPage", textOfAppPage);
-            return "newAppTextPage";
+            return "textOfAppPageInEditor";
         }
         return "redirect:/login";
     }
 
-//    @GetMapping("/texts-of-app-pages/new-app-text-page")
-//    public String lessonsEdit(Model model, Principal principal) {
-//        if (principal != null) {
-////            lesson = lessonService.findById(id);
-//            TextOfAppPage textOfAppPage = new TextOfAppPage();
-//            textOfAppPage.setName("Enter name");
-//            textOfAppPage.setText("Enter text");
-//            model.addAttribute("appTextPage", textOfAppPage);
-//            return "newAppTextPage";
-//        }
-//        return "redirect:/login";
-//    }
+    @GetMapping("/text-of-app-page/{id}/text-of-app-page-in-editor")
+    public String textOfAppPageEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+        if (principal != null) {
+            TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
+            model.addAttribute("textOfAppPage", textOfAppPage);
+            return "textOfAppPageInEditor";
+        }
+        return "redirect:/login";
+    }
 
     @GetMapping("/users")
     public String usersListAdminPage(Model model, Principal principal,
@@ -119,31 +117,37 @@ public class AdminController {
         return "redirect:/login";
     }
 
-    @GetMapping("/lessons/lesson/{id}")
-    public String lessonEditPage(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
+    @GetMapping("/lessons/new-lesson")
+    public String newLessonAdminPage(Model model, Principal principal) {
         if (principal != null) {
-            id = lesson.getId();
-            lesson = lessonService.findById(id);
-            if (lesson.getLessonInfo() == null || lesson.getName().equals("newLesson")) {
-                lesson.setName("Заняття № " + lesson.getId());
-                lesson.setLessonInfo("Опис заняття");
-                model.addAttribute("lesson", lesson);
-                return "lesson-edit";
-            } else {
-                model.addAttribute("lesson", lesson);
-                return "lesson-edit";
-            }
+            Long count = lessonService.countLessons() + 1;
+            return "redirect:/admin-page/lesson/" + count + "/new-lesson-in-editor";
         }
         return "redirect:/login";
     }
 
-    @GetMapping("/lessons/lesson/{id}/edit")
-    public String lessonsEdit(@PathVariable("id") Long id, Model model, Lesson lesson, Principal principal) {
+    @GetMapping("/lesson/{id}/new-lesson-in-editor")
+    public String newLesson(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            lesson = lessonService.findById(id);
+//            lesson = lessonService.findById(id);
+            Lesson lesson = new Lesson();
+            lesson.setId(id);
+            lesson.setName("Заняття № " + id);
+            lesson.setLessonInfo("Опис заняття");
             model.addAttribute("lesson", lesson);
-            return "lesson-edit";
+            return "lessonInEditor";
         }
         return "redirect:/login";
     }
+
+    @GetMapping("/lesson/{id}/lesson-in-editor")
+    public String lessonEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+        if (principal != null) {
+            Lesson lesson = lessonService.findById(id);
+            model.addAttribute("lesson", lesson);
+            return "lessonInEditor";
+        }
+        return "redirect:/login";
+    }
+
 }

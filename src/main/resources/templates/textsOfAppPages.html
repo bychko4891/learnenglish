@@ -29,10 +29,10 @@
           <tr th:each="textOfAppPage : ${textOfAppPageList}">
             <td th:text="${textOfAppPage.id}"></td>
             <td th:text="${textOfAppPage.name}"></td>
-<!--            <td>-->
-<!--              <a th:href="@{/admin-page/lessons/lesson/{id}(id=${lesson.id})}"-->
-<!--                 class="btn btn-primary">Edit</a>-->
-<!--            </td>-->
+            <td>
+              <a th:href="@{/admin-page/text-of-app-page/{id}/text-of-app-page-in-editor(id=${textOfAppPage.id})}"
+                 class="btn btn-primary">Edit</a>
+            </td>
           </tr>
           </tbody>
         </table>
