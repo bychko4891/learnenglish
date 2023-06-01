@@ -19,7 +19,16 @@ p {
     font-size: 24px;
     font-family: Helvetica Arial sans-serif;
 }
-.layout_page{
+
+a {
+    color: whitesmoke;
+}
+
+a:hover {
+    color: #017311;
+}
+
+.layout_page {
     /*display: block;*/
     max-width: 100%;
     width: calc(100% - 40px);
@@ -35,8 +44,7 @@ p {
 }
 
 
-
-button, .btn{
+button, .btn {
     background-color: #189094;
     color: white;
     padding: 10px 15px;
@@ -54,24 +62,29 @@ button:hover, .btn:hover {
     color: white !important;
     background-color: #189094 !important;
     border: 1px solid rgba(0, 0, 0, 0.5) !important;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 button:active, .btn:active {
     background-color: #136669;
     transform: translate(0em, 0.2em);
 }
+
 button:active::before, .btn:active::before {
     box-shadow: 0 0 0 2px #a60b4b, 0 0 #1ee01e;
     transform: translate3d(0, 0, -0.5em);
 }
+
 button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
     background-color: #414141;
 }
-button.hidden{
+
+button.hidden {
     visibility: hidden;
 }
+
 /*.disabled {*/
 /*    opacity: 0.5;*/
 /*    cursor: not-allowed !important;*/
@@ -80,6 +93,7 @@ button.hidden{
 .file-btn {
     position: relative;
 }
+
 .file-btn input[type="file"] {
     position: absolute;
     top: 0;
@@ -88,9 +102,11 @@ button.hidden{
     height: 100%;
     opacity: 0;
 }
+
 .actions {
     padding: 5px 0;
 }
+
 .actions button {
     margin-right: 5px;
 }
@@ -131,6 +147,7 @@ button.hidden{
     .page {
         overflow-x: hidden;
     }
+
     .row {
         display: block;
     }
@@ -151,6 +168,7 @@ button.hidden{
         display: flex;
         overflow-x: hidden;
     }
+
     .row {
         display: flex;
     }
@@ -470,6 +488,7 @@ input[type=radio]:checked + .page .page-contents > * {
     /*width: 500px;*/
     /*margin: 0 auto;*/
 }
+
 .resultLesson {
     position: relative;
     min-width: 400px;
@@ -478,6 +497,7 @@ input[type=radio]:checked + .page .page-contents > * {
     font-size: 18px;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1), -15px -15px 30px #FFFFFF;
 }
+
 /*!*!* ----------     Tabs  END -------------*!*!*/
 
 /*  *********   profile edit start  ****************8       */
@@ -524,24 +544,29 @@ td {
     text-align: left;
     margin-left: 10px;
 }
+
 .inline-container {
     display: flex;
     left: 10px;
     /*align-items: center;*/
 }
-.checkbox{
+
+.checkbox {
     margin-left: 10px;
 }
-.admin_page{
+
+.admin_page {
     display: flex;
     justify-content: space-between;
-    padding: 20px 90px 1px 90px ;
+    padding: 20px 90px 1px 90px;
     width: 100%;
 }
+
 .navigation_admin_page {
     border: 2px solid #4d5154;
     padding: 15px 40px;
 }
+
 /*  *********8   profile edit start   ********88      */
 
 
@@ -553,7 +578,7 @@ td {
     background: #323232;
     /*border-radius: 8px;*/
     overflow: hidden;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),  -5px -5px 10px rgba(255, 255, 255, 1);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 1);
 }
 
 .box::before {
@@ -611,6 +636,14 @@ td {
     /*border: 1px solid #000000;*/
 
 }
+
+/*.form-registration,a {*/
+/*    padding-top: 10px;*/
+/*    color: whitesmoke;*/
+/*}*/
+/*.form-registration,span {*/
+/*    color: black;*/
+/*}*/
 
 .form-registration .inputBox {
     position: relative;

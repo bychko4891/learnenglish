@@ -1,80 +1,71 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseStatus;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-
-
-@RestController
-@RequiredArgsConstructor
+@Controller
+//@RequestMapping(method = RequestMethod.GET)
 public class UserController {
     private final UserService userService;
-    private final HttpSession session;
 
-    @PostMapping("/registration")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
-        if (!userService.createUser(user)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Юзер з таким Email: " + user.getEmail() + " вже існує");
-        }
-        userService.createUser(user);
-        return ResponseEntity.ok("Ви успішно створили аккаунт");
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/user/{userId}/edit")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<String> setUserInfo(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
-                                                @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
+    @GetMapping("/registration-page")
+    public String registration() {
+        return "registration";
+    }
+
+
+    @GetMapping("/login")
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model, Principal principal) {
+        model.addAttribute("title", "About the app Learn English");
+        if (error != null) {
+            model.addAttribute("error", "Не вірний логін, або пароль!");
+        } else if (logout != null) {
+            model.addAttribute("logout", "Ви вийшли із системи.");
+        }
+        return "login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateUser(@PathVariable ("code")String code, Model model){
+        boolean active = userService.activateUser(code);
+        if(active){
+            model.addAttribute("message", "Activate");
+        } else model.addAttribute("message", "No activate");
+        return "login";
+    }
+    @GetMapping("/forgot-password")
+    public String forgotPassword(){
+        return "forgotPassword";
+    }
+
+    @GetMapping("/user/{id}")
+    public String userPage(@PathVariable("id") Long userId, Principal principal, Model model) {
+        model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
-            userService.updateUserInfo(userId, firstName, lastName);
-            session.setAttribute("userFirstName", firstName);
-            session.setAttribute("userLastName", lastName);
-            return ResponseEntity.ok("Інформація успішно оновлена");
+            model.addAttribute("user", user);
+            return "user-info";
         }
-        return ResponseEntity.notFound().build();
+        return "redirect:/login";
     }
 
-    @PostMapping("/user/{userId}/update-password")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseStatus> setUserPassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
-                                   @RequestParam(value = "newPassword") String newPassword, Principal principal) {
+    @GetMapping("/user/{userId}/statistics")
+    public String userStatisticsPage(@PathVariable("userId") Long userId, Principal principal, Model model) {
+        model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-//            System.out.println("id: " + userId + " old: " + oldPassword + " new: " + newPassword + " controller *****************************************************8");
-            return  ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
+            return "statistics";
         }
-        return ResponseEntity.notFound().build();
+        return "redirect:/login";
     }
-
-    @PostMapping("/user/{userId}/delete")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<User> userDelete(@PathVariable("userId") Long userId, Principal principal) {
-        if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @RequestMapping("/logout")
-    public String logout() {
-        return "redirect:/";
-    }
-
-
 }
-

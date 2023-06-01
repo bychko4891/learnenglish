@@ -57,10 +57,11 @@ public class SecurityConfig {
             "/images/**",
             "/",
             "/login",
-//            "/tiny",
-//            "/lessons/**",
+            "/activate/*",
+            "/forgot-password",
             "/about-the-app",
-            "/registration"
+            "/registration",
+            "/registration-page"
 
     };
     public static final String LOGIN_URL = "/login";

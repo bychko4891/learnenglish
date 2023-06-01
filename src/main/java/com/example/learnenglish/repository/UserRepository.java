@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     String getPasswordByUsername(String username);
     @Query("SELECT u FROM User u ORDER BY u.id ASC")
     Page<User> findAll(Pageable pageable);
+
+    User findByActivationCode(String code);
 }

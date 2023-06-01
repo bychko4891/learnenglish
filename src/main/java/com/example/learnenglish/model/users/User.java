@@ -31,12 +31,15 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "activation_code", length = 1000)
+    private String activationCode;
+
     @Column(name = "active")
     private boolean active;
 
     @Column(name = "user_ip")
     private String userIp;
-//    @Column(name = "avatare_path", length = 1000)
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")
     private UserAvatar userAvatar;

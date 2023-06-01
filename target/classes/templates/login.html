@@ -26,12 +26,15 @@
                                     <span class="span-text">Пароль</span>
                                     <span id="toggleBtn"></span>
                                 </div>
-<!--                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+                                <div style="color: whitesmoke; padding-top: 10px;">
+                                <a href="/forgot-password">Відновити пароль</a>
+                                </div>
                                 <div style="padding-left: 65px; padding-top: 50px;">
                                     <button type="submit">Увійти</button>
                                 </div>
                             </form>
                             <br>
+                            <h5 th:text="${message}"></h5>
                             <div th:text="${error}" style="color: red"></div>
                             <div th:text="${logout}"style="color: #47f847"></div>
                         </div>
@@ -57,8 +60,10 @@
     toggleBtn.onclick = function () {
         if (pswLogin.type === 'password') {
             pswLogin.setAttribute('type', 'text');
+            toggleBtn.classList.add('hide');
         } else {
             pswLogin.setAttribute('type', 'password');
+            toggleBtn.classList.remove('hide');
         }
     }
 </script>

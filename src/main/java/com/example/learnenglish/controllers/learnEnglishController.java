@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET)
+//@RequestMapping(method = RequestMethod.GET)
 public class learnEnglishController {
     private final ResourceLoader resourceLoader;
     private final UserService userService;
@@ -42,51 +42,14 @@ public class learnEnglishController {
         }
     }
 
+
+
     @GetMapping("/about-the-app")
     public String aboutApp(Model model) {
         model.addAttribute("title", "About the app Learn English");
         return "about-the-app";
     }
 
-    @GetMapping("/registration")
-    public String registration() {
-        return "registration";
-    }
-
-
-    @PostMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error,
-                        @RequestParam(value = "logout", required = false) String logout,
-                        Model model, Principal principal) {
-        model.addAttribute("title", "About the app Learn English");
-        if (error != null) {
-            model.addAttribute("error", "Не вірний логін, або пароль!");
-        } else if (logout != null) {
-            model.addAttribute("logout", "Ви вийшли із системи.");
-        }
-        return "login";
-    }
-
-    @GetMapping("/user/{id}")
-    public String userPage(@PathVariable("id") Long userId, Principal principal, Model model) {
-        model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
-            return "user-info";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/user/{userId}/statistics")
-    public String userStatisticsPage(@PathVariable("userId") Long userId, Principal principal, Model model) {
-        model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            return "statistics";
-        }
-        return "redirect:/login";
-    }
 
     @GetMapping("/user/{userId}/lesson/{lessonId}")
     public String lessonPage(@PathVariable("userId") Long userId, @PathVariable("lessonId") Long lessonId,
@@ -102,8 +65,8 @@ public class learnEnglishController {
         }
         return "redirect:/login";
     }
-    @RequestMapping("/website")
-    public String loadContent() {
-        return "website";
-    }
+//    @RequestMapping("/website")
+//    public String loadContent() {
+//        return "website";
+//    }
 }

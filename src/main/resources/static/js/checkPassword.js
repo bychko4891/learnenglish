@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
             var isValid = checkPassword(password); // викликаємо функцію з другого скрипту
             var formData = $(this).serializeArray();
             delete formData.confirmPassword;
-            // console.log(formData);
             if (isValid) {
                 if ($("#confirmPassword").val() === $("#psw").val()) {
                     var jsonFormData = {};
                     $(formData).each(function (index, obj) {
                         jsonFormData[obj.name] = obj.value;
                     });
+                    console.log(jsonFormData);
                     $.ajax({
                         url: "/registration",
                         type: "POST",
