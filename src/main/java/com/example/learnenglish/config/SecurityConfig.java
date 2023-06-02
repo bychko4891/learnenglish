@@ -59,6 +59,7 @@ public class SecurityConfig {
             "/login",
             "/activate/*",
             "/forgot-password",
+            "/forgot-password/*",
             "/about-the-app",
             "/registration",
             "/registration-page"

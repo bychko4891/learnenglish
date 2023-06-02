@@ -85,11 +85,25 @@ button.hidden {
     visibility: hidden;
 }
 
-/*.disabled {*/
-/*    opacity: 0.5;*/
-/*    cursor: not-allowed !important;*/
-/*    background-color: #414141 !important;*/
-/*}*/
+.forgot-password-page {
+    padding-top: 40px;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.forgot-password-page-form {
+    display: contents;
+    flex-direction: column;
+    /*min-width: 100px;*/
+    gap: 30px;
+}
+
+.forgot-password-page-form input {
+    padding: 5px;
+    min-width: 300px;
+}
+
 .file-btn {
     position: relative;
 }
@@ -636,14 +650,6 @@ td {
     /*border: 1px solid #000000;*/
 
 }
-
-/*.form-registration,a {*/
-/*    padding-top: 10px;*/
-/*    color: whitesmoke;*/
-/*}*/
-/*.form-registration,span {*/
-/*    color: black;*/
-/*}*/
 
 .form-registration .inputBox {
     position: relative;

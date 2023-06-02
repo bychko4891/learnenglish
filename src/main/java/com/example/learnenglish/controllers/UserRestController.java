@@ -16,7 +16,10 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
+    private int captchaSum;
+
     private final UserService userService;
+
     private final HttpSession session;
 
     @PostMapping("/registration")
@@ -28,10 +31,17 @@ public class UserRestController {
         return ResponseEntity.ok("Ви успішно створили аккаунт");
     }
 
+    @PostMapping("/forgot-password/captcha")
+    public ResponseEntity<String> handleCaptcha(@RequestParam("sum") int sum) {
+        captchaSum = sum;
+        System.out.println(captchaSum + " ************************************");
+        return ResponseEntity.ok("Success");
+    }
+
     @PostMapping("/user/{userId}/edit")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<String> setUserInfo(@PathVariable("userId") Long userId, @RequestParam(value = "firstName", required = false) String firstName,
-                                                @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
+                                              @RequestParam(value = "lastName", required = false) String lastName, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
@@ -46,11 +56,11 @@ public class UserRestController {
     @PostMapping("/user/{userId}/update-password")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseStatus> setUserPassword(@PathVariable("userId") Long userId, @RequestParam(value = "password") String oldPassword,
-                                   @RequestParam(value = "newPassword") String newPassword, Principal principal) {
+                                                          @RequestParam(value = "newPassword") String newPassword, Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
 //            System.out.println("id: " + userId + " old: " + oldPassword + " new: " + newPassword + " controller *****************************************************8");
-            return  ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
+            return ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
         }
         return ResponseEntity.notFound().build();
     }
