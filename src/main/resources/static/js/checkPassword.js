@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         },
                         success: function (result, textStatus, jqXHR) {
                             if (jqXHR.status === 200) {
-                                console.log("Success:", result);
+                                // console.log("Success:", result);
                                 resultDivSuccess.text(result);
                                 document.getElementById("registration").reset();
                                 setTimeout(function () {

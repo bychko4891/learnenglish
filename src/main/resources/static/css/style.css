@@ -93,17 +93,27 @@ button.hidden {
 }
 
 .forgot-password-page-form {
-    display: contents;
-    flex-direction: column;
-    /*min-width: 100px;*/
-    gap: 30px;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    min-width: 385px;
+    /*gap: 30px;*/
 }
 
 .forgot-password-page-form input {
     padding: 5px;
-    min-width: 300px;
+    /*min-width: 300px;*/
 }
-
+.captcha {
+    padding: 0 5px;
+    font-size: 2em;
+    font-weight: 600;
+}
+.captcha_ico::before {
+    content: '\f2f1';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
 .file-btn {
     position: relative;
 }

@@ -1,6 +1,8 @@
 package com.example.learnenglish.controllers;
 
+import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
+
     private int captchaSum;
 
     private final UserService userService;
@@ -32,10 +35,17 @@ public class UserRestController {
     }
 
     @PostMapping("/forgot-password/captcha")
-    public ResponseEntity<String> handleCaptcha(@RequestParam("sum") int sum) {
-        captchaSum = sum;
-        System.out.println(captchaSum + " ************************************");
+    public ResponseEntity<String> handleCaptcha(@RequestParam("sum") int captchaSum) {
+        session.setAttribute("captchaSum", captchaSum);
         return ResponseEntity.ok("Success");
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseStatus> forgotPassword(@RequestParam("email") String email, @RequestParam("captcha") int captchaSum) {
+        int captchaSumSession = (int) session.getAttribute("captchaSum");
+        if(captchaSum == captchaSumSession){
+           return ResponseEntity.ok(userService.generatePassword(email));
+        }else return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CAPTCHA));
     }
 
     @PostMapping("/user/{userId}/edit")

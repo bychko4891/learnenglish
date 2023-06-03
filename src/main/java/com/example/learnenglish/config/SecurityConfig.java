@@ -128,17 +128,4 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public CommonsRequestLoggingFilter requestLoggingFilter() {
-//        CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
-//        filter.setIncludeQueryString(true);
-//        filter.setIncludePayload(true);
-//        filter.setMaxPayloadLength(10000);
-//        filter.setIncludeHeaders(false);
-//        filter.setBeforeMessagePrefix("REQUEST : [");
-//        filter.setAfterMessagePrefix("RESPONSE : [");
-//        return filter;
-//    }
-
-
 }

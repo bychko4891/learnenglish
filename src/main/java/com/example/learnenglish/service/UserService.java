@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
+
 import java.security.SecureRandom;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class UserService {
         user.setStatistics(new UserStatistics());
         user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
-        if(!StringUtils.isEmpty(user.getEmail())){
+        if (!StringUtils.isEmpty(user.getEmail())) {
             String mailText = String.format("Hello, %s \n" + "Welcome to Learn English. Please, visit next link: https://localhost:8443/activate/%s",
                     user.getFirstName(), user.getActivationCode());
             mailSender.sendSimpleMessage(user.getEmail(), "Activation code", mailText);
@@ -53,6 +54,10 @@ public class UserService {
 
 
     public User findByEmail(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+
+        }
         return userRepository.findByEmail(email).get();
     }
 
@@ -89,11 +94,13 @@ public class UserService {
         }
 //        userRepository.save(user);
     }
+
     public Page<User> getUsersPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
     }
-    public void userActiveEdit(Long userId, boolean userActive){
+
+    public void userActiveEdit(Long userId, boolean userActive) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -112,8 +119,6 @@ public class UserService {
             user.setUserIp(ipAddress);
             userRepository.save(user);
 
-            generatePassword(); //**************************
-
 //            return userRepository.save(user);
         } else {
             throw new IllegalArgumentException("User with id " + userId + " not found");
@@ -121,11 +126,19 @@ public class UserService {
 
     }
 
-    public String generatePassword() {
-        String rawPassword = generateRandomPassword(); // Генеруємо випадковий пароль
-        System.out.println(rawPassword + " rawpassword ******************************************");
-        System.out.println(passwordEncoder.encode(rawPassword) + " *******************************************************");
-        return passwordEncoder.encode(rawPassword);
+    public ResponseStatus generatePassword(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            String rawPassword = generateRandomPassword();
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(rawPassword));
+            userRepository.save(user);
+            String mailText = String.format("Hello, %s \n" + "New password to enter the application cabinet %s",
+                    user.getFirstName(), rawPassword);
+            mailSender.sendSimpleMessage(user.getEmail(), "New password fo login", mailText);
+            return new ResponseStatus(Message.SUCCESS_FORGOT_PASSWORD);
+        } else
+            return new ResponseStatus(Message.ERROR_FORGOT_PASSWORD);
     }
 
 
@@ -139,7 +152,7 @@ public class UserService {
 
     public boolean activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
-        if(user == null){
+        if (user == null) {
             return false;
         }
         user.setActive(true);
