@@ -11,7 +11,7 @@ public enum Message {
     SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено"),
     SUCCESS_CREATELESSON("Success", "Нове заняття створено"),
     ERROR_CREATELESSON("Success", "Виникла помилка в створенні заняття"),
-    SUCCESS_FORGOT_PASSWORD("Success", "Операція успішна! Слідуйте вказівками в листі, яке надійшло на email."),
+    SUCCESS_FORGOT_PASSWORD("Success", "Операція успішна! Слідуйте вказівкам в листі, яке надійшло на email."),
     ERROR_FORGOT_PASSWORD("Error", "Такий email не зареєстрований в додатку."),
     ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел");
 

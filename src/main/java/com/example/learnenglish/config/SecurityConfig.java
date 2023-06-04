@@ -62,7 +62,9 @@ public class SecurityConfig {
             "/forgot-password/*",
             "/about-the-app",
             "/registration",
-            "/registration-page"
+            "/registration-page",
+            "/drop",
+            "/fragmentsPages/successRegistrationFragment"
 
     };
     public static final String LOGIN_URL = "/login";

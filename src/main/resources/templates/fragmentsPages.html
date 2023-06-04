@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<div th:fragment="lessonFragment1">
+    <div id="ukr-text" class="text-show text-show-ukr"></div>
+    <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
+        <textarea name="textCheck" rows="1" placeholder="Переклад"></textarea><br><br>
+    </form>
+    <div id="result" class="resultLesson"></div>
+</div>
+
+
+<div th:fragment="lessonFragment2">
+    <div id="eng-text" class="text-show text-show-ukr"></div>
+    <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
+        <textarea name="textCheck" rows="1" placeholder="Перевод"></textarea><br><br>
+    </form>
+    <div id="result" class="resultLesson"></div>
+</div>
+
+
+<div th:fragment="lessonFragment3">
+    <div id="ukr-text" class="text-show text-show-ukr"></div>
+    <br/><br/>
+<!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
+    <br/><br/>
+    <div class="content_block" style="display: none;">
+        <div id="eng-text" class="text-show text-show-eng"></div>
+    </div>
+    <script>
+        // ***************** Bідкрити / закрити скритий текст *************** //
+        $('.content_toggle').click(function () {
+            $('.content_block').slideToggle(600);
+            return false;
+        });
+    </script>
+</div>
+
+<div th:fragment="lessonFragment4">
+    <div id="ukr-text" class="text-show text-show-ukr"></div>
+    <br/><br/>
+    <!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
+    <br/><br/>
+    <ul id="words">
+        <!-- Динамічно додаємо слова в список -->
+<!--        <li th:each="word : ${words}" draggable="true" th:text="${word}" ondragstart="drag(event)"></li>-->
+<!--        <li th:each="word : ${session.engTextList}" draggable="true" th:text="${word}" ondragstart="drag(event)"></li>-->
+    </ul>
+
+    <div id="sentence" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+    <script>
+        // // ***************** Bідкрити / закрити скритий текст *************** //
+        // $('.content_toggle').click(function () {
+        //     $('.content_block').slideToggle(600);
+        //     return false;
+        // });
+    </script>
+</div>
+
+<div th:fragment="successRegistrationFragment" style="display: flex; flex-direction: column; align-items: center;">
+    <div id="result-success" style="color: #0054d9; font-size: 2em; padding-bottom: 15px;"></div>
+<p>Дякую за реєстрацію в додатку Learn English.</p>
+<p>Залишився останній крок, щоб почати користуватися додатком - активувати аккаунт за посиланням, яке надійшло на пошту.</p>
+</div>
+
+</body>
+</html>

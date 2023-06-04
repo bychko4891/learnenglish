@@ -311,6 +311,41 @@ textarea {
     left: 0;
 }
 
+/*           lesson fragment 4 style   */
+#words {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#words li {
+    display: inline-block;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    margin-right: 0;
+    cursor: move;
+}
+
+#sentence {
+    width: 500px;
+    min-height: 100px;
+    height: auto;
+    border: 1px solid #444;
+    margin-top: 20px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+#sentence span {
+    display: inline-block;
+    border: 1px solid #062deb;
+    padding: 5px;
+    margin: 0;
+    overflow: auto;
+}
+
 /*!*!* ----------     Tabs  Start -------------*!*!*/
 
 * {

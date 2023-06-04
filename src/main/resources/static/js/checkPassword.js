@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     $(document).ready(function () {
-        var resultDivSuccess = $('#result-success');
         var resultDivError = $('#result-error');
         $('#registration').submit(function (event) {
             event.preventDefault();
@@ -28,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         },
                         success: function (result, textStatus, jqXHR) {
                             if (jqXHR.status === 200) {
-                                // console.log("Success:", result);
-                                resultDivSuccess.text(result);
-                                document.getElementById("registration").reset();
-                                setTimeout(function () {
-                                    window.location.href = "/login";
-                                }, 5000);
+                                $('#registrationPage').load("/fragmentsPages/successRegistrationFragment", function () {
+                                    $('#result-success').html(result);
+                                    setTimeout(function () {
+                                        window.location.href = "/login";
+                                    }, 12000);
+                                });
                             }
                         },
                         error: function (xhr, status, error) {
@@ -57,12 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         });
-
-        // function hideMessageSuccess() {
-        //     resultDivSuccess.text('');
-        //
-        // }
-
         function hideMessageError() {
 
             resultDivError.text('');
@@ -120,23 +113,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         toggleBtn.onclick = function () {
-            confPassword();
-            if (psw.type === 'password') {
+            if (psw.type === 'password' && confirmPassword.type === 'password') {
                 psw.setAttribute('type', 'text');
+                confirmPassword.setAttribute('type', 'text');
                 toggleBtn.classList.add('hide');
             } else {
                 psw.setAttribute('type', 'password');
-                toggleBtn.classList.remove('hide');
-            }
-        }
-
-        function confPassword() {
-            if (confirmPassword.type === 'password') {
-                confirmPassword.setAttribute('type', 'text');
-                // toggleBtn.classList.add('hide');
-            } else {
                 confirmPassword.setAttribute('type', 'password');
-                // toggleBtn.classList.remove('hide');
+                toggleBtn.classList.remove('hide');
             }
         }
 

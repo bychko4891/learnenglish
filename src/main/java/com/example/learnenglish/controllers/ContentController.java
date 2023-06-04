@@ -4,26 +4,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("lessonFragments")
+@RequestMapping("fragmentsPages")
 public class ContentController {
 
-    @RequestMapping("fragment1")
+    @RequestMapping("lessonFragment1")
     public String getContent1() {
-        return "lessonFragments :: fragment1";
+        return "fragmentsPages :: lessonFragment1";
     }
 
-    @RequestMapping("fragment2")
+    @RequestMapping("lessonFragment2")
     public String getContent2() {
-        return "lessonFragments :: fragment2";
+        return "fragmentsPages :: lessonFragment2";
     }
 
-    @RequestMapping("fragment3")
+    @RequestMapping("lessonFragment3")
     public String getContent3() {
-        return "lessonFragments :: fragment3";
+        return "fragmentsPages :: lessonFragment3";
     }
 
-    @RequestMapping("fragment4")
+    @RequestMapping("lessonFragment4")
     public String getContent4() {
-        return "lessonFragments :: fragment3";
+        return "fragmentsPages :: lessonFragment3";
+    }
+    @RequestMapping("successRegistrationFragment")
+    public String getContent5() {
+        return "fragmentsPages :: successRegistrationFragment";
     }
 }

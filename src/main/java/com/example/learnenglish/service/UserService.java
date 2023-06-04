@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,8 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
+    @Value(("${application.host}"))
+    private String host;
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -45,8 +48,8 @@ public class UserService {
         user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
         if (!StringUtils.isEmpty(user.getEmail())) {
-            String mailText = String.format("Hello, %s \n" + "Welcome to Learn English. Please, visit next link: https://localhost:8443/activate/%s",
-                    user.getFirstName(), user.getActivationCode());
+            String mailText = String.format("Hello, %s \n" + "Welcome to Learn English. Please, visit next link: %s/activate/%s",
+                    user.getFirstName(), host, user.getActivationCode());
             mailSender.sendSimpleMessage(user.getEmail(), "Activation code", mailText);
         }
         return true;
@@ -65,6 +68,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
+    // доробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void updateUserInfo(Long userId, String firstName, String lastName) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
@@ -83,7 +87,7 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String encodedPassword = userRepository.getPasswordByUsername(user.getEmail());
+            String encodedPassword = user.getPassword();
             if (passwordEncoder.matches(oldPassword, encodedPassword)) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
@@ -133,8 +137,8 @@ public class UserService {
             User user = userOptional.get();
             user.setPassword(passwordEncoder.encode(rawPassword));
             userRepository.save(user);
-            String mailText = String.format("Hello, %s \n" + "New password to enter the application cabinet %s",
-                    user.getFirstName(), rawPassword);
+            String mailText = String.format("Hello, %s \n" + "New password: %s \n" + "to enter the application cabinet %s/login ",
+                    user.getFirstName(), rawPassword, host);
             mailSender.sendSimpleMessage(user.getEmail(), "New password fo login", mailText);
             return new ResponseStatus(Message.SUCCESS_FORGOT_PASSWORD);
         } else

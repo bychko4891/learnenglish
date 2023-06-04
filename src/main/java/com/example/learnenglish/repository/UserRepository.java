@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findById(long id);
-    @Query("select u.password from User u where u.email = :username")
-    String getPasswordByUsername(String username);
+//    @Query("select u.password from User u where u.email = :username")
+//    String getPasswordByUsername(String username);
     @Query("SELECT u FROM User u ORDER BY u.id ASC")
     Page<User> findAll(Pageable pageable);
 

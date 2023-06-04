@@ -14,7 +14,7 @@
                 <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
                 <div class="page about-page">
                     <!--                    <div class="page-contents">-->
-                    <main class="col-md-6 col-lg-7 block_left">
+                    <div class="col-md-6 col-lg-7 block_left">
                         <div id="lessonId" th:data-lesson-id="${lessonId}"></div>
                         <div id="userId" th:data-user-id="${userId}"></div>
                         <h3>Переклади речення на англійську мову: </h3>
@@ -27,7 +27,8 @@
                             <button id="textShow" class="checkbox content_toggle btn" >Дивитися переклад...</button>
                         </div>
                         <br/>
-                    </main>
+
+                    </div>
                     <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
                         <div th:utext="${lesson.lessonInfo}"></div>
                     </div>

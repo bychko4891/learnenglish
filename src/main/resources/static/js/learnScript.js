@@ -18,7 +18,7 @@ $(document).ready(function () {
             console.log(result.fragment);
 
             if (result.fragment === "Fragment 1") {
-                $('#replace_div').load("/lessonFragments/fragment1", function () {
+                $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
@@ -26,19 +26,45 @@ $(document).ready(function () {
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if (result.fragment === "Fragment 2") {
-                $('#replace_div').load("/lessonFragments/fragment2", function () {
+                $('#replace_div').load("/fragmentsPages/lessonFragment2", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
                     $('#eng-text').html(result.engText);
                 });
-            } else {
-                $('#replace_div').load("/lessonFragments/fragment3", function () {
+            } else if (result.fragment === "Fragment 3"){
+                $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
+                });
+            } else {
+                $('#replace_div').load("/fragmentsPages/lessonFragment4", function () {
+                    textShow.classList.add('hidden');
+                    checkButton.classList.remove('hidden');
+                    nextButton.classList.add('disabled');
+                    nextButton.setAttribute('disabled', 'disabled');
+                    var ul = document.getElementById("words");
+                    ul.html(result.ukrText);
+                    // $('#eng-text').html(result.engText);
+                    // var words = result.engText.split(" ");
+                    // console.log(words);
+                    // // Додаємо слова до списку (масиву)
+                    // var wordList = [];
+                    // for (var i = 0; i < words.length; i++) {
+                    //     wordList.push(words[i]);
+                    // }
+                    // console.log(wordList);
+
+
+                    // Пройтися по елементам списку і створити <li> для кожного елемента
+                    for (var i = 0; i < result.engTextList.length; i++) {
+                        var li = document.createElement("li");
+                        li.textContent = result.engTextList[i];
+                        ul.appendChild(li);
+                    }
                 });
             }
         },
@@ -64,7 +90,7 @@ $('#nextText').submit(function (e) {
             var checkButton = document.getElementById('checkButton');
             var nextButton = document.getElementById('nextButton');
             if (result.fragment === "Fragment 1") {
-                $('#replace_div').load("/lessonFragments/fragment1", function () {
+                $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
@@ -72,7 +98,7 @@ $('#nextText').submit(function (e) {
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if (result.fragment === "Fragment 2") {
-                $('#replace_div').load("/lessonFragments/fragment2", function () {
+                $('#replace_div').load("/fragmentsPages/lessonFragment2", function () {
                     textShow.classList.add('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
@@ -80,7 +106,7 @@ $('#nextText').submit(function (e) {
                     $('#eng-text').html(result.engText);
                 });
             } else {
-                $('#replace_div').load("/lessonFragments/fragment3", function () {
+                $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     nextButton.classList.remove('disabled');
                     nextButton.removeAttribute('disabled');
                     checkButton.classList.add('hidden');

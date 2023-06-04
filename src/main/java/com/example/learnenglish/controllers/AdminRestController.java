@@ -27,8 +27,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
-    public ResponseEntity<String> createAppTextPage(@RequestBody TextOfAppPage textOfAppPage, Model model,
-                                                    Principal principal) {
+    public ResponseEntity<String> createAppTextPage(@RequestBody TextOfAppPage textOfAppPage, Principal principal) {
         if (principal != null) {
             textOfAppPageService.textOfAppPageEdit(textOfAppPage);
             return ResponseEntity.ok("Ok");
@@ -37,7 +36,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/lessons/lesson/{id}/edit")
-    public ResponseEntity<String> lessonsEdit(@PathVariable("id") Long id, Model model,
+    public ResponseEntity<String> lessonsEdit(@PathVariable("id") Long id,
                                               @RequestBody Lesson lesson, Principal principal) {
 
 //        model.addAttribute("lesson", lesson);

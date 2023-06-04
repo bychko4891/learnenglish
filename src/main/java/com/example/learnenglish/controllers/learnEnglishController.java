@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
@@ -24,6 +26,12 @@ public class learnEnglishController {
         this.resourceLoader = resourceLoader;
         this.userService = userService;
         this.lessonService = lessonService;
+    }
+    @GetMapping("drop")
+    public String drop(Model model){
+        List<String> words = Arrays.asList("This", "is", "a", "sample", "lol", "big", "street", "for", "five", "sentences", "application", "with", "security", "and");
+        model.addAttribute("words", words);
+        return "drop";
     }
 
     @GetMapping("/")
@@ -65,8 +73,5 @@ public class learnEnglishController {
         }
         return "redirect:/login";
     }
-//    @RequestMapping("/website")
-//    public String loadContent() {
-//        return "website";
-//    }
+
 }

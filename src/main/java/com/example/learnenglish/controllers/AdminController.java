@@ -34,13 +34,12 @@ public class AdminController {
 
 
     @GetMapping
-    public String adminPage(Model model, Principal principal) {
+    public String adminPage(Principal principal) {
         if (principal != null) {
+//            User user = userService.findByEmail(principal.getName());
 
-            User user = userService.findByEmail(principal.getName());
-//            List<Lesson> lessons = lessonService.lessonsListToAdminPage();
-            model.addAttribute("user", user);
-//            model.addAttribute("lessons", lessons);
+//            model.addAttribute("user", user);
+
             return "admin-page";
         }
         return "redirect:/login";
@@ -57,7 +56,7 @@ public class AdminController {
     }
 
     @GetMapping("/texts-of-app-pages/new-app-text-page")
-    public String appInfoListAdminPage(Model model, Principal principal) {
+    public String appInfoListAdminPage(Principal principal) {
         if (principal != null) {
             Long count = textOfAppPageService.countTextOfAppPage() + 1;
             return "redirect:/admin-page/text-of-app-page/" + count + "/new-text-of-app-page-in-editor";
@@ -118,7 +117,7 @@ public class AdminController {
     }
 
     @GetMapping("/lessons/new-lesson")
-    public String newLessonAdminPage(Model model, Principal principal) {
+    public String newLessonAdminPage(Principal principal) {
         if (principal != null) {
             Long count = lessonService.countLessons() + 1;
             return "redirect:/admin-page/lesson/" + count + "/new-lesson-in-editor";
