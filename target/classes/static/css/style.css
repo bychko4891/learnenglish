@@ -114,6 +114,25 @@ button.hidden {
     font-weight: normal;
     font-style: normal;
 }
+.lesson_next_ico::before {
+    content: '\f101';
+    font-family: fontAwesome;
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+}
+.lesson_prev_ico::before {
+    content: '\f100';
+    font-family: fontAwesome;
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+}
+.lesson_prev1_ico::before {
+    content: '\f105';
+    font-family: fontAwesome;
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+}
+
 .file-btn {
     position: relative;
 }
@@ -324,7 +343,7 @@ textarea {
     padding: 5px;
     background-color: #f1f1f1;
     border: 1px solid #ccc;
-    margin-right: 0;
+    margin-right: 2px;
     cursor: move;
 }
 
@@ -333,7 +352,7 @@ textarea {
     min-height: 100px;
     height: auto;
     border: 1px solid #444;
-    margin-top: 20px;
+    margin: 20px 0;
     padding: 10px;
     overflow-y: auto;
 }

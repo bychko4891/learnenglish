@@ -24,7 +24,7 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : (GET|POST) /user/[0-9]+/lesson/[0-9]+.+", message)) {
+        if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : (GET|POST) /lesson/[0-9]+.+", message)) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
                 long userId = ((User) principal).getId();

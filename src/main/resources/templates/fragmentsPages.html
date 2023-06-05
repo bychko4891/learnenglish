@@ -4,6 +4,7 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <div th:fragment="lessonFragment1">
+<!--    <p>1</p>-->
     <div id="ukr-text" class="text-show text-show-ukr"></div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
         <textarea name="textCheck" rows="1" placeholder="Переклад"></textarea><br><br>
@@ -13,6 +14,7 @@
 
 
 <div th:fragment="lessonFragment2">
+<!--    <p>2</p>-->
     <div id="eng-text" class="text-show text-show-ukr"></div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
         <textarea name="textCheck" rows="1" placeholder="Перевод"></textarea><br><br>
@@ -22,9 +24,10 @@
 
 
 <div th:fragment="lessonFragment3">
+<!--    <p>3</p>-->
     <div id="ukr-text" class="text-show text-show-ukr"></div>
     <br/><br/>
-<!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
+    <!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
     <br/><br/>
     <div class="content_block" style="display: none;">
         <div id="eng-text" class="text-show text-show-eng"></div>
@@ -40,30 +43,98 @@
 
 <div th:fragment="lessonFragment4">
     <div id="ukr-text" class="text-show text-show-ukr"></div>
-    <br/><br/>
-    <!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
-    <br/><br/>
-    <ul id="words">
-        <!-- Динамічно додаємо слова в список -->
-<!--        <li th:each="word : ${words}" draggable="true" th:text="${word}" ondragstart="drag(event)"></li>-->
-<!--        <li th:each="word : ${session.engTextList}" draggable="true" th:text="${word}" ondragstart="drag(event)"></li>-->
-    </ul>
-
+    <br/>
+    <ul id="words"></ul>
     <div id="sentence" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="result" class="resultLesson"></div>
 
     <script>
-        // // ***************** Bідкрити / закрити скритий текст *************** //
-        // $('.content_toggle').click(function () {
-        //     $('.content_block').slideToggle(600);
-        //     return false;
-        // });
+        var sentenceWords = []; // Слова в реченні
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.innerText);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+
+            var sentence = document.getElementById("sentence");
+
+            // Перевірити, чи слово вже є в реченні
+            var isInSentence = false;
+            for (var i = 0; i < sentenceWords.length; i++) {
+                if (sentenceWords[i] === data) {
+                    isInSentence = true;
+                    break;
+                }
+            }
+
+            if (!isInSentence) {
+                var word = document.createElement("span");
+                word.textContent = data;
+                word.draggable = true;
+                word.ondragstart = function (event) {
+                    drag(event);
+                    removeFromSentence(event.target.innerText);
+                    addToWordList(event.target.innerText);
+                };
+
+                sentence.appendChild(word);
+                sentence.appendChild(document.createTextNode(" "));
+
+                // Додати слово до речення
+                sentenceWords.push(data);
+
+                // Видалити слово зі списку слів
+                removeFromWordList(data);
+            }
+        }
+
+        function removeFromWordList(word) {
+            var wordList = document.getElementById("words").getElementsByTagName("li");
+            for (var i = 0; i < wordList.length; i++) {
+                if (wordList[i].innerText === word) {
+                    wordList[i].remove();
+                    break;
+                }
+            }
+        }
+
+        function removeFromSentence(word) {
+            var sentence = document.getElementById("sentence");
+            var words = sentence.getElementsByTagName("span");
+            for (var i = 0; i < words.length; i++) {
+                if (words[i].innerText === word) {
+                    words[i].remove();
+                    sentenceWords.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        function addToWordList(word) {
+            var wordList = document.getElementById("words");
+            var newWord = document.createElement("li");
+            newWord.draggable = true;
+            newWord.ondragstart = function(event) {
+                drag(event);
+            };
+            newWord.textContent = word;
+            wordList.appendChild(newWord);
+        }
+
     </script>
 </div>
 
 <div th:fragment="successRegistrationFragment" style="display: flex; flex-direction: column; align-items: center;">
     <div id="result-success" style="color: #0054d9; font-size: 2em; padding-bottom: 15px;"></div>
-<p>Дякую за реєстрацію в додатку Learn English.</p>
-<p>Залишився останній крок, щоб почати користуватися додатком - активувати аккаунт за посиланням, яке надійшло на пошту.</p>
+    <p>Дякую за реєстрацію в додатку Learn English.</p>
+    <p>Залишився останній крок, щоб почати користуватися додатком - активувати аккаунт за посиланням, яке надійшло на
+        пошту.</p>
 </div>
 
 </body>

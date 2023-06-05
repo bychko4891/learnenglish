@@ -1,19 +1,15 @@
 package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-
-import java.io.IOException;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
@@ -26,12 +22,6 @@ public class learnEnglishController {
         this.resourceLoader = resourceLoader;
         this.userService = userService;
         this.lessonService = lessonService;
-    }
-    @GetMapping("drop")
-    public String drop(Model model){
-        List<String> words = Arrays.asList("This", "is", "a", "sample", "lol", "big", "street", "for", "five", "sentences", "application", "with", "security", "and");
-        model.addAttribute("words", words);
-        return "drop";
     }
 
     @GetMapping("/")
@@ -59,16 +49,14 @@ public class learnEnglishController {
     }
 
 
-    @GetMapping("/user/{userId}/lesson/{lessonId}")
-    public String lessonPage(@PathVariable("userId") Long userId, @PathVariable("lessonId") Long lessonId,
+    @GetMapping("/lesson/{lessonId}")
+    public String lessonPage(@PathVariable("lessonId") Long lessonId,
                              Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
             lesson = lessonService.findById(lessonId);
             model.addAttribute("lessonId", lesson.getId());
             model.addAttribute("lesson", lesson);
-            model.addAttribute("userId", userId);
             return "lesson";
         }
         return "redirect:/login";

@@ -24,7 +24,7 @@ public class ContentController {
 
     @RequestMapping("lessonFragment4")
     public String getContent4() {
-        return "fragmentsPages :: lessonFragment3";
+        return "fragmentsPages :: lessonFragment4";
     }
     @RequestMapping("successRegistrationFragment")
     public String getContent5() {

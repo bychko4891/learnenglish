@@ -2,27 +2,27 @@
 
 var div;
 var lessonId;
-var userId;
+
 $(document).ready(function () {
     lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    userId = document.getElementById('userId').getAttribute('data-user-id');
+
     // div = document.getElementById('buttonCheck');
     var nextButton = document.getElementById('nextButton');
     var textShow = document.getElementById('textShow');
     var checkButton = document.getElementById('checkButton');
-    var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
+    var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
         url: url,
         success: function (result) {
             console.log(result.fragment);
-
             if (result.fragment === "Fragment 1") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
                     textShow.classList.add('hidden');
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
+                    console.log(result.ukrText);
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if (result.fragment === "Fragment 2") {
@@ -31,6 +31,7 @@ $(document).ready(function () {
                     checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
+                    console.log(result.engText);
                     $('#eng-text').html(result.engText);
                 });
             } else if (result.fragment === "Fragment 3"){
@@ -41,31 +42,26 @@ $(document).ready(function () {
                     $('#eng-text').html(result.engText);
                 });
             } else {
+                textShow.classList.add('hidden');
+                checkButton.classList.remove('hidden');
+                checkButton.onclick = sendDataToServer;
+                nextButton.classList.add('disabled');
+                nextButton.setAttribute('disabled', 'disabled');
+                var ul = document.getElementById("words");
                 $('#replace_div').load("/fragmentsPages/lessonFragment4", function () {
-                    textShow.classList.add('hidden');
-                    checkButton.classList.remove('hidden');
-                    nextButton.classList.add('disabled');
-                    nextButton.setAttribute('disabled', 'disabled');
+                    $('#ukr-text').html(result.ukrText);
                     var ul = document.getElementById("words");
-                    ul.html(result.ukrText);
-                    // $('#eng-text').html(result.engText);
-                    // var words = result.engText.split(" ");
-                    // console.log(words);
-                    // // Додаємо слова до списку (масиву)
-                    // var wordList = [];
-                    // for (var i = 0; i < words.length; i++) {
-                    //     wordList.push(words[i]);
-                    // }
-                    // console.log(wordList);
-
-
-                    // Пройтися по елементам списку і створити <li> для кожного елемента
                     for (var i = 0; i < result.engTextList.length; i++) {
                         var li = document.createElement("li");
                         li.textContent = result.engTextList[i];
-                        ul.appendChild(li);
+                        li.draggable = true;
+                        li.ondragstart = function(event) {
+                            drag(event);
+                        };
+                        ul.append(li);
                     }
                 });
+
             }
         },
         error: function () {
@@ -73,15 +69,20 @@ $(document).ready(function () {
         }
     });
 });
+// *****************
+
+
+
+
 
 // **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
 
 $('#nextText').submit(function (e) {
     e.preventDefault();
     // var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    // var userId = document.getElementById('userId').getAttribute('data-user-id');
+
     var textShow = document.getElementById('textShow');
-    var url = "/user/" + userId + "/lesson/" + lessonId + "/reload";
+    var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
         url: url,
@@ -105,13 +106,33 @@ $('#nextText').submit(function (e) {
                     checkButton.classList.remove('hidden');
                     $('#eng-text').html(result.engText);
                 });
-            } else {
+            } else if (result.fragment === "Fragment 3"){
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
-                    nextButton.classList.remove('disabled');
-                    nextButton.removeAttribute('disabled');
+                    var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
+                });
+            } else {
+                textShow.classList.add('hidden');
+                checkButton.classList.remove('hidden');
+                checkButton.onclick = sendDataToServer;
+                nextButton.classList.add('disabled');
+                nextButton.setAttribute('disabled', 'disabled');
+                // wordList = result.engTextList;
+                var ul = document.getElementById("words");
+                $('#replace_div').load("/fragmentsPages/lessonFragment4", function () {
+                    $('#ukr-text').html(result.ukrText);
+                    var ul = document.getElementById("words");
+                    for (var i = 0; i < result.engTextList.length; i++) {
+                        var li = document.createElement("li");
+                        li.textContent = result.engTextList[i];
+                        li.draggable = true;
+                        li.ondragstart = function(event) {
+                            drag(event);
+                        };
+                        ul.append(li);
+                    }
                 });
             }
         },
@@ -128,7 +149,7 @@ function getData() {
     // var url = window.location.href;
     // var lessonId = url.match(/lesson\/(\d+)/)[1];
     // url = $(this).attr('action') + lessonId + "/check";
-    var url = "/user/" + userId + "/lesson/" + lessonId + "/check";
+    var url = "/lesson/" + lessonId + "/check";
     $.ajax({
         url: url,
         type: "GET",
@@ -177,37 +198,33 @@ function getData() {
 //         return false;
 //     });
 }
+function sendDataToServer() {
+    var sentence = document.getElementById("sentence");
+    var wordSequence = sentence.innerText.trim(); // Отримати текстове значення речення
+    var url = "/lesson/" + lessonId + "/check";
+    console.log(wordSequence + " * sendDataToServer *");
+    // Відправити дані на сервер
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: { textCheck: wordSequence },
+        // contentType: "text/plain",
+        success: function(result) {
+            var nextButton = document.getElementById('nextButton');
+            var checkButton = document.getElementById('checkButton');
+            nextButton.classList.remove('disabled');
+            nextButton.removeAttribute('disabled');
+            checkButton.classList.add('disabled');
+            checkButton.setAttribute('disabled', 'disabled');
+            $('#result').html(result);
+        },
+        error: function(xhr, status, error) {
+            // Обробка помилки
+            console.error(error);
+        }
+    });
+}
 
-
-//     $('#reload').submit(function (e) {
-//         e.preventDefault();
-//         var data = $(this).serialize();
-//         var url = $(this).attr('action');
-//         var csrfToken = $("input[name='_csrf']").val();
-//         $.ajax({
-//             type: "GET",
-//             url: url,
-//             data: data,
-//             beforeSend: function (xhr) {
-//                 xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-//             },
-//             success: function (result) {
-//                 // console.log(result);
-//                 $('.content_block').hide();
-//                 $('#ukr-text').html(result.ukrText);
-//                 $('#english-text').html(result.engText);
-//             },
-//             error: function () {
-//                 // console.log('Помилка запиту на сервер');
-//             }
-//         });
-//     // });
-// // ***************** Кнопка, щоб відкрити скритий текст *************** //
-//     $('.content_toggle').click(function () {
-//         $('.content_block').slideToggle(600);
-//         return false;
-//     });
-// });
 
 // ************   Додавання тексту в базу   *************** //
 $(document).ready(function () {

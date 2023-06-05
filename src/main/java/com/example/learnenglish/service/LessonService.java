@@ -1,14 +1,17 @@
 package com.example.learnenglish.service;
 
+import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.LessonRepository;
+import com.example.learnenglish.repository.TranslationPairRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class LessonService {
@@ -16,6 +19,7 @@ public class LessonService {
 
     public LessonService(LessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
+
     }
 
     public Lesson findById(long id) {
