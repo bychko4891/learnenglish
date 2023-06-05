@@ -30,6 +30,7 @@ import java.util.UUID;
 public class UserService {
     @Value(("${application.host}"))
     private String host;
+
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;

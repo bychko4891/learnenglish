@@ -1,6 +1,7 @@
 package com.example.learnenglish.model.users;
 
 import com.example.learnenglish.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AdminAccountInitializer implements ApplicationRunner {
+    @Value(("${user.admin.email}"))
+    private String adminEmail;
+
+    @Value(("${user.admin.password}"))
+    private String adminPassword;
+
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -23,9 +30,9 @@ public class AdminAccountInitializer implements ApplicationRunner {
             User admin = new User();
             admin.setFirstName("Admin");
             admin.setLastName("Admin");
-            admin.setEmail("user@mail.com");
+            admin.setEmail(adminEmail);
             admin.setActive(true);
-            admin.setPassword(passwordEncoder.encode("1"));
+            admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.getAuthority().add(Role.ROLE_ADMIN);
             admin.setStatistics(new UserStatistics());
             admin.setUserAvatar(new UserAvatar());

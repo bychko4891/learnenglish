@@ -126,7 +126,7 @@ button.hidden {
     /*font-weight: normal;*/
     /*font-style: normal;*/
 }
-.lesson_prev1_ico::before {
+.lesson_enter_ico::before {
     content: '\f105';
     font-family: fontAwesome;
     /*font-weight: normal;*/
@@ -343,7 +343,7 @@ textarea {
     padding: 5px;
     background-color: #f1f1f1;
     border: 1px solid #ccc;
-    margin-right: 2px;
+    margin-right: 10px;
     cursor: move;
 }
 

@@ -14,8 +14,7 @@
                 <form action="/admin-page/lessons/new-lesson">
                         <button type="submit">New lesson</button>
                 </form>
-                <div id="result-success"></div>
-                <div id="result-error"></div>
+                <div th:text="${message}"></div>
             </div>
             <table>
                 <thead>
@@ -44,64 +43,8 @@
                 <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
             </div>
         </div>
-
-
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-<script>
-    // $(document).ready(function () {
-    //     var resultDivSuccess = $('#result-success');
-    //     var resultDivError = $('#result-error');
-    //     $('#createLesson').submit(function (event) {
-    //         event.preventDefault();
-    //         // Get CSRF token from the meta tag-->
-    //         var csrfToken = $("meta[name='_csrf']").attr("content");
-    //         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    //         var url = $(this).attr('action');
-    //         var formData = $(this).serializeArray();
-    //         var jsonFormData = {};
-    //         $(formData).each(function (index, obj) {
-    //             jsonFormData[obj.name] = obj.value;
-    //         });
-    //         $.ajax({
-    //             url: url,
-    //             type: "POST",
-    //             contentType: "application/json",
-    //             data: JSON.stringify(jsonFormData),
-    //             beforeSend: function (xhr) {
-    //                 xhr.setRequestHeader(csrfHeader, csrfToken);
-    //             },
-    //             success: function (result) {
-    //                 var status = result.status;
-    //                 // location.reload();
-    //                 if (status == "Success") {
-    //                     resultDivSuccess.text(result.message);
-    //                     setTimeout(hideMessageSuccess, 3000);
-    //                 } else {
-    //                     resultDivError.text(result.message);
-    //                     setTimeout(hideMessageError, 3000);
-    //                 }
-    //             },
-    //             error: function () {
-    //                 let shel = {};
-    //                 alert(Boolean(shel))
-    //                 // Поміщаємо повідомлення про помилку в div-елемент
-    //                 resultDivError.text('Помилка запиту на сервер');
-    //             }
-    //         });
-    //
-    //     });
-    //
-    //     function hideMessageSuccess() {
-    //         resultDivSuccess.text('');
-    //         location.reload();
-    //     }
-    //
-    //     function hideMessageError() {
-    //         resultDivError.text('');
-    //     }
-    // });
-</script>
 </body>
 </html>
