@@ -45,9 +45,11 @@ public class LessonController {
             long userId = (long)session.getAttribute("userId");
             userStatisticsService.repetitionsCountSave(userId);
             DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.translationPairRandom(lessonId, userId);
-            session.setAttribute("ukrTextCheck", dtoTranslationPairToUI.getUkrText());
+            session.setAttribute("ukrText", dtoTranslationPairToUI.getUkrText());
+            session.setAttribute("engText", dtoTranslationPairToUI.getEngText());
             session.setAttribute("fragment", dtoTranslationPairToUI.getFragment());
             session.setAttribute("engTextCheck", dtoTranslationPairToUI.getEngText().replaceAll("\\?+", ""));
+            session.setAttribute("ukrTextCheck", dtoTranslationPairToUI.getUkrText().replaceAll("\\?+", ""));
             return ResponseEntity.ok(dtoTranslationPairToUI);
         }
         return ResponseEntity.notFound().build();
@@ -64,10 +66,10 @@ public class LessonController {
             } else {
                 if (session.getAttribute("fragment").equals("Fragment 1") || session.getAttribute("fragment").equals("Fragment 4")) {
                     return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>"
-                            + session.getAttribute("engTextCheck") + "</p>");
+                            + session.getAttribute("engText") + "</p>");
                 } else
                     return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>"
-                            + session.getAttribute("ukrTextCheck") + "</p>");
+                            + session.getAttribute("ukrText") + "</p>");
             }
         }
         return ResponseEntity.notFound().build();

@@ -14,8 +14,7 @@
                 <form action="/admin-page/lessons/new-lesson">
                         <button type="submit">New lesson</button>
                 </form>
-                <div id="result-success"></div>
-                <div id="result-error"></div>
+                <div th:text="${message}"></div>
             </div>
             <table>
                 <thead>

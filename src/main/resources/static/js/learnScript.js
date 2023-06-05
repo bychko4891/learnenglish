@@ -34,7 +34,7 @@ $(document).ready(function () {
                     console.log(result.engText);
                     $('#eng-text').html(result.engText);
                 });
-            } else if (result.fragment === "Fragment 3"){
+            } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
@@ -55,7 +55,7 @@ $(document).ready(function () {
                         var li = document.createElement("li");
                         li.textContent = result.engTextList[i];
                         li.draggable = true;
-                        li.ondragstart = function(event) {
+                        li.ondragstart = function (event) {
                             drag(event);
                         };
                         ul.append(li);
@@ -70,9 +70,6 @@ $(document).ready(function () {
     });
 });
 // *****************
-
-
-
 
 
 // **********  Виконуємо запит при надсиланні запита користувачем Lesson *************** //
@@ -106,7 +103,7 @@ $('#nextText').submit(function (e) {
                     checkButton.classList.remove('hidden');
                     $('#eng-text').html(result.engText);
                 });
-            } else if (result.fragment === "Fragment 3"){
+            } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
@@ -128,7 +125,7 @@ $('#nextText').submit(function (e) {
                         var li = document.createElement("li");
                         li.textContent = result.engTextList[i];
                         li.draggable = true;
-                        li.ondragstart = function(event) {
+                        li.ondragstart = function (event) {
                             drag(event);
                         };
                         ul.append(li);
@@ -190,7 +187,6 @@ function getData() {
     }
 
 
-
 // });
 // ***************** Кнопка, щоб відкрити скритий текст *************** //
 //     $('.content_toggle').click(function () {
@@ -198,6 +194,7 @@ function getData() {
 //         return false;
 //     });
 }
+
 function sendDataToServer() {
     var sentence = document.getElementById("sentence");
     var wordSequence = sentence.innerText.trim(); // Отримати текстове значення речення
@@ -207,9 +204,9 @@ function sendDataToServer() {
     $.ajax({
         url: url,
         type: "GET",
-        data: { textCheck: wordSequence },
+        data: {textCheck: wordSequence},
         // contentType: "text/plain",
-        success: function(result) {
+        success: function (result) {
             var nextButton = document.getElementById('nextButton');
             var checkButton = document.getElementById('checkButton');
             nextButton.classList.remove('disabled');
@@ -218,7 +215,7 @@ function sendDataToServer() {
             checkButton.setAttribute('disabled', 'disabled');
             $('#result').html(result);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             // Обробка помилки
             console.error(error);
         }
@@ -368,10 +365,41 @@ $(document).ready(function () {
 });
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+// *********             Навігація по заняттям                       ********* //
+$(document).ready(function () {
+    var previousLesson = document.getElementById("previousLesson");
+    var lessonIdUserInput = document.getElementById("lessonIdInput");
+    var submitButton = document.getElementById("submitButton");
+    var nextLesson = document.getElementById("nextLesson");
+// Обробник події для кнопки "Підтвердити"
+    submitButton.addEventListener("click", function () {
+        var lessonIdInput = lessonIdUserInput.value;
+        loadLesson(lessonIdInput);
+    });
 
+// Обробник події для кнопки "Назад"
+    previousLesson.addEventListener("click", function () {
+        var previousLessonId = lessonId - 1;
+        loadLesson(previousLessonId);
+    });
 
-window.onload = function () {
+// Обробник події для кнопки "Вперед"
+    nextLesson.addEventListener("click", function () {
+        console.log("id " + lessonId);
+        var nextLessonId = parseInt(lessonId) + 1;
+        console.log("next " + nextLessonId);
+        loadLesson(nextLessonId);
+    });
 
-
-}
+// Функція для завантаження уроку за його ідентифікатором
+    function loadLesson(lessonIdData) {
+        if (lessonIdData < 1) {
+            lessonIdData = 1;
+        }
+        if (lessonIdData > 16) {
+            lessonIdData = 16;
+        }
+        var url = "/lesson/" + lessonIdData;
+        window.location.href = url;
+    }
+});

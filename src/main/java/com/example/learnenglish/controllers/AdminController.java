@@ -6,6 +6,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.TextOfAppPageService;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -22,11 +24,13 @@ import java.util.List;
 @RequestMapping("/admin-page")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminController {
+    private final HttpSession session;
     private final LessonService lessonService;
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
 
-    public AdminController(LessonService lessonService, UserService userService, TextOfAppPageService textOfAppPageService) {
+    public AdminController(HttpSession session, LessonService lessonService, UserService userService, TextOfAppPageService textOfAppPageService) {
+        this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
@@ -103,11 +107,12 @@ public class AdminController {
     }
 
     @GetMapping("/lessons")
-    public String lessonsListAdminPage(Model model, Principal principal,
+    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message, Model model, Principal principal,
                                        @RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         if (principal != null) {
             Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
+            model.addAttribute("message", message);
             model.addAttribute("lessons", lessonPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", lessonPage.getTotalPages());
@@ -117,9 +122,14 @@ public class AdminController {
     }
 
     @GetMapping("/lessons/new-lesson")
-    public String newLessonAdminPage(Principal principal) {
+    public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
         if (principal != null) {
             Long count = lessonService.countLessons() + 1;
+            if(count > 16){
+                String message = "Дозволено максимум 16 уроків";
+                redirectAttributes.addAttribute("message", message);
+                return "redirect:/admin-page/lessons";
+            }
             return "redirect:/admin-page/lesson/" + count + "/new-lesson-in-editor";
         }
         return "redirect:/login";

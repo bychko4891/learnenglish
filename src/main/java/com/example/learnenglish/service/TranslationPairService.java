@@ -65,6 +65,8 @@ public class TranslationPairService {
         }
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
         dtoTranslationPairToUI.setUkrText("Завантажте текст будь ласка для навчання");
+        dtoTranslationPairToUI.setEngText("Please download the text for study");
+        dtoTranslationPairToUI.setFragment("Fragment 3");
         return dtoTranslationPairToUI;
     }
 }
