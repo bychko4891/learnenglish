@@ -278,29 +278,18 @@ textarea {
 
 /*!*  Кнопка яка показує скритий текст END  *!*/
 
-#ukr-text, #english-text {
-    font-size: 24px;
-    font-family: Helvetica Arial sans-serif;
-}
-
 /* !*стилізація укр english тексту в генераторі*!*/
 .text-show {
-    border: 1px solid #04414d;
-    text-decoration: none;
+    border: 0.1em solid #04414d;
     color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
     /*background-image: linear-gradient(90deg, #fd7f34, #bd155b);*/
     background-color: #0c63e4;
     display: inline-block;
     padding: 10px 45px 10px 45px;
-    position: relative;
-    z-index: 0;
-    box-sizing: border-box;
     margin: 0 15px 15px 0;
-    outline: none;
-    cursor: pointer;
-    user-select: none;
-    appearance: none;
-    touch-action: manipulation;
+
 }
 
 .text-show-ukr {
@@ -395,6 +384,17 @@ label, a {
     overflow: hidden;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr 1fr;
+}
+
+.layout_lesson {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+    grid-template-rows: 50px 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 input[type=radio] {
@@ -562,9 +562,13 @@ input[type=radio]:checked + .page .page-contents > * {
 }
 
 .page-contents {
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*flex-direction: column;*/
     max-width: 100%;
-    /*width: 500px;*/
-    /*margin: 0 auto;*/
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px 20px;
 }
 
 .resultLesson {
@@ -575,7 +579,44 @@ input[type=radio]:checked + .page .page-contents > * {
     font-size: 18px;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1), -15px -15px 30px #FFFFFF;
 }
+.lesson_repeat_tabs::before {
+    content: '\f51c';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
+.lesson_info_tabs::before {
+    content: '\f059';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
+.lesson_upload_tabs::before {
+    content: '\f093';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
+.profile_tabs::before {
+    content: '\f007';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
+.profile_edit::before {
+    content: '\f4ff';
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
 
+.fragments_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    min-height: 350px;
+}
 /*!*!* ----------     Tabs  END -------------*!*!*/
 
 /*  *********   profile edit start  ****************8       */

@@ -10,45 +10,52 @@
     </div>
     <main class="section main_content ">
         <div class="container layout_page row">
-            <div class="layout">
-                <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
+            <div class="layout_lesson">
+                <input name="nav" type="radio" class="nav home-radio" id="learn" checked="checked"/>
                 <div class="page about-page">
-                    <!--                    <div class="page-contents">-->
-                    <div class="col-md-6 col-lg-7 block_left">
+                                        <div class="page-contents">
+<!--                    <div class="col-md-6 col-lg-7 block_left">-->
                         <div id="lessonId" th:data-lesson-id="${lessonId}"></div>
-                        <h3>Переклади речення на англійську мову: </h3>
-                        <div id="replace_div" style="min-height: 280px; height: auto;"></div>
+
+                        <div id="replace_div"></div>
                         <div class="inline-container" style="display: flex; margin-right: auto;">
                             <form id="nextText">
                                 <button id="nextButton" type="submit">Далі</button>
                             </form>
                             <button id="checkButton" onclick="getData()" class="checkbox">Перевірити</button>
-                            <button id="textShow" class="checkbox content_toggle btn" >Дивитися переклад...</button>
+                            <button id="textShow" class="checkbox content_toggle btn">Дивитися переклад...</button>
                         </div>
                         <hr>
                         <div>
-                            <span>Навігація по заняттям від 1 - 16 включно </span>
-                            <button id="previousLesson" style="height: 30px; padding-top: 2px;"><span class="lesson_prev_ico"></span></button>
+                            <span>Навігація по заняттям: 1 - 16 </span>
+                            <button id="previousLesson" style="height: 30px; padding-top: 2px;"><span
+                                    class="lesson_prev_ico"></span></button>
                             <input type="number" id="lessonIdInput" style="width: 50px;" th:value="${lessonId}">
-                            <button id="submitButton" style="height: 30px; padding-top: 2px;"><span class="lesson_enter_ico"></span></button>
-                            <button id="nextLesson" style="height: 30px; padding-top: 2px;"><span class="lesson_next_ico"></span></button>
+                            <button id="submitButton" style="height: 30px; padding-top: 2px;"><span
+                                    class="lesson_enter_ico"></span></button>
+                            <button id="nextLesson" style="height: 30px; padding-top: 2px;"><span
+                                    class="lesson_next_ico"></span></button>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-5 block_right">
+<!--                    <div class="col-md-6 col-lg-5 block_right">-->
+<!--                        <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>-->
+<!--                    </div>-->
+                </div>
+                <label class="nav" for="learn">
+                    <span class="lesson_repeat_tabs">&nbsp;Тренування</span>
+                </label>
+
+                <input name="nav" type="radio" class="about-radio" id="learnInfo"/>
+                <div class="page about-page">
+                    <div class="page-contents" style="display: flex; align-items: inherit;">
                         <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>
                     </div>
                 </div>
-                <label class="nav" for="home">
-                    <span>
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
-                             fill="none"
-                             stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path
-                                d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline
-                                points="9 22 9 12 15 12 15 22"></polyline></svg>
-                        Навчатися
-                    </span>
+                <label class="nav" for="learnInfo">
+                    <span class="lesson_info_tabs">&nbsp;Опис заняття</span>
                 </label>
-                <input name="nav" type="radio" class="about-radio" id="about"/>
+
+                <input name="nav" type="radio" class="about-radio" id="upload"/>
                 <div class="page about-page">
                     <!--                    <div class="page-contents">-->
                     <main class="col-md-6 col-lg-7 block_left">
@@ -67,20 +74,11 @@
                         <div id="result-error"></div>
                     </main>
                     <div class="col-md-6 col-lg-5 block_right">
-
                         <p> Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст Якийсь текст </p>
                     </div>
                 </div>
-                <label class="nav" for="about">
-                    <span>
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
-                             fill="none"
-                             stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12"
-                                                                                                       r="10"></circle><path
-                                d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12"
-                                                                                      y2="17"></line></svg>
-                         Завантажити
-                    </span>
+                <label class="nav" for="upload">
+                    <span class="lesson_upload_tabs">&nbsp;Завантажити</span>
                 </label>
             </div>
         </div>

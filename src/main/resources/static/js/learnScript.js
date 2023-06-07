@@ -36,6 +36,7 @@ $(document).ready(function () {
                 });
             } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
+                    $('.content_block').hide();
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
@@ -103,6 +104,7 @@ $('#nextText').submit(function (e) {
                 });
             } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
+                    $('.content_block').hide();
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);

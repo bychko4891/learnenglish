@@ -36,6 +36,7 @@ $(document).ready(function () {
                 });
             } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
+                    $('.content_block').hide();
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
@@ -76,8 +77,6 @@ $(document).ready(function () {
 
 $('#nextText').submit(function (e) {
     e.preventDefault();
-    // var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-
     var textShow = document.getElementById('textShow');
     var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
@@ -105,6 +104,7 @@ $('#nextText').submit(function (e) {
                 });
             } else if (result.fragment === "Fragment 3") {
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
+                    $('.content_block').hide();
                     var checkButton = document.getElementById('checkButton');
                     checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
@@ -300,70 +300,6 @@ $(document).ready(function () {
         this.style.height = (this.scrollHeight) + 'px';
     });
 });
-
-
-$(document).ready(function () {
-    // var resultDivSuccess = $('#password-edit-success');
-    // var resultDivError = $('#password-edit-error');
-    $('#upload2').submit(function (event) {
-        event.preventDefault();
-        // Get CSRF token from the meta tag-->
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        // var url = $(this).attr('action');
-        // var formData = $(this).serializeArray();
-        var formData = new FormData($('#upload2')[0]);
-        // if ($('input[name="password"]').val() && $('input[name="newPassword"]').val()) {
-        //     console.log(formData);
-        $.ajax({
-            url: "/upload",
-            type: "post",
-            data: formData,
-            processData: false,
-            contentType: false,
-            // enctype: "multipart/form-data",
-            // types: "multipart/form-data",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            },
-            success: function (result) {
-                console.log(result);
-                // var status = result.status;
-                // console.log(status);
-                // if (status == "Success") {
-                //     $('input[name="password"]').val('');
-                //     $('input[name="newPassword"]').val('');
-                //     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                //     resultDivSuccess.text(result.message);
-                //     setTimeout(hideMessageSuccess, 5000);
-                // } else {
-                //     resultDivError.text(result.message);
-                //     setTimeout(hideMessageError, 5000);
-                // }
-            },
-            error: function () {
-                let shel = {};
-                alert(Boolean(shel))
-                // Поміщаємо повідомлення про помилку в div-елемент
-                resultDivError.text('Помилка запиту на сервер');
-            }
-        });
-        // } else {
-        //     // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-        //     alert('Будь ласка, заповніть поле вводу');
-        //     return;
-        // }
-    });
-
-    // function hideMessageSuccess() {
-    //     resultDivSuccess.text('');
-    // }
-
-    // function hideMessageError() {
-    //     resultDivError.text('');
-    // }
-});
-
 
 // *********             Навігація по заняттям                       ********* //
 $(document).ready(function () {

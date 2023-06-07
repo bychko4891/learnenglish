@@ -3,7 +3,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
-<div th:fragment="lessonFragment1">
+<div th:fragment="lessonFragment1" style="width: 100%; min-height: 300px;">
+    <h3>Повторення</h3>
 <!--    <p>1</p>-->
     <div id="ukr-text" class="text-show text-show-ukr"></div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
@@ -13,7 +14,8 @@
 </div>
 
 
-<div th:fragment="lessonFragment2">
+<div th:fragment="lessonFragment2" style="width: 100%; min-height: 300px;">
+    <h3>Повторення</h3>
 <!--    <p>2</p>-->
     <div id="eng-text" class="text-show text-show-ukr"></div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
@@ -23,14 +25,18 @@
 </div>
 
 
-<div th:fragment="lessonFragment3">
+<div th:fragment="lessonFragment3" class="fragments_div">
 <!--    <p>3</p>-->
+    <h3>Повторення</h3>
+    <div style=" align-self: flex-start;">
+        <img th:src="@{/images/learn.png}">
     <div id="ukr-text" class="text-show text-show-ukr"></div>
-    <br/><br/>
+    </div>
     <!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
     <br/><br/>
-    <div class="content_block" style="display: none;">
+    <div class="content_block" style=" align-self: flex-end;">
         <div id="eng-text" class="text-show text-show-eng"></div>
+        <img th:src="@{/images/learn_hide.png}">
     </div>
     <script>
         // ***************** Bідкрити / закрити скритий текст *************** //
@@ -41,7 +47,8 @@
     </script>
 </div>
 
-<div th:fragment="lessonFragment4">
+<div th:fragment="lessonFragment4" style="width: 100%; min-height: 300px;">
+    <h3>Повторення</h3>
     <div id="ukr-text" class="text-show text-show-ukr"></div>
     <br/>
     <ul id="words"></ul>
