@@ -3,10 +3,14 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
-<div th:fragment="lessonFragment1" style="width: 100%; min-height: 300px;">
-    <h3>Повторення</h3>
-<!--    <p>1</p>-->
-    <div id="ukr-text" class="text-show text-show-ukr"></div>
+
+<div th:fragment="lessonFragment1" class="fragments_div">
+    <h3>Переведіть речення на англійську</h3>
+    <!--    <p>1</p>-->
+    <div style=" align-self: flex-start;">
+        <img th:src="@{/images/learn.png}">
+        <div id="ukr-text" class="text-show text-show-ukr"></div>
+    </div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
         <textarea name="textCheck" rows="1" placeholder="Переклад"></textarea><br><br>
     </form>
@@ -14,10 +18,13 @@
 </div>
 
 
-<div th:fragment="lessonFragment2" style="width: 100%; min-height: 300px;">
-    <h3>Повторення</h3>
-<!--    <p>2</p>-->
-    <div id="eng-text" class="text-show text-show-ukr"></div>
+<div th:fragment="lessonFragment2" class="fragments_div">
+    <h3>Переведіть речення</h3>
+    <!--    <p>2</p>-->
+    <div style=" align-self: flex-start;">
+        <img th:src="@{/images/learn.png}">
+        <div id="eng-text" class="text-show text-show-ukr"></div>
+    </div>
     <form id="textCheck" th:action="@{/user/{userId}/lesson/(userId = ${session.userId})}" method="get">
         <textarea name="textCheck" rows="1" placeholder="Перевод"></textarea><br><br>
     </form>
@@ -26,14 +33,14 @@
 
 
 <div th:fragment="lessonFragment3" class="fragments_div">
-<!--    <p>3</p>-->
+    <!--    <p>3</p>-->
     <h3>Повторення</h3>
     <div style=" align-self: flex-start;">
         <img th:src="@{/images/learn.png}">
-    <div id="ukr-text" class="text-show text-show-ukr"></div>
+        <div id="ukr-text" class="text-show text-show-ukr"></div>
     </div>
     <!--    <button class="content_toggle btn">Дивитися переклад...</button>-->
-    <br/><br/>
+
     <div class="content_block" style=" align-self: flex-end;">
         <div id="eng-text" class="text-show text-show-eng"></div>
         <img th:src="@{/images/learn_hide.png}">
@@ -47,9 +54,12 @@
     </script>
 </div>
 
-<div th:fragment="lessonFragment4" style="width: 100%; min-height: 300px;">
-    <h3>Повторення</h3>
-    <div id="ukr-text" class="text-show text-show-ukr"></div>
+<div th:fragment="lessonFragment4" class="fragments_div">
+    <h3>Складіть речення</h3>
+    <div style=" align-self: flex-start;">
+        <img th:src="@{/images/learn.png}">
+        <div id="ukr-text" class="text-show text-show-ukr"></div>
+    </div>
     <br/>
     <ul id="words"></ul>
     <div id="sentence" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
@@ -123,11 +133,12 @@
                 }
             }
         }
+
         function addToWordList(word) {
             var wordList = document.getElementById("words");
             var newWord = document.createElement("li");
             newWord.draggable = true;
-            newWord.ondragstart = function(event) {
+            newWord.ondragstart = function (event) {
                 drag(event);
             };
             newWord.textContent = word;

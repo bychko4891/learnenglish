@@ -17,7 +17,7 @@
 <!--                    <div class="col-md-6 col-lg-7 block_left">-->
                         <div id="lessonId" th:data-lesson-id="${lessonId}"></div>
 
-                        <div id="replace_div"></div>
+                        <div id="replace_div" style="min-height: 450px;"></div>
                         <div class="inline-container" style="display: flex; margin-right: auto;">
                             <form id="nextText">
                                 <button id="nextButton" type="submit">Далі</button>
@@ -47,7 +47,7 @@
 
                 <input name="nav" type="radio" class="about-radio" id="learnInfo"/>
                 <div class="page about-page">
-                    <div class="page-contents" style="display: flex; align-items: inherit;">
+                    <div class="page-contents">
                         <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>
                     </div>
                 </div>
