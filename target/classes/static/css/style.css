@@ -319,6 +319,43 @@ textarea {
     left: 0;
 }
 
+.toggle-switch {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch-label {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    background-color: gray;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.toggle-switch-label:before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    transition: 0.2s;
+}
+
+.toggle-switch:checked + .toggle-switch-label {
+    background-color: green;
+}
+
+.toggle-switch:checked + .toggle-switch-label:before {
+    transform: translateX(30px);
+}
+
 /*           lesson fragment 4 style   */
 #words {
     list-style-type: none;

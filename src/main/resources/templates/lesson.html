@@ -7,44 +7,6 @@
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-    <style>
-        .toggle-switch {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-switch-label {
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            background-color: gray;
-            border-radius: 15px;
-            position: relative;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .toggle-switch-label:before {
-            content: '';
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            left: 2px;
-            top: 2px;
-            background-color: white;
-            transition: 0.2s;
-        }
-
-        .toggle-switch:checked + .toggle-switch-label {
-            background-color: green;
-        }
-
-        .toggle-switch:checked + .toggle-switch-label:before {
-            transform: translateX(30px);
-        }
-    </style>
     <main class="section main_content ">
         <div class="container layout_page row">
             <div class="layout_lesson">
@@ -71,38 +33,6 @@
                             </form>
                             </div>
                         </div>
-                        <script>
-                            $(document).ready(function () {
-                                $('#toggleSwitch').on('change', function () {
-                                    // Get CSRF token from the meta tag-->
-                                    var csrfToken = $("meta[name='_csrf']").attr("content");
-                                    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-                                    var isChecked = $(this).prop('checked');
-                                    console.log(isChecked);
-                                    var userId = $(this).data('user-id');
-                                    var url = '/user/' + userId + '/mytext';
-                                    // Відправити дані на сервер
-                                    $.ajax({
-                                        url: url,
-                                        type: 'POST',
-                                        data: {userActive: isChecked },
-                                        beforeSend: function (xhr) {
-                                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                                        },
-                                        success: function (response) {
-                                            // Отримано успішну відповідь від сервера
-                                            // Виконати необхідні дії
-                                            console.log('Запит успішно відправлено');
-                                        },
-                                        error: function () {
-                                            // Виникла помилка при відправленні запиту
-                                            console.log('Помилка при відправленні запиту');
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
                         <hr>
                         <div>
                             <span>Навігація по заняттям: 1 - 16 </span>
