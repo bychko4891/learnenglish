@@ -19,11 +19,18 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private int captchaSum;
-
     private final UserService userService;
 
     private final HttpSession session;
+
+    @PostMapping("/user/{id}/mytext")
+    public void mytext(@PathVariable("id") Long userId, @RequestParam("userActive") boolean isChecked, Principal principal) {
+        if (principal != null) {
+            userService.setUserTextInLesson(userId, isChecked);
+            session.setAttribute("userTextInLesson", isChecked);
+        }
+        System.out.println(isChecked);
+    }
 
     @PostMapping("/registration")
     public ResponseEntity<String> createUser(@RequestBody User user) {
@@ -43,9 +50,9 @@ public class UserRestController {
     @PostMapping("/forgot-password")
     public ResponseEntity<ResponseStatus> forgotPassword(@RequestParam("email") String email, @RequestParam("captcha") int captchaSum) {
         int captchaSumSession = (int) session.getAttribute("captchaSum");
-        if(captchaSum == captchaSumSession){
-           return ResponseEntity.ok(userService.generatePassword(email));
-        }else return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CAPTCHA));
+        if (captchaSum == captchaSumSession) {
+            return ResponseEntity.ok(userService.generatePassword(email));
+        } else return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CAPTCHA));
     }
 
     @PostMapping("/user/{userId}/edit")

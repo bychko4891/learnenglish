@@ -43,6 +43,9 @@ public class LessonController {
                                                                                 Principal principal) {
         if (principal != null) {
             long userId = (long)session.getAttribute("userId");
+            if(!(boolean)session.getAttribute("userTextInLesson")){
+                userId = 1;
+            }
             userStatisticsService.repetitionsCountSave(userId);
             DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.translationPairRandom(lessonId, userId);
             session.setAttribute("ukrText", dtoTranslationPairToUI.getUkrText());
@@ -78,7 +81,7 @@ public class LessonController {
 
     @PostMapping(path = "/translation-pair/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseStatus> textADD(@Validated @RequestBody DtoTranslationPair dtoTranslationPair, Principal principal) {
+    public ResponseEntity<ResponseStatus> textADD(@RequestBody DtoTranslationPair dtoTranslationPair, Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(validationTranslationPair.validationTranslationPair(dtoTranslationPair));
         }

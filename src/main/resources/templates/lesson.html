@@ -1,20 +1,57 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<script type="text/javascript" th:src="@{/js/learnScript.js}"></script>
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="sidebar">
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
+    <style>
+        .toggle-switch {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch-label {
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            background-color: gray;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-switch-label:before {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            left: 2px;
+            top: 2px;
+            background-color: white;
+            transition: 0.2s;
+        }
+
+        .toggle-switch:checked + .toggle-switch-label {
+            background-color: green;
+        }
+
+        .toggle-switch:checked + .toggle-switch-label:before {
+            transform: translateX(30px);
+        }
+    </style>
     <main class="section main_content ">
         <div class="container layout_page row">
             <div class="layout_lesson">
                 <input name="nav" type="radio" class="nav home-radio" id="learn" checked="checked"/>
                 <div class="page about-page">
-                                        <div class="page-contents">
-<!--                    <div class="col-md-6 col-lg-7 block_left">-->
+                    <div class="page-contents">
+                        <!--                    <div class="col-md-6 col-lg-7 block_left">-->
                         <div id="lessonId" th:data-lesson-id="${lessonId}"></div>
 
                         <div id="replace_div" style="min-height: 450px;"></div>
@@ -23,8 +60,49 @@
                                 <button id="nextButton" type="submit">Далі</button>
                             </form>
                             <button id="checkButton" onclick="getData()" class="checkbox">Перевірити</button>
-                            <button id="textShow" class="checkbox content_toggle btn">Дивитися переклад...</button>
+                            <button id="textShow" class="checkbox content_toggle btn">Дивитися переклад</button>
+                            <div style="display: contents; font-size: 20px; font-weight: 500;">
+                            <span style="padding: 10px 0px 0px 25px;"> Власний текст: </span>
+                            <form>
+                                <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}" class="toggle-switch"
+                                       name="userActive" th:data-user-id="${session.userId}"/>
+                                <label for="toggleSwitch" class="toggle-switch-label"></label>
+
+                            </form>
+                            </div>
                         </div>
+                        <script>
+                            $(document).ready(function () {
+                                $('#toggleSwitch').on('change', function () {
+                                    // Get CSRF token from the meta tag-->
+                                    var csrfToken = $("meta[name='_csrf']").attr("content");
+                                    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+                                    var isChecked = $(this).prop('checked');
+                                    console.log(isChecked);
+                                    var userId = $(this).data('user-id');
+                                    var url = '/user/' + userId + '/mytext';
+                                    // Відправити дані на сервер
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        data: {userActive: isChecked },
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                                        },
+                                        success: function (response) {
+                                            // Отримано успішну відповідь від сервера
+                                            // Виконати необхідні дії
+                                            console.log('Запит успішно відправлено');
+                                        },
+                                        error: function () {
+                                            // Виникла помилка при відправленні запиту
+                                            console.log('Помилка при відправленні запиту');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                         <hr>
                         <div>
                             <span>Навігація по заняттям: 1 - 16 </span>
@@ -37,9 +115,9 @@
                                     class="lesson_next_ico"></span></button>
                         </div>
                     </div>
-<!--                    <div class="col-md-6 col-lg-5 block_right">-->
-<!--                        <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>-->
-<!--                    </div>-->
+                    <!--                    <div class="col-md-6 col-lg-5 block_right">-->
+                    <!--                        <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>-->
+                    <!--                    </div>-->
                 </div>
                 <label class="nav" for="learn">
                     <span class="lesson_repeat_tabs">&nbsp;Тренування</span>
@@ -61,8 +139,7 @@
                     <main class="col-md-6 col-lg-7 block_left">
                         <h1>Завантажити</h1>
                         <form id="add-pair"
-                              th:action="@{/translation-pair/add}"
-                              method="post">
+                              th:action="@{/translation-pair/add}" method="post">
                             <textarea name="ukrText" rows="1" placeholder="Текст українською"></textarea><br><br>
                             <textarea name="engText" rows="1" placeholder="In English"></textarea><br><br>
                             <input type="hidden" name="lessonId" th:value="${lessonId}">
@@ -85,5 +162,6 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
+<script type="text/javascript" th:src="@{/js/learnScript.js}"></script>
 </body>
 </html>

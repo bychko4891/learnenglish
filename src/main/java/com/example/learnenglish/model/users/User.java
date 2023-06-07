@@ -37,6 +37,9 @@ public class User implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "user_text_in_lesson")
+    private boolean userTextInLesson;
+
     @Column(name = "user_ip")
     private String userIp;
 

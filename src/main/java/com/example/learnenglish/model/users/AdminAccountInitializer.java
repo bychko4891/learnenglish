@@ -32,6 +32,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
             admin.setLastName("Admin");
             admin.setEmail(adminEmail);
             admin.setActive(true);
+            admin.setUserTextInLesson(false);
             admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.getAuthority().add(Role.ROLE_ADMIN);
             admin.setStatistics(new UserStatistics());

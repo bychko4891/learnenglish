@@ -105,6 +105,8 @@ public class SecurityConfig {
                                     session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());
                                     session.setAttribute("userId", user.getId());
+                                    session.setAttribute("userTextInLesson", user.isUserTextInLesson());
+
                                     response.sendRedirect("/");
                                 })
                 )

@@ -42,6 +42,7 @@ public class UserService {
         if (userRepository.findByEmail(email).isPresent()) return false;
         user.setActivationCode(UUID.randomUUID().toString());
         user.setActive(false);
+        user.setUserTextInLesson(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
@@ -164,5 +165,14 @@ public class UserService {
         user.setActivationCode(null);
         userRepository.save(user);
         return true;
+    }
+
+    public void setUserTextInLesson(Long userId, boolean isChecked) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setUserTextInLesson(isChecked);
+            userRepository.save(user);
+        }else throw new IllegalArgumentException("User with id " + userId + " not found");
     }
 }
