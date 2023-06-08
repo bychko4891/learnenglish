@@ -109,7 +109,7 @@ public class AdminController {
     @GetMapping("/lessons")
     public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message, Model model, Principal principal,
                                        @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size) {
         if (principal != null) {
             Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
             model.addAttribute("message", message);

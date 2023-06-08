@@ -3,10 +3,9 @@ $(document).ready(function () {
         selector: 'textarea#lessonInfo',
         height: 500,
         plugins: [
-            'anchor autolink charmap codesample emoticons link lists media ',
-            'searchreplace table visualblocks wordcount '
-
-
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
         ],
         toolbar:
             'undo redo | formatselect |' +
@@ -20,17 +19,29 @@ $(document).ready(function () {
             '//www.tiny.cloud/css/codepen.min.css'
         ],
         api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
-        menubar: false,
-        statusbar: false,
-        branding: false
+        menubar: true,
+        statusbar: true,
+        branding: true
     });
     $('#myForm').submit(function (event) {
         event.preventDefault(); // Заборонити звичайну поведінку форми (наприклад, перезавантаження сторінки)
         // Відправити дані форми на сервер
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var formData = $(this).serializeArray();
+        var jsonFormData = {};
+        $(formData).each(function (index, obj) {
+            jsonFormData[obj.name] = obj.value;
+        });
+        console.log(jsonFormData);
         $.ajax({
             url: $(this).attr('action'), // URL для відправки запиту
             type: $(this).attr('method'), // Метод запиту (POST)
-            data: $(this).serialize(), // Дані форми
+            contentType: "application/json",
+            data: JSON.stringify(jsonFormData),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
             success: function (response) {
                 $('#responseDiv').text(response);
             },

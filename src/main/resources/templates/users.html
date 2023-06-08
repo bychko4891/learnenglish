@@ -1,6 +1,7 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
@@ -9,12 +10,14 @@
     </div>
     <main class="section main_content ">
         <div class="container layout_page">
-            <div style="overflow-x: auto; height: calc(100% - 40px);">
-                <table>
+            <div class="page-table">
+                <h3>Юзери</h3>
+                <table style="width: 90%;">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Email</th>
+                        <th>Online</th>
                         <th>IP</th>
                         <th>Active</th>
                         <th>Actions</th>
@@ -24,11 +27,14 @@
                     <tr th:each="user : ${users}">
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.email}"></td>
+<!--                        <td th:text="${user.statistics.trainingTimeStartEnd}"></td>-->
+                        <td th:text="${#temporals.format(user.statistics.trainingTimeStartEnd, 'dd.MM.yyyy')}"></td>
                         <td th:text="${user.userIp}"></td>
                         <td>
                             <form>
-                                <input type="checkbox" th:checked="${user.active}" class="user-checkbox"
+                                <input th:id="'toggleSwitch-' + ${user.id}" type="checkbox" th:checked="${user.active}" class="toggle-switch"
                                        name="userActive" th:data-user-id="${user.id}"/>
+                                <label th:for="'toggleSwitch-' + ${user.id}" class="toggle-switch-label"></label>
                                 <input type="hidden" name="userId" th:value="${user.id}"/>
                             </form>
                         </td>
@@ -38,6 +44,7 @@
                     </tr>
                     </tbody>
                 </table>
+
             </div>
             <!-- відображення пагінації -->
             <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
@@ -63,10 +70,10 @@
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             var isChecked = form.find('input[name="userActive"]').prop('checked');
-            // console.log(form);
-            // console.log(userId);
-            // console.log(isChecked);
-            // console.log(url);
+            console.log(form);
+            console.log(userId);
+            console.log(isChecked);
+            console.log(url);
             $.ajax({
                 url: url,
                 type: "POST",

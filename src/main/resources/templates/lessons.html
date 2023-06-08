@@ -1,6 +1,7 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
@@ -8,99 +9,63 @@
         <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
     <main class="section main_content ">
-        <div class="container layout_page">
-            <div style="overflow-x: auto; height: calc(100% - 40px);">
-            <div>
-                <form action="/admin-page/lessons/new-lesson">
-                        <button type="submit">New lesson</button>
-                </form>
-                <div th:text="${message}"></div>
+        <div class="container layout_page row">
+<!--            <div style="height: 50vh">-->
+            <div class="col-md-6 col-lg-7 block_left">
+                <h3>Заняття</h3>
+<!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
+                <div class="page-table">
+                    <table style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="lesson : ${lessons}">
+                            <td th:text="${lesson.id}"></td>
+                            <td th:text="${lesson.name}"></td>
+                            <td>
+                                <a th:href="@{/admin-page/lesson/{id}/lesson-in-editor(id=${lesson.id})}"
+                                   class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
             </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="lesson : ${lessons}">
-                    <td th:text="${lesson.name}"></td>
-                    <td>
-                        <a th:href="@{/admin-page/lesson/{id}/lesson-in-editor(id=${lesson.id})}"
-                           class="btn btn-primary">Edit</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="col-md-6 col-lg-5 block_right">
+<!--                <div class="row">-->
+
+
+                    <h3>Створити нове заняття</h3>
+                    <p>Можно створити максимум 16 занять</p>
+                    <div>
+                        <form action="/admin-page/lessons/new-lesson">
+                            <button type="submit">New lesson</button>
+                        </form>
+                        <div th:text="${message}"></div>
+                    </div>
+
+<!--                </div>-->
+            </div>
             </div>
             <!-- відображення пагінації -->
-            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+            <div style="position: fixed; bottom: 40px; margin-left: 80px; width: 100%;">
                 <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>
                 <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
                 <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
             </div>
-        </div>
-
-
+<!--        </div>-->
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-<script>
-    // $(document).ready(function () {
-    //     var resultDivSuccess = $('#result-success');
-    //     var resultDivError = $('#result-error');
-    //     $('#createLesson').submit(function (event) {
-    //         event.preventDefault();
-    //         // Get CSRF token from the meta tag-->
-    //         var csrfToken = $("meta[name='_csrf']").attr("content");
-    //         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    //         var url = $(this).attr('action');
-    //         var formData = $(this).serializeArray();
-    //         var jsonFormData = {};
-    //         $(formData).each(function (index, obj) {
-    //             jsonFormData[obj.name] = obj.value;
-    //         });
-    //         $.ajax({
-    //             url: url,
-    //             type: "POST",
-    //             contentType: "application/json",
-    //             data: JSON.stringify(jsonFormData),
-    //             beforeSend: function (xhr) {
-    //                 xhr.setRequestHeader(csrfHeader, csrfToken);
-    //             },
-    //             success: function (result) {
-    //                 var status = result.status;
-    //                 // location.reload();
-    //                 if (status == "Success") {
-    //                     resultDivSuccess.text(result.message);
-    //                     setTimeout(hideMessageSuccess, 3000);
-    //                 } else {
-    //                     resultDivError.text(result.message);
-    //                     setTimeout(hideMessageError, 3000);
-    //                 }
-    //             },
-    //             error: function () {
-    //                 let shel = {};
-    //                 alert(Boolean(shel))
-    //                 // Поміщаємо повідомлення про помилку в div-елемент
-    //                 resultDivError.text('Помилка запиту на сервер');
-    //             }
-    //         });
-    //
-    //     });
-    //
-    //     function hideMessageSuccess() {
-    //         resultDivSuccess.text('');
-    //         location.reload();
-    //     }
-    //
-    //     function hideMessageError() {
-    //         resultDivError.text('');
-    //     }
-    // });
-</script>
 </body>
 </html>
