@@ -20,24 +20,42 @@ public class TranslationPairValidationAndSaveService {
         this.userService = userService;
     }
 
-    public ResponseStatus validationTranslationPair(DtoTranslationPair dtoTranslationPair) {
-        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-        if (Pattern.matches
-                ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                        "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
-                Pattern.matches
-                        ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
-                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
-            if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-                dtoTranslationPair.setUkrText(ukrText);
-                dtoTranslationPair.setEngText(engText);
-                return convertToTranslationPairEndSave(dtoTranslationPair);
+    public ResponseStatus validationTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser ) {
+        if(roleUser.equals("[ROLE_ADMIN]")) {
+
+            String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+            String ukrTextWoman = StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextWoman());
+
+            String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+            ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+            ukrTextWoman = ukrTextWoman.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+            engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+            if (Pattern.matches
+                    ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
+                            "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
+                    Pattern.matches
+                            ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
+                                    "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrTextWoman) &&
+                    Pattern.matches
+                            ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
+                                    "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
+                if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
+                    dtoTranslationPair.setUkrText(ukrText);
+                    dtoTranslationPair.setUkrText(ukrTextWoman);
+                    dtoTranslationPair.setEngText(engText);
+                    return convertToTranslationPairEndSave(dtoTranslationPair);
+                }
             }
-        }
+        } else validationTranslationPairUser(dtoTranslationPair);
         System.out.println("Error validationTranslationPair");
+        return new ResponseStatus(Message.ERRORVALIDATETEXT);
+    }
+
+    private ResponseStatus validationTranslationPairUser(DtoTranslationPair dtoTranslationPair) {
+return new ResponseStatus(Message.ERRORVALIDATETEXT);
+    }
+
+    private ResponseStatus validationTranslationPairLength(){
         return new ResponseStatus(Message.ERRORVALIDATETEXT);
     }
 
@@ -45,6 +63,7 @@ public class TranslationPairValidationAndSaveService {
         TranslationPair pair = new TranslationPair();
         pair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
         pair.setUkrText(dtoTranslationPair.getUkrText());
+        pair.setUkrTextWoman(dtoTranslationPair.getUkrTextWoman());
         pair.setEngText(dtoTranslationPair.getEngText());
         pair.setAudioPath("path/no");
         pair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));

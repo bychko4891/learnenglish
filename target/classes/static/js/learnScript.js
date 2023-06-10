@@ -5,12 +5,15 @@ var nextText;
 $(document).ready(function () {
     nextText = document.getElementById('nextText');
     lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    console.log(lessonId + ' lessonId  ready');
 });
 
 function sendTooServer() {
     var textShow = document.getElementById('textShow');
     var checkButton = document.getElementById('checkButton');
     var nextButton = document.getElementById('nextButton');
+    var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
+    console.log(lessonId + ' sendTooServer');
     var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
@@ -131,13 +134,6 @@ function getData() {
         resultDivError.text('');
     }
 
-
-// });
-// ***************** Кнопка, щоб відкрити скритий текст *************** //
-//     $('.content_toggle').click(function () {
-//         $('.content_block').slideToggle(600);
-//         return false;
-//     });
 }
 
 // ************   checkbox   *************** //
@@ -212,6 +208,7 @@ $(document).ready(function () {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function (result) {
+                    console.log(result);
                     var status = result.status;
                     // console.log(status);
                     if (status == "Success") {
@@ -225,11 +222,18 @@ $(document).ready(function () {
                         setTimeout(hideMessageError, 10000);
                     }
                 },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
+                error: function (xhr) {
+                    var response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                    if (response && Array.isArray(response)) {
+                        // Якщо отримано список помилок
+                        var errorMessage = response[0]; // Приклад отримання першого повідомлення про помилку
+                        resultDivError.text(errorMessage);
+                        setTimeout(hideMessageError, 10000);
+                    } else {
+                        // Якщо отримано іншу помилку
+                        resultDivError.text("Помилка сервера");
+                    }
                 }
             });
         } else {

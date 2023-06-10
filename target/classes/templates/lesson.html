@@ -1,5 +1,5 @@
 <!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <div class="wrapper">
@@ -14,9 +14,9 @@
                 <div class="page about-page">
                     <div class="page-contents">
                         <!--                    <div class="col-md-6 col-lg-7 block_left">-->
-                        <div id="lessonId" th:data-lesson-id="${lessonId}"></div>
+                        <div id="lessonId" th:data-lesson-id="${session.lessonId}"></div>
 
-                        <div id="replace_div" style="min-height: 450px;"></div>
+                        <div id="replace_div" style="min-height: 350px;"></div>
                         <div class="inline-container" style="display: flex; margin-right: auto;">
                             <form id="nextText">
                                 <button id="nextButton" type="submit">Далі</button>
@@ -70,7 +70,14 @@
                         <h1>Завантажити</h1>
                         <form id="add-pair"
                               th:action="@{/translation-pair/add}" method="post">
-                            <textarea name="ukrText" rows="1" placeholder="Текст українською"></textarea><br><br>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <textarea name="ukrText" rows="1" placeholder="Текст українською"></textarea><br><br>
+                                <textarea name="ukrTextWoman" rows="1" placeholder="Текст українською W"></textarea><br><br>
+                            </div>
+                            <div sec:authorize="hasRole('ROLE_USER')">
+                                <textarea name="ukrText" rows="1" placeholder="Текст українською"></textarea><br><br>
+                            </div>
+
                             <textarea name="engText" rows="1" placeholder="In English"></textarea><br><br>
                             <input type="hidden" name="lessonId" th:value="${lessonId}">
                             <input type="hidden" name="userId" th:value="${session.userId}">

@@ -1,15 +1,21 @@
 package com.example.learnenglish.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
 @Validated
 public class DtoTranslationPair {
-    @NotNull
+    @Length(max = 150, message = " Length ukr")
     private String ukrText;
-    @NotNull
+    @Length(max = 150, message = " Length ukrW")
+    private String ukrTextWoman;
+
+    @NotBlank(message = "Is blank")
+    @Length(max = 150, message = " Length eng")
     private String engText;
     @NotNull
     private Long lessonId;
@@ -23,8 +29,16 @@ public class DtoTranslationPair {
         return ukrText;
     }
 
-    public void setUkrText(String ukrText) {
-        this.ukrText = ukrText;
+    public void setUkrText(String ukrTextMan) {
+        this.ukrText = ukrTextMan;
+    }
+
+    public String getUkrTextWoman() {
+        return ukrTextWoman;
+    }
+
+    public void setUkrTextWoman(String ukrTextWoman) {
+        this.ukrTextWoman = ukrTextWoman;
     }
 
     public String getEngText() {
@@ -51,13 +65,4 @@ public class DtoTranslationPair {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "DtoTranslationPair{" +
-                "ukrText='" + ukrText + '\'' +
-                ", engText='" + engText + '\'' +
-                ", lessonId=" + lessonId +
-                ", userId=" + userId +
-                '}';
-    }
 }

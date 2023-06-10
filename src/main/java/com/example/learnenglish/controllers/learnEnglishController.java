@@ -3,6 +3,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,12 @@ import java.security.Principal;
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
 public class learnEnglishController {
-    private final ResourceLoader resourceLoader;
+    private final HttpSession session;
     private final UserService userService;
     private final LessonService lessonService;
 
-    public learnEnglishController(ResourceLoader resourceLoader, UserService userService, LessonService lessonService) {
-        this.resourceLoader = resourceLoader;
+    public learnEnglishController(HttpSession session, UserService userService, LessonService lessonService) {
+        this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;
     }
@@ -55,6 +56,7 @@ public class learnEnglishController {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             lesson = lessonService.findById(lessonId);
+            session.setAttribute("lessonId", lesson.getId());
             model.addAttribute("lessonId", lesson.getId());
             model.addAttribute("lesson", lesson);
             return "lesson";

@@ -62,6 +62,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> authority = new HashSet<>();
 
+    @ElementCollection(targetClass = UserSex.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<UserSex> userSex = new HashSet<>();
+
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
     @PrePersist

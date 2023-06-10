@@ -4,7 +4,7 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 40px);
-    padding: 30px 1px 1px 1px;
+    padding: 20px 1px 1px 1px;
     overflow-x: auto;
 
 }

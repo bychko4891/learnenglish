@@ -2,6 +2,7 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
+import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
 import com.example.learnenglish.service.TranslationPairService;
@@ -9,13 +10,17 @@ import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -81,9 +86,19 @@ public class LessonController {
 
     @PostMapping(path = "/translation-pair/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseStatus> textADD(@RequestBody DtoTranslationPair dtoTranslationPair, Principal principal) {
+    public ResponseEntity<?> textADD(@Valid @RequestBody DtoTranslationPair dtoTranslationPair, BindingResult bindingResult, Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(validationTranslationPair.validationTranslationPair(dtoTranslationPair));
+            if (bindingResult.hasErrors()) {
+                // Опрацювання помилок валідації
+
+                List<FieldErrorDTO> errors = bindingResult.getFieldErrors().stream()
+                        .map(fieldError -> new FieldErrorDTO(fieldError.getField(), fieldError.getDefaultMessage()))
+                        .collect(Collectors.toList());
+                return ResponseEntity.badRequest().body(errors);
+            }
+            String roleUser = userService.findByEmail(principal.getName()).getAuthority().toString();
+            System.out.println(roleUser);
+            return ResponseEntity.ok(validationTranslationPair.validationTranslationPair(dtoTranslationPair, roleUser));
         }
         return ResponseEntity.ok(new ResponseStatus(Message.ERRORLOGIN));
     }
