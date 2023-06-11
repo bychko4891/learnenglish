@@ -1,10 +1,16 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +25,9 @@ public class learnEnglishController {
     private final UserService userService;
     private final LessonService lessonService;
 
-    public learnEnglishController(HttpSession session, UserService userService, LessonService lessonService) {
+    public learnEnglishController(HttpSession session,
+                                  UserService userService,
+                                  LessonService lessonService) {
         this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;

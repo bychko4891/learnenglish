@@ -1,4 +1,10 @@
 package com.example.learnenglish.controllers;
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
 
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.model.Lesson;
@@ -29,7 +35,10 @@ public class AdminController {
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
 
-    public AdminController(HttpSession session, LessonService lessonService, UserService userService, TextOfAppPageService textOfAppPageService) {
+    public AdminController(HttpSession session,
+                           LessonService lessonService,
+                           UserService userService,
+                           TextOfAppPageService textOfAppPageService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
@@ -83,7 +92,9 @@ public class AdminController {
     }
 
     @GetMapping("/text-of-app-page/{id}/text-of-app-page-in-editor")
-    public String textOfAppPageEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String textOfAppPageEdit(@PathVariable("id") Long id,
+                                    Model model,
+                                    Principal principal) {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
             model.addAttribute("textOfAppPage", textOfAppPage);
@@ -93,7 +104,8 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String usersListAdminPage(Model model, Principal principal,
+    public String usersListAdminPage(Model model,
+                                     Principal principal,
                                      @RequestParam(value = "page", defaultValue = "0") int page,
                                      @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         if (principal != null) {
@@ -107,9 +119,11 @@ public class AdminController {
     }
 
     @GetMapping("/lessons")
-    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message, Model model, Principal principal,
+    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message,
                                        @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size) {
+                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size,
+                                       Principal principal,
+                                       Model model) {
         if (principal != null) {
             Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
             model.addAttribute("message", message);
@@ -136,7 +150,9 @@ public class AdminController {
     }
 
     @GetMapping("/lesson/{id}/new-lesson-in-editor")
-    public String newLesson(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String newLesson(@PathVariable("id") Long id,
+                            Model model,
+                            Principal principal) {
         if (principal != null) {
 //            lesson = lessonService.findById(id);
             Lesson lesson = new Lesson();
@@ -150,7 +166,9 @@ public class AdminController {
     }
 
     @GetMapping("/lesson/{id}/lesson-in-editor")
-    public String lessonEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String lessonEdit(@PathVariable("id") Long id,
+                             Model model,
+                             Principal principal) {
         if (principal != null) {
             Lesson lesson = lessonService.findById(id);
             model.addAttribute("lesson", lesson);

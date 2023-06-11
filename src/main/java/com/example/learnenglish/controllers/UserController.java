@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,7 +32,7 @@ public class UserController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
-                        Model model, Principal principal) {
+                        Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (error != null) {
             model.addAttribute("error", "Не вірний логін, або пароль!");
@@ -49,7 +56,9 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String userPage(@PathVariable("id") Long userId, Principal principal, Model model) {
+    public String userPage(@PathVariable("id") Long userId,
+                           Principal principal,
+                           Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
@@ -61,7 +70,9 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/statistics")
-    public String userStatisticsPage(@PathVariable("userId") Long userId, Principal principal, Model model) {
+    public String userStatisticsPage(@PathVariable("userId") Long userId,
+                                     Principal principal,
+                                     Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             return "statistics";

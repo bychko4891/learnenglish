@@ -704,7 +704,7 @@ td {
     display: inline-block;
     width: 100px;
     text-align: left;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 .inline-container {

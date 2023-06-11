@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.service.UserAvatarService;
 import com.example.learnenglish.service.UserService;
@@ -31,7 +38,9 @@ public class UserAvatarController {
     }
     @PostMapping("/user/{userId}/upload-avatar")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<String> uploadFile(@PathVariable("userId") Long userId, @RequestParam("file") MultipartFile file, Principal principal) {
+    public ResponseEntity<String> uploadFile(@PathVariable("userId") Long userId,
+                                             @RequestParam("file") MultipartFile file,
+                                             Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             String contentType = file.getContentType();

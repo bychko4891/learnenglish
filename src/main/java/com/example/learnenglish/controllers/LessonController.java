@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
@@ -32,8 +39,10 @@ public class LessonController {
     private final UserStatisticsService userStatisticsService;
     private final UserService userService;
 
-    public LessonController(HttpSession session, TranslationPairService translationPairService,
-                            UserStatisticsService userStatisticsService, TranslationPairValidationAndSaveService validationTranslationPair,
+    public LessonController(HttpSession session,
+                            TranslationPairService translationPairService,
+                            UserStatisticsService userStatisticsService,
+                            TranslationPairValidationAndSaveService validationTranslationPair,
                             UserService userService) {
         this.session = session;
         this.translationPairService = translationPairService;
@@ -65,7 +74,8 @@ public class LessonController {
 
     @GetMapping(path = "/lesson/{lessonId}/check")
     public ResponseEntity<String> textCheck(@PathVariable(value = "lessonId") long lessonId,
-                                            @RequestParam("textCheck") String text, Principal principal) {
+                                            @RequestParam("textCheck") String text,
+                                            Principal principal) {
         if (principal != null) {
             String textCheck = StringUtils.normalizeSpace(text);
             textCheck = textCheck.replaceAll("[.,!~?$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
@@ -86,7 +96,9 @@ public class LessonController {
 
     @PostMapping(path = "/translation-pair/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<?> textADD(@Valid @RequestBody DtoTranslationPair dtoTranslationPair, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<?> textADD(@Valid @RequestBody DtoTranslationPair dtoTranslationPair,
+                                     BindingResult bindingResult,
+                                     Principal principal) {
         if (principal != null) {
             if (bindingResult.hasErrors()) {
                 // Опрацювання помилок валідації

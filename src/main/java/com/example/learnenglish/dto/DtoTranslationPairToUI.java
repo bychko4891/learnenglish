@@ -1,5 +1,12 @@
 package com.example.learnenglish.dto;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;

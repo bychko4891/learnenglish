@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.dto.DtoUserStatisticsToUi;
 import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.service.UserService;
@@ -23,7 +30,8 @@ public class UserStatisticsController {
     }
 
     @GetMapping("/user/{userId}/training-days")
-    public ResponseEntity<List> getUserCalendarDays(@PathVariable(value = "userId") long userId, Principal principal) {
+    public ResponseEntity<List> getUserCalendarDays(@PathVariable(value = "userId") long userId,
+                                                    Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(userStatisticsService.trainingDays(userId));
@@ -31,7 +39,8 @@ public class UserStatisticsController {
         return ResponseEntity.notFound().build();
     }
     @GetMapping("/user/{userId}/user-statistics")
-    public ResponseEntity<DtoUserStatisticsToUi> getTrainingUserStatistics(@PathVariable(value = "userId") long userId, Principal principal) {
+    public ResponseEntity<DtoUserStatisticsToUi> getTrainingUserStatistics(@PathVariable(value = "userId") long userId,
+                                                                           Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
 //            UserStatistics userStatistics = userStatisticsService.trainingStatistics(userId);
