@@ -1,9 +1,6 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.model.users.Role;
-import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.model.users.UserAvatar;
-import com.example.learnenglish.model.users.UserStatistics;
+import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsestatus.Message;
 import com.example.learnenglish.responsestatus.ResponseStatus;
@@ -21,7 +18,9 @@ import org.thymeleaf.util.StringUtils;
 
 import java.security.SecureRandom;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -42,6 +41,7 @@ public class UserService {
         if (userRepository.findByEmail(email).isPresent()) return false;
         user.setActivationCode(UUID.randomUUID().toString());
         user.setActive(false);
+        user.getGender().add(UserGender.MALE);
         user.setUserTextInLesson(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
@@ -71,12 +71,16 @@ public class UserService {
     }
 
     // доробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void updateUserInfo(Long userId, String firstName, String lastName) {
+    public void updateUserInfo(Long userId, String firstName, String lastName, String gender) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
+            Set<UserGender> newGenders = new HashSet<>();
+            newGenders.add(UserGender.valueOf(gender.toUpperCase()));
             User user = optionalUser.get();
             user.setLastName(lastName);
             user.setFirstName(firstName);
+            user.getGender().clear();  // Очистити поточні значення гендеру
+            user.getGender().add(UserGender.valueOf(gender.toUpperCase()));
             userRepository.save(user);
 //            return userRepository.save(user);
         } else {

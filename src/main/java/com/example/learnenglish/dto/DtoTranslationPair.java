@@ -9,17 +9,19 @@ import org.springframework.validation.annotation.Validated;
 @Component
 @Validated
 public class DtoTranslationPair {
-    @Length(max = 150, message = " Length ukr")
+
+    @NotBlank(message = "Поле українського тексту не повинно бути пустим.")
+    @Length(max = 350, message = "Вибачте, але в полі з українським текстом дозволено довжину речення максимум 300 символів!")
     private String ukrText;
-    @Length(max = 150, message = " Length ukrW")
+    @Length(max = 350, message = "Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!")
     private String ukrTextWoman;
 
-    @NotBlank(message = "Is blank")
-    @Length(max = 150, message = " Length eng")
+    @NotBlank(message = "Поле англійського тексту не повинно бути пустим.")
+    @Length(max = 350, message = "Вибачте, але в полі з англійським текстом дозволено довжину речення максимум 300 символів!")
     private String engText;
-    @NotNull
+
     private Long lessonId;
-    @NotNull
+
     private Long userId;
 
     public DtoTranslationPair() {

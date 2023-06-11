@@ -1,5 +1,6 @@
 package com.example.learnenglish.model.users;
 
-public enum UserSex {
-    MAN, WOMAN
+public enum UserGender {
+    MALE, FEMALE
+
 }

@@ -21,19 +21,20 @@ function sendTooServer() {
         success: function (result) {
             fragment = result.fragment;
             if (result.fragment === "Fragment 1") {
+                checkButton.classList.remove('hidden');
                 $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
                     textShow.classList.add('hidden');
-                    checkButton.classList.remove('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if (result.fragment === "Fragment 2") {
+                checkButton.classList.remove('hidden');
                 $('#replace_div').load("/fragmentsPages/lessonFragment2", function () {
                     textShow.classList.add('hidden');
                     nextButton.classList.add('disabled');
                     nextButton.setAttribute('disabled', 'disabled');
-                    checkButton.classList.remove('hidden');
+
                     $('#eng-text').html(result.engText);
                 });
             } else if (result.fragment === "Fragment 3") {
@@ -47,10 +48,8 @@ function sendTooServer() {
             } else {
                 textShow.classList.add('hidden');
                 checkButton.classList.remove('hidden');
-                // checkButton.onclick = sendDataToServer;
                 nextButton.classList.add('disabled');
                 nextButton.setAttribute('disabled', 'disabled');
-                // wordList = result.engTextList;
                 var ul = document.getElementById("words");
                 $('#replace_div').load("/fragmentsPages/lessonFragment4", function () {
                     $('#ukr-text').html(result.ukrText);
@@ -213,6 +212,7 @@ $(document).ready(function () {
                     // console.log(status);
                     if (status == "Success") {
                         $('textarea[name="ukrText"]').val('');
+                        $('textarea[name="ukrTextWoman"]').val('');
                         $('textarea[name="engText"]').val('');
                         // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
                         resultDivSuccess.text(result.message);

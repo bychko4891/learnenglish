@@ -34,39 +34,77 @@ public class TranslationPairService {
     public TranslationPair pairForLesson(long lessonId, long userId, long lessonCounter) {
         return translationPairRepository.findAllByUserAndLessonAndCounter(lessonId, userId, lessonCounter);
     }
-    public boolean existsByEngTextAndUkrText (String engText, Long lessonId, Long userId){
-       return  translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
+
+    public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
+        return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
     }
 
-    public DtoTranslationPairToUI translationPairRandom(long lessonId, long userId) {
+    private Long translationPairIdRandom(long lessonId, long userId) {
         long count = translationPairRepository.findByCountTranslationPairInLesson(lessonId, userId);
-        if(count > 0){
-            long lessonCounter= new Random().nextLong(1, count + 1);
-            return translationPairConvertToDto(pairForLesson(lessonId, userId, lessonCounter));
+        if (count > 0) {
+            return new Random().nextLong(1, count + 1);
         }
-        return translationPairConvertToDto(pairForLesson(lessonId, userId, 0));
+        return 0L;
     }
 
-    private DtoTranslationPairToUI translationPairConvertToDto(TranslationPair translationPair) {
-        if(translationPair != null) {
-            DtoTranslationPairToUI toUi = new DtoTranslationPairToUI();
-            toUi.setUkrText(translationPair.getUkrText());
-            toUi.setEngText(translationPair.getEngText());
+    private DtoTranslationPairToUI translationPairConvertToDtoUserText(Long lessonId, Long userId, Long translationPairRandomId) {
+        TranslationPair translationPair = pairForLesson(lessonId, userId, translationPairRandomId);
+        if (translationPair != null) {
+            DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
+            dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
+            dtoTranslationPairToUI.setEngText(translationPair.getEngText());
             int generateNumber = new Random().nextInt(1, 5);
-            toUi.setFragment("Fragment " + generateNumber);
+            dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
             if (generateNumber == 4) {
-                List<String> engTextList = new ArrayList<>(Arrays.asList(toUi.getEngText().replaceAll("\\?+", "").split(" ")));
+                List<String> engTextList = new ArrayList<>(Arrays.asList(dtoTranslationPairToUI.getEngText().replaceAll("\\?+", "").split(" ")));
                 engTextList.add("is");
                 engTextList.add("a");
                 Collections.shuffle(engTextList);
-                toUi.setEngTextList(engTextList);
+                dtoTranslationPairToUI.setEngTextList(engTextList);
             }
-            return toUi;
+            return dtoTranslationPairToUI;
         }
+        return translationPairIsNull();
+    }
+
+    private DtoTranslationPairToUI translationPairIsNull() {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
         dtoTranslationPairToUI.setUkrText("Завантажте текст будь ласка для навчання");
         dtoTranslationPairToUI.setEngText("Please download the text for study");
         dtoTranslationPairToUI.setFragment("Fragment 3");
         return dtoTranslationPairToUI;
+    }
+
+    private DtoTranslationPairToUI translationPairConvertToDtoApplicationText(Long lessonId, Long translationPairRandomId, String userGender) {
+        TranslationPair translationPair = pairForLesson(lessonId, 1l, translationPairRandomId);
+        if (translationPair != null) {
+            DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
+            if (userGender.equals("[FEMALE]")) {
+                dtoTranslationPairToUI.setUkrText(translationPair.getUkrTextWoman());
+            } else {
+                dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
+            }
+            dtoTranslationPairToUI.setEngText(translationPair.getEngText());
+            int generateNumber = new Random().nextInt(1, 5);
+            dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
+            if (generateNumber == 4) {
+                List<String> engTextList = new ArrayList<>(Arrays.asList(dtoTranslationPairToUI.getEngText().replaceAll("\\?+", "").split(" ")));
+                engTextList.add("is");
+                engTextList.add("a");
+                Collections.shuffle(engTextList);
+                dtoTranslationPairToUI.setEngTextList(engTextList);
+            }
+            return dtoTranslationPairToUI;
+        }
+        return translationPairIsNull();
+    }
+
+    public DtoTranslationPairToUI getDtoTranslationPair(long lessonId, long userId, String userGender) {
+        Long translationPairIdRandom = translationPairIdRandom(lessonId, userId);
+        if (userId == 1) {
+            return translationPairConvertToDtoApplicationText(lessonId, translationPairIdRandom, userGender);
+        } else {
+            return translationPairConvertToDtoUserText(lessonId, userId, translationPairIdRandom);
+        }
     }
 }

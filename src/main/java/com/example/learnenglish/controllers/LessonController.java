@@ -44,15 +44,15 @@ public class LessonController {
 
     @GetMapping(path = "/lesson/{lessonId}/reload")
     public ResponseEntity<DtoTranslationPairToUI> randomTranslationPairToLesson(@PathVariable(value = "lessonId") long lessonId,
-//                                                                                @RequestParam("lessonId") Long lessonIdRequest,
                                                                                 Principal principal) {
         if (principal != null) {
             long userId = (long)session.getAttribute("userId");
             if(!(boolean)session.getAttribute("userTextInLesson")){
                 userId = 1;
             }
+            String userGender = (String) session.getAttribute("userGender");
             userStatisticsService.repetitionsCountSave(userId);
-            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.translationPairRandom(lessonId, userId);
+            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.getDtoTranslationPair(lessonId, userId, userGender);
             session.setAttribute("ukrText", dtoTranslationPairToUI.getUkrText());
             session.setAttribute("engText", dtoTranslationPairToUI.getEngText());
             session.setAttribute("fragment", dtoTranslationPairToUI.getFragment());

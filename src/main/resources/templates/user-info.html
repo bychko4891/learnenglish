@@ -105,6 +105,18 @@
                                                name="lastName" th:value="${user.getLastName()}">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label for="last-name">Стать:</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="male" name="gender" value="MALE" th:field="${user.gender}" checked="checked" style="display: inline-block;">
+                                        <label for="male">Чоловік</label>
+
+                                        <input type="radio" id="female" name="gender" value="FEMALE" th:field="${user.gender}" style="display: inline-block;">
+                                        <label for="female">Жінка</label>
+                                    </td>
+                                </tr>
                             </table>
                             <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
                             <br>

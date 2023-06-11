@@ -2,10 +2,8 @@ package com.example.learnenglish.model.users;
 
 import com.example.learnenglish.model.TranslationPair;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -62,10 +60,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> authority = new HashSet<>();
 
-    @ElementCollection(targetClass = UserSex.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = UserGender.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "gender", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<UserSex> userSex = new HashSet<>();
+    private Set<UserGender> gender = new HashSet<>();
 
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;

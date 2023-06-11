@@ -104,6 +104,7 @@ public class SecurityConfig {
                                     session.setAttribute("userFirstName", user.getFirstName());
                                     session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());
+                                    session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());
                                     session.setAttribute("userTextInLesson", user.isUserTextInLesson());
 

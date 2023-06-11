@@ -22,10 +22,8 @@ public class TranslationPairValidationAndSaveService {
 
     public ResponseStatus validationTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser ) {
         if(roleUser.equals("[ROLE_ADMIN]")) {
-
             String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
             String ukrTextWoman = StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextWoman());
-
             String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
             ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
             ukrTextWoman = ukrTextWoman.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
@@ -46,18 +44,34 @@ public class TranslationPairValidationAndSaveService {
                     return convertToTranslationPairEndSave(dtoTranslationPair);
                 }
             }
-        } else validationTranslationPairUser(dtoTranslationPair);
+        } else {
+            return validationTranslationPairUser(dtoTranslationPair);
+        }
         System.out.println("Error validationTranslationPair");
         return new ResponseStatus(Message.ERRORVALIDATETEXT);
     }
 
     private ResponseStatus validationTranslationPairUser(DtoTranslationPair dtoTranslationPair) {
-return new ResponseStatus(Message.ERRORVALIDATETEXT);
-    }
-
-    private ResponseStatus validationTranslationPairLength(){
+        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+        if (Pattern.matches
+                ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
+                        "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
+                                Pattern.matches
+                        ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
+                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)
+                &&  !translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
+                dtoTranslationPair.setUkrText(ukrText);
+                dtoTranslationPair.setUkrTextWoman("No text ");
+                dtoTranslationPair.setEngText(engText);
+                return convertToTranslationPairEndSave(dtoTranslationPair);
+        }
+        System.out.println("Error validationTranslationPair");
         return new ResponseStatus(Message.ERRORVALIDATETEXT);
     }
+
 
     private ResponseStatus convertToTranslationPairEndSave(DtoTranslationPair dtoTranslationPair) {
         TranslationPair pair = new TranslationPair();

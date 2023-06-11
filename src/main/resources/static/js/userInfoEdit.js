@@ -3,14 +3,17 @@ const firstNameInput = document.getElementById('first-name');
 const lastNameInput = document.getElementById('last-name');
 var initialFirstNameValue;
 var initialLastNameValue;
+
 $(document).ready(function () {
     initialFirstNameValue = firstNameInput.value;
     initialLastNameValue = lastNameInput.value;
+
 });
 
 function reloadValue() {
     initialFirstNameValue = firstNameInput.value;
     initialLastNameValue = lastNameInput.value;
+
 }
 
 $(document).ready(function () {
@@ -62,7 +65,12 @@ $(document).ready(function () {
 function checkUserInfo(data) {
     const firstName = data.find(field => field.name === 'firstName').value;
     const lastName = data.find(field => field.name === 'lastName').value;
-    if (initialFirstNameValue === firstName && initialLastNameValue === lastName) {
+    const gender = $('input[name="gender"]:checked').val();
+    // const initialFirstName = $('#first-name').attr('data-initial-value');
+    // const initialLastName = $('#last-name').attr('data-initial-value');
+    const initialGender = $('#gender').attr('data-initial-value');
+
+    if (initialFirstNameValue === firstName && initialLastNameValue === lastName && initialGender === gender) {
         return false;
     } else {
         return true;
