@@ -1,7 +1,10 @@
 package com.example.learnenglish.service;
-/*
- *
- *
+
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
@@ -38,6 +41,16 @@ public class TranslationPairService {
     public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
         return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
     }
+
+    public DtoTranslationPairToUI getDtoTranslationPair(long lessonId, long userId, String userGender) {
+        Long translationPairIdRandom = translationPairIdRandom(lessonId, userId);
+        if (userId == 1) {
+            return translationPairConvertToDtoApplicationText(lessonId, translationPairIdRandom, userGender);
+        } else {
+            return translationPairConvertToDtoUserText(lessonId, userId, translationPairIdRandom);
+        }
+    }
+
 
     private Long translationPairIdRandom(long lessonId, long userId) {
         long count = translationPairRepository.findByCountTranslationPairInLesson(lessonId, userId);
@@ -99,12 +112,5 @@ public class TranslationPairService {
         return translationPairIsNull();
     }
 
-    public DtoTranslationPairToUI getDtoTranslationPair(long lessonId, long userId, String userGender) {
-        Long translationPairIdRandom = translationPairIdRandom(lessonId, userId);
-        if (userId == 1) {
-            return translationPairConvertToDtoApplicationText(lessonId, translationPairIdRandom, userGender);
-        } else {
-            return translationPairConvertToDtoUserText(lessonId, userId, translationPairIdRandom);
-        }
-    }
+
 }

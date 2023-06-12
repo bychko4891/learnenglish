@@ -8,6 +8,38 @@ $(document).ready(function () {
     console.log(lessonId + ' lessonId  ready');
 });
 
+$(window).on('scroll', function() {
+    var videoContainer = $('#video-container');
+    var videoTop = videoContainer.offset().top;
+    var videoBottom = videoTop + videoContainer.outerHeight();
+    var windowTop = $(window).scrollTop();
+    var windowBottom = windowTop + $(window).height();
+
+});
+
+
+// скрипт який підмію img на iframe на сторінці lesson
+$(document).ready(function() {
+    $('.about-radio').change(function() {
+        var tabId = $(this).attr('id');
+
+        if (tabId === 'learnInfo') {
+            var videoContainer = $('#video-container');
+            var img = videoContainer.find('img');
+            var videoSrc = img.data('src');
+
+            var iframe = $('<iframe>', {
+                src: videoSrc,
+                width: '560',
+                height: '314',
+                allowfullscreen: 'allowfullscreen'
+            });
+            videoContainer.empty().append(iframe);
+        }
+    });
+});
+
+
 function sendTooServer() {
     var textShow = document.getElementById('textShow');
     var checkButton = document.getElementById('checkButton');
@@ -78,7 +110,7 @@ window.addEventListener('load', sendTooServer);
 
 
 // Виклик функції при кліку на кнопку
-var nextText = document.getElementById('nextText');
+// var nextText = document.getElementById('nextText');
 nextText.addEventListener('click', sendTooServer);
 
 

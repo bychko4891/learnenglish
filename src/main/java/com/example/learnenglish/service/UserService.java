@@ -18,10 +18,8 @@ import org.thymeleaf.util.StringUtils;
 
 import java.security.SecureRandom;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -46,7 +44,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
-        user.setStatistics(new UserStatistics());
+        UserStatistics userStatistics = new UserStatistics();
+        userStatistics.setStudyTimeInTwoWeeks(new ArrayList<>(Arrays.asList(0)));
+        userStatistics.setTrainingDaysInMonth(new ArrayList<>(Arrays.asList(LocalDate.now())));
+        user.setStatistics(userStatistics);
         user.setUserAvatar(new UserAvatar());
         userRepository.save(user);
         if (!StringUtils.isEmpty(user.getEmail())) {

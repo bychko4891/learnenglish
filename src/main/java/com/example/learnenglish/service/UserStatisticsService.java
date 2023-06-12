@@ -1,38 +1,51 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.dto.DtoUserStatisticsToUi;
-import com.example.learnenglish.model.users.TrainingTimeUsersEmbeddable;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.repository.UserStatisticsRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.servlet.http.HttpSession;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Aspect
 @Service
-
 public class UserStatisticsService {
+    private LocalDateTime localDateTimeNow;
     private final UserStatisticsRepository userStatisticsRepository;
     private final EntityManager entityManager;
+    private final HttpSession session;
 
-    public UserStatisticsService(UserStatisticsRepository userStatisticsRepository, EntityManager entityManager) {
+    public UserStatisticsService(UserStatisticsRepository userStatisticsRepository,
+                                 EntityManager entityManager, HttpSession session) {
         this.userStatisticsRepository = userStatisticsRepository;
         this.entityManager = entityManager;
+        this.session = session;
     }
 
     public DtoUserStatisticsToUi trainingStatistics(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             UserStatistics userStatistics = userStatisticsOptional.get();
-            DtoUserStatisticsToUi  dtoUserStatisticsToUi = new DtoUserStatisticsToUi();
+            DtoUserStatisticsToUi dtoUserStatisticsToUi = new DtoUserStatisticsToUi();
             dtoUserStatisticsToUi.setStudyTimeInTwoWeeks(userStatistics.getStudyTimeInTwoWeeks());
             dtoUserStatisticsToUi.setRepetitionsCount(userStatistics.getRepetitionsCount());
             dtoUserStatisticsToUi.setRepetitionsCountPrev(userStatistics.getRepetitionsCountPrev());
@@ -44,6 +57,46 @@ public class UserStatisticsService {
             throw new IllegalArgumentException("Error training Days In Month ArrayList");
         }
     }
+
+
+    @After("execution(* com.example.learnenglish.service.TranslationPairService.getDtoTranslationPair(..))")
+    public void userRepetitionCount() {
+        localDateTimeNow = LocalDateTime.now();
+        Long userId = (Long) session.getAttribute("userId");
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent()) {
+            UserStatistics userStatistics = userStatisticsOptional.get();
+            setUserRepetitionsCountNow(userStatistics); // визов метода
+            addTrainingDayInListMount(userStatistics);  // визов метода
+            try {
+                userStatistics.setRepetitionsCount(userStatistics.getRepetitionsCount() + 1);
+                userStatisticsRepository.save(userStatistics);
+            } catch (NullPointerException e) {
+                userStatistics.setRepetitionsCount(1);
+                userStatisticsRepository.save(userStatistics);
+            }
+        } else throw new NoResultException("Error base in method  'userRepetitionCount' UserStatisticsService class");
+
+    }
+
+    public void errorUserRepetitionCount(Long userId) {
+        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
+        if (userStatisticsOptional.isPresent()) {
+            try {
+                UserStatistics userStatistics = userStatisticsOptional.get();
+                userStatistics.setErrorCount(userStatistics.getErrorCount() + 1);
+                userStatisticsRepository.save(userStatistics);
+            } catch (NullPointerException e) {
+                UserStatistics userStatistics = userStatisticsOptional.get();
+                userStatistics.setErrorCount(1);
+                userStatisticsRepository.save(userStatistics);
+            }
+        } else
+            throw new NoResultException("Error base in method  'errorUserRepetitionCount' UserStatisticsService class");
+
+    }
+
+
     public List trainingDays(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
@@ -54,116 +107,29 @@ public class UserStatisticsService {
         }
     }
 
-    @Transactional
-    public void addTrainingDayInList(User user) {
-        String query = "SELECT COUNT(training_day) FROM training_days_mount WHERE user_statistics_id = :id";
-        Long countDays = (Long) entityManager.createNativeQuery(query)
-                .setParameter("id", user.getId())
-                .getSingleResult();
-        LocalDate date = LocalDate.now();
-        if (countDays == 0) {
-            UserStatistics st = user.getStatistics();
-            st.setTrainingDaysInMonth(Arrays.asList(date));
-            userStatisticsRepository.save(st);
-        } else {
-            String queryAdd = "INSERT INTO training_days_mount (user_statistics_id, training_day) \n" +
-                    "SELECT :stId, :date \n" +
-                    "WHERE NOT EXISTS (SELECT 1 FROM training_days_mount WHERE user_statistics_id = :stId AND training_day = :date)";
-            entityManager.createNativeQuery(queryAdd)
-                    .setParameter("stId", user.getId())
-                    .setParameter("date", date)
-                    .executeUpdate();
-        }
-    }
 
-    @Transactional
-    public void learnUserTime(Long userId, LocalDateTime localDateTimeNow) {
-        String queryTimeStart = "SELECT training_time_start_end FROM user_statistics WHERE id = :userId";
-        try {
-            java.sql.Timestamp timestamp = (java.sql.Timestamp) entityManager.createNativeQuery(queryTimeStart)
-                    .setParameter("userId", userId)
-                    .getSingleResult();
-            LocalDateTime localDateTimeBase = timestamp.toLocalDateTime();
-            if (localDateTimeBase.getMonthValue() == localDateTimeNow.getMonthValue() && localDateTimeBase.getDayOfMonth() == localDateTimeNow.getDayOfMonth()) {
-                if (((localDateTimeNow.getHour() * 60) + localDateTimeNow.getMinute()) - ((localDateTimeBase.getHour() * 60) + localDateTimeBase.getMinute()) <= 5) {
-                    String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
-                    entityManager.createNativeQuery(q)
-                            .setParameter("d", localDateTimeNow)
-                            .setParameter("id", userId)
-                            .executeUpdate();
-                    countTimeInWeeks(userId, localDateTimeNow, localDateTimeBase, "today");
-                } else {
-                    String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
-                    entityManager.createNativeQuery(q)
-                            .setParameter("d", localDateTimeNow)
-                            .setParameter("id", userId)
-                            .executeUpdate();
-                }
-            } else {
-                String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :id";
-                entityManager.createNativeQuery(q)
-                        .setParameter("d", localDateTimeNow)
-                        .setParameter("id", userId)
-                        .executeUpdate();
-                countTimeInWeeks(userId, localDateTimeNow, localDateTimeBase, "new day");
+    public void addTrainingDayInListMount(UserStatistics userStatistics) {
+        List<LocalDate> localDateList = userStatistics.getTrainingDaysInMonth();
+        try{
+            LocalDate localDateListMount = localDateList.get(localDateList.size() - 1);
+            if (localDateListMount.getMonthValue() == localDateTimeNow.getMonthValue() &&
+                    localDateListMount.getDayOfMonth() != localDateTimeNow.getDayOfMonth() ||
+                    localDateListMount.getMonthValue() != localDateTimeNow.getMonthValue() &&
+                            localDateListMount.getDayOfMonth() != localDateTimeNow.getDayOfMonth()) {
+                localDateList.add(LocalDate.now());
             }
-        } catch (NullPointerException | NoResultException e) {
-            String q = "UPDATE user_statistics SET training_time_start_end = :d WHERE id = :userId";
-            entityManager.createNativeQuery(q)
-                    .setParameter("d", localDateTimeNow)
-                    .setParameter("userId", userId)
-                    .executeUpdate();
-            createStudyTimeInTwoWeeks(userId);
+        }catch (IndexOutOfBoundsException e){
+            localDateList.add(LocalDate.now());
         }
-    }
-
-    @Transactional
-    public void createStudyTimeInTwoWeeks(Long userId) {
-        try {
-            String queryTimeStart = "SELECT * FROM study_time_in_two_weeks WHERE user_statistics_id = :userId";
-            entityManager.createNativeQuery(queryTimeStart)
-                    .setParameter("userId", userId)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            String q = "INSERT INTO study_time_in_two_weeks (user_statistics_id, amount_of_time_per_day) VALUES (:id, :a)";
-            entityManager.createNativeQuery(q)
-                    .setParameter("id", userId)
-                    .setParameter("a", 0)
-                    .executeUpdate();
-
-        }
-    }
-
-
-    private void countTimeInWeeks(Long userId, LocalDateTime localDateTimeNow, LocalDateTime localDateTimeBase, String day) {
-        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
-        if (userStatisticsOptional.isPresent() && day.equals("today")) {
-            UserStatistics userStatistics = userStatisticsOptional.get();
-            List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-            int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size() - 1);
-            int timeNowInSeconds = (localDateTimeNow.getHour() * 3600) + (localDateTimeNow.getMinute() * 60) + (localDateTimeNow.getSecond());
-            int timeBaseInSeconds = (localDateTimeBase.getHour() * 3600) + (localDateTimeBase.getMinute() * 60) + (localDateTimeBase.getSecond());
-            studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + ((timeNowInSeconds - timeBaseInSeconds)));
-            userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-            userStatisticsRepository.save(userStatistics);
-        } else if (userStatisticsOptional.isPresent() && day.equals("new day")) {
-            UserStatistics userStatistics = userStatisticsOptional.get();
-            List<Integer> studyTimeInTwoWeeks = userStatisticsOptional.get().getStudyTimeInTwoWeeks();
-            saveRepetitionsCountPrev(userStatistics);
-            if (studyTimeInTwoWeeks.size() < 14) {
-                studyTimeInTwoWeeks.add(0);
-                userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-                userStatisticsRepository.save(userStatistics);
-            } else {
-                studyTimeInTwoWeeks.remove(0);
-                studyTimeInTwoWeeks.add(0);
-                userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-                userStatisticsRepository.save(userStatistics);
-            }
-
-        } else System.out.println("Error -> public void countTimeInWeeks  ");
 
     }
+
+
+    public void setUserTrainingTimeStartEnd(UserStatistics userStatistics) {
+        userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
+
+    }
+
 
     public List timeWeeks(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
@@ -175,46 +141,75 @@ public class UserStatisticsService {
         }
     }
 
-    public void repetitionsCountSave(Long userId) {
-        Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
-        if (userStatisticsOptional.isPresent()) {
-            UserStatistics userStatistics = userStatisticsOptional.get();
-            saveRepetitionsCountNow(userStatistics);
-            try{
-                userStatistics.setRepetitionsCount(userStatistics.getRepetitionsCount() + 1);
-                userStatisticsRepository.save(userStatistics);
-            }catch (NullPointerException e){
-                userStatistics.setRepetitionsCount(1);
-                userStatisticsRepository.save(userStatistics);
+
+    public void setUserRepetitionsCountNow(UserStatistics userStatistics) { // +
+        LocalDateTime localDateTimeRepetitions = getUserLocaleDateTimeRepetition(userStatistics);
+        if (todayNewDay(localDateTimeRepetitions)) {
+            setCountTimeInWeeksToday(userStatistics);
+            try {
+                userStatistics.setRepetitionsCountNow(userStatistics.getRepetitionsCountNow() + 1); // today
+            } catch (NullPointerException e) {
+                userStatistics.setRepetitionsCountNow(1); // today
             }
         } else {
-            throw new IllegalArgumentException("Error training Days In Month ArrayList");
+            saveRepetitionsCountPrev(userStatistics); // new day
         }
+
     }
 
-    public void saveRepetitionsCountNow(UserStatistics userStatistics){
-        try{
-            userStatistics.setRepetitionsCountNow(userStatistics.getRepetitionsCountNow() + 1);
-            userStatisticsRepository.save(userStatistics);
-        }catch (NullPointerException e){
-            userStatistics.setRepetitionsCountNow(1);
-            userStatisticsRepository.save(userStatistics);
-        }
-    }
-    public void saveRepetitionsCountPrev(UserStatistics userStatistics){
+    public void saveRepetitionsCountPrev(UserStatistics userStatistics) { // +    new day
         userStatistics.setRepetitionsCountPrev(userStatistics.getRepetitionsCountNow());
-        userStatistics.setRepetitionsCountNow(0);
+        userStatistics.setRepetitionsCountNow(1);
 
-        userStatistics.setDaysInARowCount(1);
-        userStatistics.setErrorCount(1);
-        userStatisticsRepository.save(userStatistics);
+        setCountTimeInWeeksNewDay(userStatistics); // визов метода по new day
+
+//        userStatistics.setDaysInARowCount(1);
     }
 
-    @Transactional
-    public void saveTrainingUserTime() {
-        String query = "INSERT INTO training_days_mount (user_statistics_id, training_day) \\n\" +\n" +
-                "                       \"SELECT :stId, :date \\n\" +\n" +
-                "                       \"WHERE NOT EXISTS (SELECT 1 FROM training_days_mount WHERE user_statistics_id = :stId AND training_day = :date)";
+    //today --> true | newDay --> false
+    private boolean todayNewDay(LocalDateTime userLocaleDateTimeRepetition) {
+        return (userLocaleDateTimeRepetition.getMonthValue() == localDateTimeNow.getMonthValue() &&
+                userLocaleDateTimeRepetition.getDayOfMonth() == localDateTimeNow.getDayOfMonth());
     }
 
+
+    private void setCountTimeInWeeksToday(UserStatistics userStatistics) {
+        List<Integer> studyTimeInTwoWeeks = userStatistics.getStudyTimeInTwoWeeks();
+        if (((localDateTimeNow.getHour() * 60) + localDateTimeNow.getMinute()) - ((userStatistics.getTrainingTimeStartEnd().getHour() * 60)
+                + userStatistics.getTrainingTimeStartEnd().getMinute()) <= 5) {
+            int countTimeLearnInDay = studyTimeInTwoWeeks.get(studyTimeInTwoWeeks.size() - 1);
+            int timeNowInSeconds = (localDateTimeNow.getHour() * 3600) + (localDateTimeNow.getMinute() * 60) + (localDateTimeNow.getSecond());
+            int timeBaseInSeconds = (userStatistics.getTrainingTimeStartEnd().getHour() * 3600) + (userStatistics.getTrainingTimeStartEnd().getMinute() * 60) + (userStatistics.getTrainingTimeStartEnd().getSecond());
+            studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + ((timeNowInSeconds - timeBaseInSeconds)));
+            userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+            setUserTrainingTimeStartEnd(userStatistics);
+        } else {
+            setUserTrainingTimeStartEnd(userStatistics);
+        }
+
+
+    }
+
+    private void setCountTimeInWeeksNewDay(UserStatistics userStatistics) {
+        List<Integer> studyTimeInTwoWeeks = userStatistics.getStudyTimeInTwoWeeks();
+        if (studyTimeInTwoWeeks.size() < 14) {
+            studyTimeInTwoWeeks.add(0);
+            userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+        } else {
+            studyTimeInTwoWeeks.remove(0);
+            studyTimeInTwoWeeks.add(0);
+            userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
+        }
+
+    }
+
+    public LocalDateTime getUserLocaleDateTimeRepetition(UserStatistics userStatistics) { // +
+        if (userStatistics.getTrainingTimeStartEnd() != null) {
+            return userStatistics.getTrainingTimeStartEnd();
+        } else {
+            userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
+            userStatisticsRepository.save(userStatistics);
+            return localDateTimeNow;
+        }
+    }
 }

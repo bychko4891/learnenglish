@@ -28,8 +28,7 @@ public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
                 long userId = ((User) principal).getId();
-                LocalDateTime timeStartUserActivity = LocalDateTime.now();
-                userStatisticsService.learnUserTime(userId, timeStartUserActivity);
+//                userStatisticsService.learnUserTime(userId);
             }
         } else if (authentication != null && authentication.isAuthenticated() && Pattern.matches("REQUEST : GET /user/[0-9]+.+", message)){
             Object principal = authentication.getPrincipal();

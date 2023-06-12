@@ -59,8 +59,8 @@ public class LessonController {
             if(!(boolean)session.getAttribute("userTextInLesson")){
                 userId = 1;
             }
+//            userStatisticsService.userRepetitionCount(userService.findByEmail(principal.getName()).getId());
             String userGender = (String) session.getAttribute("userGender");
-            userStatisticsService.repetitionsCountSave(userId);
             DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.getDtoTranslationPair(lessonId, userId, userGender);
             session.setAttribute("ukrText", dtoTranslationPairToUI.getUkrText());
             session.setAttribute("engText", dtoTranslationPairToUI.getEngText());
@@ -82,6 +82,7 @@ public class LessonController {
             if (textCheck.equalsIgnoreCase((String) session.getAttribute("ukrTextCheck")) || textCheck.equalsIgnoreCase((String) session.getAttribute("engTextCheck"))) {
                 return ResponseEntity.ok("Чудово, гарна робота");
             } else {
+                userStatisticsService.errorUserRepetitionCount(userService.findByEmail(principal.getName()).getId());
                 if (session.getAttribute("fragment").equals("Fragment 1") || session.getAttribute("fragment").equals("Fragment 4")) {
                     return ResponseEntity.ok("<span style=\"color: #e03e2d;\">Ви допустили помилку.&nbsp; </span>Значення: <br>" + "<p>"
                             + session.getAttribute("engText") + "</p>");
