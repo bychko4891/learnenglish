@@ -1,6 +1,7 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/head :: head}"></head>
+<script  async src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 <body>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
@@ -56,7 +57,7 @@
                 <input name="nav" type="radio" class="about-radio" id="learnInfo"/>
                 <div class="page about-page">
                     <div class="page-contents">
-                        <div th:utext="${lesson.lessonInfo}"><span class="lesson_next_ico"></span></div>
+                        <div   th:utext="${lesson.lessonInfo}"></div>
                     </div>
                 </div>
                 <label class="nav" for="learnInfo">
