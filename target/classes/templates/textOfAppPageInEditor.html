@@ -1,0 +1,33 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<div class="wrapper">
+  <header th:replace="~{fragments/header :: header}"></header>
+  <div class="sidebar">
+    <div th:replace="~{fragments/menu :: menu}"></div>
+  </div>
+  <main class="section main_content ">
+    <div class="container layout_page">
+      <h1>New text page</h1>
+<!--      <form method="post" th:action="@{/admin-page/app-text-page/create-app-text-page}" id="myForm">-->
+      <form method="post" th:action="@{/admin-page/text-of-app-page/{id}/edit}" th:object="${textOfAppPage}" id="myForm">
+        <label for="name">Name text:</label>
+        <input type="text" id="name" name="name" th:value="${textOfAppPage.name}" required><hr><br>
+        <!--                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>-->
+        <label for="lessonInfo">Text page:</label>
+        <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
+        <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
+        <input type="hidden"  name="id"  th:value="${textOfAppPage.id}" required>
+        <button type="submit">Save</button>
+      </form>
+      <div id="responseDiv"></div>
+    </div>
+  </main>
+  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+<script type="text/javascript" th:src="@{/js/tinyMceEditor.js}"></script>
+</body>
+</html>

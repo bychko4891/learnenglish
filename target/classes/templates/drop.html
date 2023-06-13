@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+  <title>Drag and Drop</title>
+  <head th:replace="~{fragments/head :: head}"></head>
+  <style>
+    #words {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #words li {
+      display: inline-block;
+      padding: 5px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      margin-right: 0;
+      cursor: move;
+    }
+
+    #sentence {
+      width: 500px;
+      min-height: 100px;
+      height: auto;
+      border: 1px solid #444;
+      margin-top: 20px;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    #sentence span {
+      display: inline-block;
+      border: 1px solid #062deb;
+      padding: 5px;
+      margin: 0;
+      overflow: auto;
+    }
+  </style>
+
+<body>
+<script>
+  var sentenceWords = []; // Слова в реченні
+
+  function allowDrop(event) {
+    event.preventDefault();
+  }
+
+  function drag(event) {
+    event.dataTransfer.setData("text", event.target.innerText);
+  }
+
+  function drop(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("text");
+
+    var sentence = document.getElementById("sentence");
+
+    // Перевірити, чи слово вже є в реченні
+    var isInSentence = false;
+    for (var i = 0; i < sentenceWords.length; i++) {
+      if (sentenceWords[i] === data) {
+        isInSentence = true;
+        break;
+      }
+    }
+
+    if (!isInSentence) {
+      var word = document.createElement("span");
+      word.textContent = data;
+      word.draggable = true;
+      word.ondragstart = function (event) {
+        drag(event);
+        removeFromSentence(event.target.innerText);
+        addToWordList(event.target.innerText);
+      };
+
+      sentence.appendChild(word);
+      sentence.appendChild(document.createTextNode(" "));
+
+      // Додати слово до речення
+      sentenceWords.push(data);
+
+      // Видалити слово зі списку слів
+      removeFromWordList(data);
+    }
+  }
+
+  function removeFromWordList(word) {
+    var wordList = document.getElementById("words").getElementsByTagName("li");
+    for (var i = 0; i < wordList.length; i++) {
+      if (wordList[i].innerText === word) {
+        wordList[i].remove();
+        break;
+      }
+    }
+  }
+
+  function removeFromSentence(word) {
+    var sentence = document.getElementById("sentence");
+    var words = sentence.getElementsByTagName("span");
+    for (var i = 0; i < words.length; i++) {
+      if (words[i].innerText === word) {
+        words[i].remove();
+        sentenceWords.splice(i, 1);
+        break;
+      }
+    }
+  }
+  function addToWordList(word) {
+    var wordList = document.getElementById("words");
+    var newWord = document.createElement("li");
+    newWord.draggable = true;
+    newWord.ondragstart = function(event) {
+      drag(event);
+    };
+    newWord.textContent = word;
+    wordList.appendChild(newWord);
+  }
+
+  //*********
+  function sendDataToServer() {
+    var sentence = document.getElementById("sentence");
+    var wordSequence = sentence.innerText.trim(); // Отримати текстове значення речення
+    console.log(wordSequence);
+    // Відправити дані на сервер
+    $.ajax({
+      url: "/text-chec",
+      type: "GET",
+      data: { textCheck: wordSequence },
+      // contentType: "text/plain",
+      success: function(response) {
+        // Обробка успішної відповіді від сервера
+        console.log(response);
+      },
+      error: function(xhr, status, error) {
+        // Обробка помилки
+        console.error(error);
+      }
+    });
+  }
+  </script>
+<h1>Drag and Drop</h1>
+  <ul id="words">
+    <!-- Динамічно додаємо слова в список -->
+    <li th:each="word : ${words}" draggable="true" th:text="${word}" ondragstart="drag(event)"></li>
+  </ul>
+
+<div id="sentence" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<button onclick="sendDataToServer()">Відправити на сервер</button>
+</body>
+</html>
