@@ -3,17 +3,20 @@ package com.example.learnenglish.controllers;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.TextOfAppPageService;
 import com.example.learnenglish.service.LessonService;
+import com.example.learnenglish.service.TranslationPairService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,15 +36,17 @@ public class AdminController {
     private final HttpSession session;
     private final LessonService lessonService;
     private final UserService userService;
+    private final TranslationPairService translationPairService;
     private final TextOfAppPageService textOfAppPageService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
                            UserService userService,
-                           TextOfAppPageService textOfAppPageService) {
+                           TranslationPairService translationPairService, TextOfAppPageService textOfAppPageService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
+        this.translationPairService = translationPairService;
         this.textOfAppPageService = textOfAppPageService;
     }
 
@@ -53,7 +58,7 @@ public class AdminController {
 
 //            model.addAttribute("user", user);
 
-            return "admin-page";
+            return "adminMainPage";
         }
         return "redirect:/login";
     }
@@ -139,7 +144,7 @@ public class AdminController {
     public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
         if (principal != null) {
             Long count = lessonService.countLessons() + 1;
-            if(count > 16){
+            if (count > 16) {
                 String message = "Дозволено максимум 16 уроків";
                 redirectAttributes.addAttribute("message", message);
                 return "redirect:/admin-page/lessons";
@@ -173,6 +178,22 @@ public class AdminController {
             Lesson lesson = lessonService.findById(id);
             model.addAttribute("lesson", lesson);
             return "adminLessonInEditor";
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/translation-pairs")
+    public String translationPairsListAdminPage(Model model,
+                                                Principal principal,
+                                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                                @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        if (principal != null) {
+            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsToAdminPage(page, size, 1l);
+            model.addAttribute("translationPairs", translationPairsPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", translationPairsPage.getTotalPages());
+
+            return "adminTranslationPairs";
         }
         return "redirect:/login";
     }

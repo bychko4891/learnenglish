@@ -7,7 +7,10 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.TranslationPair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +32,7 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
 
     @Query("SELECT COUNT(tr) FROM TranslationPair tr WHERE tr.lesson.id = :lessonId AND tr.user.id = :userId")
     Long findByCountTranslationPairInLesson(@Param("lessonId") Long lessonId, @Param("userId") Long userId);
+
+    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
+    Page<TranslationPair> findAll(Pageable pageable, Long userId);
 }

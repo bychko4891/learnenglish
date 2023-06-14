@@ -8,9 +8,13 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
+import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import jakarta.persistence.EntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -112,5 +116,9 @@ public class TranslationPairService {
         return translationPairIsNull();
     }
 
+    public Page<TranslationPair> getTranslationPairsToAdminPage(int page, int size, Long userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return translationPairRepository.findAll(pageable, userId);
+    }
 
 }

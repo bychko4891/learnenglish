@@ -1,11 +1,11 @@
 //Заповнення сторінки першими данними при старті Lesson
 var lessonId;
 var fragment;
-var nextText;
+// var nextText;
 $(document).ready(function () {
-    nextText = document.getElementById('nextText');
+    // nextText = document.getElementById('nextText');
     lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    console.log(lessonId + ' lessonId  ready');
+    // console.log(lessonId + ' lessonId  ready');
 });
 
 $(window).on('scroll', function() {
@@ -45,7 +45,7 @@ function sendTooServer() {
     var checkButton = document.getElementById('checkButton');
     var nextButton = document.getElementById('nextButton');
     var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    console.log(lessonId + ' sendTooServer');
+    // console.log(lessonId + ' sendTooServer');
     var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
@@ -110,14 +110,14 @@ window.addEventListener('load', sendTooServer);
 
 
 // Виклик функції при кліку на кнопку
-// var nextText = document.getElementById('nextText');
+var nextText = document.getElementById('nextText');
 nextText.addEventListener('click', sendTooServer);
 
 
 function getData() {
     var resultDivSuccess = $('#result-success');
     var resultDivError = $('#result-error');
-    console.log(fragment);
+    // console.log(fragment);
     if (fragment === "Fragment 4") {
         var sentence = document.getElementById("sentence");
         var wordSequence = sentence.innerText.trim(); // Отримати текстове значення речення
@@ -175,7 +175,7 @@ $(document).ready(function () {
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
         var isChecked = $(this).prop('checked');
-        console.log(isChecked);
+        // console.log(isChecked);
         var userId = $(this).data('user-id');
         var url = '/user/' + userId + '/mytext';
         // Відправити дані на сервер
@@ -209,14 +209,14 @@ $(document).ready(function () {
     var resultDivSuccess = $('#result-success');
     var resultDivError = $('#result-error');
     $('#add-pair').submit(function (event) {
+        console.log('Yes');
         event.preventDefault();
         // Get CSRF token from the meta tag-->
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        // var url = $(this).attr('action');
         var url = '/translation-pair/add';
         var formData = $(this).serializeArray();
-
+        console.log(formData);
         if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
             var ukrTextTemp = $('textarea[name="ukrText"]').val();
             var engTextTemp = $('textarea[name="engText"]').val();
