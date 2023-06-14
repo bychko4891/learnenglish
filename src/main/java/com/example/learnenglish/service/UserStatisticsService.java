@@ -70,6 +70,7 @@ public class UserStatisticsService {
             addTrainingDayInListMount(userStatistics);  // визов метода
             try {
                 userStatistics.setRepetitionsCount(userStatistics.getRepetitionsCount() + 1);
+                userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
                 userStatisticsRepository.save(userStatistics);
             } catch (NullPointerException e) {
                 userStatistics.setRepetitionsCount(1);
@@ -125,12 +126,6 @@ public class UserStatisticsService {
     }
 
 
-    public void setUserTrainingTimeStartEnd(UserStatistics userStatistics) {
-        userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
-
-    }
-
-
     public List timeWeeks(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
@@ -143,8 +138,11 @@ public class UserStatisticsService {
 
 
     public void setUserRepetitionsCountNow(UserStatistics userStatistics) { // +
-        LocalDateTime localDateTimeRepetitions = getUserLocaleDateTimeRepetition(userStatistics);
-        if (todayNewDay(localDateTimeRepetitions)) {
+        if(userStatistics.getTrainingTimeStartEnd() == null){
+          userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
+        }
+        if ((userStatistics.getTrainingTimeStartEnd().getMonthValue() == localDateTimeNow.getMonthValue() &&
+                userStatistics.getTrainingTimeStartEnd().getDayOfMonth() == localDateTimeNow.getDayOfMonth())) {
             setCountTimeInWeeksToday(userStatistics);
             try {
                 userStatistics.setRepetitionsCountNow(userStatistics.getRepetitionsCountNow() + 1); // today
@@ -182,9 +180,8 @@ public class UserStatisticsService {
             int timeBaseInSeconds = (userStatistics.getTrainingTimeStartEnd().getHour() * 3600) + (userStatistics.getTrainingTimeStartEnd().getMinute() * 60) + (userStatistics.getTrainingTimeStartEnd().getSecond());
             studyTimeInTwoWeeks.set(studyTimeInTwoWeeks.size() - 1, countTimeLearnInDay + ((timeNowInSeconds - timeBaseInSeconds)));
             userStatistics.setStudyTimeInTwoWeeks(studyTimeInTwoWeeks);
-            setUserTrainingTimeStartEnd(userStatistics);
         } else {
-            setUserTrainingTimeStartEnd(userStatistics);
+            userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
         }
 
 
@@ -203,13 +200,4 @@ public class UserStatisticsService {
 
     }
 
-    public LocalDateTime getUserLocaleDateTimeRepetition(UserStatistics userStatistics) { // +
-        if (userStatistics.getTrainingTimeStartEnd() != null) {
-            return userStatistics.getTrainingTimeStartEnd();
-        } else {
-            userStatistics.setTrainingTimeStartEnd(localDateTimeNow);
-            userStatisticsRepository.save(userStatistics);
-            return localDateTimeNow;
-        }
-    }
 }
