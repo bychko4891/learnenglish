@@ -63,7 +63,7 @@ public class AdminController {
         if (principal != null) {
             List<TextOfAppPage> textOfAppPageList = textOfAppPageService.getAppTextPageList();
             model.addAttribute("textOfAppPageList", textOfAppPageList);
-            return "textsOfAppPages";
+            return "adminTextsOfAppPages";
         }
         return "redirect:/login";
     }
@@ -86,7 +86,7 @@ public class AdminController {
             textOfAppPage.setName("Enter name");
             textOfAppPage.setText("Enter text");
             model.addAttribute("textOfAppPage", textOfAppPage);
-            return "textOfAppPageInEditor";
+            return "adminTextOfAppPageInEditor";
         }
         return "redirect:/login";
     }
@@ -98,7 +98,7 @@ public class AdminController {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
             model.addAttribute("textOfAppPage", textOfAppPage);
-            return "textOfAppPageInEditor";
+            return "adminTextOfAppPageInEditor";
         }
         return "redirect:/login";
     }
@@ -113,7 +113,7 @@ public class AdminController {
             model.addAttribute("users", userPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", userPage.getTotalPages());
-            return "users";
+            return "adminUsers";
         }
         return "redirect:/login";
     }
@@ -130,7 +130,7 @@ public class AdminController {
             model.addAttribute("lessons", lessonPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", lessonPage.getTotalPages());
-            return "lessons";
+            return "adminLessons";
         }
         return "redirect:/login";
     }
@@ -160,7 +160,7 @@ public class AdminController {
             lesson.setName("Заняття № " + id);
             lesson.setLessonInfo("Опис заняття");
             model.addAttribute("lesson", lesson);
-            return "lessonInEditor";
+            return "adminLessonInEditor";
         }
         return "redirect:/login";
     }
@@ -172,7 +172,7 @@ public class AdminController {
         if (principal != null) {
             Lesson lesson = lessonService.findById(id);
             model.addAttribute("lesson", lesson);
-            return "lessonInEditor";
+            return "adminLessonInEditor";
         }
         return "redirect:/login";
     }

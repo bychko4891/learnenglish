@@ -1,17 +1,20 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.dto.DtoTranslationPairToUI;
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.LessonRepository;
-import com.example.learnenglish.repository.TranslationPairRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class LessonService {

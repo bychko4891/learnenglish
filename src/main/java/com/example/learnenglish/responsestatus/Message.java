@@ -1,5 +1,12 @@
 package com.example.learnenglish.responsestatus;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 public enum Message {
     SUCCESSADDBASE("Success","Операція пройшла успішно"),
     ERRORBASE("Error","Щось трапилося з базою данних і операція збереження не може бути виконаною.\n" +

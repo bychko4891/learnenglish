@@ -1,5 +1,12 @@
 package com.example.learnenglish.responsestatus;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 public class ResponseStatus {
     private String status;
     private String message;

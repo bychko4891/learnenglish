@@ -64,7 +64,7 @@ public class UserController {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("user", user);
-            return "user-info";
+            return "userInfo";
         }
         return "redirect:/login";
     }
@@ -75,7 +75,7 @@ public class UserController {
                                      Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            return "statistics";
+            return "userStatistics";
         }
         return "redirect:/login";
     }
