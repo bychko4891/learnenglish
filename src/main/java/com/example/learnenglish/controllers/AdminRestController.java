@@ -5,6 +5,7 @@ package com.example.learnenglish.controllers;
  * Description: My Description
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
+import com.example.learnenglish.dto.DtoTextOfAppPage;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.service.LessonService;
@@ -12,7 +13,6 @@ import com.example.learnenglish.service.TextOfAppPageService;
 import com.example.learnenglish.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -32,9 +32,10 @@ public class AdminRestController {
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
-    public ResponseEntity<String> createAppTextPage(@RequestBody TextOfAppPage textOfAppPage, Principal principal) {
+    public ResponseEntity<String> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
+                                                    Principal principal) {
         if (principal != null) {
-            textOfAppPageService.textOfAppPageEdit(textOfAppPage);
+textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage);
             return ResponseEntity.ok("Ok");
         }
         return ResponseEntity.ok("No");

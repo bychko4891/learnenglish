@@ -4,10 +4,12 @@ package com.example.learnenglish.model.users;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.repository.UserRepository;
+import com.example.learnenglish.service.PageApplicationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -29,10 +31,12 @@ public class AdminAccountInitializer implements ApplicationRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PageApplicationService pageApplicationService;
 
-    public AdminAccountInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AdminAccountInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder, PageApplicationService pageApplicationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.pageApplicationService = pageApplicationService;
     }
 
     @Override
@@ -53,6 +57,41 @@ public class AdminAccountInitializer implements ApplicationRunner {
             admin.setStatistics(userStatistics);
             admin.setUserAvatar(new UserAvatar());
             userRepository.save(admin);
+            createUserDemo();
+            createPageApplication();
         }
+    }
+
+    public void createUserDemo() {
+        User demo = new User();
+        demo.setFirstName("Demo");
+        demo.setLastName("Demo");
+        demo.setEmail("demo@mail.com");
+        demo.setActive(true);
+        demo.setUserTextInLesson(false);
+        demo.setPassword(passwordEncoder.encode("demo"));
+        demo.getAuthority().add(Role.ROLE_DEMO);
+        demo.getGender().add(UserGender.MALE);
+        UserStatistics userStatistics = new UserStatistics();
+        userStatistics.setStudyTimeInTwoWeeks(new ArrayList<>(Arrays.asList(0)));
+        userStatistics.setTrainingDaysInMonth(new ArrayList<>(Arrays.asList(LocalDate.now())));
+        demo.setStatistics(userStatistics);
+        demo.setUserAvatar(new UserAvatar());
+        userRepository.save(demo);
+
+    }
+
+    private void createPageApplication() {
+        PageApplication pageApplicationLogin = new PageApplication("Login page");
+        pageApplicationService.savePageApplication(pageApplicationLogin);
+        PageApplication pageApplicationRegistration = new PageApplication("Registration page");
+        pageApplicationService.savePageApplication(pageApplicationRegistration);
+        PageApplication pageApplicationAboutTheApp = new PageApplication("About the app page");
+        pageApplicationService.savePageApplication(pageApplicationAboutTheApp);
+        PageApplication pageApplicationUploadUserText = new PageApplication("Upload user text page");
+        pageApplicationService.savePageApplication(pageApplicationUploadUserText);
+        PageApplication pageApplicationMain = new PageApplication("Main page");
+        pageApplicationService.savePageApplication(pageApplicationMain);
+
     }
 }

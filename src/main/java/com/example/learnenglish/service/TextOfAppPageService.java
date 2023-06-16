@@ -7,6 +7,8 @@ package com.example.learnenglish.service;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.dto.DtoTextOfAppPage;
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.TextOfAppPageRepository;
 import org.springframework.stereotype.Service;
@@ -17,19 +19,23 @@ import java.util.Optional;
 @Service
 public class TextOfAppPageService {
     private final TextOfAppPageRepository textOfAppPageRepository;
+    private final PageApplicationService pageApplicationService;
 
-    public TextOfAppPageService(TextOfAppPageRepository textOfAppPageRepository) {
+    public TextOfAppPageService(TextOfAppPageRepository textOfAppPageRepository, PageApplicationService pageApplicationService) {
         this.textOfAppPageRepository = textOfAppPageRepository;
+        this.pageApplicationService = pageApplicationService;
     }
 
-    public void textOfAppPageEdit(TextOfAppPage textOfAppPage) {
-        Optional<TextOfAppPage> textOfAppPageOptional = textOfAppPageRepository.findById(textOfAppPage.getId());
+    public void textOfAppPageEdit(DtoTextOfAppPage dtoTextOfAppPage) {
+        Optional<TextOfAppPage> textOfAppPageOptional = textOfAppPageRepository.findById(dtoTextOfAppPage.getTextOfAppPage().getId());
         if (!textOfAppPageOptional.isPresent()) {
-            textOfAppPageSave(textOfAppPage);
+            textOfAppPageSave(dtoTextOfAppPage.getTextOfAppPage()); // -------------------------------------
         } else {
             TextOfAppPage textOfAppPageBase = textOfAppPageOptional.get();
-            textOfAppPageBase.setName(textOfAppPage.getName());
-            textOfAppPageBase.setText(textOfAppPage.getText());
+            textOfAppPageBase.setName(dtoTextOfAppPage.getTextOfAppPage().getName());
+            textOfAppPageBase.setText(dtoTextOfAppPage.getTextOfAppPage().getText());
+            PageApplication pageApplication = pageApplicationService.getPageApplication(dtoTextOfAppPage.getPageApplicationId());
+            textOfAppPageBase.setPageApplication(pageApplication);
             textOfAppPageRepository.save(textOfAppPageBase);
         }
     }

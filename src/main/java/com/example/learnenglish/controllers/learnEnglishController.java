@@ -8,7 +8,9 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.service.LessonService;
+import com.example.learnenglish.service.PageApplicationService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -24,13 +26,15 @@ public class learnEnglishController {
     private final HttpSession session;
     private final UserService userService;
     private final LessonService lessonService;
+    private final PageApplicationService pageApplicationService;
 
     public learnEnglishController(HttpSession session,
                                   UserService userService,
-                                  LessonService lessonService) {
+                                  LessonService lessonService, PageApplicationService pageApplicationService) {
         this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;
+        this.pageApplicationService = pageApplicationService;
     }
 
     @GetMapping("/")
@@ -54,6 +58,12 @@ public class learnEnglishController {
     @GetMapping("/about-the-app")
     public String aboutApp(Model model) {
         model.addAttribute("title", "About the app Learn English");
+        PageApplication pageApplication = pageApplicationService.getPageApplication(3l);
+        if(pageApplication.getTextOfAppPage() != null){
+            model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+        } else {
+            model.addAttribute("pageText", "No text in this page");
+        }
         return "about-the-app";
     }
 

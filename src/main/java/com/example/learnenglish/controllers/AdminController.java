@@ -6,17 +6,14 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.service.TextOfAppPageService;
-import com.example.learnenglish.service.LessonService;
-import com.example.learnenglish.service.TranslationPairService;
-import com.example.learnenglish.service.UserService;
+import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,16 +35,18 @@ public class AdminController {
     private final UserService userService;
     private final TranslationPairService translationPairService;
     private final TextOfAppPageService textOfAppPageService;
+    private final PageApplicationService pageApplicationService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
                            UserService userService,
-                           TranslationPairService translationPairService, TextOfAppPageService textOfAppPageService) {
+                           TranslationPairService translationPairService, TextOfAppPageService textOfAppPageService, PageApplicationService pageApplicationService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
         this.translationPairService = translationPairService;
         this.textOfAppPageService = textOfAppPageService;
+        this.pageApplicationService = pageApplicationService;
     }
 
 
@@ -102,7 +101,9 @@ public class AdminController {
                                     Principal principal) {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
+            List<PageApplication> pageApplicationList = pageApplicationService.pageApplicationList();
             model.addAttribute("textOfAppPage", textOfAppPage);
+            model.addAttribute("pageList", pageApplicationList);
             return "adminTextOfAppPageInEditor";
         }
         return "redirect:/login";

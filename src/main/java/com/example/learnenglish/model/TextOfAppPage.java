@@ -22,6 +22,9 @@ public class TextOfAppPage {
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
+    @OneToOne
+    @JoinColumn(name = "page_application_id")
+    private PageApplication pageApplication;
 
     public TextOfAppPage() {
     }
@@ -48,5 +51,13 @@ public class TextOfAppPage {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public PageApplication getPageApplication() {
+        return pageApplication;
+    }
+
+    public void setPageApplication(PageApplication pageApplication) {
+        this.pageApplication = pageApplication;
     }
 }
