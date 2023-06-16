@@ -1,0 +1,213 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
+<link rel="stylesheet" th:href="@{/css/dycalendar.css}" >
+<body>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+<!--        <div th:replace="fragments/menu.html :: menu"> </div>-->
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page row">
+            <div class="layout">
+                <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
+                <div class="page about-page">
+                    <!--                    <div class="page-contents">-->
+                    <main class="col-md-6 col-lg-7 block_left">
+                        <h3>Особиста інформація</h3>
+                        <table class="profile-edit">
+                            <tr>
+                                <td>
+                                    <label class="label-profile"><b>Ім'я:</b></label>
+                                </td>
+                                <td>
+                                    <p th:text="${session.userFirstName}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="last-name"><b>Призвіще:</b></label>
+                                </td>
+                                <td>
+                                    <p th:text="${session.userLastName}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="last-name"><b>Дата реєстрації:</b></label>
+                                </td>
+                                <td>
+                                    <p th:text="${#temporals.format(session.userDateOfCreated, 'dd.MM.yyyy')}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="last-name"><b>Email:</b></label>
+                                </td>
+                                <td>
+                                    <p th:text="${session.username}"></p>
+                                </td>
+                            </tr>
+                            <!--                                                <tr>-->
+                            <!--                                                    <td>-->
+                            <!--                                                        <label for="message">Повідомлення:</label>-->
+                            <!--                                                    </td>-->
+                            <!--                                                    <td>-->
+                            <!--                                                        <textarea id="message" name="message"></textarea>-->
+                            <!--                                                    </td>-->
+                            <!--                                                </tr>-->
+                        </table>
+                    </main>
+                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+                        <h3>Календар занять</h3>
+                        <div class="box_calendar" style="padding-top: 10px;">
+                            <div class="container_calendar">
+                                <div id="calendar"></div>
+                            </div>
+                            <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
+                        </div>
+<!--                        Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
+<!--                        Logged user: <span sec:authentication="name"></span>-->
+<!--                        <p>Welcome, <span th:text="${session.username}"></span>!</p>-->
+<!--                        <p>Your roles: <span th:each="authority : ${session.authorities}" th:text="${authority.authority} + ' '"></span></p>-->
+<!--                        <p>Your avatar name: <span th:text="${session.avatarName}"></span></p>-->
+                    </div>
+                </div>
+                <label class="nav" for="home">
+                    <span class="profile_tabs"> Профіль</span>
+                </label>
+                <input name="nav" type="radio" class="about-radio" id="about"/>
+                <div class="page about-page">
+                    <!--                    <div class="page-contents">-->
+                    <main class="col-md-6 col-lg-7 block_left">
+
+                        <h5>Змінити особисті данні</h5>
+                        <form id="update_profile" th:action="@{/user/{id}/edit(id = ${session.userId})}" method="post">
+                            <table class="profile-edit">
+                                <tr>
+                                    <td>
+                                        <label class="label-profile" for="first-name">Ім'я:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="input" id="first-name"
+                                               name="firstName" th:value="${user.getFirstName()}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="last-name">Призвіще:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="input" id="last-name"
+                                               name="lastName" th:value="${user.getLastName()}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="last-name">Стать:</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="male" name="gender" value="MALE" th:field="${user.gender}" checked="checked" style="display: inline-block;">
+                                        <label for="male">Чоловік</label>
+
+                                        <input type="radio" id="female" name="gender" value="FEMALE" th:field="${user.gender}" style="display: inline-block;">
+                                        <label for="female">Жінка</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
+                            <br>
+                            <button type="submit" id="save-button">Оновити данні</button>
+                        </form>
+                        <div id="resultDivError"></div>
+                        <div id="resultDivSuccess" style="color: #0f5132"></div>
+
+                        <br><h5>Змінити пароль</h5>
+                        <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}" method="post">
+                            <table class="profile-edit">
+                                <tr>
+                                    <td>
+                                        <label class="label-profile" for="old-password">Пароль:</label>
+                                    </td>
+                                    <td>
+                                        <input type="password" class="input" id="old-password" name="password">
+                                        <div id="password-edit-error" style="color: red"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Новий пароль:</label>
+                                    </td>
+                                    <td>
+                                        <input type="password" class="input" th:attr="id='psw'" name="newPassword">
+                                        <span id="toggleBtn"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <!--                                            <label for="newPassword">Новий пароль:</label>-->
+                                    </td>
+                                    <td>
+                                        <div class="validation">
+                                            <ul>
+                                                <li id="lover">At least one lowercase character</li>
+                                                <li id="upper">At least one uppercase character</li>
+                                                <li id="number">At least one number</li>
+                                                <li id="special">At least one special character</li>
+                                                <li id="length">At least 8 character</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="password-edit-success" style="color: darkgreen"></div>
+                            <br>
+                            <button type="submit">Змінити пароль</button>
+                        </form>
+                        <br>
+                        <h5>Видалити профіль</h5>
+                        <p style="font-size: 14px;"><strong><span style="color: #e03e2d; font-size: 16px;">Увага, цю дію неможливо буде відмінити!</span> </strong>
+                            Якщо Ви видалите свій аккаунт, також буде видалена вся інформація, пов'язана з вашим профілем і відновити її не буде можливості.</p>
+                        <form class="inline-container">
+                            <span style="padding-top: 10px;">Підтвердити видалення&nbsp;&nbsp;</span>
+                            <input type="checkbox" class="checkbox" style="margin-right: 230px;">
+                            <button type="button">Видалити профіль</button>
+                        </form>
+                    </main>
+                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
+                        <h5>Змінити аватар</h5><br>
+                        <div class="demo-wrap upload-demo">
+                            <div class="actions">
+                                <a class="btn file-btn">
+                                    <span>Виберіть фото</span>
+                                    <input type="file" id="upload" accept="image/*">
+                                </a>
+                                <button id="crop">Готово</button>
+                            </div>
+                            <div id="upload-demo-wrap">
+                                <div id="upload-demo"></div>
+                            </div>
+                            <br><br>
+                        </div>
+                        <!--                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>-->
+
+                    </div>
+                </div>
+                <label class="nav" for="about">
+                    <span class="profile_edit"> Редагувати профіль</span>
+                </label>
+            </div>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+
+<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+<script type="text/javascript" th:src="@{/js/cropAndUploadAvatart.js}"></script>
+<script type="text/javascript" th:src="@{/js/userInfoEdit.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script>
+</body>
+</html>

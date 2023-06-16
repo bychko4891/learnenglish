@@ -1,0 +1,159 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<div class="wrapper">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
+    </div>
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <h1>New text page</h1>
+            <!--      <form method="post" th:action="@{/admin-page/app-text-page/create-app-text-page}" id="myForm">-->
+            <form method="post" th:action="@{/admin-page/text-of-app-page/{id}/edit (id=${textOfAppPage.id})}"
+                  th:object="${textOfAppPage}" id="myForm1">
+                <label for="name">Name text:</label>
+                <input type="text" id="name" name="name" th:value="${textOfAppPage.name}" required>
+                <!--                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>-->
+
+
+                <!--        <select id="entitySelect" name="entityId">-->
+                <!--          <option value="">Оберіть сторінку для текста</option>-->
+                <!--          <option th:each="page : ${pageList}" th:value="${page.id}" th:text="${page.namePage}"></option>-->
+                <!--        </select>-->
+                <ul>
+                    <li th:each="pageApplication : ${pageList}">
+                        <label>
+                            <input name="pageApplicationId" type="checkbox" th:value="${pageApplication.id}"
+                                   th:data-page-id="${pageApplication.id}">
+                            <span th:text="${pageApplication.namePage}"></span>
+                        </label>
+                    </li>
+                </ul>
+                <hr>
+                <br>
+
+                <label for="lessonInfo">Text page:</label>
+                <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
+                <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
+                <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
+                <button type="submit">Save</button>
+            </form>
+            <script>
+                $(document).ready(function () {
+                    tinymce.init({
+                        selector: 'textarea#lessonInfo',
+                        height: 500,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                        ],
+                        toolbar:
+                            'undo redo | formatselect |' +
+                            ' bold italic underline forecolor | link image media table mergetags |' +
+                            ' addcomment showcomments | spellcheckdialog code typography |' +
+                            ' align lineheight | checklist numlist bullist indent outdent |' +
+                            ' emoticons charmap | removeformat'
+                        ,
+                        content_css: [
+                            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                            '//www.tiny.cloud/css/codepen.min.css'
+                        ],
+                        api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
+                        menubar: true,
+                        statusbar: true,
+                        branding: true
+                    });
+                    $('#myForm1').submit(function (event) {
+                        event.preventDefault();
+                        var csrfToken = $("meta[name='_csrf']").attr("content");
+                        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                        var textOfAppPage = {
+                            id: $('#myForm1 input[name="id"]').val(),
+                            name: $('#myForm1 input[name="name"]').val(),
+                            text: $('#myForm1 textarea[name="text"]').val()
+                        };
+
+
+                        var data = {
+                            textOfAppPage: textOfAppPage,
+                            pageApplicationId: $('#myForm1 input[name="pageApplicationId"]:checked').val()
+                        };
+                        console.log(data);
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: $(this).attr('method'),
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(csrfHeader, csrfToken);
+                            },
+                            success: function (response) {
+                                $('#responseDiv').text(response);
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                // Обробка помилки
+                            }
+                        });
+                    });
+                    // $('#myForm1').submit(function (event) {
+                    //     event.preventDefault();
+                    //     var csrfToken = $("meta[name='_csrf']").attr("content");
+                    //     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                    //     var textOfAppPage = {
+                    //         id: $('#myForm1 input[name="id"]').val(),
+                    //         name: $('#myForm1 input[name="name"]').val(),
+                    //         text: $('#myForm1 textarea[name="text"]').val()
+                    //     };
+                    //
+                    //     var selectedPageApplications = [];
+                    //     $('#myForm1 input[name="pageApplication"]:checked').each(function () {
+                    //         var pageId = $(this).data('page-id');
+                    //         var pageName = $(this).siblings('span').text();
+                    //         var pageAddress = ""; // Заповнити адресу, якщо є потреба
+                    //
+                    //         var selectedPageApplication = {
+                    //             id: pageId,
+                    //             namePage: pageName,
+                    //             address: pageAddress
+                    //         };
+                    //         console.log(selectedPageApplication);
+                    //         selectedPageApplications.push(selectedPageApplication);
+                    //     });
+                    //
+                    //     var data = {
+                    //         textOfAppPage: textOfAppPage,
+                    //         pageApplications: selectedPageApplications
+                    //     };
+                    //     console.log(data);
+                    //     $.ajax({
+                    //         url: $(this).attr('action'),
+                    //         type: $(this).attr('method'),
+                    //         contentType: "application/json",
+                    //         data: JSON.stringify(data),
+                    //         beforeSend: function (xhr) {
+                    //             xhr.setRequestHeader(csrfHeader, csrfToken);
+                    //         },
+                    //         success: function (response) {
+                    //             // Обробка успішної відповіді
+                    //         },
+                    //         error: function (xhr, textStatus, errorThrown) {
+                    //             // Обробка помилки
+                    //         }
+                    //     });
+                    // });
+                });
+
+            </script>
+            <div id="responseDiv"></div>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+<script type="text/javascript" th:src="@{/js/tinyMceEditor.js}"></script>
+</body>
+</html>
