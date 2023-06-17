@@ -6,8 +6,10 @@ package com.example.learnenglish.controllers;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 import com.example.learnenglish.dto.DtoTextOfAppPage;
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.responsestatus.ResponseMessage;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.TextOfAppPageService;
 import com.example.learnenglish.service.UserService;
@@ -32,20 +34,19 @@ public class AdminRestController {
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
-    public ResponseEntity<String> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
-                                                    Principal principal) {
+    public ResponseEntity<ResponseMessage> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
+                                                             Principal principal) {
         if (principal != null) {
-textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage);
-            return ResponseEntity.ok("Ok");
+//            textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage);
+            return ResponseEntity.ok(textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage));
         }
-        return ResponseEntity.ok("No");
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/lessons/lesson/{id}/edit")
     public ResponseEntity<String> lessonsEdit(@PathVariable("id") Long id,
                                               @RequestBody Lesson lesson,
                                               Principal principal) {
-
 //        model.addAttribute("lesson", lesson);
         if (principal != null) {
             id = lesson.getId();

@@ -9,7 +9,7 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseStatus;
+import com.example.learnenglish.responsestatus.ResponseMessage;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,6 @@ public class UserRestController {
             userService.setUserTextInLesson(userId, isChecked);
             session.setAttribute("userTextInLesson", isChecked);
         }
-        System.out.println(isChecked);
     }
 
     @PostMapping("/registration")
@@ -56,12 +55,12 @@ public class UserRestController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<ResponseStatus> forgotPassword(@RequestParam("email") String email,
-                                                         @RequestParam("captcha") int captchaSum) {
+    public ResponseEntity<ResponseMessage> forgotPassword(@RequestParam("email") String email,
+                                                          @RequestParam("captcha") int captchaSum) {
         int captchaSumSession = (int) session.getAttribute("captchaSum");
         if (captchaSum == captchaSumSession) {
             return ResponseEntity.ok(userService.generatePassword(email));
-        } else return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CAPTCHA));
+        } else return ResponseEntity.ok(new ResponseMessage(Message.ERROR_CAPTCHA));
     }
 
     @PostMapping("/user/{userId}/edit")
@@ -85,10 +84,10 @@ public class UserRestController {
 
     @PostMapping("/user/{userId}/update-password")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseStatus> setUserPassword(@PathVariable("userId") Long userId,
-                                                          @RequestParam(value = "password") String oldPassword,
-                                                          @RequestParam(value = "newPassword") String newPassword,
-                                                          Principal principal) {
+    public ResponseEntity<ResponseMessage> setUserPassword(@PathVariable("userId") Long userId,
+                                                           @RequestParam(value = "password") String oldPassword,
+                                                           @RequestParam(value = "newPassword") String newPassword,
+                                                           Principal principal) {
         if (principal != null) {
             userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));

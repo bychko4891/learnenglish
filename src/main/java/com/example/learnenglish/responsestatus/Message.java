@@ -20,7 +20,9 @@ public enum Message {
     ERROR_CREATELESSON("Success", "Виникла помилка в створенні заняття"),
     SUCCESS_FORGOT_PASSWORD("Success", "Операція успішна! Слідуйте вказівкам в листі, яке надійшло на email."),
     ERROR_FORGOT_PASSWORD("Error", "Такий email не зареєстрований в додатку."),
-    ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел");
+    ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел"),
+    SUCCESS_SAVE_TEXT_OF_PAGE("Success", "Текст успішно збережено"),
+    ERROR_SAVE_TEXT_OF_PAGE("Error", "Текст на обраній сторінці вже існує");
 
     private String status;
     private String message;

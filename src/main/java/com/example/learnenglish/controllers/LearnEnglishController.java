@@ -22,13 +22,13 @@ import java.security.Principal;
 
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
-public class learnEnglishController {
+public class LearnEnglishController {
     private final HttpSession session;
     private final UserService userService;
     private final LessonService lessonService;
     private final PageApplicationService pageApplicationService;
 
-    public learnEnglishController(HttpSession session,
+    public LearnEnglishController(HttpSession session,
                                   UserService userService,
                                   LessonService lessonService, PageApplicationService pageApplicationService) {
         this.session = session;
@@ -73,6 +73,12 @@ public class learnEnglishController {
                              Lesson lesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
+            PageApplication pageApplication = pageApplicationService.getPageApplication(4l);
+            if(pageApplication.getTextOfAppPage() != null){
+                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+            } else {
+                model.addAttribute("pageText", "No text in this page");
+            }
             lesson = lessonService.findById(lessonId);
             session.setAttribute("lessonId", lesson.getId());
             model.addAttribute("lessonId", lesson.getId());

@@ -7,11 +7,11 @@ package com.example.learnenglish.responsestatus;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-public class ResponseStatus {
+public class ResponseMessage {
     private String status;
     private String message;
 
-    public ResponseStatus(Message message) {
+    public ResponseMessage(Message message) {
         this.status = message.getStatus();
         this.message = message.getMessage();
     }

@@ -27,7 +27,7 @@ public class TranslationPairValidationAndSaveService {
         this.userService = userService;
     }
 
-    public ResponseStatus validationTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser ) {
+    public ResponseMessage validationTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser ) {
         if(roleUser.equals("[ROLE_ADMIN]")) {
             String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
             String ukrTextWoman = StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextWoman());
@@ -55,10 +55,10 @@ public class TranslationPairValidationAndSaveService {
             return validationTranslationPairUser(dtoTranslationPair);
         }
         System.out.println("Error validationTranslationPair");
-        return new ResponseStatus(Message.ERRORVALIDATETEXT);
+        return new ResponseMessage(Message.ERRORVALIDATETEXT);
     }
 
-    private ResponseStatus validationTranslationPairUser(DtoTranslationPair dtoTranslationPair) {
+    private ResponseMessage validationTranslationPairUser(DtoTranslationPair dtoTranslationPair) {
         String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
         String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
         ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
@@ -76,11 +76,11 @@ public class TranslationPairValidationAndSaveService {
                 return convertToTranslationPairEndSave(dtoTranslationPair);
         }
         System.out.println("Error validationTranslationPair");
-        return new ResponseStatus(Message.ERRORVALIDATETEXT);
+        return new ResponseMessage(Message.ERRORVALIDATETEXT);
     }
 
 
-    private ResponseStatus convertToTranslationPairEndSave(DtoTranslationPair dtoTranslationPair) {
+    private ResponseMessage convertToTranslationPairEndSave(DtoTranslationPair dtoTranslationPair) {
         TranslationPair pair = new TranslationPair();
         pair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
         pair.setUkrText(dtoTranslationPair.getUkrText());
@@ -90,6 +90,6 @@ public class TranslationPairValidationAndSaveService {
         pair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
         pair.setUser(userService.findById(dtoTranslationPair.getUserId()));
         translationPairService.saveTranslationPair(pair);
-        return new ResponseStatus(Message.SUCCESSADDBASE);
+        return new ResponseMessage(Message.SUCCESSADDBASE);
     }
 }

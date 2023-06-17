@@ -7,7 +7,9 @@ package com.example.learnenglish.controllers;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.service.PageApplicationService;
 import com.example.learnenglish.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +20,22 @@ import java.security.Principal;
 //@RequestMapping(method = RequestMethod.GET)
 public class UserController {
     private final UserService userService;
+    private final PageApplicationService pageApplicationService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PageApplicationService pageApplicationService) {
         this.userService = userService;
+        this.pageApplicationService = pageApplicationService;
     }
 
     @GetMapping("/registration-page")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("title", "About the app Learn English");
+        PageApplication pageApplication = pageApplicationService.getPageApplication(2l);
+        if(pageApplication.getTextOfAppPage() != null){
+            model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+        } else {
+            model.addAttribute("pageText", "No text in this page");
+        }
         return "registration";
     }
 
@@ -34,6 +45,12 @@ public class UserController {
                         @RequestParam(value = "logout", required = false) String logout,
                         Model model) {
         model.addAttribute("title", "About the app Learn English");
+        PageApplication pageApplication = pageApplicationService.getPageApplication(1l);
+        if(pageApplication.getTextOfAppPage() != null){
+            model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+        } else {
+            model.addAttribute("pageText", "No text in this page");
+        }
         if (error != null) {
             model.addAttribute("error", "Не вірний логін, або пароль!");
         } else if (logout != null) {

@@ -13,13 +13,18 @@ public class PageApplication {
     private String namePage;
     @Column
     private String address;
+//    @OneToOne(mappedBy = "pageApplication", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @OneToOne(mappedBy = "pageApplication")
     private TextOfAppPage textOfAppPage;
 
     public PageApplication() {
     }
-
     public PageApplication(String namePage) {
+        this.namePage = namePage;
+    }
+
+    public PageApplication(Long id, String namePage) {
+        this.id = id;
         this.namePage = namePage;
     }
 

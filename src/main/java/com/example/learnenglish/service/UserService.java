@@ -10,7 +10,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseStatus;
+import com.example.learnenglish.responsestatus.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -97,7 +97,7 @@ public class UserService {
 //        userRepository.save(user);
     }
 
-    public ResponseStatus updateUserPassword(Long userId, String oldPassword, String newPassword) {
+    public ResponseMessage updateUserPassword(Long userId, String oldPassword, String newPassword) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -105,8 +105,8 @@ public class UserService {
             if (passwordEncoder.matches(oldPassword, encodedPassword)) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
-                return new ResponseStatus(Message.SUCCESS_UPDATEPASSWORD);
-            } else return new ResponseStatus(Message.ERROR_UPDATEPASSWORD);
+                return new ResponseMessage(Message.SUCCESS_UPDATEPASSWORD);
+            } else return new ResponseMessage(Message.ERROR_UPDATEPASSWORD);
         } else {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
@@ -144,7 +144,7 @@ public class UserService {
 
     }
 
-    public ResponseStatus generatePassword(String email) {
+    public ResponseMessage generatePassword(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             String rawPassword = generateRandomPassword();
@@ -154,9 +154,9 @@ public class UserService {
             String mailText = String.format("Hello, %s \n" + "New password: %s \n" + "to enter the application cabinet %s/login ",
                     user.getFirstName(), rawPassword, host);
             mailSender.sendSimpleMessage(user.getEmail(), "New password fo login", mailText);
-            return new ResponseStatus(Message.SUCCESS_FORGOT_PASSWORD);
+            return new ResponseMessage(Message.SUCCESS_FORGOT_PASSWORD);
         } else
-            return new ResponseStatus(Message.ERROR_FORGOT_PASSWORD);
+            return new ResponseMessage(Message.ERROR_FORGOT_PASSWORD);
     }
 
 

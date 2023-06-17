@@ -84,12 +84,15 @@ public class AdminController {
     @GetMapping("/text-of-app-page/{id}/new-text-of-app-page-in-editor")
     public String newTextOfAppPage(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
+            List<PageApplication> pageApplicationList = pageApplicationService.pageApplicationList();
 //            lesson = lessonService.findById(id);
             TextOfAppPage textOfAppPage = new TextOfAppPage();
             textOfAppPage.setId(id);
             textOfAppPage.setName("Enter name");
             textOfAppPage.setText("Enter text");
+            textOfAppPage.setPageApplication(new PageApplication(0l,"Сторінка відсутня"));
             model.addAttribute("textOfAppPage", textOfAppPage);
+            model.addAttribute("pageList", pageApplicationList);
             return "adminTextOfAppPageInEditor";
         }
         return "redirect:/login";
@@ -102,6 +105,7 @@ public class AdminController {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
             List<PageApplication> pageApplicationList = pageApplicationService.pageApplicationList();
+            if(textOfAppPage.getPageApplication() == null) textOfAppPage.setPageApplication(new PageApplication(0l,"Сторінка відсутня"));
             model.addAttribute("textOfAppPage", textOfAppPage);
             model.addAttribute("pageList", pageApplicationList);
             return "adminTextOfAppPageInEditor";

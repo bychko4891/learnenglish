@@ -8,9 +8,14 @@ package com.example.learnenglish.repository;
  */
 
 import com.example.learnenglish.model.TextOfAppPage;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TextOfAppPageRepository extends CrudRepository<TextOfAppPage, Long> {
+    @Query("SELECT t FROM TextOfAppPage t WHERE t.pageApplication.id = :pageApplicationId")
+    Optional<TextOfAppPage> searchTextOfAppPageByPageApplicationId(Long pageApplicationId);
 }

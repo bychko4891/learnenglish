@@ -22,7 +22,7 @@ public class TextOfAppPage {
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "page_application_id")
     private PageApplication pageApplication;
 

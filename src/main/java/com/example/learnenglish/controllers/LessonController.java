@@ -11,7 +11,7 @@ import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseStatus;
+import com.example.learnenglish.responsestatus.ResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
 import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -113,7 +112,7 @@ public class LessonController {
             System.out.println(roleUser);
             return ResponseEntity.ok(validationTranslationPair.validationTranslationPair(dtoTranslationPair, roleUser));
         }
-        return ResponseEntity.ok(new ResponseStatus(Message.ERRORLOGIN));
+        return ResponseEntity.ok(new ResponseMessage(Message.ERRORLOGIN));
     }
 
 }
