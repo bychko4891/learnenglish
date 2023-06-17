@@ -16,8 +16,6 @@
     <main class="section main_content ">
         <div class="container layout_page">
             <h1>New text page</h1>
-            <!--      <form method="post" th:action="@{/admin-page/app-text-page/create-app-text-page}" id="myForm">-->
-            <!--            <form method="post" th:action="@{/admin-page/text-of-app-page/{id}/edit (id=${textOfAppPage.id})}"-->
             <form id="textOfAppPage">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${textOfAppPage.name}" required>
