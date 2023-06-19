@@ -1,3 +1,4 @@
+
 $('select#entitySelect').on('change', function () {
     var selectedOption = $('option:selected', this);
     $('input[name="address"]').val(selectedOption.attr('data-page-address'));
@@ -38,7 +39,8 @@ $(document).ready(function () {
         var textOfAppPage = {
             id: $('#textOfAppPage input[name="id"]').val(),
             name: $('#textOfAppPage input[name="name"]').val(),
-            text: $('#textOfAppPage textarea[name="text"]').val()
+            text: $('#textOfAppPage textarea[name="text"]').val(),
+            pageApplication: $('#textOfAppPage input[name="pageApplication"]').val()
         };
         var selectedPageApplication = {
             id: $('#entitySelect').val(),
@@ -60,14 +62,16 @@ $(document).ready(function () {
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
-                console.log(result);
                 var status = result.status;
-                console.log(status);
                 if (status == "Success") {
+                    showSuccessToast(result.message)
+                    // showAlert(message, "success");
                     // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
                     resultDivSuccess.text(result.message);
                     setTimeout(hideMessageSuccess, 5000);
                 } else {
+                    showErrorToast(result.message)
+                    // showAlert(message, "error");
                     resultDivError.text(result.message);
                     setTimeout(hideMessageError, 5000);
                 }

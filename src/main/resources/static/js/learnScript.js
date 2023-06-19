@@ -8,7 +8,7 @@ $(document).ready(function () {
     // console.log(lessonId + ' lessonId  ready');
 });
 
-$(window).on('scroll', function() {
+$(window).on('scroll', function () {
     var videoContainer = $('#video-container');
     var videoTop = videoContainer.offset().top;
     var videoBottom = videoTop + videoContainer.outerHeight();
@@ -18,9 +18,9 @@ $(window).on('scroll', function() {
 });
 
 
-// скрипт який підмію img на iframe на сторінці lesson
-$(document).ready(function() {
-    $('.about-radio').change(function() {
+// скрипт який підмінює img на iframe на сторінці lesson
+$(document).ready(function () {
+    $('.about-radio').change(function () {
         var tabId = $(this).attr('id');
 
         if (tabId === 'learnInfo') {
@@ -115,9 +115,6 @@ nextText.addEventListener('click', sendTooServer);
 
 
 function getData() {
-    var resultDivSuccess = $('#result-success');
-    var resultDivError = $('#result-error');
-    // console.log(fragment);
     if (fragment === "Fragment 4") {
         var sentence = document.getElementById("sentence");
         var wordSequence = sentence.innerText.trim(); // Отримати текстове значення речення
@@ -138,33 +135,13 @@ function getData() {
             checkButton.classList.add('disabled');
             checkButton.setAttribute('disabled', 'disabled');
             $('#result').html(result);
-            // console.log(result);
-
         },
         error: function () {
-            let shel = {};
-            alert(Boolean(shel))
-            // Поміщаємо повідомлення про помилку в div-елемент
-            resultDivError.text('Помилка запиту на сервер');
+            // let shel = {};
+            // alert(Boolean(shel))
+            showErrorToast('Помилка запиту на сервер');
         }
     });
-    // } else {
-    //   // якщо не всі поля заповнені, не виконуємо запит на сервер і виводимо помилку
-    //   alert('Будь ласка, заповніть поле вводу');
-    //   return;
-    // }
-    // }
-
-    function hideMessageSuccess() {
-        resultDivSuccess.text('');
-
-    }
-
-    function hideMessageError() {
-
-        resultDivError.text('');
-    }
-
 }
 
 // ************   checkbox   *************** //
@@ -173,28 +150,27 @@ $(document).ready(function () {
         // Get CSRF token from the meta tag-->
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
         var isChecked = $(this).prop('checked');
-        // console.log(isChecked);
         var userId = $(this).data('user-id');
-        var url = '/user/' + userId + '/mytext';
-        // Відправити дані на сервер
+        var url = '/user/' + userId + '/user-text-check';
         $.ajax({
             url: url,
             type: 'POST',
-            data: {userActive: isChecked },
+            data: {userActive: isChecked},
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
-            success: function (response) {
-                var nextButton = document.getElementById('nextButton');
-                sendTooServer();
-                nextButton.classList.remove('disabled');
-                nextButton.removeAttribute('disabled');
-
-                // Отримано успішну відповідь від сервера
-                // Виконати необхідні дії
-                console.log('Запит успішно відправлено');
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                    var nextButton = document.getElementById('nextButton');
+                    sendTooServer();
+                    nextButton.classList.remove('disabled');
+                    nextButton.removeAttribute('disabled');
+                } else {
+                    showErrorToast(result.message);
+                }
             },
             error: function () {
                 // Виникла помилка при відправленні запиту
@@ -206,17 +182,13 @@ $(document).ready(function () {
 
 // ************   Додавання тексту в базу   *************** //
 $(document).ready(function () {
-    var resultDivSuccess = $('#result-success');
-    var resultDivError = $('#result-error');
     $('#add-pair').submit(function (event) {
         console.log('Yes');
         event.preventDefault();
-        // Get CSRF token from the meta tag-->
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var url = '/translation-pair/add';
         var formData = $(this).serializeArray();
-        console.log(formData);
         if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
             var ukrTextTemp = $('textarea[name="ukrText"]').val();
             var engTextTemp = $('textarea[name="engText"]').val();
@@ -228,8 +200,6 @@ $(document).ready(function () {
             $(formData).each(function (index, obj) {
                 jsonFormData[obj.name] = obj.value;
             });
-            console.log(jsonFormData);
-
             $.ajax({
                 url: url,
                 type: "POST",
@@ -246,12 +216,9 @@ $(document).ready(function () {
                         $('textarea[name="ukrText"]').val('');
                         $('textarea[name="ukrTextWoman"]').val('');
                         $('textarea[name="engText"]').val('');
-                        // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        resultDivSuccess.text(result.message);
-                        setTimeout(hideMessageSuccess, 5000);
+                        showSuccessToast(result.message);
                     } else {
-                        resultDivError.text(result.message);
-                        setTimeout(hideMessageError, 10000);
+                        showErrorToast(result.message);
                     }
                 },
                 error: function (xhr) {
@@ -260,11 +227,9 @@ $(document).ready(function () {
                     if (response && Array.isArray(response)) {
                         // Якщо отримано список помилок
                         var errorMessage = response[0]; // Приклад отримання першого повідомлення про помилку
-                        resultDivError.text(errorMessage);
-                        setTimeout(hideMessageError, 10000);
+                        showErrorToast(errorMessage);
                     } else {
-                        // Якщо отримано іншу помилку
-                        resultDivError.text("Помилка сервера");
+                        showErrorToast("Помилка сервера");
                     }
                 }
             });
@@ -274,16 +239,6 @@ $(document).ready(function () {
             return;
         }
     });
-
-    function hideMessageSuccess() {
-        resultDivSuccess.text('');
-
-    }
-
-    function hideMessageError() {
-
-        resultDivError.text('');
-    }
 });
 
 //********  авто висота вікна для вводу тексту *************** //

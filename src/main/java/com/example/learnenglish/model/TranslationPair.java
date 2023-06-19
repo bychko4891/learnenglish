@@ -38,8 +38,11 @@ public class TranslationPair {
 
     @Column(name = "audio_path")
     private String audioPath;
-    @ManyToOne
 
+    @Column(name = "edit_mode")
+    private boolean editMode;
+
+    @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
     @ManyToOne(cascade = CascadeType.REFRESH)

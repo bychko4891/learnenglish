@@ -8,7 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoTranslationPair;
-import com.example.learnenglish.responsestatus.*;
+import com.example.learnenglish.responsemessage.*;
 import com.example.learnenglish.model.TranslationPair;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -87,6 +87,7 @@ public class TranslationPairValidationAndSaveService {
         pair.setUkrTextWoman(dtoTranslationPair.getUkrTextWoman());
         pair.setEngText(dtoTranslationPair.getEngText());
         pair.setAudioPath("path/no");
+        pair.setEditMode(false);
         pair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
         pair.setUser(userService.findById(dtoTranslationPair.getUserId()));
         translationPairService.saveTranslationPair(pair);

@@ -1,4 +1,4 @@
-package com.example.learnenglish.responsestatus;
+package com.example.learnenglish.responsemessage;
 
 /**
  * @author: Anatolii Bychko
@@ -22,7 +22,8 @@ public enum Message {
     ERROR_FORGOT_PASSWORD("Error", "Такий email не зареєстрований в додатку."),
     ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел"),
     SUCCESS_SAVE_TEXT_OF_PAGE("Success", "Текст успішно збережено"),
-    ERROR_SAVE_TEXT_OF_PAGE("Error", "Текст на обраній сторінці вже існує");
+    ERROR_SAVE_TEXT_OF_PAGE("Error", "На обраній сторінці текст вже існує"),
+    SUCCESS_CHECK_USER_TEXT("Success", "Парамтр успішно застосовано");
 
     private String status;
     private String message;

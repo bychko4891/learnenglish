@@ -28,6 +28,35 @@ a:hover {
     color: #017311;
 }
 
+/* Alert message */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+.toast {
+    position: relative;
+    min-width: 300px;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+.toast.show {
+    display: block;
+}
+.toast-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+.toast-error {
+    background-color: #f2dede;
+    color: #a94442;
+}
+/* **** Alert message end **** */
+
 .layout_page {
     /*display: block;*/
     max-width: 100%;

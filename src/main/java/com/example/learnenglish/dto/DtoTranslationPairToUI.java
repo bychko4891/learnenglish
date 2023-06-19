@@ -13,21 +13,30 @@ import java.util.List;
 
 @Component
 public class DtoTranslationPairToUI {
+    private Long id;
     private String ukrText;
     private String engText;
     private String fragment;
+    private boolean editMode;
+    private List<String> engTextList;
 
-    public List<String> getEngTextList() {
-        return engTextList;
+    public DtoTranslationPairToUI() {
     }
 
     public void setEngTextList(List<String> engTextList) {
         this.engTextList = engTextList;
     }
 
-    private List<String> engTextList;
+    public List<String> getEngTextList() {
+        return engTextList;
+    }
 
-    public DtoTranslationPairToUI() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFragment() {
@@ -54,11 +63,11 @@ public class DtoTranslationPairToUI {
         this.engText = engText;
     }
 
-    @Override
-    public String toString() {
-        return "DtoTranslationPairToUI{" +
-                "ukrText='" + ukrText + '\'' +
-                ", engText='" + engText + '\'' +
-                '}';
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
     }
 }

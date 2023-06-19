@@ -135,11 +135,17 @@ public class AdminController {
                                        Principal principal,
                                        Model model) {
         if (principal != null) {
+            if(page < 0) page = 0;
             Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
+            if(lessonPage.getTotalPages() == 0){
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", lessonPage.getTotalPages());
+            }
             model.addAttribute("message", message);
             model.addAttribute("lessons", lessonPage.getContent());
             model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", lessonPage.getTotalPages());
+
             return "adminLessons";
         }
         return "redirect:/login";
@@ -193,7 +199,7 @@ public class AdminController {
                                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                                 @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         if (principal != null) {
-            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsToAdminPage(page, size, 1l);
+            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsPage(page, size, 1l);
             model.addAttribute("translationPairs", translationPairsPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", translationPairsPage.getTotalPages());

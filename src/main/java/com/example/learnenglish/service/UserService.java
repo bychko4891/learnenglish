@@ -9,8 +9,8 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
-import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -179,12 +179,13 @@ public class UserService {
         return true;
     }
 
-    public void setUserTextInLesson(Long userId, boolean isChecked) {
+    public ResponseMessage setUserTextInLesson(Long userId, boolean isChecked) {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             user.setUserTextInLesson(isChecked);
             userRepository.save(user);
+            return new ResponseMessage(Message.SUCCESS_CHECK_USER_TEXT);
         }else throw new IllegalArgumentException("User with id " + userId + " not found");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.learnenglish.responsestatus;
+package com.example.learnenglish.responsemessage;
 
 /**
  * @author: Anatolii Bychko

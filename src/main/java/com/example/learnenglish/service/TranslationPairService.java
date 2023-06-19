@@ -4,14 +4,12 @@ package com.example.learnenglish.service;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
-import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.TranslationPairRepository;
-import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,6 +66,7 @@ public class TranslationPairService {
         TranslationPair translationPair = pairForLesson(lessonId, userId, translationPairRandomId);
         if (translationPair != null) {
             DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
+            dtoTranslationPairToUI.setId(translationPair.getId());
             dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
             dtoTranslationPairToUI.setEngText(translationPair.getEngText());
             int generateNumber = new Random().nextInt(1, 5);
@@ -96,6 +95,7 @@ public class TranslationPairService {
         TranslationPair translationPair = pairForLesson(lessonId, 1l, translationPairRandomId);
         if (translationPair != null) {
             DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
+            dtoTranslationPairToUI.setId(translationPair.getId());
             if (userGender.equals("[FEMALE]")) {
                 dtoTranslationPairToUI.setUkrText(translationPair.getUkrTextWoman());
             } else {
@@ -116,7 +116,7 @@ public class TranslationPairService {
         return translationPairIsNull();
     }
 
-    public Page<TranslationPair> getTranslationPairsToAdminPage(int page, int size, Long userId) {
+    public Page<TranslationPair> getTranslationPairsPage(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
         return translationPairRepository.findAll(pageable, userId);
     }

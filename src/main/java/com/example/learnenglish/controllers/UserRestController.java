@@ -4,12 +4,12 @@ package com.example.learnenglish.controllers;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +29,15 @@ public class UserRestController {
 
     private final HttpSession session;
 
-    @PostMapping("/user/{id}/mytext")
-    public void mytext(@PathVariable("id") Long userId,
-                       @RequestParam("userActive") boolean isChecked,
-                       Principal principal) {
+    @PostMapping("/user/{id}/user-text-check")
+    public ResponseEntity<ResponseMessage> mytext(@PathVariable("id") Long userId,
+                                                  @RequestParam("userActive") boolean isChecked,
+                                                  Principal principal) {
         if (principal != null) {
-            userService.setUserTextInLesson(userId, isChecked);
             session.setAttribute("userTextInLesson", isChecked);
+            return ResponseEntity.ok(userService.setUserTextInLesson(userId, isChecked));
         }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/registration")

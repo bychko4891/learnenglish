@@ -1,0 +1,135 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
+<style>
+    .hidden_content{
+        display: none;
+    }
+</style>
+<body>
+<div class="wrapper">
+  <header th:replace="~{fragments/header :: header}"></header>
+  <div class="sidebar">
+    <div th:replace="~{fragments/menu :: menu}"></div>
+  </div>
+  <main class="section main_content ">
+    <div class="container layout_page">
+      <div class="page-table">
+        <h3>Юзери</h3>
+          <table style="width: 90%;">
+              <thead>
+              <tr>
+                  <th>Текст українською</th>
+                  <th>Текст англійською</th>
+                  <th>Actions</th> <!-- Додано стовпець для кнопок -->
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="translationPair : ${translationPairs}">
+                  <td style="display: none" th:text="translationPair.id"><span th:text="${translationPair.id}"></span></td>
+                  <td>
+                      <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
+                      <span  th:text="${translationPair.ukrText}"></span>
+                      <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.ukrText}" />
+                  </td>
+                  <td>
+                      <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
+                      <span  th:text="${translationPair.engText}"></span>
+                      <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.engText}" />
+                  </td>
+                  <td>
+                      <!-- Кнопка редагування, яка перемикає режим редагування -->
+                      <button  onclick="toggleEditMode(this)">Редагувати</button>
+                      <!-- Кнопка збереження, яка зберігає зміни та відправляє на сервер -->
+                      <button class="hidden_content" onclick="saveChanges(this)">Зберегти</button>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+
+          <script>
+                  function toggleEditMode(button) {
+                  var row = button.parentNode.parentNode;
+                  var spans = row.getElementsByTagName('span');
+                  var inputs = row.getElementsByTagName('input');
+
+                  // Перемикання режиму редагування для полів
+                  for (var i = 0; i < spans.length; i++) {
+                  spans[i].classList.toggle('hidden_content');
+              }
+                  for (var j = 0; j < inputs.length; j++) {
+                  inputs[j].classList.toggle('hidden_content');
+              }
+
+                  // Зміна надпису кнопки
+                  button.innerHTML = (button.innerHTML === 'Редагувати') ? 'Відмінити' : 'Редагувати';
+
+                  // Переключення стану кнопки "Зберегти"
+                  var saveButton = button.parentNode.querySelector('.hidden_content');
+                  saveButton.classList.toggle('hidden_content');
+              }
+
+                  function saveChanges(button) {
+                  var row = button.parentNode.parentNode;
+                  var inputs = row.getElementsByTagName('input');
+
+                  // Отримання оновлених даних з полів
+                  var updatedData = {
+                  ukrText: inputs[0].value,
+                  engText: inputs[1].value
+              };
+
+                  // Відправка оновлених даних на сервер
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/translation-pair/check-edit', true);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.onreadystatechange = function () {
+                  if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                  // Оновлення рядка таблиці з отриманими з сервера даними
+                  var responseData = JSON.parse(xhr.responseText);
+                  if (responseData) {
+                  // Оновлення значень span з отриманими з сервера даними
+                  spans[0].textContent = responseData.ukrText;
+                  spans[1].textContent = responseData.engText;
+
+                  // Перемикання режиму редагування для полів
+                  for (var i = 0; i < spans.length; i++) {
+                  spans[i].classList.toggle('hidden_content');
+              }
+                  for (var j = 0; j < inputs.length; j++) {
+                  inputs[j].classList.toggle('hidden_content');
+              }
+
+                  // Переключення стану кнопок
+                  button.innerHTML = 'Редагувати';
+                  button.classList.toggle('hidden_content');
+                  saveButton.classList.toggle('hidden_content');
+              }
+              } else {
+                  // Обробка помилки
+                  console.log('Помилка при збереженні змін');
+              }
+              };
+                  xhr.send(JSON.stringify(updatedData));
+              }
+
+          </script>
+
+      </div>
+<!--       відображення пагінації-->
+      <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} - 1), id=${session.userId})}">Previous</a>
+        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/user/{id}/translation-pairs(page=${pageNumber}, id=${session.userId})}" th:text="${pageNumber + 1}"></a>
+                </span>
+        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} + 1), id=${session.userId})}">Next</a>
+      </div>
+    </div>
+
+
+  </main>
+  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+</body>
+</html>

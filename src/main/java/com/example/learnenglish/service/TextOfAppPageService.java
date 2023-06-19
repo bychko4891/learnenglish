@@ -11,8 +11,8 @@ import com.example.learnenglish.dto.DtoTextOfAppPage;
 import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.TextOfAppPageRepository;
-import com.example.learnenglish.responsestatus.Message;
-import com.example.learnenglish.responsestatus.ResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,28 +29,30 @@ public class TextOfAppPageService {
 
     public ResponseMessage textOfAppPageEdit(DtoTextOfAppPage dtoTextOfAppPage) {
         Optional<TextOfAppPage> textOfAppPageOptional = textOfAppPageRepository.findById(dtoTextOfAppPage.getTextOfAppPage().getId());
+        TextOfAppPage textOfAppPage = dtoTextOfAppPage.getTextOfAppPage();
+        PageApplication pageApplication = dtoTextOfAppPage.getSelectedPageApplication();
         if (textOfAppPageOptional.isPresent()) {
-            TextOfAppPage textOfAppPage = dtoTextOfAppPage.getTextOfAppPage();
-            PageApplication pageApplication = dtoTextOfAppPage.getSelectedPageApplication();
             if (pageApplication.getId() == 0) {
+                TextOfAppPage textOfAppPageBase = textOfAppPageOptional.get();
+                textOfAppPage.setPageApplication(textOfAppPageBase.getPageApplication());
                 textOfAppPageRepository.save(textOfAppPage);
                 return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
             } else {
-                if (dtoTextOfAppPage.getTextOfAppPage().getId() == textOfAppPage.getId()) {
+                if (dtoTextOfAppPage.getSelectedPageApplication().getId() == textOfAppPage.getPageApplication().getId()) {
                     textOfAppPage.setPageApplication(pageApplication);
                     textOfAppPageRepository.save(textOfAppPage);
                     return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
-                } else {
+                } else if(searchTextOfAppPageByPageApplicationId(pageApplication.getId()).isEmpty()) {
+                    textOfAppPage.setPageApplication(pageApplication);
+                    textOfAppPageRepository.save(textOfAppPage);
+                    return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+                }else{
                     return new ResponseMessage(Message.ERROR_SAVE_TEXT_OF_PAGE);
                 }
-
             }
         } else {
-            TextOfAppPage textOfAppPage = dtoTextOfAppPage.getTextOfAppPage();
-            PageApplication pageApplication = dtoTextOfAppPage.getSelectedPageApplication();
             if (pageApplication.getId() != 0) {
-                Optional<TextOfAppPage> textOfAppPageOptionalSearch = textOfAppPageRepository.searchTextOfAppPageByPageApplicationId(pageApplication.getId());
-                if (textOfAppPageOptionalSearch.isEmpty()) {
+                if (searchTextOfAppPageByPageApplicationId(pageApplication.getId()).isEmpty()) {
                     textOfAppPage.setPageApplication(pageApplication);
                     textOfAppPageRepository.save(textOfAppPage);
                     return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
@@ -62,10 +64,12 @@ public class TextOfAppPageService {
                 textOfAppPageRepository.save(textOfAppPage);
                 return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
             }
-
         }
     }
 
+    private Optional<TextOfAppPage> searchTextOfAppPageByPageApplicationId(Long  pageApplicationId){
+        return textOfAppPageRepository.searchTextOfAppPageByPageApplicationId(pageApplicationId);
+    }
 
     public List<TextOfAppPage> getAppTextPageList() {
 //        List<AppInfoText> appInfoTextList = appInfoRepository.findById(1l).get().getAppInfoTextPage();

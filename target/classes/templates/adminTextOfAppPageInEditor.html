@@ -2,10 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
-<style>
-
-
-</style>
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <div class="wrapper">
@@ -33,14 +29,18 @@
                 <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
                 <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
                 <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
+                <input type="hidden" name="pageApplication" th:value="${textOfAppPage.pageApplication}">
                 <button type="submit">Зберегти</button>
             </form>
+            <div id="toastContainer" class="toast-container"></div>
+<!--            <div id="alertContainer"></div>-->
             <div id="resultDivError" style="color: #e03e2d; font-size: 18px; font-weight: 600;"></div>
             <div id="resultDivSuccess" style="color: #0f5132; font-size: 18px; font-weight: 600;"></div>
         </div>
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
+
 <script type="text/javascript" th:src="@{/js/textOfAppPage.js}"></script>
 </body>
 </html>
