@@ -3,6 +3,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.service.TranslationPairService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,5 @@ public class TranslationPairController {
         }
         return "redirect:/login";
     }
-    @PostMapping("/trsnslation-pair/check-edit")
-    public void checkEditTranslationPair(@RequestBody TranslationPair translationPair){
 
-    }
 }

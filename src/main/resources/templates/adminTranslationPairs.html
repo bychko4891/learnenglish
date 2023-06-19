@@ -1,8 +1,9 @@
 <!DOCTYPE HTML >
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<link rel="stylesheet" th:href="@{/css/adminPage.css}">
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body>
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
   <header th:replace="~{fragments/header :: header}"></header>
   <div class="sidebar">
@@ -11,37 +12,46 @@
   <main class="section main_content ">
     <div class="container layout_page">
       <div class="page-table">
-        <h3>Юзери</h3>
+        <h3>Тексти</h3>
         <table style="width: 90%;">
           <thead>
           <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Online</th>
-<!--            <th>IP</th>-->
-<!--            <th>Active</th>-->
-<!--            <th>Actions</th>-->
+            <th>Заняття</th>
+            <th>Текст українською</th>
+            <th>Текст українською W</th>
+            <th>Текст англійською</th>
+            <th>Actions</th> <!-- Додано стовпець для кнопок -->
           </tr>
           </thead>
           <tbody>
           <tr th:each="translationPair : ${translationPairs}">
-            <td th:text="${translationPair.id}"></td>
-            <td th:text="${translationPair.ukrText}"></td>
-            <td th:text="${translationPair.user.id}"></td>
-            <!--                        <td th:text="${user.statistics.trainingTimeStartEnd}"></td>-->
-<!--            <td th:text="${#temporals.format(user.statistics.trainingTimeStartEnd, 'dd.MM.yyyy')}"></td>-->
-<!--            <td th:text="${user.userIp}"></td>-->
-<!--            <td>-->
-<!--              <form>-->
-<!--                <input th:id="'toggleSwitch-' + ${user.id}" type="checkbox" th:checked="${user.active}" class="toggle-switch"-->
-<!--                       name="userActive" th:data-user-id="${user.id}"/>-->
-<!--                <label th:for="'toggleSwitch-' + ${user.id}" class="toggle-switch-label"></label>-->
-<!--                <input type="hidden" name="userId" th:value="${user.id}"/>-->
-<!--              </form>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--              <button class="check-button checkbox" th:data-user-id="${user.id}">Зберегти зміни</button>-->
-<!--            </td>-->
+            <td style="display: none"><input type="hidden" name="id" th:value="${translationPair.id}"/></td>
+            <td>
+              <span th:text="${translationPair.lesson.name}"></span>
+            </td>
+            <td>
+              <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
+              <span th:text="${translationPair.ukrText}"></span>
+              <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
+                     th:value="${translationPair.ukrText}"/>
+            </td>
+            <td>
+              <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
+              <span th:text="${translationPair.ukrTextWoman}"></span>
+              <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
+                     th:value="${translationPair.ukrTextWoman}"/>
+            </td>
+            <td>
+              <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
+              <span th:text="${translationPair.engText}"></span>
+              <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
+                     th:value="${translationPair.engText}"/>
+            </td>
+            <td>
+              <button class="editButton" onclick="toggleEditMode(this)">Редагувати</button>
+              <button class="cancelButton disabled" onclick="toggleCancelMode(this)">Відмінити</button>
+              <button class="saveButton disabled" onclick="saveChanges(this)">Зберегти</button>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -62,38 +72,95 @@
   <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 <script>
-  // $(document).ready(function () {
-  //   $('.check-button').on('click', function () {
-  //     var userId = $(this).data('user-id');
-  //     // var form = $('form').find('[data-user-id="' + userId + '"]');
-  //     var form = $('form').has('[data-user-id="' + userId + '"]');
-  //     var url = "/admin-page/users/user/user-active";
-  //     var csrfToken = $("meta[name='_csrf']").attr("content");
-  //     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-  //     var isChecked = form.find('input[name="userActive"]').prop('checked');
-  //     console.log(form);
-  //     console.log(userId);
-  //     console.log(isChecked);
-  //     console.log(url);
-  //     $.ajax({
-  //       url: url,
-  //       type: "POST",
-  //       data: {
-  //         userActive: isChecked,
-  //         userId: userId
-  //       },
-  //       beforeSend: function (xhr) {
-  //         xhr.setRequestHeader(csrfHeader, csrfToken);
-  //       },
-  //       success: function (result) {
-  //         // Обробка успішного відгуку
-  //       },
-  //       error: function (xhr, status, error) {
-  //         // Обробка помилки
-  //       }
-  //     });
-  //   });
-  // });
+  function toggleEditMode(button) {
+    var row = button.closest('tr');
+    var spans = row.getElementsByTagName('span');
+    var inputs = row.getElementsByTagName('input');
+
+    for (var i = 1; i < spans.length; i++) {
+      spans[i].classList.toggle('hidden_content');
+    }
+    for (var j = 0; j < inputs.length; j++) {
+      inputs[j].classList.toggle('hidden_content');
+    }
+
+    var editButton = row.querySelector('.editButton');
+    var saveButton = row.querySelector('.saveButton');
+    var cancelButton = row.querySelector('.cancelButton');
+    saveButton.classList.remove('disabled');
+    editButton.classList.add('disabled');
+    cancelButton.classList.remove('disabled');
+  }
+
+  function toggleCancelMode(button) {
+    var row = button.closest('tr');
+    var spans = row.getElementsByTagName('span');
+    var inputs = row.getElementsByTagName('input');
+
+
+    for (var i = 1; i < spans.length; i++) {
+      spans[i].classList.toggle('hidden_content');
+    }
+    for (var j = 0; j < inputs.length; j++) {
+      inputs[j].classList.toggle('hidden_content');
+    }
+
+    var editButton = row.querySelector('.editButton');
+    var saveButton = row.querySelector('.saveButton');
+    var cancelButton = row.querySelector('.cancelButton');
+    saveButton.classList.add('disabled');
+    editButton.classList.remove('disabled');
+    cancelButton.classList.add('disabled');
+  }
+
+  function saveChanges(button) {
+    var row = button.parentNode.parentNode;
+    var inputs = row.getElementsByTagName('input');
+    var spans = row.getElementsByTagName('span');
+
+
+    var updatedData = {
+      id: inputs[0].value,
+      ukrText: inputs[1].value,
+      ukrTextWomen: inputs[2].value,
+      engText: inputs[3].value
+    };
+    var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+    $.ajax({
+      // url: $(this).attr('action'),
+      url: '/translation-pair/check-edit',
+      type: 'POST',
+      contentType: "application/json",
+      data: JSON.stringify(updatedData),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+      },
+      success: function (result) {
+        spans[1].textContent = result.ukrText;
+        spans[2].textContent = result.engText;
+        for (var i = 1; i < spans.length; i++) {
+          spans[i].classList.toggle('hidden_content');
+        }
+        for (var j = 0; j < inputs.length; j++) {
+          inputs[j].classList.toggle('hidden_content');
+        }
+        showSuccessToast("Текст успішно змінено");
+        var editButton = row.querySelector('.editButton');
+        var saveButton = row.querySelector('.saveButton');
+        var cancelButton = row.querySelector('.cancelButton');
+        saveButton.classList.add('disabled');
+        editButton.classList.remove('disabled');
+        cancelButton.classList.add('disabled');
+      },
+      error: function () {
+        let shel = {};
+        alert(Boolean(shel))
+        // Поміщаємо повідомлення про помилку в div-елемент
+        // resultDivError.text('Помилка запиту на сервер');
+      }
+    });
+  }
 </script>
 </body>
 </html>

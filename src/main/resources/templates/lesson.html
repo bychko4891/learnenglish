@@ -1,8 +1,8 @@
 <!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<script  async src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 <body>
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="sidebar">
@@ -11,7 +11,6 @@
     <main class="section main_content ">
         <div class="container layout_page row">
             <div class="layout_lesson">
-                <div id="toastContainer" class="toast-container"></div>
                 <input name="nav" type="radio" class="nav home-radio" id="learn" checked="checked"/>
                 <div class="page about-page">
                     <div class="page-contents">
@@ -94,6 +93,7 @@
                 <label class="nav" for="upload">
                     <span class="lesson_upload_tabs">&nbsp;Завантажити</span>
                 </label>
+
             </div>
         </div>
     </main>

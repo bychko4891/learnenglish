@@ -17,11 +17,13 @@ public class DtoTranslationPairToUI {
     private String ukrText;
     private String engText;
     private String fragment;
-    private boolean editMode;
     private List<String> engTextList;
 
     public DtoTranslationPairToUI() {
     }
+    public DtoTranslationPairToUI(Long id, String ukrText, String engText) {
+    }
+
 
     public void setEngTextList(List<String> engTextList) {
         this.engTextList = engTextList;
@@ -61,13 +63,5 @@ public class DtoTranslationPairToUI {
 
     public void setEngText(String engText) {
         this.engText = engText;
-    }
-
-    public boolean isEditMode() {
-        return editMode;
-    }
-
-    public void setEditMode(boolean editMode) {
-        this.editMode = editMode;
     }
 }

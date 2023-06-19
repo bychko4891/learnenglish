@@ -105,6 +105,7 @@ button:active::before, .btn:active::before {
 }
 
 button.disabled {
+    pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed;
     background-color: #414141;
@@ -383,6 +384,10 @@ textarea {
 
 .toggle-switch:checked + .toggle-switch-label:before {
     transform: translateX(30px);
+}
+
+.hidden_content {
+    display: none;
 }
 
 /*           lesson fragment 4 style   */

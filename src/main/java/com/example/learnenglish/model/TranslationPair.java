@@ -39,12 +39,10 @@ public class TranslationPair {
     @Column(name = "audio_path")
     private String audioPath;
 
-    @Column(name = "edit_mode")
-    private boolean editMode;
-
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
