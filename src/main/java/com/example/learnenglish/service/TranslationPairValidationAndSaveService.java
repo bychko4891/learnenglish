@@ -48,70 +48,57 @@ public class TranslationPairValidationAndSaveService {
         throw new RuntimeException("Error base method --> public TranslationPair check,  TranslationPairValidationAndSaveService.class");
     }
 
-    public ResponseMessage validationTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
-        if (roleUser.equals("[ROLE_ADMIN]")) {
-            String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-            String ukrTextWoman = StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextWoman());
-            String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-            ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-            ukrTextWoman = ukrTextWoman.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-            engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-            if (Pattern.matches
-                    ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                            "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
-                    Pattern.matches
-                            ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                                    "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrTextWoman) &&
-                    Pattern.matches
-                            ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
-                                    "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
-                if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-                    dtoTranslationPair.setUkrText(ukrText);
-                    dtoTranslationPair.setUkrText(ukrTextWoman);
-                    dtoTranslationPair.setEngText(engText);
-                    return convertToTranslationPairEndSave(dtoTranslationPair);
-                }
+    // в if по ролі і відразу присвоїти відсутність тексту, перевірки винести в один метод
+    public ResponseMessage saveTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
+        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
+        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+        if (validateTranslationPairs(ukrText, ukrTextFemale, engText)) {
+            if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
+                dtoTranslationPair.setUkrText(ukrText);
+                dtoTranslationPair.setUkrText(ukrTextFemale);
+                dtoTranslationPair.setEngText(engText);
+                translationPairRepository.save(convertToTranslationPair(dtoTranslationPair));
+                return new ResponseMessage(Message.SUCCESSADDBASE);
+            } else {
+                return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
             }
         } else {
-            return validationTranslationPairUser(dtoTranslationPair);
+            return new ResponseMessage(Message.ERRORVALIDATETEXT);
         }
-        System.out.println("Error validationTranslationPair");
-        return new ResponseMessage(Message.ERRORVALIDATETEXT);
+//        return new ResponseMessage(Message.ERRORBASE);
     }
 
-    private ResponseMessage validationTranslationPairUser(DtoTranslationPair dtoTranslationPair) {
-        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+    private boolean validateTranslationPairs(String ukrText, String ukrTextFemale, String engText) {
+        boolean check = false;
         ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
         engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
         if (Pattern.matches
                 ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
                         "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
                 Pattern.matches
+                        ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
+                                "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrTextFemale) &&
+                Pattern.matches
                         ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
-                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)
-                && !translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-            dtoTranslationPair.setUkrText(ukrText);
-            dtoTranslationPair.setUkrTextWoman("No text ");
-            dtoTranslationPair.setEngText(engText);
-            return convertToTranslationPairEndSave(dtoTranslationPair);
+                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
+            check = true;
         }
-        System.out.println("Error validationTranslationPair");
-        return new ResponseMessage(Message.ERRORVALIDATETEXT);
+        return check;
     }
 
 
-    private ResponseMessage convertToTranslationPairEndSave(DtoTranslationPair dtoTranslationPair) {
-        TranslationPair pair = new TranslationPair();
-        pair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
-        pair.setUkrText(dtoTranslationPair.getUkrText());
-        pair.setUkrTextWoman(dtoTranslationPair.getUkrTextWoman());
-        pair.setEngText(dtoTranslationPair.getEngText());
-        pair.setAudioPath("path/no");
-        pair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
-        pair.setUser(userService.findById(dtoTranslationPair.getUserId()));
-        translationPairService.saveTranslationPair(pair);
-        return new ResponseMessage(Message.SUCCESSADDBASE);
+    private TranslationPair convertToTranslationPair(DtoTranslationPair dtoTranslationPair) {
+        TranslationPair translationPair = new TranslationPair();
+        translationPair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
+        translationPair.setUkrText(dtoTranslationPair.getUkrText());
+        translationPair.setUkrTextWoman(dtoTranslationPair.getUkrTextFemale());
+        translationPair.setEngText(dtoTranslationPair.getEngText());
+        translationPair.setAudioPath("path/no");
+        translationPair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
+        translationPair.setUser(userService.findById(dtoTranslationPair.getUserId()));
+        return translationPair;
     }
 
 }

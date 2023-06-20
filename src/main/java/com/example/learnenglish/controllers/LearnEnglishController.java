@@ -30,7 +30,8 @@ public class LearnEnglishController {
 
     public LearnEnglishController(HttpSession session,
                                   UserService userService,
-                                  LessonService lessonService, PageApplicationService pageApplicationService) {
+                                  LessonService lessonService,
+                                  PageApplicationService pageApplicationService) {
         this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;
@@ -40,15 +41,17 @@ public class LearnEnglishController {
     @GetMapping("/")
     public String index(Principal principal, Model model) {
         if (principal != null) {
-            // Отримати id залогіненого користувача
             Long userId = userService.findByEmail(principal.getName()).getId();
             model.addAttribute("userId", userId);
-            // Перенаправити на сторінку з профілем користувача з його id
             return "redirect:/user/" + userId;
         } else {
+            PageApplication pageApplication = pageApplicationService.getPageApplication(5l);
+            if(pageApplication.getTextOfAppPage() != null){
+                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+            } else {
+                model.addAttribute("pageText", "No text in this page");
+            }
             model.addAttribute("title", "About the app Learn English");
-            model.addAttribute("main_title", "Main page");
-            // Перенаправити на сторінку з увійти / зареєструватися
             return "index";
         }
     }

@@ -1,11 +1,7 @@
-//Заповнення сторінки першими данними при старті Lesson
 var lessonId;
 var fragment;
-// var nextText;
 $(document).ready(function () {
-    // nextText = document.getElementById('nextText');
     lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    // console.log(lessonId + ' lessonId  ready');
 });
 
 $(window).on('scroll', function () {
@@ -45,7 +41,6 @@ function sendTooServer() {
     var checkButton = document.getElementById('checkButton');
     var nextButton = document.getElementById('nextButton');
     var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
-    // console.log(lessonId + ' sendTooServer');
     var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
         type: "GET",
@@ -183,7 +178,6 @@ $(document).ready(function () {
 // ************   Додавання тексту в базу   *************** //
 $(document).ready(function () {
     $('#add-pair').submit(function (event) {
-        console.log('Yes');
         event.preventDefault();
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
@@ -192,8 +186,8 @@ $(document).ready(function () {
         if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
             var ukrTextTemp = $('textarea[name="ukrText"]').val();
             var engTextTemp = $('textarea[name="engText"]').val();
-            if (ukrTextTemp.length > 300 || engTextTemp.length > 300) {
-                alert("Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!!!");
+            if (ukrTextTemp.length > 180 || engTextTemp.length > 180) {
+                alert("Вибачте, але дозволено довжину речення максимум 150 символів разом з пропусками!!!");
                 return;
             }
             var jsonFormData = {};
@@ -209,12 +203,10 @@ $(document).ready(function () {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function (result) {
-                    console.log(result);
                     var status = result.status;
-                    // console.log(status);
                     if (status == "Success") {
                         $('textarea[name="ukrText"]').val('');
-                        $('textarea[name="ukrTextWoman"]').val('');
+                        $('textarea[name="ukrTextFemale"]').val('');
                         $('textarea[name="engText"]').val('');
                         showSuccessToast(result.message);
                     } else {
@@ -223,11 +215,20 @@ $(document).ready(function () {
                 },
                 error: function (xhr) {
                     var response = JSON.parse(xhr.responseText);
-                    console.log(response);
-                    if (response && Array.isArray(response)) {
-                        // Якщо отримано список помилок
-                        var errorMessage = response[0]; // Приклад отримання першого повідомлення про помилку
-                        showErrorToast(errorMessage);
+                    if (Array.isArray(response)) {
+                        for (var i = 0; i < response.length; i++) {
+                            var error = response[i];
+                            if (error.fieldName === ('ukrText')) {
+                                $('#ukrText').css('border-color', 'red');
+                                $('#ukrTextError').html(error.fieldMessage);
+                            } else if (error.fieldName === ('ukrTextFemale')) {
+                                $('#ukrTextFemale').css('border-color', 'red');
+                                $('#ukrTextFemaleError').html(error.fieldMessage);
+                            } else if (error.fieldName === ('engText')) {
+                                $('#engText').css('border-color', 'red');
+                                $('#engTextError').html(error.fieldMessage);
+                            }
+                        }
                     } else {
                         showErrorToast("Помилка сервера");
                     }

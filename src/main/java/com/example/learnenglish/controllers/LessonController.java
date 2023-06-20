@@ -110,7 +110,7 @@ public class LessonController {
             }
             String roleUser = userService.findByEmail(principal.getName()).getAuthority().toString();
             System.out.println(roleUser);
-            return ResponseEntity.ok(validationTranslationPair.validationTranslationPair(dtoTranslationPair, roleUser));
+            return ResponseEntity.ok(validationTranslationPair.saveTranslationPair(dtoTranslationPair, roleUser));
         }
         return ResponseEntity.ok(new ResponseMessage(Message.ERRORLOGIN));
     }

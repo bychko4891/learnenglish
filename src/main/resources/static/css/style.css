@@ -29,6 +29,9 @@ a:hover {
 }
 
 /* Alert message */
+.error_message{
+    color: #e03e2d;
+}
 .toast-container {
     position: fixed;
     top: 20px;

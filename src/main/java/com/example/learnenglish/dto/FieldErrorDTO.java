@@ -8,28 +8,28 @@ package com.example.learnenglish.dto;
  */
 
 public class FieldErrorDTO {
-    private String field;
-    private String message;
+    private String fieldName;
+    private String fieldMessage;
 
 
-    public FieldErrorDTO(String field, String message) {
-        this.field = field;
-        this.message = message;
+    public FieldErrorDTO(String fieldName, String fieldMessage) {
+        this.fieldName = fieldName;
+        this.fieldMessage = fieldMessage;
     }
 
-    public String getField() {
-        return field;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
-    public String getMessage() {
-        return message;
+    public String getFieldMessage() {
+        return fieldMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setFieldMessage(String fieldMessage) {
+        this.fieldMessage = fieldMessage;
     }
 }

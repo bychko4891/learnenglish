@@ -8,7 +8,6 @@ package com.example.learnenglish.dto;
  */
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -18,13 +17,16 @@ import org.springframework.validation.annotation.Validated;
 public class DtoTranslationPair {
 
     @NotBlank(message = "Поле українського тексту не повинно бути пустим.")
-    @Length(max = 350, message = "Вибачте, але в полі з українським текстом дозволено довжину речення максимум 300 символів!")
+    @Length(max = 180, message = "Вибачте, але в полі з українським текстом дозволено довжину речення максимум 150 символів!")
+    @Length(min = 4, message = "Ваше речення дуже коротке")
     private String ukrText;
-    @Length(max = 350, message = "Вибачте, але дозволено довжину речення максимум 300 символів разом з пропусками!")
-    private String ukrTextWoman;
+    @Length(max = 180, message = "Вибачте, але дозволено довжину речення максимум 150 символів разом з пропусками!")
+    @Length(min = 4, message = "Ваше речення дуже коротке")
+    private String ukrTextFemale;
 
     @NotBlank(message = "Поле англійського тексту не повинно бути пустим.")
-    @Length(max = 350, message = "Вибачте, але в полі з англійським текстом дозволено довжину речення максимум 300 символів!")
+    @Length(max = 180, message = "Вибачте, але в полі з англійським текстом дозволено довжину речення максимум 150 символів!")
+    @Length(min = 4, message = "Ваше речення дуже коротке")
     private String engText;
 
     private Long lessonId;
@@ -42,12 +44,12 @@ public class DtoTranslationPair {
         this.ukrText = ukrTextMan;
     }
 
-    public String getUkrTextWoman() {
-        return ukrTextWoman;
+    public String getUkrTextFemale() {
+        return ukrTextFemale;
     }
 
-    public void setUkrTextWoman(String ukrTextWoman) {
-        this.ukrTextWoman = ukrTextWoman;
+    public void setUkrTextFemale(String ukrTextFemale) {
+        this.ukrTextFemale = ukrTextFemale;
     }
 
     public String getEngText() {
