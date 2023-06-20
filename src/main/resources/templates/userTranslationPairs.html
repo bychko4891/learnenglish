@@ -19,7 +19,7 @@
                         <th>Заняття</th>
                         <th>Текст українською</th>
                         <th>Текст англійською</th>
-                        <th>Actions</th> <!-- Додано стовпець для кнопок -->
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,16 +29,14 @@
                             <span th:text="${translationPair.lesson.name}"></span>
                         </td>
                         <td>
-                            <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
                             <span th:text="${translationPair.ukrText}"></span>
-                            <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
-                                   th:value="${translationPair.ukrText}"/>
+                            <input th:id="'ukrText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.ukrText}"/>
+                            <div th:id="'ukrTextError' + ${translationPair.id}" class="error_message"></div>
                         </td>
                         <td>
-                            <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
                             <span th:text="${translationPair.engText}"></span>
-                            <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
-                                   th:value="${translationPair.engText}"/>
+                            <input th:id="'engText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.engText}"/>
+                            <div th:id="'engTextError' + ${translationPair.id}" class="error_message"></div>
                         </td>
                         <td>
                             <button class="editButton" onclick="toggleEditMode(this)">Редагувати</button>

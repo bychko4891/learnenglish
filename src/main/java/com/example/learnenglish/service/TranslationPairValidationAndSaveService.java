@@ -32,33 +32,48 @@ public class TranslationPairValidationAndSaveService {
         this.translationPairRepository = translationPairRepository;
     }
 
-    public DtoTranslationPairToUI check(TranslationPair translationPair) {
-        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(translationPair.getId());
-        if (translationPairOptional.isPresent()) {
+    public Optional<?> check(DtoTranslationPair dtoTranslationPair, String roleUser) {
+        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(dtoTranslationPair.getId());
+        DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
+
+//        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+//        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
+//        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+//        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+//        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+//        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+
+        if (translationPairOptional.isPresent() && validateTranslationPairs(dtoTranslationPairCleared)) {
             TranslationPair translationPairBase = translationPairOptional.get();
-            translationPairBase.setUkrText(translationPair.getUkrText());
-            translationPairBase.setEngText(translationPair.getEngText());
+            translationPairBase.setUkrText(dtoTranslationPairCleared.getUkrText());
+            translationPairBase.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
+            translationPairBase.setEngText(dtoTranslationPairCleared.getEngText());
             translationPairRepository.save(translationPairBase);
             DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
             dtoTranslationPairToUI.setId(translationPairBase.getId());
-            dtoTranslationPairToUI.setUkrText(translationPairBase.getUkrText());
-            dtoTranslationPairToUI.setEngText(translationPairBase.getEngText());
-            return dtoTranslationPairToUI;
-        }
-        throw new RuntimeException("Error base method --> public TranslationPair check,  TranslationPairValidationAndSaveService.class");
+            dtoTranslationPairToUI.setUkrText(dtoTranslationPairCleared.getUkrText());
+            dtoTranslationPairToUI.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
+            dtoTranslationPairToUI.setEngText(dtoTranslationPairCleared.getEngText());
+            return Optional.of(dtoTranslationPairToUI);
+        } else return Optional.of(new ResponseMessage(Message.ERRORVALIDATETEXT));
     }
 
     // в if по ролі і відразу присвоїти відсутність тексту, перевірки винести в один метод
     public ResponseMessage saveTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
-        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
-        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-        if (validateTranslationPairs(ukrText, ukrTextFemale, engText)) {
-            if (!translationPairService.existsByEngTextAndUkrText(engText, dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-                dtoTranslationPair.setUkrText(ukrText);
-                dtoTranslationPair.setUkrText(ukrTextFemale);
-                dtoTranslationPair.setEngText(engText);
-                translationPairRepository.save(convertToTranslationPair(dtoTranslationPair));
+        DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
+//        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+//        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
+//        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+//        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+//        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+//        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+
+        if (validateTranslationPairs(dtoTranslationPairCleared)) {
+            if (!translationPairService.existsByEngTextAndUkrText(dtoTranslationPairCleared.getEngText(), dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
+//                dtoTranslationPair.setUkrText(dtoTranslationPairCleared.getUkrText());
+//                dtoTranslationPair.setUkrText(dtoTranslationPairCleared.getUkrTextFemale());
+//                dtoTranslationPair.setEngText(dtoTranslationPairCleared.getEngText());
+                translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared));
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else {
                 return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
@@ -68,21 +83,31 @@ public class TranslationPairValidationAndSaveService {
         }
 //        return new ResponseMessage(Message.ERRORBASE);
     }
-
-    private boolean validateTranslationPairs(String ukrText, String ukrTextFemale, String engText) {
+private DtoTranslationPair cleaningText(DtoTranslationPair dtoTranslationPair, String roleUser){
+    String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+    String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
+    String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+    ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+    ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+    engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+//    DtoTranslationPair dtoTranslationPairclearning = new DtoTranslationPair();
+    dtoTranslationPair.setUkrText(ukrText);
+    dtoTranslationPair.setUkrTextFemale(ukrTextFemale);
+    dtoTranslationPair.setEngText(engText);
+    return dtoTranslationPair;
+}
+    private boolean validateTranslationPairs(DtoTranslationPair dtoTranslationPair) {
         boolean check = false;
-        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
-        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();//.replaceAll("\\b\\s\\B", "")
+
         if (Pattern.matches
                 ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                        "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrText) &&
+                        "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", dtoTranslationPair.getUkrText()) &&
                 Pattern.matches
                         ("(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)|" +
-                                "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", ukrTextFemale) &&
+                                "(^\\b[а-яА-Я[іїєІЇЄ]['`][-]]{1,20}\\b\\,?)\\s{1}(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b\\,?\\s{1})+(\\b[а-яА-Я [іїєІЇЄ]['`][-]]{1,20}\\b[.?!]?$)", dtoTranslationPair.getUkrTextFemale()) &&
                 Pattern.matches
                         ("(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z ' `]{1,20}\\b[. ! ?]?$)|" +
-                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", engText)) {
+                                "(^\\b[a-zA-Z['`]]{1,20}\\b\\,?)\\s{1}(\\b[a-zA-Z['`]]{1,20}\\b\\,?\\s{1})+(\\b[a-zA-Z['`]]{1,20}\\b[.!?]?$)", dtoTranslationPair.getEngText())) {
             check = true;
         }
         return check;
@@ -93,7 +118,7 @@ public class TranslationPairValidationAndSaveService {
         TranslationPair translationPair = new TranslationPair();
         translationPair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
         translationPair.setUkrText(dtoTranslationPair.getUkrText());
-        translationPair.setUkrTextWoman(dtoTranslationPair.getUkrTextFemale());
+        translationPair.setUkrTextFemale(dtoTranslationPair.getUkrTextFemale());
         translationPair.setEngText(dtoTranslationPair.getEngText());
         translationPair.setAudioPath("path/no");
         translationPair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));

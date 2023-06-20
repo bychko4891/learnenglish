@@ -27,13 +27,13 @@ public class TranslationPair {
     @Column(name="lesson_counter")
     private Long lessonCounter;
 
-    @Column(name = "ukr_text", length = 1000)
+    @Column(name = "ukr_text", length = 500)
     private String ukrText;
 
-    @Column(name = "ukr_text_woman", length = 1000)
-    private String ukrTextWoman;
+    @Column(name = "ukr_text_female", length = 500)
+    private String ukrTextFemale;
 
-    @Column(name = "eng_text", length = 1000)
+    @Column(name = "eng_text", length = 500)
     private String engText;
 
     @Column(name = "audio_path")

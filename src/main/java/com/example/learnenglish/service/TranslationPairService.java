@@ -24,11 +24,6 @@ public class TranslationPairService {
 
     public TranslationPairService(TranslationPairRepository repository) {
         this.translationPairRepository = repository;
-
-    }
-
-    public void saveTranslationPair(TranslationPair translationPair) {
-        translationPairRepository.save(translationPair);
     }
 
     public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
@@ -97,7 +92,7 @@ public class TranslationPairService {
             DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
             dtoTranslationPairToUI.setId(translationPair.getId());
             if (userGender.equals("[FEMALE]")) {
-                dtoTranslationPairToUI.setUkrText(translationPair.getUkrTextWoman());
+                dtoTranslationPairToUI.setUkrText(translationPair.getUkrTextFemale());
             } else {
                 dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
             }

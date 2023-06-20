@@ -37,9 +37,9 @@
             </td>
             <td>
               <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
-              <span th:text="${translationPair.ukrTextWoman}"></span>
+              <span th:text="${translationPair.getUkrTextFemale}"></span>
               <input th:id="'pair' + ${translationPair.id}" class="hidden_content" type="text"
-                     th:value="${translationPair.ukrTextWoman}"/>
+                     th:value="${translationPair.getUkrTextFemale}"/>
             </td>
             <td>
               <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
