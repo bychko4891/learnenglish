@@ -184,12 +184,6 @@ $(document).ready(function () {
         var url = '/translation-pair/add';
         var formData = $(this).serializeArray();
         if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
-            var ukrTextTemp = $('textarea[name="ukrText"]').val();
-            var engTextTemp = $('textarea[name="engText"]').val();
-            if (ukrTextTemp.length > 180 || engTextTemp.length > 180) {
-                alert("Вибачте, але дозволено довжину речення максимум 150 символів разом з пропусками!!!");
-                return;
-            }
             var jsonFormData = {};
             $(formData).each(function (index, obj) {
                 jsonFormData[obj.name] = obj.value;

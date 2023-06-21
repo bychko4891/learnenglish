@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
@@ -15,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.Option;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +50,6 @@ public class TranslationPairRestController {
                                                       Principal principal) {
         if (principal != null) {
             if (bindingResult.hasErrors()) {
-                // Опрацювання помилок валідації
-
                 List<FieldErrorDTO> errors = bindingResult.getFieldErrors().stream()
                         .map(fieldError -> new FieldErrorDTO(fieldError.getField(), fieldError.getDefaultMessage()))
                         .collect(Collectors.toList());
@@ -57,14 +61,8 @@ public class TranslationPairRestController {
             if(object instanceof DtoTranslationPairToUI){
                 return ResponseEntity.ok((DtoTranslationPairToUI)object);
             } else return ResponseEntity.ok((ResponseMessage)object);
-//            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairValidationAndSaveService.check(dtoTranslationPair, roleUser);
-
         }
         return ResponseEntity.notFound().build();
     }
-//    @PostMapping("/translation-pair/check-edit")
-//    public ResponseEntity<DtoTranslationPairToUI> checkEditTranslationPair(@RequestBody TranslationPair translationPair){
-//        DtoTranslationPairToUI dtoTranslationPairToUI = translationPairValidationAndSaveService.check(translationPair);
-//        return ResponseEntity.ok(dtoTranslationPairToUI);
-//    }
+
 }

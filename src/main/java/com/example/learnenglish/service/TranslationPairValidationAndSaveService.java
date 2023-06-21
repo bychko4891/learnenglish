@@ -36,13 +36,6 @@ public class TranslationPairValidationAndSaveService {
         Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(dtoTranslationPair.getId());
         DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
 
-//        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-//        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
-//        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-//        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-//        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-//        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-
         if (translationPairOptional.isPresent() && validateTranslationPairs(dtoTranslationPairCleared)) {
             TranslationPair translationPairBase = translationPairOptional.get();
             translationPairBase.setUkrText(dtoTranslationPairCleared.getUkrText());
@@ -58,21 +51,11 @@ public class TranslationPairValidationAndSaveService {
         } else return Optional.of(new ResponseMessage(Message.ERRORVALIDATETEXT));
     }
 
-    // в if по ролі і відразу присвоїти відсутність тексту, перевірки винести в один метод
     public ResponseMessage saveTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
         DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
-//        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-//        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
-//        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-//        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-//        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-//        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
 
         if (validateTranslationPairs(dtoTranslationPairCleared)) {
             if (!translationPairService.existsByEngTextAndUkrText(dtoTranslationPairCleared.getEngText(), dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-//                dtoTranslationPair.setUkrText(dtoTranslationPairCleared.getUkrText());
-//                dtoTranslationPair.setUkrText(dtoTranslationPairCleared.getUkrTextFemale());
-//                dtoTranslationPair.setEngText(dtoTranslationPairCleared.getEngText());
                 translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared));
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else {
@@ -81,21 +64,21 @@ public class TranslationPairValidationAndSaveService {
         } else {
             return new ResponseMessage(Message.ERRORVALIDATETEXT);
         }
-//        return new ResponseMessage(Message.ERRORBASE);
     }
-private DtoTranslationPair cleaningText(DtoTranslationPair dtoTranslationPair, String roleUser){
-    String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
-    String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
-    String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
-    ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-    ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-    engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
-//    DtoTranslationPair dtoTranslationPairclearning = new DtoTranslationPair();
-    dtoTranslationPair.setUkrText(ukrText);
-    dtoTranslationPair.setUkrTextFemale(ukrTextFemale);
-    dtoTranslationPair.setEngText(engText);
-    return dtoTranslationPair;
-}
+
+    private DtoTranslationPair cleaningText(DtoTranslationPair dtoTranslationPair, String roleUser) {
+        String ukrText = StringUtils.normalizeSpace(dtoTranslationPair.getUkrText());
+        String ukrTextFemale = roleUser.equals("[ROLE_ADMIN]") ? StringUtils.normalizeSpace(dtoTranslationPair.getUkrTextFemale()) : "Текст відсутній";
+        String engText = StringUtils.normalizeSpace(dtoTranslationPair.getEngText());
+        ukrText = ukrText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+        ukrTextFemale = ukrTextFemale.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+        engText = engText.replaceAll("[.,!~$#@*+;%№=/><\\\\^]+", " ").replaceAll("\\s+", " ").trim();
+        dtoTranslationPair.setUkrText(ukrText);
+        dtoTranslationPair.setUkrTextFemale(ukrTextFemale);
+        dtoTranslationPair.setEngText(engText);
+        return dtoTranslationPair;
+    }
+
     private boolean validateTranslationPairs(DtoTranslationPair dtoTranslationPair) {
         boolean check = false;
 
