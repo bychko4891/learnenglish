@@ -64,13 +64,13 @@ a:hover {
     /*display: block;*/
     max-width: 100%;
     width: calc(100% - 40px);
-    height: calc(100vh - 120px);
+    height: 100vh;
     padding-left: 0;
     padding-right: 0;
     margin-left: 40px;
     margin-top: 40px;
-    margin-bottom: 40px;
-    background: rgba(237, 241, 244, 0.85);
+    /*margin-bottom: 40px;*/
+    background: rgba(237, 241, 244, 0.90);
     overflow-x: hidden;
 
 }
@@ -521,7 +521,7 @@ label.nav svg {
 }
 
 .page {
-    background: rgba(237, 241, 244, 0.85);
+    /*background: rgba(237, 241, 244, 0.85);     ********************                                     */
     grid-column-start: 1;
     grid-row-start: 2;
     grid-column-end: span 3;

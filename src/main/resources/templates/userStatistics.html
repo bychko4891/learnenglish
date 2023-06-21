@@ -1,34 +1,35 @@
-<!DOCTYPE HTML >
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <script th:src="@{/js/chart.umd.js}"></script>
-
 <body>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
+    <main class="section">
+
+        <header th:replace="~{fragments/header :: header}"></header>
+
         <div class="container layout_page row">
+
+
             <div class="col-md-6 col-lg-7 block_left">
                 <h4>Час тренувань в хвилинах за 14 днів занять</h4>
                 <canvas id="myChart" style="height: 400px;"></canvas>
             </div>
             <div class="col-md-6 col-lg-5 block_right">
-                    <h4>К-сть повторень текстів за вчора та сьогодні</h4>
-                    <canvas id="myChart2"></canvas>
-                    <br>
-                    <div>
-                        <h4>К-сть всього повторень та помилок</h4>
+                <h4>К-сть повторень текстів за вчора та сьогодні</h4>
+                <canvas id="myChart2"></canvas>
+                <br>
+                <div>
+                    <h4>К-сть всього повторень та помилок</h4>
                     <canvas id="myChart3"></canvas>
                 </div>
             </div>
+
+
         </div>
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-
 <script>
     var availableDates = [];
     var url = window.location.href;

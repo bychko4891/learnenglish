@@ -1,16 +1,13 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body>
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
-        <div class="container layout_page">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page row">
             <div class="page-table">
                 <h3>Тексти</h3>
                 <table style="width: 90%;">
@@ -69,10 +66,8 @@
                 <a th:href="@{/admin-page/translation-pairs(page=(${currentPage} + 1))}">Next</a>
             </div>
         </div>
-
-
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <script>
     function toggleEditMode(button) {

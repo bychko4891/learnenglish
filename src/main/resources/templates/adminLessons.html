@@ -1,43 +1,38 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body>
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
-        <div class="container layout_page">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page ">
             <div class="page-table row">
-
-
-
                 <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">
                     <h3>Заняття</h3>
                     <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
-<!--                    <div class="page-table">-->
-                        <table style="width: 100%">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="lesson : ${lessons}">
-                                <td th:text="${lesson.id}"></td>
-                                <td th:text="${lesson.name}"></td>
-                                <td>
-                                    <a th:href="@{/admin-page/lesson/{id}/lesson-in-editor(id=${lesson.id})}"
-                                       class="btn btn-primary">Edit</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-<!--                    </div>-->
+                    <!--                    <div class="page-table">-->
+                    <table style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="lesson : ${lessons}">
+                            <td th:text="${lesson.id}"></td>
+                            <td th:text="${lesson.name}"></td>
+                            <td>
+                                <a th:href="@{/admin-page/lesson/{id}/lesson-in-editor(id=${lesson.id})}"
+                                   class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--                    </div>-->
                 </div>
 
 
@@ -57,11 +52,6 @@
                     <!--                </div>-->
                 </div>
 
-
-
-
-
-
             </div>
             <!-- відображення пагінації -->
             <div style="position: fixed; bottom: 40px; margin-left: 80px; width: 100%;">
@@ -72,15 +62,9 @@
                 <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
             </div>
         </div>
-
-
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-<script>
 
-
-
-</script>
 </body>
 </html>

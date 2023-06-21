@@ -1,58 +1,61 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page row">
-            <main class="col-md-6 col-lg-7 block_left">
-                <div class="box">
-                    <div class="box-registration">
-                        <div class="form-registration">
-                            <h3 style="color: white">Увійти в додаток</h3><br>
-                            <form th:action="@{/login}" method="post">
-                                <br>
-                                <div class="inputBox">
-                                    <input type="email" required name="username">
-                                    <span class="span-text">Email</span>
-                                </div>
-                                <br>
-                                <div class="inputBox">
-                                    <input type="password" required name="password" th:attr="id='pswLogin'">
-                                    <span class="span-text">Пароль</span>
-                                    <span id="toggleBtn"></span>
-                                </div>
-                                <div style="color: whitesmoke; padding-top: 10px;">
-                                <a href="/forgot-password">Відновити пароль</a>
-                                </div>
-                                <div style="padding-left: 65px; padding-top: 50px;">
-                                    <button type="submit">Увійти</button>
-                                </div>
-                            </form>
-                            <br>
-                            <h5 th:text="${message}"></h5>
-                            <div th:text="${error}" style="color: red"></div>
-                            <div th:text="${logout}"style="color: #47f847"></div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <div class="col-md-6 col-lg-5 block_right">
-                <div class="row">
-                    <div th:utext="${pageText}"></div>
-<!--                    <h4>Умови реєстрації на Learn English</h4><br>-->
-<!--                    <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К-->
-<!--                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>-->
 
+
+        <div class="col-md-6 col-lg-7 block_left">
+            <div class="box">
+                <div class="box-registration">
+                    <div class="form-registration">
+                        <h3 style="color: white">Увійти в додаток</h3><br>
+                        <form th:action="@{/login}" method="post">
+                            <br>
+                            <div class="inputBox">
+                                <input type="email" required name="username">
+                                <span class="span-text">Email</span>
+                            </div>
+                            <br>
+                            <div class="inputBox">
+                                <input type="password" required name="password" th:attr="id='pswLogin'">
+                                <span class="span-text">Пароль</span>
+                                <span id="toggleBtn"></span>
+                            </div>
+                            <div style="color: whitesmoke; padding-top: 10px;">
+                                <a href="/forgot-password">Відновити пароль</a>
+                            </div>
+                            <div style="padding-left: 65px; padding-top: 50px;">
+                                <button type="submit">Увійти</button>
+                            </div>
+                        </form>
+                        <br>
+                        <h5 th:text="${message}"></h5>
+                        <div th:text="${error}" style="color: red"></div>
+                        <div th:text="${logout}"style="color: #47f847"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-6 col-lg-5 block_right">
+            <div class="row">
+                <div th:utext="${pageText}"></div>
+                <!--                    <h4>Умови реєстрації на Learn English</h4><br>-->
+                <!--                    <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К-->
+                <!--                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>-->
+
+            </div>
+        </div>
+
+
+
+        </div>
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <script>
     let pswLogin = document.getElementById('pswLogin');
@@ -68,5 +71,6 @@
         }
     }
 </script>
+<script type="text/javascript" th:src="@{/js/userTranslationPairsPage.js}"></script>
 </body>
 </html>

@@ -1,18 +1,18 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
 <link rel="stylesheet" th:href="@{/css/dycalendar.css}" >
 <body>
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-<!--        <div th:replace="fragments/menu.html :: menu"> </div>-->
-    </div>
-    <main class="section main_content ">
+    <main class="section">
+
+        <header th:replace="~{fragments/header :: header}"></header>
+
         <div class="container layout_page row">
+
+
             <div class="layout">
                 <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
                 <div class="page about-page">
@@ -70,11 +70,11 @@
                             </div>
                             <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
                         </div>
-<!--                        Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
-<!--                        Logged user: <span sec:authentication="name"></span>-->
-<!--                        <p>Welcome, <span th:text="${session.username}"></span>!</p>-->
-<!--                        <p>Your roles: <span th:each="authority : ${session.authorities}" th:text="${authority.authority} + ' '"></span></p>-->
-<!--                        <p>Your avatar name: <span th:text="${session.avatarName}"></span></p>-->
+                        <!--                        Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
+                        <!--                        Logged user: <span sec:authentication="name"></span>-->
+                        <!--                        <p>Welcome, <span th:text="${session.username}"></span>!</p>-->
+                        <!--                        <p>Your roles: <span th:each="authority : ${session.authorities}" th:text="${authority.authority} + ' '"></span></p>-->
+                        <!--                        <p>Your avatar name: <span th:text="${session.avatarName}"></span></p>-->
                     </div>
                 </div>
                 <label class="nav" for="home">
@@ -201,11 +201,14 @@
                     <span class="profile_edit"> Редагувати профіль</span>
                 </label>
             </div>
+
+
+
+
         </div>
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-
 <script type="text/javascript" th:src="@{/js/croppie.js}"></script>
 <script type="text/javascript" th:src="@{/js/cropAndUploadAvatart.js}"></script>
 <script type="text/javascript" th:src="@{/js/userInfoEdit.js}"></script>
