@@ -1,15 +1,15 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body>
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
-        <div class="container layout_page">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page row">
+
+
             <div class="page-table">
                 <h3>Юзери</h3>
                 <table style="width: 90%;">
@@ -27,7 +27,7 @@
                     <tr th:each="user : ${users}">
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.email}"></td>
-<!--                        <td th:text="${user.statistics.trainingTimeStartEnd}"></td>-->
+                        <!--                        <td th:text="${user.statistics.trainingTimeStartEnd}"></td>-->
                         <td th:text="${#temporals.format(user.statistics.trainingTimeStartEnd, 'dd.MM.yyyy')}"></td>
                         <td th:text="${user.userIp}"></td>
                         <td>
@@ -47,18 +47,19 @@
 
             </div>
             <!-- відображення пагінації -->
-            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
                 <a th:href="@{/admin-page/users(page=(${currentPage} - 1))}">Previous</a>
                 <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/users(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
                 <a th:href="@{/admin-page/users(page=(${currentPage} + 1))}">Next</a>
             </div>
+
+
+
         </div>
-
-
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <script>
     $(document).ready(function () {

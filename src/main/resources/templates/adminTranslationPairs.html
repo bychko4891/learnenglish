@@ -8,6 +8,8 @@
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page row">
+
+
             <div class="page-table">
                 <h3>Тексти</h3>
                 <table style="width: 90%;">
@@ -58,13 +60,16 @@
 
             </div>
             <!-- відображення пагінації -->
-            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
                 <a th:href="@{/admin-page/translation-pairs(page=(${currentPage} - 1))}">Previous</a>
                 <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/translation-pairs(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
                 <a th:href="@{/admin-page/translation-pairs(page=(${currentPage} + 1))}">Next</a>
             </div>
+
+
+
         </div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>

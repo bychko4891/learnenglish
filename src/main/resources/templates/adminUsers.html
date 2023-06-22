@@ -47,7 +47,7 @@
 
             </div>
             <!-- відображення пагінації -->
-            <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">
+            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
                 <a th:href="@{/admin-page/users(page=(${currentPage} - 1))}">Previous</a>
                 <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/users(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>

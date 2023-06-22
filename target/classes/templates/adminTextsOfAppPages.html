@@ -1,16 +1,12 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
-        <div class="container layout_page">
-            <div class="row">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page row">
                 <div class="col-md-6 col-lg-7 block_left">
                     <h3>Описи сторінок додатка</h3>
                     <table style="width: 100%">
@@ -58,8 +54,6 @@
                     <!--                </div>-->
                 </div>
 
-
-            </div>
             <!-- відображення пагінації -->
             <div style="position: fixed; bottom: 40px; margin-left: 80px; width: 100%;">
                 <!--        <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>-->
@@ -68,15 +62,11 @@
                 <!--                </span>-->
                 <!--        <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>-->
             </div>
+
+
         </div>
-
-
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-<script>
-
-
-</script>
 </body>
 </html>
