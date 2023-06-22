@@ -64,7 +64,8 @@ public class SecurityConfig {
             "/registration",
             "/registration-page",
             "/drop",
-            "/fragmentsPages/successRegistrationFragment"
+            "/fragmentsPages/successRegistrationFragment",
+            "/robots.txt"
 
     };
     public static final String LOGIN_URL = "/login";

@@ -59,7 +59,7 @@
                 <input name="nav" type="radio" class="about-radio" id="upload"/>
                 <div class="page about-page">
                     <main class="col-md-6 col-lg-7 block_left">
-                        <h3>Завантажити власний тект для заняття</h3>
+                        <h3 th:text="'Завантажити власний тект для ' + ${lesson.name}"></h3>
                         <form id="add-pair">
                             <div sec:authorize="hasRole('ROLE_ADMIN')">
                                 <textarea id="ukrText" name="ukrText" rows="1"
