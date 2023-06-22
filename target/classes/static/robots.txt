@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /css/
+Disallow: /js/
+Disallow: /images/
+Disallow: /forgot-password
+Disallow: /login
+Disallow: /registration
