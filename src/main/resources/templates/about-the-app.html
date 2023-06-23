@@ -5,8 +5,18 @@
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page row">
-            <div th:utext="${pageText}"style="padding: 40px;"></div>
+        <div class="container layout_page">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/about-the-app">Реєстрація</a>
+                    </li>
+                    <!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
+                </ol>
+            </nav>
+            <div class="row">
+                <div th:utext="${pageText}" style="padding: 0 50px 0 50px;"></div>
+            </div>
         </div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>

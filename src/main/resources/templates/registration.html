@@ -6,7 +6,15 @@
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page row">
+        <div class="container layout_page">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/registration-page">Реєстрація</a></li>
+                    <!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
+                </ol>
+            </nav>
+            <div class="row">
             <div class="col-md-6 col-lg-7 block_left">
                 <div id="registrationPage">
                     <div class="box">
@@ -68,6 +76,7 @@
                 <div class="row">
                     <div th:utext="${pageText}"></div>
                 </div>
+            </div>
             </div>
         </div>
     </main>

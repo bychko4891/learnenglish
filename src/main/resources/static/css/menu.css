@@ -170,6 +170,12 @@ body.no_active .wrapper .section {
         margin-left: 225px;
         width: calc(100vw - 225px);
     }
+    p {
+        font-size: 28px;
+    }
+    span {
+        font-size: 22px;
+    }
 }
 @media (min-width: 1081px) {
     body.active .wrapper .sidebar {

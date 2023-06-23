@@ -6,10 +6,17 @@
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page row">
-
-
+        <div class="container layout_page">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/login">Авторизація</a></li>
+<!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
+                </ol>
+            </nav>
+<div class="row">
         <div class="col-md-6 col-lg-7 block_left">
+            <h3>Авторизація</h3>
             <div class="box">
                 <div class="box-registration">
                     <div class="form-registration">
@@ -49,6 +56,7 @@
                 <!--                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>-->
 
             </div>
+        </div>
         </div>
 
 
