@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "words")
+@Table(name = "words_category")
 @Setter
 @Getter
-public class Word {
+public class WordCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -17,13 +17,6 @@ public class Word {
     @Column
     private String name;
 
-    @Column
-    private String text;
-
-    @ManyToOne
-    @JoinColumn(name = "word_catalog_id")
-    private WordCategory wordCategory;
-
-    public Word() {
+    public WordCategory() {
     }
 }

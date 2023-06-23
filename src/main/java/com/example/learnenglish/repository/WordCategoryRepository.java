@@ -7,10 +7,10 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.WordCatalog;
+import com.example.learnenglish.model.WordCategory;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface  WordCatalogRepository extends CrudRepository<WordCatalog, Long> {
+public interface WordCategoryRepository extends CrudRepository<WordCategory, Long> {
 }

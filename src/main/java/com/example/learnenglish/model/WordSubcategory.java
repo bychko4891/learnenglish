@@ -1,14 +1,10 @@
 package com.example.learnenglish.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Table(name = "words_calog")
-@Setter
-@Getter
-public class WordCatalog {
+@Table(name = "word_subcategory")
+public class WordSubcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -16,7 +12,7 @@ public class WordCatalog {
 
     @Column
     private String name;
-
-    public WordCatalog() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "word_category_id")
+    private WordCategory wordCategory;
 }

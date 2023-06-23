@@ -45,13 +45,19 @@ public class LearnEnglishController {
             model.addAttribute("userId", userId);
             return "redirect:/user/" + userId;
         } else {
-            PageApplication pageApplication = pageApplicationService.getPageApplication(5l);
-            if(pageApplication.getTextOfAppPage() != null){
-                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+            PageApplication mainTop = pageApplicationService.getPageApplication(5l);
+            PageApplication mainBottom = pageApplicationService.getPageApplication(6l);
+            if(mainTop.getTextOfAppPage() != null){
+                model.addAttribute("mainTop", mainTop.getTextOfAppPage().getText());
             } else {
-                model.addAttribute("pageText", "No text in this page");
+                model.addAttribute("mainTop", "No text in this page");
             }
-            model.addAttribute("title", "About the app Learn English");
+            if(mainBottom.getTextOfAppPage() != null){
+                model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
+            } else {
+                model.addAttribute("mainBottom", "No text in this page");
+            }
+            model.addAttribute("title", "Англійська за 16 годин - English Learn Application");
             return "index";
         }
     }
