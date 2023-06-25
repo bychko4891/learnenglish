@@ -1,7 +1,7 @@
 <th:block xmlns:th="http://www.thymeleaf.org" th:fragment="head">
     <title th:text="${title}"/>
 <!--    <meta name="viewport" content="initial-scale=1">-->
-<!--    <meta name="viewport" content="width=800, initial-scale=1.0">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,5 +34,5 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-</block>
+<!--</block>-->
         </th:block>

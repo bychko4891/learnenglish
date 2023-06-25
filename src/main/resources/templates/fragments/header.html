@@ -3,21 +3,22 @@
 <!--    <div class="section">-->
         <div class="top_navbar">
             <div class="hamburger">
-                <a href="#">
+                <a style="z-index: 9999;" class="menu-toggle" href="#">
                     <i class="fas fa-bars"></i>
                 </a>
             </div>
-            <div style="right: 195px; position: absolute;" sec:authorize="isAnonymous()">
+
+            <div style="right: 155px; position: absolute;" sec:authorize="isAnonymous()">
                 <form action="/login" target="_parent">
                     <button class="btn_main" type="submit">Увійти</button>
                 </form>
             </div>
-            <div style="right: 185px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">
-                <p style="color: white;">/</p>
+            <div style="right: 145px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">
+                <p style="color: white;">|</p>
             </div>
             <div style="right: 38px; position: absolute;" sec:authorize="isAnonymous()">
                 <form action="/registration-page" target="_parent">
-                    <button class="btn_main">Зареєструватися</button>
+                    <button class="btn_main">Реєстрація</button>
                 </form>
             </div>
 
@@ -31,26 +32,22 @@
 
 <!--    </div>-->
     <script>
-        // function checkViewportWidth() {
-        //     if (window.innerWidth <= 1200) {
-        //         document.querySelector("body").classList.add("active");
-        //     } else {
-        //         document.querySelector("body").classList.remove("active");
-        //     }
-        // }
-        //
-        // window.addEventListener("DOMContentLoaded", checkViewportWidth);
-        // window.addEventListener("resize", checkViewportWidth);
+        // var hamburger = document.querySelector(".hamburger");
+        // var wrapper = document.querySelector(".wrapper");
+        // var menuToggle = document.querySelector(".menu-toggle");
+        // hamburger.addEventListener("click", function() {
+        //     document.querySelector("body").classList.toggle("active");
+        //     document.querySelector("body").classList.toggle("no_active");
+        //     wrapper.classList.toggle("active");
+        //     menuToggle.classList.toggle("active");
+        // });
 
         // var hamburger = document.querySelector(".hamburger");
+        // var overlay = document.querySelector(".overlay");
         // hamburger.addEventListener("click", function () {
         //     document.querySelector("body").classList.toggle("active");
-        // })
-        var hamburger = document.querySelector(".hamburger");
-        hamburger.addEventListener("click", function() {
-            document.querySelector("body").classList.toggle("active");
-            document.querySelector("body").classList.toggle("no_active");
-        });
+        //     overlay.style.display = "block";
+        // });
     </script>
 </header>
 <!--    </th:block>-->

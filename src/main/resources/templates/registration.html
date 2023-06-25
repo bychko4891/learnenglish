@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
+
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
@@ -14,7 +15,7 @@
                     <!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
                 </ol>
             </nav>
-            <div class="row">
+            <div class="row" style="margin: 0;">
             <div class="col-md-6 col-lg-7 block_left">
                 <div id="registrationPage">
                     <div class="box">
@@ -79,6 +80,7 @@
             </div>
             </div>
         </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>

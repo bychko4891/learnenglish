@@ -1,6 +1,6 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<div th:fragment="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="sidebar">
+<div class="sidebar" th:fragment="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!--    <div class="sidebar">-->
 
         <div class="profile" sec:authorize="isAnonymous()">
                             <img id="avatar" src="/images/logo.png" alt="Фото користувача">
@@ -76,8 +76,8 @@
 <!--                </a>-->
 <!--            </li>-->
         </ul>
-    </div>
-    <script type="text/javascript">
+<!--    </div>-->
+        <script type="text/javascript">
         $('document').ready(function () {
             $('.main-menu a').each(function () {
                 if ('https://localhost:8443' + $(this).attr('href') == window.location.href) {
