@@ -2,7 +2,6 @@ html,
 body {
     height: 100vh;
     width: 100vw;
-    scrollbar-width: thin;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -130,14 +129,16 @@ img {
     color: #a94442;
 }
 /* **** Alert message end **** */
-
+.row {
+    margin: 0;
+}
 .layout_page {
     /*display: block;*/
     max-width: 100%;
     width: calc(100% - 40px);
     height: calc(100vh - 90px);
     /*padding-left: 0;*/
-    padding: 5px;
+    /*padding: 5px;*/
     margin-left: 40px;
     margin-top: 40px;
     background: rgba(237, 241, 244, 0.90);
@@ -150,11 +151,21 @@ img {
         width: 100vw;
         margin-left: 0;
     }
+    .profile_container {
+        width: 100vw;
+        margin-left: 0;
+        margin-top: 5px;
+    }
 }
 @media (min-width: 1081px) {
     .layout_page {
-        /*width: calc(100vw - 40px);*/
-        /*margin-left: 40px;*/
+        width: calc(100vw - 40px);
+        margin-left: 40px;
+    }
+    .profile_container {
+        width: calc(100vw - 40px);
+        margin-left: 40px;
+        margin-top: 10px;
     }
 }
 
@@ -272,7 +283,7 @@ button.hidden {
 .block_left {
     display: flex;
     /*padding: 0px 0px 0px 16px;*/
-    justify-content: center;
+    /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
 }
@@ -353,7 +364,9 @@ textarea {
 }
 
 textarea {
-    min-width: 400px;
+    width: 70vw;
+    min-width: 200px;
+    max-width: 500px;
 }
 
 #result-error {
@@ -515,7 +528,13 @@ textarea {
     overflow: auto;
 }
 
-/*!*!* ----------     Tabs  Start -------------*!*!*/
+/*!*!* ----------     Tabs  Start --------------------------------------------------------------------------------------------------------------------*!*!*/
+/*.profile_container {*/
+/*    !*width: calc(100vw - 40px);*!*/
+/*    !*margin-left: 40px;*!*/
+/*    !*margin-top: 10px;*!*/
+/*}*/
+ /* !!!!!!!!!!!!!!!!!!      не чипати   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ____________________________________   */
 
 * {
     font-family: "Work Sans", sans-serif;
@@ -540,9 +559,9 @@ label, a {
     display: grid;
     height: 100%;
     width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: hidden;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr 1fr;
 }
@@ -553,9 +572,36 @@ label, a {
     width: 100%;
     padding-left: 0;
     padding-right: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+@media screen and (max-width: 1280px) {
+    .layout_lesson {
+        grid-template-columns: 1fr; /* Зміна на одну колонку */
+    }
+    .layout {
+        grid-template-columns: 1fr; /* Зміна на одну колонку */
+    }
+
+    input[type=radio] + .page {
+        transform: translateX(0%);
+        grid-column-start: 1; /* Займати весь рядок */
+        grid-column-end: span 1; /* Займати весь рядок */
+    }
+
+    .nav {
+        flex-basis: auto; /* Скасувати гнучку ширину */
+    }
+}
+
+label.nav {
+    display: block; /* Зміна відображення на блочний елемент */
+    text-align: center; /* Вирівнювання тексту по центру */
+    padding: 10px 0; /* Зміна відступів */
 }
 
 input[type=radio] {
@@ -754,12 +800,12 @@ input[type=radio]:checked + .page .page-contents > * {
     font-weight: normal;
     font-style: normal;
 }
-.profile_tabs::before {
-    content: '\f007';
-    font-family: fontAwesome;
-    font-weight: normal;
-    font-style: normal;
-}
+/*.profile_tabs::before {*/
+/*    content: '\f007';*/
+/*    font-family: fontAwesome;*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
 .profile_edit::before {
     content: '\f4ff';
     font-family: fontAwesome;

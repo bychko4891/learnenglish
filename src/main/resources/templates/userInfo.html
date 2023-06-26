@@ -3,205 +3,259 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
 <link rel="stylesheet" th:href="@{/css/dycalendar.css}" >
+
+<style>
+
+    .profile_tabs {
+        background: #FFFFFF;
+        height: calc(100vh - 110px);
+        position: relative;
+        margin-top: 30px;
+        border-top: 2px solid;
+        border-bottom: 2px solid;
+        /*box-shadow: 2px 5px 20px rgba(119, 119, 119, 0.5);*/
+    }
+    .profile_tabs input[name=tab-control] {
+        display: none;
+    }
+    .leftbox {
+        float: left;
+        top: -30px;
+        left: 2%;
+        position: absolute;
+        width: 5%;
+        min-width: 90px;
+        height: calc(100vh - 55px);
+        background: #7ED386;
+        box-shadow: 3px 3px 10px rgba(119, 119, 119, 0.5);
+    }
+
+    nav label {
+        list-style: none;
+        padding: 35px;
+        color: #FFFFFF;
+        font-size: 1.1em;
+        display: block;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    nav label:hover {
+        color: #3FB6A8;
+        transform: scale(1.2);
+        /*cursor: pointer;*/
+    }
+
+    nav label:first-child {
+        margin-top: 7px;
+        cursor: pointer;
+    }
+
+    .right_box {
+        float: right;
+        width: 88%;
+        height: 100%;
+    }
+
+    section {
+        transition: opacity 0.5s ease-in;
+        position: absolute;
+        width: 70%;
+        padding-left: 50px;
+    }
+
+
+
+    p {
+        border-width: 1px;
+        border-style: solid;
+        border-image: linear-gradient(to right, #3FB6A8, rgba(126, 211, 134, 0.5)) 1 0%;
+        border-top: 0;
+        width: 80%;
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.7em;
+        padding: 7px 0;
+        color: #070707;
+    }
+
+    .btn {
+        float: right;
+        font-family: "Roboto", sans-serif;
+        text-transform: uppercase;
+        font-size: 10px;
+        border: none;
+        color: #3FB6A8;
+    }
+
+    .btn:hover {
+        text-decoration: underline;
+        font-weight: 900;
+    }
+
+
+    .privacy h2 {
+        margin-top: 25px;
+    }
+
+    .settings h2 {
+        margin-top: 25px;
+    }
+
+    .profile_tabs .right_box section {
+        display: none;
+        /*-webkit-animation-name: content;*/
+        /*animation-name: content;*/
+        /*-webkit-animation-direction: normal;*/
+        /*animation-direction: normal;*/
+        /*-webkit-animation-duration: 0.3s;*/
+        /*animation-duration: 0.3s;*/
+        /*-webkit-animation-timing-function: ease-in-out;*/
+        /*animation-timing-function: ease-in-out;*/
+        /*-webkit-animation-iteration-count: 1;*/
+        /*animation-iteration-count: 1;*/
+        /*line-height: 1.4;*/
+    }
+
+    .profile_tabs input[name=tab-control]:nth-of-type(1):checked ~ .right_box > section:nth-child(1) {
+        display: block;
+    }
+    .profile_tabs input[name=tab-control]:nth-of-type(2):checked ~ .right_box > section:nth-child(2) {
+        display: block;
+    }
+    .profile_tabs input[name=tab-control]:nth-of-type(3):checked ~ .right_box > section:nth-child(3) {
+        display: block;
+    }
+    .profile_tabs input[name=tab-control]:nth-of-type(4):checked ~ .right_box > section:nth-child(4) {
+        display: block;
+    }
+    .profile_tabs input[name=tab-control]:nth-of-type(5):checked ~ .right_box > section:nth-child(5) {
+        display: block;
+    }
+</style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
-
         <header th:replace="~{fragments/header :: header}"></header>
+<!--        <div class="layout_page">-->
+        <div class="profile_container">
 
-        <div class="container layout_page row">
+        <div class="profile_tabs">
+
+            <input type="radio" name="tab-control" id="profile" checked>
+            <input type="radio" name="tab-control" id="payment">
+            <input type="radio" name="tab-control" id="subscription">
+            <input type="radio" name="tab-control" id="privacy">
+            <input type="radio" name="tab-control" id="settings">
 
 
-            <div class="layout">
-                <input name="nav" type="radio" class="nav home-radio" id="home" checked="checked"/>
-                <div class="page about-page">
-                    <!--                    <div class="page-contents">-->
-                    <main class="col-md-6 col-lg-7 block_left">
-                        <h3>Особиста інформація</h3>
+
+            <div class="leftbox">
+                <nav>
+                    <label for="profile"><i class="fa fa-user"></i></label>
+                    <label for="payment"><i class="fa-solid fa-image"></i></label>
+                    <label for="subscription"><i class="fa-solid fa-key"></i></i></label>
+                    <label for="privacy"><i class="fa fa-tasks"></i></label>
+                    <label for="settings"><i class="fa fa-cog"></i></label>
+                </nav>
+            </div>
+
+            <div class="right_box">
+
+                <section>
+                    <h1>Personal Info</h1>
+                    <h5>Full Name</h5>
+                    <p>Julie Park
+                        <button class="btn">update</button>
+                    </p>
+                    <h5>Birthday</h5>
+                    <p>July 21</p>
+                    <h5>Gender</h5>
+                    <p>Female</p>
+                    <h5>Email</h5>
+                    <p>example@example.com
+                        <button class="btn">update</button>
+                    </p>
+                    <h5>Password </h5>
+                    <p>•••••••
+                        <button class="btn">Change</button>
+                    </p>
+                </section>
+
+
+                <section>
+                    <h5>Змінити аватар</h5><br>
+                    <div class="demo-wrap upload-demo">
+                        <div class="actions">
+                            <a class="btn file-btn">
+                                <span>Виберіть фото</span>
+                                <input type="file" id="upload" accept="image/*">
+                            </a>
+                            <button id="crop">Готово</button>
+                        </div>
+                        <div id="upload-demo-wrap">
+                            <div id="upload-demo"></div>
+                        </div>
+                        <br><br>
+                    </div>
+                </section>
+
+
+                <section>
+                    <h5>Змінити пароль</h5>
+                    <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}" method="post">
                         <table class="profile-edit">
                             <tr>
                                 <td>
-                                    <label class="label-profile"><b>Ім'я:</b></label>
+                                    <label class="label-profile" for="old-password">Пароль:</label>
                                 </td>
                                 <td>
-                                    <p th:text="${session.userFirstName}"></p>
+                                    <input type="password" class="input" id="old-password" name="password">
+                                    <div id="password-edit-error" style="color: red"></div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="last-name"><b>Призвіще:</b></label>
+                                    <label>Новий пароль:</label>
                                 </td>
                                 <td>
-                                    <p th:text="${session.userLastName}"></p>
+                                    <input type="password" class="input" th:attr="id='psw'" name="newPassword">
+                                    <span id="toggleBtn"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="last-name"><b>Дата реєстрації:</b></label>
+                                    <!--                                            <label for="newPassword">Новий пароль:</label>-->
                                 </td>
                                 <td>
-                                    <p th:text="${#temporals.format(session.userDateOfCreated, 'dd.MM.yyyy')}"></p>
+                                    <div class="validation">
+                                        <ul>
+                                            <li id="lover">Мінімум один символ у нижньому регістрі</li>
+                                            <li id="upper">Мінімум один символ верхнього регістру</li>
+                                            <li id="number">Мінімум одна цифра</li>
+                                            <li id="special">Мінімум один спеціальний символ</li>
+                                            <li id="length">Довжина - щонайменше 8 символів</li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label for="last-name"><b>Email:</b></label>
-                                </td>
-                                <td>
-                                    <p th:text="${session.username}"></p>
-                                </td>
-                            </tr>
-                            <!--                                                <tr>-->
-                            <!--                                                    <td>-->
-                            <!--                                                        <label for="message">Повідомлення:</label>-->
-                            <!--                                                    </td>-->
-                            <!--                                                    <td>-->
-                            <!--                                                        <textarea id="message" name="message"></textarea>-->
-                            <!--                                                    </td>-->
-                            <!--                                                </tr>-->
                         </table>
-                    </main>
-                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
-                        <h3>Календар занять</h3>
-                        <div class="box_calendar" style="padding-top: 10px;">
-                            <div class="container_calendar">
-                                <div id="calendar"></div>
-                            </div>
-                            <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
-                        </div>
-                        <!--                        Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
-                        <!--                        Logged user: <span sec:authentication="name"></span>-->
-                        <!--                        <p>Welcome, <span th:text="${session.username}"></span>!</p>-->
-                        <!--                        <p>Your roles: <span th:each="authority : ${session.authorities}" th:text="${authority.authority} + ' '"></span></p>-->
-                        <!--                        <p>Your avatar name: <span th:text="${session.avatarName}"></span></p>-->
-                    </div>
-                </div>
-                <label class="nav" for="home">
-                    <span class="profile_tabs"> Профіль</span>
-                </label>
-                <input name="nav" type="radio" class="about-radio" id="about"/>
-                <div class="page about-page">
-                    <!--                    <div class="page-contents">-->
-                    <main class="col-md-6 col-lg-7 block_left">
-
-                        <h5>Змінити особисті данні</h5>
-                        <form id="update_profile" th:action="@{/user/{id}/edit(id = ${session.userId})}" method="post">
-                            <table class="profile-edit">
-                                <tr>
-                                    <td>
-                                        <label class="label-profile" for="first-name">Ім'я:</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="input" id="first-name"
-                                               name="firstName" th:value="${user.getFirstName()}">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label for="last-name">Призвіще:</label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="input" id="last-name"
-                                               name="lastName" th:value="${user.getLastName()}">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label for="last-name">Стать:</label>
-                                    </td>
-                                    <td>
-                                        <input type="radio" id="male" name="gender" value="MALE" th:field="${user.gender}" checked="checked" style="display: inline-block;">
-                                        <label for="male">Чоловік</label>
-
-                                        <input type="radio" id="female" name="gender" value="FEMALE" th:field="${user.gender}" style="display: inline-block;">
-                                        <label for="female">Жінка</label>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--                                                <input type="hidden" name="_csrf" th:value="${_csrf}">-->
-                            <br>
-                            <button type="submit" id="save-button">Оновити данні</button>
-                        </form>
-                        <div id="resultDivError"></div>
-                        <div id="resultDivSuccess" style="color: #0f5132"></div>
-
-                        <br><h5>Змінити пароль</h5>
-                        <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}" method="post">
-                            <table class="profile-edit">
-                                <tr>
-                                    <td>
-                                        <label class="label-profile" for="old-password">Пароль:</label>
-                                    </td>
-                                    <td>
-                                        <input type="password" class="input" id="old-password" name="password">
-                                        <div id="password-edit-error" style="color: red"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Новий пароль:</label>
-                                    </td>
-                                    <td>
-                                        <input type="password" class="input" th:attr="id='psw'" name="newPassword">
-                                        <span id="toggleBtn"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <!--                                            <label for="newPassword">Новий пароль:</label>-->
-                                    </td>
-                                    <td>
-                                        <div class="validation">
-                                            <ul>
-                                                <li id="lover">At least one lowercase character</li>
-                                                <li id="upper">At least one uppercase character</li>
-                                                <li id="number">At least one number</li>
-                                                <li id="special">At least one special character</li>
-                                                <li id="length">At least 8 character</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div id="password-edit-success" style="color: darkgreen"></div>
-                            <br>
-                            <button type="submit">Змінити пароль</button>
-                        </form>
+                        <div id="password-edit-success" style="color: darkgreen"></div>
                         <br>
-                        <h5>Видалити профіль</h5>
-                        <p style="font-size: 14px;"><strong><span style="color: #e03e2d; font-size: 16px;">Увага, цю дію неможливо буде відмінити!</span> </strong>
-                            Якщо Ви видалите свій аккаунт, також буде видалена вся інформація, пов'язана з вашим профілем і відновити її не буде можливості.</p>
-                        <form class="inline-container">
-                            <span style="padding-top: 10px;">Підтвердити видалення&nbsp;&nbsp;</span>
-                            <input type="checkbox" class="checkbox" style="margin-right: 230px;">
-                            <button type="button">Видалити профіль</button>
-                        </form>
-                    </main>
-                    <div class="col-md-6 col-lg-5 block_right" style="padding-bottom: 210px;">
-                        <h5>Змінити аватар</h5><br>
-                        <div class="demo-wrap upload-demo">
-                            <div class="actions">
-                                <a class="btn file-btn">
-                                    <span>Виберіть фото</span>
-                                    <input type="file" id="upload" accept="image/*">
-                                </a>
-                                <button id="crop">Готово</button>
-                            </div>
-                            <div id="upload-demo-wrap">
-                                <div id="upload-demo"></div>
-                            </div>
-                            <br><br>
-                        </div>
-                        <!--                                    <img th:src="@{/avatar/{avatarName}(avatarName = ${avatarName})}"/>-->
+                        <button type="submit">Змінити пароль</button>
+                    </form>
+                </section>
 
-                    </div>
-                </div>
-                <label class="nav" for="about">
-                    <span class="profile_edit"> Редагувати профіль</span>
-                </label>
+
+                <section>
+                    <h1>Вміст для платежів 3</h1>
+                </section>
+
+                <section>
+                    <h1>Вміст для платежів 4</h1>
+                </section>
             </div>
-
+        </div>
 
 
 

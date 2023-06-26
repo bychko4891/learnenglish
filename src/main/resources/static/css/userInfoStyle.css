@@ -20,9 +20,10 @@
     overflow: hidden;
 }
 
-.croppie-container {
-    width: 500px;
-    height: 400px;
+#upload-demo.croppie-container {
+    width: 90vw;
+    max-width: 500px;
+    height: 300px; /* Встановлюємо початкову висоту 0 */
     position: relative;
 }
 

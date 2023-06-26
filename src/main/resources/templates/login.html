@@ -12,54 +12,48 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Головна</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="/login">Авторизація</a></li>
-<!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
                 </ol>
             </nav>
-<div class="row" style="margin: 0;">
-        <div class="col-md-6 col-lg-7 block_left">
-            <h3>Авторизація</h3>
-            <div class="box">
-                <div class="box-registration">
-                    <div class="form-registration">
-                        <h3 style="color: white">Увійти в додаток</h3><br>
-                        <form th:action="@{/login}" method="post">
-                            <br>
-                            <div class="inputBox">
-                                <input type="email" required name="username">
-                                <span class="span-text">Email</span>
+            <div class="row">
+                <div class="col-md-6 col-lg-7 block_left">
+                    <h3>Авторизація</h3>
+                    <div class="box">
+                        <div class="box-registration">
+                            <div class="form-registration">
+                                <h3 style="color: white">Увійти в додаток</h3><br>
+                                <form th:action="@{/login}" method="post">
+                                    <br>
+                                    <div class="inputBox">
+                                        <input type="email" required name="username">
+                                        <span class="span-text">Email</span>
+                                    </div>
+                                    <br>
+                                    <div class="inputBox">
+                                        <input type="password" required name="password" th:attr="id='pswLogin'">
+                                        <span class="span-text">Пароль</span>
+                                        <span id="toggleBtn"></span>
+                                    </div>
+                                    <div style="color: whitesmoke; padding-top: 10px;">
+                                        <a href="/forgot-password">Відновити пароль</a>
+                                    </div>
+                                    <div style="padding-left: 65px; padding-top: 50px;">
+                                        <button type="submit">Увійти</button>
+                                    </div>
+                                </form>
+                                <br>
+                                <h5 th:text="${message}"></h5>
+                                <div th:text="${error}" style="color: red"></div>
+                                <div th:text="${logout}" style="color: #47f847"></div>
                             </div>
-                            <br>
-                            <div class="inputBox">
-                                <input type="password" required name="password" th:attr="id='pswLogin'">
-                                <span class="span-text">Пароль</span>
-                                <span id="toggleBtn"></span>
-                            </div>
-                            <div style="color: whitesmoke; padding-top: 10px;">
-                                <a href="/forgot-password">Відновити пароль</a>
-                            </div>
-                            <div style="padding-left: 65px; padding-top: 50px;">
-                                <button type="submit">Увійти</button>
-                            </div>
-                        </form>
-                        <br>
-                        <h5 th:text="${message}"></h5>
-                        <div th:text="${error}" style="color: red"></div>
-                        <div th:text="${logout}"style="color: #47f847"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5 block_right">
+                    <div class="row">
+                        <div th:utext="${pageText}"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 col-lg-5 block_right">
-            <div class="row">
-                <div th:utext="${pageText}"></div>
-                <!--                    <h4>Умови реєстрації на Learn English</h4><br>-->
-                <!--                    <p>Какойто текст Какойто текст Какойто текст Какойто текст Какойто текст К-->
-                <!--                        акойто текст Какойто текст Какойто текст Какойто текст Какойто текст </p>-->
-
-            </div>
-        </div>
-        </div>
-
 
 
         </div>
