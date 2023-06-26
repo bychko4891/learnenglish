@@ -15,7 +15,7 @@ public enum Message {
     ERRORVALIDATETEXT("Error","Щось пішло не так! Ви не пройшли валідацію текста"),
     ERRORNULLRELOAD("Error","Ви ще не завантажили жодного текста для навчання"),
     ERRORLOGIN("Error", " Ви не авторизувались і не можете завантажувати текст"),
-    ERROR_UPDATEPASSWORD("Error", "Паролі не співпадають"),
+    ERROR_UPDATEPASSWORD("Error", "Не вірний поточний пароль"),
     SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено"),
     SUCCESS_CREATELESSON("Success", "Нове заняття створено"),
     ERROR_CREATELESSON("Success", "Виникла помилка в створенні заняття"),

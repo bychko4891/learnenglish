@@ -1,9 +1,9 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
 <div class="sidebarMobile" th:fragment="menuMobile" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="close_menu">
-        <a style="z-index: 9999;" class="menu-toggle" href="#">
-            <i class="fas fa-times"></i>
-        </a>
+        <span sec:authorize="isAuthenticated()">Learn English</span>
+        <span sec:authorize="isAnonymous()" style="opacity: 0">Learn English</span>
+        <a href="#"><i class="fas fa-times"></i></a>
     </div>
 
     <div class="profile" sec:authorize="isAnonymous()">

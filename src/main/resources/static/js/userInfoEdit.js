@@ -17,8 +17,6 @@ function reloadValue() {
 }
 
 $(document).ready(function () {
-    var resultDivSuccess = $('#resultDivSuccess');
-    var resultDivError = $('#resultDivError');
     $('#update_profile').submit(function (event) {
         event.preventDefault();
         var url = $(this).attr('action');
@@ -31,14 +29,12 @@ $(document).ready(function () {
                     data: formData,
                     success: function (result) {
                         reloadValue();
-                        resultDivSuccess.text(result);
-                        setTimeout(hideMessageSuccess, 5000);
+                        showSuccessToast(result);
                     },
                     error: function () {
                         let shel = {};
                         alert(Boolean(shel))
-                        resultDivError.text('Помилка запиту на сервер');
-                        setTimeout(hideMessageError, 5000);
+                        showErrorToast('Помилка запиту на сервер');
                     }
                 });
             } else {
@@ -47,19 +43,9 @@ $(document).ready(function () {
                 return;
             }
         } else {
-            console.log("console info: Інформація успішно оновлена");
-            resultDivSuccess.text("Інформація успішно оновлена");
-            setTimeout(hideMessageSuccess, 5000);
+            showSuccessToast("Інформація успішно оновлена");
         }
     });
-
-    function hideMessageSuccess() {
-        resultDivSuccess.text('');
-    }
-
-    function hideMessageError() {
-        resultDivError.text('');
-    }
 });
 
 function checkUserInfo(data) {
@@ -81,8 +67,6 @@ function checkUserInfo(data) {
 
 //********  Update Password User  START  *************** //
 $(document).ready(function () {
-    var resultDivSuccess = $('#password-edit-success');
-    var resultDivError = $('#password-edit-error');
     $('#update_password').submit(function (event) {
         event.preventDefault();
         var url = $(this).attr('action');
@@ -101,18 +85,15 @@ $(document).ready(function () {
                         $('input[name="password"]').val('');
                         $('input[name="newPassword"]').val('');
                         // Отримуємо div-елемент, в який ми будемо поміщати повідомлення
-                        resultDivSuccess.text(result.message);
-                        setTimeout(hideMessageSuccess, 5000);
+                        showSuccessToast(result.message);
                     } else {
-                        resultDivError.text(result.message);
-                        setTimeout(hideMessageError, 5000);
+                        showErrorToast(result.message);
                     }
                 },
                 error: function () {
                     let shel = {};
                     alert(Boolean(shel))
-                    // Поміщаємо повідомлення про помилку в div-елемент
-                    resultDivError.text('Помилка запиту на сервер');
+                    showErrorToast('Помилка запиту на сервер');
                 }
             });
         } else {
@@ -122,14 +103,6 @@ $(document).ready(function () {
         }
     });
 
-
-    function hideMessageSuccess() {
-        resultDivSuccess.text('');
-    }
-
-    function hideMessageError() {
-        resultDivError.text('');
-    }
 
     let psw = document.getElementById('psw');
     let toggleBtn = document.getElementById('toggleBtn');
