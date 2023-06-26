@@ -42,15 +42,18 @@
         transition: all 0.3s ease-in-out;
         cursor: pointer;
     }
+
     /* *****************    media запит    ******************************** */
     @media (max-width: 1080px) {
         .right_box {
             width: 79%;
         }
+
         nav label {
             padding: 3vh 25px;
             font-size: 1.8em;
         }
+
         .left_box {
             top: 0;
             left: 0;
@@ -58,13 +61,21 @@
             min-width: 80px;
             height: calc(100vh - 83px);
         }
+
         .profile_tabs {
             height: calc(100vh - 80px);
         }
+        .user_avatar_profile {
+            display: block;
+        }
     }
+
     @media (min-width: 1081px) {
         .right_box {
             width: 88%;
+        }
+        .user_avatar_profile {
+            display: none;
         }
     }
 
@@ -180,24 +191,27 @@
     .profile_tabs input[name=tab-control]:nth-of-type(5):checked ~ .right_box > section:nth-child(5) {
         display: block;
     }
+
+.user_avatar_profile img{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border: 2px solid rgb(50 50 50);
+    border-radius: 50%;
+}
 </style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <!--        <div class="layout_page">-->
         <div class="profile_container">
-
             <div class="profile_tabs">
-
                 <input type="radio" name="tab-control" id="profile" checked>
                 <input type="radio" name="tab-control" id="payment">
                 <input type="radio" name="tab-control" id="subscription">
                 <input type="radio" name="tab-control" id="privacy">
                 <input type="radio" name="tab-control" id="settings">
-
-
                 <div class="left_box">
                     <nav>
                         <label for="profile"><i class="fa fa-user"></i></label>
@@ -207,9 +221,7 @@
                         <label for="settings"><i class="fa fa-cog"></i></label>
                     </nav>
                 </div>
-
                 <div class="right_box">
-
                     <section>
                         <h1>Персональна інформація</h1>
                         <form id="update_profile" th:action="@{/user/{id}/edit(id = ${session.userId})}" method="post">
@@ -231,17 +243,14 @@
                             <p th:text="${session.username}">
                             <h5>Дата реєстрації:</h5>
                             <p th:text="${#temporals.format(session.userDateOfCreated, 'dd.MM.yyyy')}"></p>
-                            <!--                    <h5>Password </h5>-->
-                            <!--                    <p>•••••••-->
-                            <!--                        <button class="btn">Change</button>-->
-                            <!--                    </p>-->
                             <button type="submit" id="save-button">Оновити данні</button>
                         </form>
                     </section>
-
-
                     <section>
                         <h1>Змінити аватар</h1><br>
+                        <div class="user_avatar_profile">
+                        <img th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
+                        </div>
                         <div class="demo-wrap upload-demo">
                             <div class="actions">
                                 <a class="btn file-btn">
@@ -256,8 +265,6 @@
                             <br><br>
                         </div>
                     </section>
-
-
                     <section>
                         <h1>Змінити пароль</h1>
                         <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}"
@@ -288,8 +295,6 @@
                             <button type="submit">Змінити пароль</button>
                         </form>
                     </section>
-
-
                     <section>
                         <h1>Вміст для платежів 3</h1>
                     </section>
@@ -299,8 +304,6 @@
                     </section>
                 </div>
             </div>
-
-
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>

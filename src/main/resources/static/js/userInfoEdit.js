@@ -7,13 +7,11 @@ var initialLastNameValue;
 $(document).ready(function () {
     initialFirstNameValue = firstNameInput.value;
     initialLastNameValue = lastNameInput.value;
-
 });
 
 function reloadValue() {
     initialFirstNameValue = firstNameInput.value;
     initialLastNameValue = lastNameInput.value;
-
 }
 
 $(document).ready(function () {
