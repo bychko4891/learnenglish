@@ -46,7 +46,37 @@
 <script type="text/javascript" th:src="@{/js/textOfAppPage.js}"></script>
 
 <script>
+  // Отримуємо посилання на елементи select
+  const entitySelect = document.getElementById('entitySelect');
+  const subcategorySelect = document.getElementById('subcategorySelect');
 
+  // Додаємо обробник події "зміни" до entitySelect
+  entitySelect.addEventListener('change', function() {
+    const selectedCategoryId = entitySelect.value;
+
+    // Виконуємо AJAX-запит до сервера, щоб отримати підкатегорії
+    // Замість URL нижче вкажіть URL вашого серверного ендпоінту, який повертає список підкатегорій для вибраної категорії
+    fetch(`/getSubcategories?categoryId=${selectedCategoryId}`)
+            .then(response => response.json())
+            .then(subcategories => {
+              // Очищаємо попередні підкатегорії
+              subcategorySelect.innerHTML = '';
+
+              // Додаємо нові підкатегорії до subcategorySelect
+              subcategories.forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory.id;
+                option.text = subcategory.name;
+                subcategorySelect.appendChild(option);
+              });
+
+              // Показуємо subcategorySelect, якщо є підкатегорії
+              subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+            })
+            .catch(error => {
+              console.error('Помилка при отриманні підкатегорій:', error);
+            });
+  });
 </script>
 </body>
 </html>
