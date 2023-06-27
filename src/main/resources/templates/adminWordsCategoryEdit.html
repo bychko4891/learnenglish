@@ -1,0 +1,52 @@
+<!DOCTYPE HTML >
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<div class="wrapper">
+  <header th:replace="~{fragments/header :: header}"></header>
+  <div class="sidebar">
+    <div th:replace="~{fragments/menu :: menu}"></div>
+  </div>
+  <main class="section main_content ">
+    <div class="container layout_page">
+      <h1>New text page</h1>
+      <form id="wordCategory">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" th:value="${wordCategory.name}" required>
+        <label>Батьківська категорія:</label> <label th:text="${wordCategory.parentCategory}"></label>
+        <label for="mainCategory">| Змінити категорію: </label>
+        <select id="mainCategory" name="selectedPageApplication">
+          <option name="id" value="0">Оберіть категорію</option>
+          <option th:each="wordCategory : ${mainWordsCategories}" th:value="${wordCategory.id}"
+                  th:text="${wordCategory.name}" th:data-page-address="${pageApplication.address}">
+          </option>
+        </select>
+        <select id="subcategory" name="selectedPageApplication">
+          <option name="id" value="0">Оберіть підкатегорію</option>
+        </select>
+        <hr>
+        <label for="lessonInfo">Текст:</label>
+        <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
+        <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
+        <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
+        <input type="hidden" name="pageApplication" th:value="${textOfAppPage.pageApplication}">
+        <button type="submit">Зберегти</button>
+      </form>
+      <!--            <div id="alertContainer"></div>-->
+      <div id="resultDivError" style="color: #e03e2d; font-size: 18px; font-weight: 600;"></div>
+      <div id="resultDivSuccess" style="color: #0f5132; font-size: 18px; font-weight: 600;"></div>
+    </div>
+  </main>
+  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+</div>
+
+<script type="text/javascript" th:src="@{/js/textOfAppPage.js}"></script>
+
+<script>
+
+</script>
+</body>
+</html>

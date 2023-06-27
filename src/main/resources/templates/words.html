@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<body class="active">
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page">
+<!--      <div th:utext="${mainTop}" style="padding: 40px 40px 10px 40px;"></div>-->
+
+
+<!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
+    </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

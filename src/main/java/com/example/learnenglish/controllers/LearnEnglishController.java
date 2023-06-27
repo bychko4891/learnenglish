@@ -97,4 +97,9 @@ public class LearnEnglishController {
         return "redirect:/login";
     }
 
+    @GetMapping(name = "/words")
+    public String words(Model model) {
+        return "words";
+    }
+
 }

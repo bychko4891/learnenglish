@@ -6,10 +6,7 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.PageApplication;
-import com.example.learnenglish.model.TextOfAppPage;
-import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -36,17 +33,22 @@ public class AdminController {
     private final TranslationPairService translationPairService;
     private final TextOfAppPageService textOfAppPageService;
     private final PageApplicationService pageApplicationService;
+    private final WordCategoryService wordCategoryService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
                            UserService userService,
-                           TranslationPairService translationPairService, TextOfAppPageService textOfAppPageService, PageApplicationService pageApplicationService) {
+                           TranslationPairService translationPairService,
+                           TextOfAppPageService textOfAppPageService,
+                           PageApplicationService pageApplicationService,
+                           WordCategoryService wordCategoryService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
         this.translationPairService = translationPairService;
         this.textOfAppPageService = textOfAppPageService;
         this.pageApplicationService = pageApplicationService;
+        this.wordCategoryService = wordCategoryService;
     }
 
 
@@ -155,8 +157,8 @@ public class AdminController {
     public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
         if (principal != null) {
             Long count = lessonService.countLessons() + 1;
-            if (count > 16) {
-                String message = "Дозволено максимум 16 уроків";
+            if (count > 17) {
+                String message = "Дозволено максимум 17 уроків";
                 redirectAttributes.addAttribute("message", message);
                 return "redirect:/admin-page/lessons";
             }
@@ -207,6 +209,45 @@ public class AdminController {
             return "adminTranslationPairs";
         }
         return "redirect:/login";
+    }
+    @GetMapping("/words")
+    public String words(Model model, Principal principal) {
+
+        return "adminWords";
+    }
+    @GetMapping("/words-category")
+    public String wordsCategory(Model model, Principal principal) {
+
+        return "adminWords";
+    }
+
+    @GetMapping("/words-category/new-category")
+    public String wordsCategoryNewCategory(Principal principal) {
+        if (principal != null) {
+            Long count = wordCategoryService.countWordCategory() + 1;
+            return "redirect:/admin-page/" + count + "/category-create";
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/{id}/category-create")
+    public String wordsCategoryCategoryCreate(@PathVariable("id")Long id, Model model, Principal principal) {
+        if (principal != null) {
+            List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            if(mainWordsCategories != null){
+                model.addAttribute("mainWordsCategories", mainWordsCategories);
+            }
+            WordCategory wordCategory = new WordCategory();
+            wordCategory.setId(id);
+            wordCategory.setName("Enter name category");
+            model.addAttribute("wordCategory", wordCategory);
+            return "adminWordsCategoryEdit";
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/words-category/edit")
+    public String wordsCategoryEdit(Model model, Principal principal) {
+
+        return "adminWords";
     }
 
 }

@@ -18,6 +18,9 @@ public class Word {
     private String name;
 
     @Column
+    private String translate;
+
+    @Column(name = "text", columnDefinition = "text")
     private String text;
 
     @ManyToOne
