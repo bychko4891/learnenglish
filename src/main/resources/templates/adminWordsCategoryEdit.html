@@ -6,77 +6,141 @@
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <div class="wrapper">
-  <header th:replace="~{fragments/header :: header}"></header>
-  <div class="sidebar">
-    <div th:replace="~{fragments/menu :: menu}"></div>
-  </div>
-  <main class="section main_content ">
-    <div class="container layout_page">
-      <h1>New text page</h1>
-      <form id="wordCategory">
-        <label for="name">Назва:</label>
-        <input type="text" id="name" name="name" th:value="${wordCategory.name}" required>
-        <label>Батьківська категорія:</label> <label th:text="${wordCategory.parentCategory}"></label>
-        <label for="mainCategory">| Змінити категорію: </label>
-        <select id="mainCategory" name="selectedPageApplication">
-          <option name="id" value="0">Оберіть категорію</option>
-          <option th:each="wordCategory : ${mainWordsCategories}" th:value="${wordCategory.id}"
-                  th:text="${wordCategory.name}" th:data-page-address="${pageApplication.address}">
-          </option>
-        </select>
-        <select id="subcategory" name="selectedPageApplication">
-          <option name="id" value="0">Оберіть підкатегорію</option>
-        </select>
-        <hr>
-        <label for="lessonInfo">Текст:</label>
-        <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
-        <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
-        <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
-        <input type="hidden" name="pageApplication" th:value="${textOfAppPage.pageApplication}">
-        <button type="submit">Зберегти</button>
-      </form>
-      <!--            <div id="alertContainer"></div>-->
-      <div id="resultDivError" style="color: #e03e2d; font-size: 18px; font-weight: 600;"></div>
-      <div id="resultDivSuccess" style="color: #0f5132; font-size: 18px; font-weight: 600;"></div>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-  </main>
-  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <h1>New text page</h1>
+            <form id="wordCategory">
+                <label for="name">Назва:</label>
+                <input type="text" id="name" name="name" th:value="${wordCategory.name}" required>
+                <label>Батьківська категорія:</label> <label th:text="${parentCategory}"></label>
+                <label for="mainCategorySelect">| Змінити категорію: </label>
+                <select id="mainCategorySelect" name="selectedPageApplication">
+                    <option name="id" value="0">Оберіть категорію</option>
+                    <option th:each="wordCategory : ${mainWordsCategories}" th:value="${wordCategory.id}"
+                            th:text="${wordCategory.name}">
+                    </option>
+                </select>
+                <select id="subcategorySelect" name="mainCategorySelect">
+                    <option name="id" value="0">Оберіть підкатегорію</option>
+                </select>
+                <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
+                <input id="toggleSwitch" type="checkbox" th:checked="${wordCategory.mainCategory}" class="toggle-switch" name="mainCategory" >
+                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <hr>
+                <label for="wordCategoryInfo">Текст:</label>
+                <textarea id="wordCategoryInfo" name="info" th:text="${wordCategory.info}" required></textarea>
+                <input type="hidden" name="id" th:value="${wordCategory.id}" required>
+                <button type="submit">Зберегти</button>
+            </form>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 
-<script type="text/javascript" th:src="@{/js/textOfAppPage.js}"></script>
 
 <script>
-  // Отримуємо посилання на елементи select
-  const entitySelect = document.getElementById('entitySelect');
-  const subcategorySelect = document.getElementById('subcategorySelect');
+    tinymce.init({
+        selector: 'textarea#wordCategoryInfo',
+        height: 500,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar:
+            'undo redo | formatselect |' +
+            ' bold italic underline forecolor | link image media table mergetags |' +
+            ' addcomment showcomments | spellcheckdialog code typography |' +
+            ' align lineheight | checklist numlist bullist indent outdent |' +
+            ' emoticons charmap | removeformat'
+        ,
+        content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tiny.cloud/css/codepen.min.css'
+        ],
+        api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
+        menubar: true,
+        statusbar: true,
+        branding: true
+    });
 
-  // Додаємо обробник події "зміни" до entitySelect
-  entitySelect.addEventListener('change', function() {
-    const selectedCategoryId = entitySelect.value;
-
-    // Виконуємо AJAX-запит до сервера, щоб отримати підкатегорії
-    // Замість URL нижче вкажіть URL вашого серверного ендпоінту, який повертає список підкатегорій для вибраної категорії
-    fetch(`/getSubcategories?categoryId=${selectedCategoryId}`)
+    $('#wordCategory').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        // var id = $('#wordCategory input[name="id"]').val();
+        var url = '/admin-page/category-save';
+        var wordsCategory = {
+            id: $('#wordCategory input[name="id"]').val(),
+            name: $('#wordCategory input[name="name"]').val(),
+            mainCategory: $('#toggleSwitch').is(':checked'),
+            info: $('#wordCategory textarea[name="info"]').val()
+        };
+        var mainCategorySelect = {
+            id: $('#mainCategorySelect').val()
+        };
+        var subcategorySelect = {
+            id: $('#subcategorySelect').val()
+        };
+        var data = {
+            wordsCategory: wordsCategory,
+            mainCategorySelect: mainCategorySelect,
+            subcategorySelect: subcategorySelect
+        };
+        $.ajax({
+            // url: $(this).attr('action'),
+            url: url,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message)
+                }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                showErrorToast('Помилка запиту на сервер');
+            }
+        });
+    });
+    $(document).ready(function () {
+    const mainCategorySelect = document.getElementById('mainCategorySelect');
+    const subcategorySelect = document.getElementById('subcategorySelect');
+    mainCategorySelect.addEventListener('change', function () {
+        const selectedCategoryId = mainCategorySelect.value;
+        fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
             .then(response => response.json())
             .then(subcategories => {
-              // Очищаємо попередні підкатегорії
-              subcategorySelect.innerHTML = '';
+                if (subcategories.length > 0) {
+                    // subcategorySelect.innerHTML = '';
+                    subcategories.forEach(subcategory => {
+                        const option = document.createElement('option');
+                        option.value = subcategory.id;
+                        option.text = subcategory.name;
+                        subcategorySelect.appendChild(option);
+                    });
 
-              // Додаємо нові підкатегорії до subcategorySelect
-              subcategories.forEach(subcategory => {
-                const option = document.createElement('option');
-                option.value = subcategory.id;
-                option.text = subcategory.name;
-                subcategorySelect.appendChild(option);
-              });
-
-              // Показуємо subcategorySelect, якщо є підкатегорії
-              subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                    // Показуємо subcategorySelect, якщо є підкатегорії
+                    // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                } else {}
             })
             .catch(error => {
-              console.error('Помилка при отриманні підкатегорій:', error);
+                console.error('Помилка при отриманні підкатегорій:', error);
             });
-  });
+    });
+    });
 </script>
 </body>
 </html>

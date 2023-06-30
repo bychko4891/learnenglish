@@ -210,15 +210,19 @@ public class AdminController {
         }
         return "redirect:/login";
     }
-    @GetMapping("/words")
+    @GetMapping("/words-main-page")
     public String words(Model model, Principal principal) {
 
-        return "adminWords";
+        return "adminWordsMainPage";
     }
-    @GetMapping("/words-category")
+    @GetMapping("/words-categories")
     public String wordsCategory(Model model, Principal principal) {
-
-        return "adminWords";
+        if (principal != null) {
+//            List<WordCategory> wordCategories = wordCategoryService.getWordsCategories();
+            model.addAttribute("wordCategories", wordCategoryService.getWordsCategories());
+            return "adminWordsCategories";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/words-category/new-category")
@@ -230,24 +234,36 @@ public class AdminController {
         return "redirect:/login";
     }
     @GetMapping("/{id}/category-create")
-    public String wordsCategoryCategoryCreate(@PathVariable("id")Long id, Model model, Principal principal) {
+    public String wordsCategoryCreate(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
             List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            model.addAttribute("parentCategory", "Відсутня");
             if(mainWordsCategories != null){
                 model.addAttribute("mainWordsCategories", mainWordsCategories);
             }
             WordCategory wordCategory = new WordCategory();
             wordCategory.setId(id);
             wordCategory.setName("Enter name category");
+            wordCategory.setInfo("Enter info");
             model.addAttribute("wordCategory", wordCategory);
             return "adminWordsCategoryEdit";
         }
         return "redirect:/login";
     }
-    @GetMapping("/words-category/edit")
-    public String wordsCategoryEdit(Model model, Principal principal) {
+    @GetMapping("/{id}/category-edit")
+    public String wordsCategoryEdit(@PathVariable("id")Long id, Model model, Principal principal) {
+        if (principal != null) {
+            WordCategory wordCategory = wordCategoryService.getWordCategory(id);
+            if(wordCategory.getParentCategory() != null){
+                model.addAttribute("mainWordsCategories", wordCategory.getParentCategory().getName());
+            }
+            model.addAttribute("parentCategory", "Відсутня");
 
-        return "adminWords";
+            model.addAttribute("wordCategory", wordCategory);
+            return "adminWordsCategoryEdit";
+        }
+        return "redirect:/login";
     }
+
 
 }

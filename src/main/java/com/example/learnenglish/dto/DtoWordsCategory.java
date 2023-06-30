@@ -8,11 +8,18 @@ package com.example.learnenglish.dto;
  */
 
 import com.example.learnenglish.model.WordCategory;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
+@Setter
 public class DtoWordsCategory {
-    private WordCategory wordCategory;
-    private WordCategory mainCaregory;
-    private WordCategory subcategory;
+    private WordCategory wordsCategory;
+    private WordCategory mainCategorySelect;
+    private WordCategory subcategorySelect;
+
+    public DtoWordsCategory() {
+    }
 }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
+<style>
+    /* CSS стилі для дерева категорій */
+    .category {
+        margin-left: 20px;
+        display: none;
+    }
+
+    /*.category {*/
+    /*    display: none;*/
+    /*}*/
+    .toggle {
+        cursor: pointer;
+    }
+
+    .category.visible {
+        display: block;
+    }
+</style>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page ">
+            <div class="page-table row">
+                <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">
+                    <h3>Категорії</h3>
+                    <div id="categoryTree">
+                        <ul th:each="wordCategory : ${wordCategories}">
+                            <li th:if="${wordCategory.mainCategory}">
+                                <span th:text="${wordCategory.name}"></span>
+                                <span th:if="${wordCategory.subcategories != null}" class="toggle">▼</span>
+                                <a th:href="@{'/admin-page/' + ${wordCategory.id} + '/category-edit'}">Редагувати</a>
+                                <ul th:if="${wordCategory.subcategories != null}" class="category">
+                                    <li th:each="subcategory : ${wordCategory.subcategories}">
+                                        <span th:text="${subcategory.name}"></span>
+                                        <span th:if="${subcategory.subcategories != null}" class="toggle">▼</span>
+                                        <a th:href="@{'/admin-page/' + ${subcategory.id} + '/category-edit'}">Редагувати</a>
+                                        <ul th:if="${subcategory.subcategories != null}" class="category">
+                                            <li th:each="subcategoryTwo : ${subcategory.subcategories}">
+                                                <span th:text="${subcategoryTwo.name}"></span>
+                                                <span th:if="${subcategoryTwo.subcategories != null}" class="toggle">▼</span>
+                                                <a th:href="@{'/admin-page/' + ${subcategoryTwo.id} + '/category-edit'}">Редагувати</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li th:if="${wordCategory.parentCategory == null && !wordCategory.mainCategory}">
+                                <span th:text="${wordCategory.name}"></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <script>
+                        $(document).ready(function () {
+                            $('.toggle').click(function () {
+                                $(this).siblings('.category').slideToggle().toggleClass('visible');
+                            });
+                        });
+                    </script>
+
+
+                </div>
+
+
+                <div class="col-md-6 col-lg-5 block_right">
+                    <!--                <div class="row">-->
+
+
+                    <h3>Створити нову категорію</h3>
+                    <div>
+                        <form action="/admin-page/words-category/new-category">
+                            <button type="submit">Створити</button>
+                        </form>
+                        <div th:text="${message}"></div>
+                    </div>
+
+                    <!--                </div>-->
+                </div>
+
+            </div>
+            <!-- відображення пагінації -->
+            <!--            <div style="position: fixed; margin-left: 80px; width: 100%;">-->
+            <!--                <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>-->
+            <!--                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">-->
+            <!--                    <a th:href="@{/admin-page/lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>-->
+            <!--                </span>-->
+            <!--                <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>-->
+            <!--            </div>-->
+        </div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

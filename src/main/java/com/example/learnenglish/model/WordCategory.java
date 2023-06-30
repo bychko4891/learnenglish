@@ -1,9 +1,13 @@
 package com.example.learnenglish.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,15 +29,18 @@ public class WordCategory {
     @Column(name = "info", columnDefinition = "text")
     private String info;
 
-    @OneToMany
-    @JoinColumn(name = "subcategory_id")
-    private List<WordCategory> subcategory;
+//    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_category_id")
+    private WordCategory parentCategory;
+
+//    @JsonBackReference
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    private List<WordCategory> subcategories = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "wordCategory")
     private List<Word> words;
 
-    @OneToOne
-    private WordCategory parentCategory;
 
     public WordCategory() {
     }
