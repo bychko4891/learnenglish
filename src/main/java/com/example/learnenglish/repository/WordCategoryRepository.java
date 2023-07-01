@@ -8,7 +8,6 @@ package com.example.learnenglish.repository;
  */
 
 import com.example.learnenglish.model.WordCategory;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +17,5 @@ import java.util.List;
 public interface WordCategoryRepository extends CrudRepository<WordCategory, Long> {
 //    @Query("SELECT w FROM WordCategory w WHERE w.mainCategory = :mainCategory")
     List<WordCategory> findWordCategoriesByMainCategory(boolean mainCategory);
+
 }

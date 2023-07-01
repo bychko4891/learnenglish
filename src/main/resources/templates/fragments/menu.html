@@ -54,13 +54,12 @@
                     <span class="item">Про додаток</span>
                 </a>
             </li>
-
-<!--            <li>-->
-<!--                <a href="#">-->
-<!--                    <span class="icon"><i class="fas fa-chart-line"></i></span>-->
-<!--                    <span class="item">Reports</span>-->
-<!--                </a>-->
-<!--            </li>-->
+            <li>
+                <a href="/words-main-category">
+                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                    <span class="item">Слова</span>
+                </a>
+            </li>
 <!--            <th:block th:if="${userRole == 'ADMIN'}">-->
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <a href="/admin-page">

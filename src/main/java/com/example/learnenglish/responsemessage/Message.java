@@ -24,7 +24,8 @@ public enum Message {
     ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел"),
     SUCCESS_SAVE_TEXT_OF_PAGE("Success", "Текст успішно збережено"),
     ERROR_SAVE_TEXT_OF_PAGE("Error", "На обраній сторінці текст вже існує"),
-    SUCCESS_CHECK_USER_TEXT("Success", "Парамтр успішно застосовано");
+    SUCCESS_CHECK_USER_TEXT("Success", "Парамтр успішно застосовано"),
+    ERROR_SAVE_CATEGORY("Error", "Не можно додати поточну категорію в вибрану");
 
     private String status;
     private String message;

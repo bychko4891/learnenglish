@@ -8,6 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.LessonRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,4 +55,6 @@ public class LessonService {
     public Long countLessons() {
         return lessonRepository.count();
     }
+
+
 }

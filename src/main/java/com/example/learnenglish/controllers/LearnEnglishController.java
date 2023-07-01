@@ -9,9 +9,11 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.PageApplication;
+import com.example.learnenglish.model.WordCategory;
 import com.example.learnenglish.service.LessonService;
 import com.example.learnenglish.service.PageApplicationService;
 import com.example.learnenglish.service.UserService;
+import com.example.learnenglish.service.WordCategoryService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
@@ -27,15 +30,18 @@ public class LearnEnglishController {
     private final UserService userService;
     private final LessonService lessonService;
     private final PageApplicationService pageApplicationService;
+    private final WordCategoryService wordCategoryService;
 
     public LearnEnglishController(HttpSession session,
                                   UserService userService,
                                   LessonService lessonService,
-                                  PageApplicationService pageApplicationService) {
+                                  PageApplicationService pageApplicationService,
+                                  WordCategoryService wordCategoryService) {
         this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;
         this.pageApplicationService = pageApplicationService;
+        this.wordCategoryService = wordCategoryService;
     }
 
     @GetMapping("/")
@@ -97,9 +103,13 @@ public class LearnEnglishController {
         return "redirect:/login";
     }
 
-    @GetMapping(name = "/words")
+    @GetMapping("/words-main-category")
     public String words(Model model) {
-        return "words";
+        List<WordCategory> wordsMainCategories = wordCategoryService.mainWordCategoryList(true);
+        if(wordsMainCategories != null){
+            model.addAttribute("wordsMainCategories", wordsMainCategories);
+        }
+        return "wordsMainCategory";
     }
 
 }

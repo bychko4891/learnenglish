@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page ">
+      <div class="page-table row">
+        <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">
+          <h3>Заняття</h3>
+          <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
+          <!--                    <div class="page-table">-->
+          <table style="width: 100%">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Published</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="word : ${words}">
+              <td th:text="${word.id}"></td>
+              <td th:text="${word.name}"></td>
+              <td th:text="${word.wordCategory.name}"></td>
+              <td>
+                <span th:if="${word.published}" th:text="Yes"></span>
+                <span th:if="${!word.published}" th:text="No"></span>
+              </td>
+              <td>
+                <a th:href="@{/admin-page/words/{id}/word-edit(id=${word.id})}"
+                   class="btn btn-primary">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <!--                    </div>-->
+        </div>
+
+
+        <div class="col-md-6 col-lg-5 block_right">
+          <!--                <div class="row">-->
+
+
+          <h3>Додати нове слово</h3>
+          <div>
+            <form action="/admin-page/words/new-word">
+              <button type="submit">New word</button>
+            </form>
+            <div th:text="${message}"></div>
+          </div>
+
+          <!--                </div>-->
+        </div>
+
+      </div>
+      <!-- відображення пагінації -->
+      <div style="position: fixed; margin-left: 80px; width: 100%;">
+        <a th:href="@{/admin-page/words(page=(${currentPage} - 1))}">Previous</a>
+        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/words(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
+        <a th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Next</a>
+      </div>
+    </div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

@@ -9,7 +9,10 @@
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="container layout_page">
 <!--      <div th:utext="${mainTop}" style="padding: 40px 40px 10px 40px;"></div>-->
-
+<div th:each="wordsMainCategory : ${wordsMainCategories}">
+    <span th:text="${wordsMainCategory.name}"></span><br>
+    <span th:utext="${wordsMainCategory.info}"></span>
+</div>
 
 <!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
     </div>

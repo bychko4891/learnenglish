@@ -20,11 +20,11 @@
                 <label for="mainCategorySelect">| Змінити категорію: </label>
                 <select id="mainCategorySelect" name="selectedPageApplication">
                     <option name="id" value="0">Оберіть категорію</option>
-                    <option th:each="wordCategory : ${mainWordsCategories}" th:value="${wordCategory.id}"
-                            th:text="${wordCategory.name}">
+                    <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
+                            th:text="${wordsMainCategory.name}">
                     </option>
                 </select>
-                <select id="subcategorySelect" name="mainCategorySelect">
+                <select id="subcategorySelect" name="subcategorySelect">
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select>
                 <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
@@ -43,6 +43,7 @@
 
 
 <script>
+    $(document).ready(function () {
     tinymce.init({
         selector: 'textarea#wordCategoryInfo',
         height: 500,
@@ -72,7 +73,7 @@
         event.preventDefault();
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        // var id = $('#wordCategory input[name="id"]').val();
+        // var id = $('#wordsMainCategories input[name="id"]').val();
         var url = '/admin-page/category-save';
         var wordsCategory = {
             id: $('#wordCategory input[name="id"]').val(),
@@ -91,6 +92,7 @@
             mainCategorySelect: mainCategorySelect,
             subcategorySelect: subcategorySelect
         };
+        console.log(data);
         $.ajax({
             // url: $(this).attr('action'),
             url: url,
@@ -114,6 +116,7 @@
                 showErrorToast('Помилка запиту на сервер');
             }
         });
+    });
     });
     $(document).ready(function () {
     const mainCategorySelect = document.getElementById('mainCategorySelect');

@@ -23,6 +23,9 @@ public class Word {
     @Column(name = "text", columnDefinition = "text")
     private String text;
 
+    @Column
+    private boolean published = false;
+
     @ManyToOne
     @JoinColumn(name = "word_catalog_id")
     private WordCategory wordCategory;

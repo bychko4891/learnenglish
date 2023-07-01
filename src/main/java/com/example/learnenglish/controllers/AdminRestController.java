@@ -7,16 +7,12 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.dto.DtoTextOfAppPage;
+import com.example.learnenglish.dto.DtoWord;
 import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.WordCategory;
-import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
-import com.example.learnenglish.service.LessonService;
-import com.example.learnenglish.service.TextOfAppPageService;
-import com.example.learnenglish.service.UserService;
-import com.example.learnenglish.service.WordCategoryService;
+import com.example.learnenglish.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,15 +28,18 @@ public class AdminRestController {
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
     private final WordCategoryService wordCategoryService;
+    private final WordService wordService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
                                TextOfAppPageService textOfAppPageService,
-                               WordCategoryService wordCategoryService) {
+                               WordCategoryService wordCategoryService,
+                               WordService wordService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
         this.wordCategoryService = wordCategoryService;
+        this.wordService = wordService;
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -93,6 +92,14 @@ public class AdminRestController {
                                                               Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordCategoryService.saveWordCategory(dtoWordsCategory));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/word-save")
+    public ResponseEntity<ResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
+                                                              Principal principal) {
+        if (principal != null) {
+            return ResponseEntity.ok(wordService.saveWord(dtoWord));
         }
         return ResponseEntity.notFound().build();
     }
