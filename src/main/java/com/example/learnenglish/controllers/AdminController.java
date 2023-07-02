@@ -322,7 +322,7 @@ public class AdminController {
     public String wordEdit(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
             List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
-            Word word = wordService.getWordToEditor(id);
+            Word word = wordService.getWord(id);
             model.addAttribute("category", "Відсутня");
             if(word.getWordCategory() != null){
                 model.addAttribute("category", word.getWordCategory().getName());

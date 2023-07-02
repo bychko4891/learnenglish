@@ -12,6 +12,7 @@ import com.example.learnenglish.model.WordCategory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Getter
@@ -21,7 +22,8 @@ public class DtoWord {
     private WordCategory mainCategorySelect;
     private WordCategory subcategorySelect;
     private WordCategory subSubcategorySelect;
-
+    private MultipartFile brAudio;
+    private MultipartFile usaAudio;
     public DtoWord() {
     }
 }

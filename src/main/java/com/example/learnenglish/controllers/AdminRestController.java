@@ -88,7 +88,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/category-save")
-    public ResponseEntity<ResponseMessage> wordsSubcategories(@RequestBody DtoWordsCategory dtoWordsCategory,
+    public ResponseEntity<ResponseMessage> SaveWordsCategory(@RequestBody DtoWordsCategory dtoWordsCategory,
                                                               Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordCategoryService.saveWordCategory(dtoWordsCategory));

@@ -6,172 +6,207 @@
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <div class="wrapper">
-  <header th:replace="~{fragments/header :: header}"></header>
-  <div class="sidebar">
-    <div th:replace="~{fragments/menu :: menu}"></div>
-  </div>
-  <main class="section main_content ">
-    <div class="container layout_page">
-      <h1>New text page</h1>
-      <form id="word">
-        <label for="name">Назва:</label>
-        <input type="text" id="name" name="name" th:value="${word.name}" >
-        <label for="name">Український перевод:</label>
-        <input type="text" id="translate" name="translate" th:value="${word.translate}" placeholder="Український перевод">
-        <label>Категорія:</label> <label th:text="${category}"></label><br>
-        <label for="mainCategorySelect">Змінити категорію: </label>
-        <select id="mainCategorySelect" name="selectedPageApplication">
-          <option name="id" value="0">Оберіть категорію</option>
-          <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
-                  th:text="${wordsMainCategory.name}">
-          </option>
-        </select>
-        <select id="subcategorySelect" name="subcategorySelect">
-          <option name="id" value="0">Оберіть підкатегорію</option>
-        </select>
-        <select id="subSubcategorySelect" name="subcategorySelect">
-          <option name="id" value="0">Оберіть підкатегорію</option>
-        </select>
-        <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
-        <input id="toggleSwitch" type="checkbox" th:checked="${word.published}" class="toggle-switch" name="published" >
-        <label for="toggleSwitch" class="toggle-switch-label"></label>
-        <hr>
-        <label for="wordInfo">Текст:</label>
-        <textarea id="wordInfo" name="text" th:text="${word.text}"></textarea>
-        <input type="hidden" name="id" th:value="${word.id}" required>
-        <button type="submit">Зберегти</button>
-      </form>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="sidebar">
+        <div th:replace="~{fragments/menu :: menu}"></div>
     </div>
-  </main>
-  <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <main class="section main_content ">
+        <div class="container layout_page">
+            <h1>New text page</h1>
+            <form id="word">
+                <label for="name">Назва:</label>
+                <input type="text" id="name" name="name" th:value="${word.name}">
+                <label for="name">Український перевод:</label>
+                <input type="text" id="translate" name="translate" th:value="${word.translate}"
+                       placeholder="Український перевод">
+                <label for="usaTranscription">Ам. транскрипція:</label>
+                <input type="text" id="usaTranscription" name="usaTranscription" th:value="${word.usaTranscription}"
+                       placeholder="Український перевод">
+                <label for="brTranscription">Бр. транскрипція:</label>
+                <input type="text" id="brTranscription" name="brTranscription" th:value="${word.brTranscription}"
+                       placeholder="Український перевод"><br>
+
+
+                <span>Виберіть файл</span>
+                <input type="file" id="brAudio" accept="audio/mpeg">
+
+                <span>Виберіть файл</span>
+                <input type="file" id="usaAudio" accept="audio/mpeg">
+
+                <br>
+
+
+                <label for="irregularVerbPt">Ам. транскрипція:</label>
+                <input type="text" id="irregularVerbPt" name="irregularVerbPt" th:value="${word.irregularVerbPt}"
+                       placeholder="Український перевод">
+                <label for="irregularVerbPp">Бр. транскрипція:</label>
+                <input type="text" id="irregularVerbPp" name="irregularVerbPp" th:value="${word.irregularVerbPp}"
+                       placeholder="Український перевод"><br>
+
+
+                <label>Категорія:</label> <label th:text="${category} + ' | '"></label>
+                <label for="mainCategorySelect">Змінити категорію: </label>
+                <select id="mainCategorySelect" name="selectedPageApplication">
+                    <option name="id" value="0">Оберіть категорію</option>
+                    <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
+                            th:text="${wordsMainCategory.name}">
+                    </option>
+                </select>
+                <select id="subcategorySelect" name="subcategorySelect">
+                    <option name="id" value="0">Оберіть підкатегорію</option>
+                </select>
+                <select id="subSubcategorySelect" name="subcategorySelect">
+                    <option name="id" value="0">Оберіть підкатегорію</option>
+                </select>
+                <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
+                <input id="toggleSwitch" type="checkbox" th:checked="${word.published}" class="toggle-switch"
+                       name="published">
+                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <hr>
+                <label for="wordInfo">Текст:</label>
+                <textarea id="wordInfo" name="text" th:text="${word.text}"></textarea>
+                <input type="hidden" name="id" th:value="${word.id}" required>
+                <button type="submit">Зберегти</button>
+            </form>
+        </div>
+    </main>
+    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
 
 
 <script>
-  tinymce.init({
-    selector: 'textarea#wordInfo',
-    height: 500,
-    plugins: [
-      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-      'insertdatetime', 'media', 'table', 'help', 'wordcount'
-    ],
-    toolbar:
-            'undo redo | formatselect |' +
-            ' bold italic underline forecolor | link image media table mergetags |' +
-            ' addcomment showcomments | spellcheckdialog code typography |' +
-            ' align lineheight | checklist numlist bullist indent outdent |' +
-            ' emoticons charmap | removeformat'
-    ,
-    content_css: [
-      '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-      '//www.tiny.cloud/css/codepen.min.css'
-    ],
-    api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
-    menubar: true,
-    statusbar: true,
-    branding: true
-  });
+    $(document).ready(function () {
+        tinymce.init({
+            selector: 'textarea#wordInfo',
+            height: 500,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar:
+                'undo redo | formatselect |' +
+                ' bold italic underline forecolor | link image media table mergetags |' +
+                ' addcomment showcomments | spellcheckdialog code typography |' +
+                ' align lineheight | checklist numlist bullist indent outdent |' +
+                ' emoticons charmap | removeformat'
+            ,
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tiny.cloud/css/codepen.min.css'
+            ],
+            api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
+            menubar: true,
+            statusbar: true,
+            branding: true
+        });
 
-  $('#word').submit(function (event) {
-    event.preventDefault();
-    var csrfToken = $("meta[name='_csrf']").attr("content");
-    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    // var id = $('#wordsMainCategories input[name="id"]').val();
-    var url = '/admin-page/word-save';
-    var word = {
-      id: $('#word input[name="id"]').val(),
-      name: $('#word input[name="name"]').val(),
-      translate: $('#word input[name="translate"]').val(),
-      published: $('#toggleSwitch').is(':checked'),
-      text: $('#word textarea[name="text"]').val()
-    };
-    var mainCategorySelect = {
-      id: $('#mainCategorySelect').val()
-    };
-    var subcategorySelect = {
-      id: $('#subcategorySelect').val()
-    };
-    var subSubcategorySelect = {
-      id: $('#subSubcategorySelect').val()
-    };
-    var data = {
-      word: word,
-      mainCategorySelect: mainCategorySelect,
-      subcategorySelect: subcategorySelect,
-      subSubcategorySelect: subSubcategorySelect
-    };
-    $.ajax({
-      // url: $(this).attr('action'),
-      url: url,
-      type: 'POST',
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader(csrfHeader, csrfToken);
-      },
-      success: function (result) {
-        var status = result.status;
-        if (status == "Success") {
-          showSuccessToast(result.message);
-        } else {
-          showErrorToast(result.message)
-        }
-      },
-      error: function () {
-        let shel = {};
-        alert(Boolean(shel))
-        showErrorToast('Помилка запиту на сервер');
-      }
+        $('#word').submit(function (event) {
+            event.preventDefault();
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            // var id = $('#wordsMainCategories input[name="id"]').val();
+            var url = '/admin-page/word-save';
+            var word = {
+                id: $('#word input[name="id"]').val(),
+                name: $('#word input[name="name"]').val(),
+                translate: $('#word input[name="translate"]').val(),
+                brTranscription: $('#word input[name="brTranscription"]').val(),
+                usaTranscription: $('#word input[name="usaTranscription"]').val(),
+                irregularVerbPt: $('#word input[name="irregularVerbPt"]').val(),
+                irregularVerbPp: $('#word input[name="irregularVerbPp"]').val(),
+                published: $('#toggleSwitch').is(':checked'),
+                text: $('#word textarea[name="text"]').val()
+            };
+            var mainCategorySelect = {
+                id: $('#mainCategorySelect').val()
+            };
+            var subcategorySelect = {
+                id: $('#subcategorySelect').val()
+            };
+            var subSubcategorySelect = {
+                id: $('#subSubcategorySelect').val()
+            };
+            var data = {
+                word: word,
+                mainCategorySelect: mainCategorySelect,
+                subcategorySelect: subcategorySelect,
+                subSubcategorySelect: subSubcategorySelect
+            };
+            $.ajax({
+                // url: $(this).attr('action'),
+                url: url,
+                type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    var status = result.status;
+                    if (status == "Success") {
+                        showSuccessToast(result.message);
+                    } else {
+                        showErrorToast(result.message)
+                    }
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                    showErrorToast('Помилка запиту на сервер');
+                }
+            });
+        });
     });
-  });
-  $(document).ready(function () {
-    const mainCategorySelect = document.getElementById('mainCategorySelect');
-    const subcategorySelect = document.getElementById('subcategorySelect');
-    const subSubcategorySelect = document.getElementById('subSubcategorySelect');
-    mainCategorySelect.addEventListener('change', function () {
-      const selectedCategoryId = mainCategorySelect.value;
-      fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
-              .then(response => response.json())
-              .then(subcategories => {
-                if (subcategories.length > 0) {
-                  subcategories.forEach(subcategory => {
-                    const option = document.createElement('option');
-                    option.value = subcategory.id;
-                    option.text = subcategory.name;
-                    subcategorySelect.appendChild(option);
-                  });
+    $(document).ready(function () {
+        const mainCategorySelect = document.getElementById('mainCategorySelect');
+        const subcategorySelect = document.getElementById('subcategorySelect');
+        const subSubcategorySelect = document.getElementById('subSubcategorySelect');
+        mainCategorySelect.addEventListener('change', function () {
+            const selectedCategoryId = mainCategorySelect.value;
+            fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+                .then(response => response.json())
+                .then(subcategories => {
+                    if (subcategories.length > 0) {
+                        subcategories.forEach(subcategory => {
+                            const option = document.createElement('option');
+                            option.value = subcategory.id;
+                            option.text = subcategory.name;
+                            subcategorySelect.appendChild(option);
+                        });
 
-                  // Показуємо subcategorySelect, якщо є підкатегорії
-                  // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
-                } else {}
-              })
-              .catch(error => {
-                console.error('Помилка при отриманні підкатегорій:', error);
-              });
-    });
-    subcategorySelect.addEventListener('change', function () {
-      const selectedCategoryId = subcategorySelect.value;
-      fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
-              .then(response => response.json())
-              .then(subcategories => {
-                if (subcategories.length > 0) {
-                  subcategories.forEach(subcategory => {
-                    const option = document.createElement('option');
-                    option.value = subcategory.id;
-                    option.text = subcategory.name;
-                    subSubcategorySelect.appendChild(option);
-                  });
+                        // Показуємо subcategorySelect, якщо є підкатегорії
+                        // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                    } else {
+                    }
+                })
+                .catch(error => {
+                    console.error('Помилка при отриманні підкатегорій:', error);
+                });
+        });
+        subcategorySelect.addEventListener('change', function () {
+            const selectedCategoryId = subcategorySelect.value;
+            fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+                .then(response => response.json())
+                .then(subcategories => {
+                    if (subcategories.length > 0) {
+                        subcategories.forEach(subcategory => {
+                            const option = document.createElement('option');
+                            option.value = subcategory.id;
+                            option.text = subcategory.name;
+                            subSubcategorySelect.appendChild(option);
+                        });
 
-                  // Показуємо subcategorySelect, якщо є підкатегорії
-                  // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
-                } else {}
-              })
-              .catch(error => {
-                console.error('Помилка при отриманні підкатегорій:', error);
-              });
+                        // Показуємо subcategorySelect, якщо є підкатегорії
+                        // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                    } else {
+                    }
+                })
+                .catch(error => {
+                    console.error('Помилка при отриманні підкатегорій:', error);
+                });
+        });
     });
-  });
 </script>
 </body>
 </html>

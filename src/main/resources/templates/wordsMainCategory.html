@@ -2,23 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<style>
+    .left_border {
+        border-left: solid 2px #0F687E;
+        padding-left: 11px;
+        border-radius: 4px;
+        font-size: 16px;
+        line-height: 140%;
+    }
+</style>
 <body class="active">
 <div class="wrapper">
-  <main class="section">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="container layout_page">
-<!--      <div th:utext="${mainTop}" style="padding: 40px 40px 10px 40px;"></div>-->
-<div th:each="wordsMainCategory : ${wordsMainCategories}">
-    <span th:text="${wordsMainCategory.name}"></span><br>
-    <span th:utext="${wordsMainCategory.info}"></span>
-</div>
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні категорії словника</a>
+                    </li>
+                </ol>
+            </nav>
+            <h1>Словник</h1>
+            <div th:each="wordsMainCategory : ${wordsMainCategories}">
+                <h3 th:text="${wordsMainCategory.name}"></h3><br>
+                <div class="left_border" th:utext="${wordsMainCategory.info}"></div>
+                <form th:action="@{/words-main-category/{id}(id=${wordsMainCategory.id})}">
+                    <button type="submit">Перейти</button>
+                </form>
+            </div>
 
-<!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
-    </div>
-    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-  </main>
-  <div th:replace="~{fragments/menu :: menu}"></div>
+            <!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 
 </body>

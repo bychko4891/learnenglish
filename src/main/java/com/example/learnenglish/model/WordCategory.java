@@ -23,6 +23,9 @@ public class WordCategory {
     @Column
     private boolean mainCategory = false;
 
+    @Column(name="view_subcategory_full_no_info_or_name_and_info")
+    private boolean viewSubcategoryFullNoInfoOrNameAndInfo = false;
+
     @Column(name = "info", columnDefinition = "text")
     private String info;
 

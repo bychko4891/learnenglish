@@ -67,6 +67,9 @@ public class SecurityConfig {
             "/drop",
             "/fragmentsPages/successRegistrationFragment",
             "/words-main-category",
+            "/words-main-category/*",
+            "/subcategory/*",
+            "/word/*",
             "/robots.txt"
 
     };

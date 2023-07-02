@@ -54,6 +54,13 @@ public class WordCategoryService {
         }
         throw new IllegalArgumentException("Main category with id " + id + " not found");
     }
+    public List<WordCategory> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
+        Optional<WordCategory> wordCategoryOption = wordsCategoryRepository.findById(id);
+        if (wordCategoryOption.isPresent()) {
+            return wordCategoryOption.get().getSubcategories();
+        }
+        throw new IllegalArgumentException("Main category with id " + id + " not found");
+    }
 
     public ResponseMessage saveWordCategory(DtoWordsCategory dtoWordsCategory) {
         Optional<WordCategory> wordCategoryOptional = wordsCategoryRepository.findById(dtoWordsCategory.getWordsCategory().getId());
@@ -63,6 +70,7 @@ public class WordCategoryService {
                     wordsCategory.getId() == dtoWordsCategory.getSubcategorySelect().getId())  return new ResponseMessage(Message.ERROR_SAVE_CATEGORY);
             wordsCategory.setName(dtoWordsCategory.getWordsCategory().getName());
             wordsCategory.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
+            wordsCategory.setViewSubcategoryFullNoInfoOrNameAndInfo(dtoWordsCategory.getWordsCategory().isViewSubcategoryFullNoInfoOrNameAndInfo());
             if (dtoWordsCategory.getMainCategorySelect().getId() == 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
                 wordsCategory.setMainCategory(dtoWordsCategory.getWordsCategory().isMainCategory());
                 if (dtoWordsCategory.getWordsCategory().isMainCategory() && wordsCategory.getParentCategory() != null) {

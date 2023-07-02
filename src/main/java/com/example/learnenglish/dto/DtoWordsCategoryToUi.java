@@ -45,6 +45,7 @@ public class DtoWordsCategoryToUi {
         DtoWordsCategoryToUi dto = new DtoWordsCategoryToUi();
         dto.setId(wordCategory.getId());
         dto.setName(wordCategory.getName());
+        dto.setInfo(wordCategory.getInfo());
         return dto;
     }
 

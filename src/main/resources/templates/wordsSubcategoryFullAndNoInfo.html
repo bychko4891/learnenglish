@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<style>
+  .sub_full a {
+    margin-left: 10px;
+    text-decoration: underline;
+  }
+</style>
+<body class="active">
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page">
+      <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Головна</a></li>
+          <li class="breadcrumb-item"><a href="/words-main-category">головні категорії словника</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a th:href="@{/words-main-category/{id}(id=${mainCategoryId})}">Категорії словника</a>
+          </li>
+        </ol>
+      </nav>
+      <h1>Категорії англо-українського словника</h1>
+      <div th:each="subCategory : ${wordsSubCategories}" class="sub_full">
+      <b th:text="${subCategory.name} + ' — '"></b>
+        <a th:each="subSubCategory : ${subCategory.subcategories}" th:href="@{/subcategory/{id}(id=${subSubCategory.id})}" th:text="${subSubCategory.name}"></a>
+      </div>
+<!--      <ul th:each="subCategory : ${wordsSubCategories}">-->
+<!--        <li th:text="${subCategory.name}"></li>-->
+<!--        <ul th:each="subSubCategory : ${subCategory.subcategories}">-->
+<!--          <li th:text="${subSubCategory.name}"></li>-->
+<!--        </ul>-->
+<!--      </ul>-->
+
+      <!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
+    </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

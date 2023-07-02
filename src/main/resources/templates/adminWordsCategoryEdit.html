@@ -30,6 +30,10 @@
                 <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
                 <input id="toggleSwitch" type="checkbox" th:checked="${wordCategory.mainCategory}" class="toggle-switch" name="mainCategory" >
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <div th:if="${wordCategory.mainCategory}">
+                    <span style="padding: 10px 0px 0px 25px;">Вигляд підкатегорій на сторінці: </span>
+                    <input id="view" type="checkbox" th:checked="${wordCategory.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
+                    <label for="view" class="toggle-switch-label"></label> </div>
                 <hr>
                 <label for="wordCategoryInfo">Текст:</label>
                 <textarea id="wordCategoryInfo" name="info" th:text="${wordCategory.info}" required></textarea>

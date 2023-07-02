@@ -8,8 +8,10 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoWord;
+import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.WordCategory;
+import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.WordCategoryRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
@@ -19,16 +21,29 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
 public class WordService {
+    private final Path fileStorageLocation;
     private final WordRepository wordRepository;
     private final WordCategoryRepository wordCategoryRepository;
 
-    public WordService(WordRepository wordRepository,
+    public WordService(FileStorageProperties fileStorageProperties,
+                       WordRepository wordRepository,
                        WordCategoryRepository wordCategoryRepository) {
+        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
+                .toAbsolutePath().normalize();
         this.wordRepository = wordRepository;
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (Exception ex) {
+            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+//            System.out.println(ex.getMessage());
+        }
         this.wordCategoryRepository = wordCategoryRepository;
     }
 
@@ -50,6 +65,10 @@ public class WordService {
             Word word = wordOptional.get();
             word.setName(dtoWord.getWord().getName());
             word.setTranslate(dtoWord.getWord().getTranslate());
+            word.setBrTranscription(dtoWord.getWord().getBrTranscription());
+            word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
+            word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
+            word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
             word.setPublished(dtoWord.getWord().isPublished());
             word.setText(dtoWord.getWord().getText());
             if(categoryId != 0 && word.getWordCategory() == null){
@@ -69,6 +88,10 @@ public class WordService {
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setPublished(dtoWord.getWord().isPublished());
             word.setText(dtoWord.getWord().getText());
+            word.setBrTranscription(dtoWord.getWord().getBrTranscription());
+            word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
+            word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
+            word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
             if(categoryId != 0){
                 WordCategory wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
@@ -79,7 +102,7 @@ public class WordService {
         }
     }
 
-    public Word getWordToEditor(Long id) {
+    public Word getWord(Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if(wordOptional.isPresent()){
             return wordOptional.get();

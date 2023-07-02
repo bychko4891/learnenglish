@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<body class="active">
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+            <h3 th:text="${word.name}"></h3>
+            <div style="display: flex;">
+                <div>
+                    <i>Амер.</i>
+                    <span style="margin-right: 10px; color: #428BFF; font-size: 20px;" th:text="${word.usaTranscription}"></span>
+                </div>
+                <div>
+                    <i>Бр.</i>
+                    <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>
+                </div>
+            </div>
+            <div>
+                <i>irregular verb:</i>
+                <span>p.t. </span>
+                <span th:text="${word.irregularVerbPt}" style="color: #428BFF; font-size: 18px;"></span>
+                <span>p.p. </span>
+                <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
+            </div>
+            <p th:text="${word.translate}"></p>
+            <div th:utext="${word.text}"></div>
+
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+</body>
+</html>

@@ -19,6 +19,18 @@ public class Word {
 
     @Column
     private String translate;
+    @Column
+    private String brTranscription;
+    @Column
+    private String usaTranscription;
+    @Column
+    private String irregularVerbPt;
+    @Column
+    private String irregularVerbPp;
+    @Column
+    private String brAudioName;
+    @Column
+    private String usaAudioName;
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
