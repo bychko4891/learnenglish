@@ -11,11 +11,13 @@ import com.example.learnenglish.dto.DtoWord;
 import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,17 +31,20 @@ public class AdminRestController {
     private final TextOfAppPageService textOfAppPageService;
     private final WordCategoryService wordCategoryService;
     private final WordService wordService;
+    private final WordAudioService wordAudioService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
                                TextOfAppPageService textOfAppPageService,
                                WordCategoryService wordCategoryService,
-                               WordService wordService) {
+                               WordService wordService,
+                               WordAudioService wordAudioService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
         this.wordCategoryService = wordCategoryService;
         this.wordService = wordService;
+        this.wordAudioService = wordAudioService;
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -100,6 +105,19 @@ public class AdminRestController {
                                                               Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.saveWord(dtoWord));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/word-audio/{id}/upload")
+    public ResponseEntity<ResponseMessage> saveWord(@PathVariable("id") Long wordId,
+                                                    @RequestParam("brAudio") MultipartFile brAudio,
+                                                    @RequestParam("usaAudio") MultipartFile usaAudio,
+                                                    Principal principal) {
+        if (principal != null) {
+            wordAudioService.saveAudioFile(brAudio, usaAudio,wordId);
+//            MultipartFile brAudioFile = brAudio;
+//            MultipartFile usaAudioFile = usaAudio;
+            return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
         }
         return ResponseEntity.notFound().build();
     }

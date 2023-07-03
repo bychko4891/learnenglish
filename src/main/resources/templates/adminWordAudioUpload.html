@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head th:replace="~{fragments/head :: head}"></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+
+</style>
+<body class="active">
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+
+            <form id="wordAudio">
+                <input name="id" type="hidden" th:value="${wordAudio.id}">
+                <div style="display: flex;">
+                    <div class="col-md-4">
+                        <label for="brAudio" class="form-label">Бр. аудио</label>
+                        <input class="form-control" type="file" id="brAudio" accept="audio/mpeg">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="usaAudio" class="form-label">Ам. аудио</label>
+                        <input class="form-control" type="file" id="usaAudio" accept="audio/mpeg">
+                    </div>
+
+                </div>
+                <button type="submit">Завантажити</button>
+            </form>
+
+
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<script>
+    $('#wordAudio').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        // Зчитуємо аудіофайли зі вказаних інпутів
+        var brAudioInput = $('#brAudio')[0].files[0];
+        var usaAudioInput = $('#usaAudio')[0].files[0];
+
+        var id = $('#wordAudio input[name="id"]').val();
+        // Створюємо новий об'єкт FormData
+        var formData = new FormData();
+
+        // Додаємо аудіофайли до об'єкта FormData
+        formData.append('brAudio', brAudioInput);
+        formData.append('usaAudio', usaAudioInput);
+        var url = '/admin-page/word-audio/' + id + '/upload';
+
+        $.ajax({
+            // url: $(this).attr('action'),
+            url: url,
+            type: 'POST',
+            data: formData, // Використовуємо об'єкт FormData замість JSON
+            processData: false,
+            contentType: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                // Обробка успішної відповіді від сервера
+            },
+            error: function (xhr, status, error) {
+                // Обробка помилки
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.dto.DtoWord;
 import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.model.Word;
+import com.example.learnenglish.model.WordAudio;
 import com.example.learnenglish.model.WordCategory;
 import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.WordCategoryRepository;
@@ -28,22 +29,12 @@ import java.util.Optional;
 
 @Service
 public class WordService {
-    private final Path fileStorageLocation;
     private final WordRepository wordRepository;
     private final WordCategoryRepository wordCategoryRepository;
 
-    public WordService(FileStorageProperties fileStorageProperties,
-                       WordRepository wordRepository,
+    public WordService(WordRepository wordRepository,
                        WordCategoryRepository wordCategoryRepository) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
         this.wordRepository = wordRepository;
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-//            System.out.println(ex.getMessage());
-        }
         this.wordCategoryRepository = wordCategoryRepository;
     }
 
@@ -84,6 +75,7 @@ public class WordService {
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else {
             Word word = new Word();
+            WordAudio wordAudio = new WordAudio();
             word.setName(dtoWord.getWord().getName());
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setPublished(dtoWord.getWord().isPublished());
@@ -92,6 +84,8 @@ public class WordService {
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
             word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
             word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
+            wordAudio.setName(dtoWord.getWord().getName());
+            word.setWordAudio(wordAudio);
             if(categoryId != 0){
                 WordCategory wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);

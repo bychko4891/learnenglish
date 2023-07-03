@@ -38,6 +38,10 @@ public class Word {
     @Column
     private boolean published = false;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "word_audio_id")
+    private WordAudio wordAudio;
+
     @ManyToOne
     @JoinColumn(name = "word_catalog_id")
     private WordCategory wordCategory;

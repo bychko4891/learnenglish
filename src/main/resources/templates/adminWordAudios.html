@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page row">
+
+
+            <div class="page-table">
+                <h3>Word аудіо</h3>
+                <table style="width: 90%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>br. audio name</th>
+                        <th>usa. audio name</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="audio : ${audios}">
+                        <td th:text="${audio.id}"></td>
+                        <td th:text="${audio.name}"></td>
+                        <td th:if="${audio.brAudioName != null}" th:text="${audio.brAudioName}"></td>
+                        <td th:if="${audio.brAudioName == null}" ><span>Файл ще не завантажен</span></td>
+                        <td th:if="${audio.usaAudioName != null}" th:text="${audio.usaAudioName}"></td>
+                        <td th:if="${audio.usaAudioName == null}" ><span>Файл ще не завантажен</span></td>
+                        <td>
+                            <form th:action="@{/admin-page/word-audio/{id}/audio-upload-page(id=${audio.id})}">
+                                <button type="submit">Завантажити / Змінити</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- відображення пагінації -->
+            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
+                <a th:href="@{/admin-page/audios(page=(${currentPage} - 1))}">Previous</a>
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/audios(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
+                <a th:href="@{/admin-page/audios(page=(${currentPage} + 1))}">Next</a>
+            </div>
+
+
+
+        </div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.check-button').on('click', function () {
+            var userId = $(this).data('user-id');
+            // var form = $('form').find('[data-user-id="' + userId + '"]');
+            var form = $('form').has('[data-user-id="' + userId + '"]');
+            var url = "/admin-page/users/user/user-active";
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var isChecked = form.find('input[name="userActive"]').prop('checked');
+            console.log(form);
+            console.log(userId);
+            console.log(isChecked);
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    userActive: isChecked,
+                    userId: userId
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    // Обробка успішного відгуку
+                },
+                error: function (xhr, status, error) {
+                    // Обробка помилки
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

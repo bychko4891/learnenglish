@@ -56,6 +56,8 @@ public class SecurityConfig {
             "/js/*",
             "/images/*",
             "/img/*",
+            "favicon.ico",
+            "/robots.txt",
             "/",
             "/login",
             "/activate/*",
@@ -70,7 +72,8 @@ public class SecurityConfig {
             "/words-main-category/*",
             "/subcategory/*",
             "/word/*",
-            "/robots.txt"
+            "/audio/**"
+
 
     };
     public static final String LOGIN_URL = "/login";

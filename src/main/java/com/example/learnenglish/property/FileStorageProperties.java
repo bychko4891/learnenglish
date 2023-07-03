@@ -12,12 +12,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
     private String uploadDir;
+    private String uploadAudio;
 
     public String getUploadDir() {
         return uploadDir;
     }
+    public String getUploadAudio() {
+        return uploadAudio;
+    }
 
     public void setUploadDir(String uploadDir) {
         this.uploadDir = uploadDir;
+    }
+    public void setUploadAudio(String uploadAudio) {
+        this.uploadAudio = uploadAudio;
     }
 }

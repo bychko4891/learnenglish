@@ -35,6 +35,7 @@ public class AdminController {
     private final PageApplicationService pageApplicationService;
     private final WordCategoryService wordCategoryService;
     private final WordService wordService;
+    private final WordAudioService wordAudioService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
@@ -43,7 +44,8 @@ public class AdminController {
                            TextOfAppPageService textOfAppPageService,
                            PageApplicationService pageApplicationService,
                            WordCategoryService wordCategoryService,
-                           WordService wordService) {
+                           WordService wordService,
+                           WordAudioService wordAudioService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
@@ -52,6 +54,7 @@ public class AdminController {
         this.pageApplicationService = pageApplicationService;
         this.wordCategoryService = wordCategoryService;
         this.wordService = wordService;
+        this.wordAudioService = wordAudioService;
     }
 
 
@@ -269,9 +272,8 @@ public class AdminController {
         return "redirect:/login";
     }
     @GetMapping("/words")
-    public String wordsListAdminPage(@RequestParam(value = "message", required = false) String message,
-                                       @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size,
+    public String wordsListAdminPage(  @RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "size", defaultValue = "10", required = false) int size,
                                        Principal principal,
                                        Model model) {
         if (principal != null) {
@@ -282,7 +284,6 @@ public class AdminController {
             } else {
                 model.addAttribute("totalPages", wordPage.getTotalPages());
             }
-            model.addAttribute("message", message);
             model.addAttribute("words", wordPage.getContent());
             model.addAttribute("currentPage", page);
 
@@ -291,7 +292,7 @@ public class AdminController {
         return "redirect:/login";
     }
     @GetMapping("/words/new-word")
-    public String newWordAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
+    public String newWordAdminPage(Principal principal) {
         if (principal != null) {
             Long count = wordService.countWords() + 1;
             return "redirect:/admin-page/word/" + count + "/new-word-in-editor";
@@ -330,6 +331,36 @@ public class AdminController {
             model.addAttribute("word", word);
             model.addAttribute("mainWordsCategories", mainWordsCategories);
             return "adminWordInEditor";
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/audios")
+    public String audioListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     Principal principal,
+                                     Model model) {
+        if (principal != null) {
+            if(page < 0) page = 0;
+            Page<WordAudio> wordAudioPage = wordAudioService.getWordsAudioPage(page, size);
+            if(wordAudioPage.getTotalPages() == 0){
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", wordAudioPage.getTotalPages());
+            }
+            model.addAttribute("audios", wordAudioPage.getContent());
+            model.addAttribute("currentPage", page);
+
+            return "adminWordAudios";
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/word-audio/{id}/audio-upload-page")
+    public String wordAudioUpload(@PathVariable("id")Long id, Model model, Principal principal) {
+        if (principal != null) {
+            WordAudio wordAudio = wordAudioService.getWordAudio(id);
+            model.addAttribute("wordAudio", wordAudio);
+            return "adminWordAudioUpload";
         }
         return "redirect:/login";
     }

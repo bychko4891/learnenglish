@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/cdn.plyr.io_3.6.8_plyr.css}">
+<script type="text/javascript" th:src="@{/js/cdn.plyr.io_3.6.8_plyr.js}"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<style>
+    .sound_pic {
+        cursor: pointer;
+    }
+</style>
 <body class="active">
 <div class="wrapper">
     <main class="section">
@@ -27,6 +33,11 @@
                 <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
             </div>
             <p th:text="${word.translate}"></p>
+            <audio id="play_a" preload="auto">
+                <source th:src="@{/audio/{name}(name=${word.wordAudio.usaAudioName})}" type="audio/mpeg"/>
+            </audio>
+            <span class="sound_pic" onclick="document.getElementById('play_a').load();document.getElementById('play_a').play();">
+                <img th:src="@{/images/audio-play.webp}" width="20px" alt="американское произношение слова see" title="американское произношение слова see"></span>
             <div th:utext="${word.text}"></div>
 
         </div>

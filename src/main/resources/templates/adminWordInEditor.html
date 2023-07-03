@@ -26,14 +26,12 @@
                 <input type="text" id="brTranscription" name="brTranscription" th:value="${word.brTranscription}"
                        placeholder="Український перевод"><br>
 
+<!--                <span>Виберіть файл</span>-->
+<!--                <input type="file" id="brAudioInput" accept="audio/mpeg">-->
 
-                <span>Виберіть файл</span>
-                <input type="file" id="brAudio" accept="audio/mpeg">
-
-                <span>Виберіть файл</span>
-                <input type="file" id="usaAudio" accept="audio/mpeg">
-
-                <br>
+<!--                <span>Виберіть файл</span>-->
+<!--                <input type="file" id="usaAudioInput" accept="audio/mpeg">-->
+<!--                <br>-->
 
 
                 <label for="irregularVerbPt">Ам. транскрипція:</label>
@@ -106,6 +104,7 @@
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             // var id = $('#wordsMainCategories input[name="id"]').val();
+            // Зчитуємо аудіофайли зі вказаних інпутів
             var url = '/admin-page/word-save';
             var word = {
                 id: $('#word input[name="id"]').val(),

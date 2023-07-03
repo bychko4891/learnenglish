@@ -22,8 +22,6 @@ public class DtoWord {
     private WordCategory mainCategorySelect;
     private WordCategory subcategorySelect;
     private WordCategory subSubcategorySelect;
-    private MultipartFile brAudio;
-    private MultipartFile usaAudio;
     public DtoWord() {
     }
 }
