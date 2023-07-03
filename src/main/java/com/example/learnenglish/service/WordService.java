@@ -55,6 +55,7 @@ public class WordService {
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
             word.setName(dtoWord.getWord().getName());
+            word.getWordAudio().setName(dtoWord.getWord().getName());
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setBrTranscription(dtoWord.getWord().getBrTranscription());
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());

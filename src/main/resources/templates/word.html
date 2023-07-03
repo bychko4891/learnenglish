@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<link rel="stylesheet" th:href="@{/css/cdn.plyr.io_3.6.8_plyr.css}">
-<script type="text/javascript" th:src="@{/js/cdn.plyr.io_3.6.8_plyr.js}"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
     .sound_pic {
@@ -19,10 +17,20 @@
                 <div>
                     <i>Амер.</i>
                     <span style="margin-right: 10px; color: #428BFF; font-size: 20px;" th:text="${word.usaTranscription}"></span>
+                    <audio th:if="${word.wordAudio != null}" id="usaAudio" preload="auto">
+                        <source th:src="@{/audio/{name}(name=${word.wordAudio.usaAudioName})}" type="audio/mpeg"/>
+                    </audio>
+                    <span class="sound_pic" onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
+                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Американська вимова слова ' + word.name}" th:title="${'Американська вимова слова ' + word.name}"></span>
                 </div>
                 <div>
                     <i>Бр.</i>
                     <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>
+                    <audio th:if="${word.wordAudio != null}" id="ukAudio" preload="auto">
+                        <source th:src="@{/audio/{name}(name=${word.wordAudio.brAudioName})}" type="audio/mpeg"/>
+                    </audio>
+                    <span class="sound_pic" onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
+                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}" th:title="${'Британська вимова слова ' + word.name}"></span>
                 </div>
             </div>
             <div>
@@ -32,12 +40,8 @@
                 <span>p.p. </span>
                 <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
             </div>
-            <p th:text="${word.translate}"></p>
-            <audio id="play_a" preload="auto">
-                <source th:src="@{/audio/{name}(name=${word.wordAudio.usaAudioName})}" type="audio/mpeg"/>
-            </audio>
-            <span class="sound_pic" onclick="document.getElementById('play_a').load();document.getElementById('play_a').play();">
-                <img th:src="@{/images/audio-play.webp}" width="20px" alt="американское произношение слова see" title="американское произношение слова see"></span>
+            <p th:text="${'Варіанти перевода: ' + word.translate}"></p>
+
             <div th:utext="${word.text}"></div>
 
         </div>
