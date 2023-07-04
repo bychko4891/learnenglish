@@ -687,6 +687,7 @@ td {
     /*border-radius: 8px;*/
     overflow: hidden;
     /*box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 1);*/
+    border-radius: 20px;
 }
 
 .box::before {
@@ -727,7 +728,9 @@ td {
     position: absolute;
     inset: 2px;
     /*border-radius: 8px;*/
-    background: #2c3034;
+    /*background: #2c3034;*/
+    background: rgb(34, 34, 42);
+    border-radius: 20px;
     /*background: #32323;*/
     z-index: 10;
 }
