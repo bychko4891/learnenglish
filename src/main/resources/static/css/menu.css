@@ -75,8 +75,9 @@
 .wrapper .sidebar ul li a {
     display: block;
     padding: 13px 30px;
-    border-bottom: 1px solid #00ffed;
+    border-bottom: 1px solid rgb(61, 62, 62);
     color: rgb(241, 237, 237);
+    /*color: #212529;*/
     font-size: 16px;
     position: relative;
 }
@@ -103,10 +104,11 @@
 
 .wrapper .sidebar ul li a:hover,
 .wrapper .sidebar ul li a.active {
-    color: #171616;
+    color: wheat;
 
-    background: white;
-    border-right: 2px solid rgb(5, 68, 104);
+    background: #2d2d34;
+    /*border-right: 3px solid rgb(5, 68, 104);*/
+    border-right: 4px solid #ffffff;
 }
 .wrapper .sidebarMobile ul li a:hover,
 .wrapper .sidebarMobile ul li a.active {
@@ -127,7 +129,7 @@
 }
 .wrapper .sidebar ul li a:hover .icon,
 .wrapper .sidebar ul li a.active .icon {
-    color: #171616;
+    color: wheat;
 }
 
 .wrapper .sidebar ul li a:hover:before,
@@ -142,11 +144,15 @@
 }
 
 .wrapper .section .top_navbar {
-    background: rgb(50 50 50);
-    height: 50px;
+    background: rgba(50, 50, 50, 0);
+    height: 70px;
     display: flex;
     align-items: center;
     padding: 0 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), wheat, rgba(34, 34, 42, 0.5)) 1 0%;
+    border-top: 0;
 }
 
 .wrapper .section .main_content {
@@ -160,6 +166,19 @@
     right: 10px;
     overflow-x: hidden;
     clear: both;
+}
+
+.wrapper .sidebar::before {
+    right: 0;
+    content: "";
+    position: absolute;
+    border-right: 0;
+    top: 0; /* Змініть це значення, щоб регулювати висоту полоси */
+    width: 2px; /* Змініть це значення, щоб регулювати ширину полоси */
+    height: 100%; /* Змініть це значення, щоб регулювати висоту полоси */
+
+    content: "";
+    background: #7c7c7c;
 }
 
 
@@ -230,7 +249,11 @@
 /*    !*z-index:0;*!*/
 /*    transition: opacity 0.5s ease; !* Додайте тут стиль transition *!*/
 /*}*/
+.wrapper .section .top_navbar .hamburger i {
+    font-size: 28px;
+    color: wheat;
 
+}
 .wrapper.active .sidebarMobile {
     transform: translateX(0);
     z-index: 9999;
@@ -250,7 +273,8 @@
     }
     .wrapper .section .top_navbar .hamburger a {
         font-size: 28px;
-        color: #f4fbff;
+        /*color: rgb(33, 37, 41);*/
+        color: wheat;
 
     }
     .wrapper .section .top_navbar .hamburger a:hover {
@@ -274,9 +298,9 @@
         margin-left: 225px;
         width: calc(100vw - 225px);
     }
-    .wrapper .section .top_navbar .hamburger a{
-        display: none;
-    }
+    /*.wrapper .section .top_navbar .hamburger a{*/
+    /*    display: none;*/
+    /*}*/
 
 }
 

@@ -4,14 +4,16 @@ body {
     width: 100vw;
     overflow-y: scroll;
     overflow-x: hidden;
+    color: wheat;
+    font-family: "Roboto", sans-serif;
 }
 
 body {
-    background-image: url("../images/Android_Lollipop_wallpapers.jpg");
+    background: #22222A;
+    background-image: url("../images/bg-abstract-2-dark.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    font-family: "Roboto", sans-serif;
     box-sizing: border-box;
 }
 
@@ -134,17 +136,25 @@ img {
 }
 .layout_page {
     /*display: block;*/
-    max-width: 100%;
+    max-width: 93%;
     width: calc(100% - 40px);
-    height: calc(100vh - 90px);
+    /*height: calc(100vh - 90px);*/
+    height: fit-content;
     /*padding-left: 0;*/
     /*padding: 5px;*/
     margin-left: 40px;
     margin-top: 40px;
-    background: rgba(237, 241, 244, 0.90);
+    /*background: rgba(237, 241, 244, 0.90);*/
+    /*background: rgba(255, 255, 255, 0.99);*/
+    /*background: hsl(240, 7.2%, 19%);*/
+    background: rgba(45, 45,52, 0.9);;
     overflow-y: auto;
-    border: 1px solid;
+    /*border: 1px solid;*/
     z-index: 2;
+    border-radius: 30px;
+    /*box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7), -5px -5px 10px rgba(255, 255, 255, 1);*/
+    color: wheat;
+    padding-bottom: 20px;
 }
 @media (max-width: 1080px) {
     .layout_page {
@@ -183,22 +193,22 @@ button, .btn {
     cursor: pointer;
 }
 
-button:hover, .btn:hover {
-    color: white !important;
-    background-color: #189094 !important;
-    border: 1px solid rgba(0, 0, 0, 0.5) !important;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+/*button:hover, .btn:hover {*/
+/*    color: white !important;*/
+/*    background-color: #189094 !important;*/
+/*    border: 1px solid rgba(0, 0, 0, 0.5) !important;*/
+/*    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/
 
-button:active, .btn:active {
-    background-color: #136669;
-    transform: translate(0em, 0.2em);
-}
+/*button:active, .btn:active {*/
+/*    background-color: #136669;*/
+/*    transform: translate(0em, 0.2em);*/
+/*}*/
 
-button:active::before, .btn:active::before {
-    box-shadow: 0 0 0 2px #a60b4b, 0 0 #1ee01e;
-    transform: translate3d(0, 0, -0.5em);
-}
+/*button:active::before, .btn:active::before {*/
+/*    box-shadow: 0 0 0 2px #a60b4b, 0 0 #1ee01e;*/
+/*    transform: translate3d(0, 0, -0.5em);*/
+/*}*/
 
 button.disabled {
     pointer-events: none;
@@ -400,8 +410,14 @@ textarea {
 
 .btn_main {
     background-color: rgba(50, 50, 50, 0);
-    color: white;
-    border: none;
+    /*color: rgb(33, 37, 41);*/
+    color: rgba(245, 222, 179, 0.6);
+    border: 2px solid wheat;
+    border-radius: 23px;
+}
+.btn_main:hover {
+    color: rgba(245, 222, 179, 1);
+    border-color: #ffffff;
 }
 
 /*!*  Кнопка яка показує скритий текст END  *!*/
@@ -498,8 +514,8 @@ textarea {
 
 #words li {
     display: inline-block;
-    background-color: #bdbdbd;
-    border: 1px solid #080808;
+    background-color: #1e1e1e;
+    border: 1px solid wheat;
     border-radius: 5px;
     padding: 10px;
     margin-right: 10px;
@@ -670,7 +686,7 @@ td {
     background: #323232;
     /*border-radius: 8px;*/
     overflow: hidden;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 1);
+    /*box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 1);*/
 }
 
 .box::before {
@@ -858,4 +874,54 @@ td {
 .validation ul li.valid::before {
     content: '\f05d';
     color: #22721f;
+}
+
+
+
+
+
+
+
+.search__container {
+    padding-left: 5vw;
+    width: 30vw;
+}
+
+
+.search__input {
+    width: 100%;
+    padding: 12px 24px;
+
+    background-color: transparent;
+    transition: transform 250ms ease-in-out;
+    font-size: 14px;
+    line-height: 18px;
+
+    color: wheat;
+    background-color: transparent;
+    background-image: url("../images/search.svg");
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+    background-position: 95% center;
+    border-radius: 50px;
+    border: 1px solid wheat;
+    transition: all 250ms ease-in-out;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.search__input::placeholder {
+    color: rgba(245, 222, 179, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.search__input:hover,
+.search__input:focus {
+    padding: 12px 0;
+    outline: 0;
+    border: 1px solid transparent;
+    border-bottom: 1px solid wheat;
+    border-radius: 0;
+    background-position: 100% center;
 }

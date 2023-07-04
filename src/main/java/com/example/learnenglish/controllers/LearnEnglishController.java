@@ -146,19 +146,10 @@ public class LearnEnglishController {
     @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
-//        WordCategory parentCategory = subcategory.getParentCategory();
+        WordCategory wordCategory = word.getWordCategory().getParentCategory();
         model.addAttribute("word", word);
-//        model.addAttribute("words", subcategory.getWords());
-//        model.addAttribute("subId", subcategory.getId());
-//        model.addAttribute("mainId", parentCategory.getParentCategory().getId());
-//        if (subcategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
-//            return "wordsSubcategoryNameAndInfo";
-//        } else {
-////            List<WordCategory> wordsSubCategoriesAndSubSubInMainCategory = wordCategoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
-////            model.addAttribute("wordsSubCategories", wordsSubCategoriesAndSubSubInMainCategory);
-////            model.addAttribute("mainCategoryId", mainWordsCategory.getId());
-//            return "wordsSubcategoryView";
-//        }
+        model.addAttribute("mainId", wordCategory.getParentCategory().getId());
+
         return "word";
     }
 

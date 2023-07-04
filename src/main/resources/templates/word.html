@@ -12,16 +12,37 @@
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
+
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item"><a href="/words-main-category">категорії словника</a></li>
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/words-main-category/{id}(id=${mainId})}">підкатегорії словника</a>
+                    </li>
+                    <li class="breadcrumb-item" >
+                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}" th:text="${'Слова із категорії ' + word.wordCategory.name}"></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>
+                    </li>
+                </ol>
+            </nav>
+            <div class="content">
             <h3 th:text="${word.name}"></h3>
             <div style="display: flex;">
                 <div>
                     <i>Амер.</i>
-                    <span style="margin-right: 10px; color: #428BFF; font-size: 20px;" th:text="${word.usaTranscription}"></span>
+                    <span style="margin-right: 10px; color: #428BFF; font-size: 20px;"
+                          th:text="${word.usaTranscription}"></span>
                     <audio th:if="${word.wordAudio != null}" id="usaAudio" preload="auto">
                         <source th:src="@{/audio/{name}(name=${word.wordAudio.usaAudioName})}" type="audio/mpeg"/>
                     </audio>
-                    <span class="sound_pic" onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
-                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Американська вимова слова ' + word.name}" th:title="${'Американська вимова слова ' + word.name}"></span>
+                    <span class="sound_pic"
+                          onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
+                <img th:src="@{/images/audio-play.webp}" width="20px"
+                     th:alt="${'Американська вимова слова ' + word.name}"
+                     th:title="${'Американська вимова слова ' + word.name}"></span>
                 </div>
                 <div>
                     <i>Бр.</i>
@@ -29,8 +50,10 @@
                     <audio th:if="${word.wordAudio != null}" id="ukAudio" preload="auto">
                         <source th:src="@{/audio/{name}(name=${word.wordAudio.brAudioName})}" type="audio/mpeg"/>
                     </audio>
-                    <span class="sound_pic" onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
-                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}" th:title="${'Британська вимова слова ' + word.name}"></span>
+                    <span class="sound_pic"
+                          onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
+                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}"
+                     th:title="${'Британська вимова слова ' + word.name}"></span>
                 </div>
             </div>
             <div>
@@ -40,10 +63,11 @@
                 <span>p.p. </span>
                 <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
             </div>
-            <p th:text="${'Варіанти перевода: ' + word.translate}"></p>
+            <i>Варіанти перевода: </i>
+            <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
 
             <div th:utext="${word.text}"></div>
-
+            </div>
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>

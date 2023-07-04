@@ -1,36 +1,42 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
 <header th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
-<!--    <div class="section">-->
-        <div class="top_navbar">
-            <div class="hamburger">
-                <a style="z-index: 9999;" class="menu-toggle" href="#">
-                    <i class="fas fa-bars"></i>
-                </a>
-            </div>
+    <!--    <div class="section">-->
+    <div class="top_navbar">
+        <div class="hamburger">
+            <a style="z-index: 9999; font-size: 30px;" class="menu-toggle" href="#">
+                <i class="fas fa-bars"></i>
+            </a>
+        </div>
 
-            <div style="right: 155px; position: absolute;" sec:authorize="isAnonymous()">
+        <div class="search__container">
+            <input class="search__input" type="text" placeholder="Пошук...">
+        </div>
+
+        <div style="display: flex; margin-left: auto; gap: 10px;">
+            <div sec:authorize="isAnonymous()">
                 <form action="/login" target="_parent">
                     <button class="btn_main" type="submit">Увійти</button>
                 </form>
             </div>
-            <div style="right: 145px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">
-                <p style="color: white;">|</p>
-            </div>
-            <div style="right: 38px; position: absolute;" sec:authorize="isAnonymous()">
+            <!--            <div style="right: 145px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">-->
+            <!--                <p style="color: white;">|</p>-->
+            <!--            </div>-->
+            <div sec:authorize="isAnonymous()">
                 <form action="/registration-page" target="_parent">
                     <button class="btn_main">Реєстрація</button>
                 </form>
             </div>
 
-            <div style="right: 40px; position: absolute;" sec:authorize="isAuthenticated()">
+            <div sec:authorize="isAuthenticated()">
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <button class="btn_main" type="submit">Вийти</button>
                 </form>
             </div>
         </div>
+    </div>
 
-<!--    </div>-->
+    <!--    </div>-->
     <script>
         // var hamburger = document.querySelector(".hamburger");
         // var wrapper = document.querySelector(".wrapper");
