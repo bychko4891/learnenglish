@@ -149,6 +149,7 @@ public class LearnEnglishController {
         WordCategory wordCategory = word.getWordCategory().getParentCategory();
         model.addAttribute("word", word);
         model.addAttribute("mainId", wordCategory.getParentCategory().getId());
+        model.addAttribute("mainName", wordCategory.getName());
 
         return "word";
     }

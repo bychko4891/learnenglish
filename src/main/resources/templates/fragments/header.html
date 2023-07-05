@@ -18,9 +18,6 @@
                     <button class="btn_main" type="submit">Увійти</button>
                 </form>
             </div>
-            <!--            <div style="right: 145px; position: absolute; top: 5px; font-size: 30px;" sec:authorize="isAnonymous()">-->
-            <!--                <p style="color: white;">|</p>-->
-            <!--            </div>-->
             <div sec:authorize="isAnonymous()">
                 <form action="/registration-page" target="_parent">
                     <button class="btn_main">Реєстрація</button>
@@ -35,25 +32,5 @@
             </div>
         </div>
     </div>
-
-    <!--    </div>-->
-    <script>
-        // var hamburger = document.querySelector(".hamburger");
-        // var wrapper = document.querySelector(".wrapper");
-        // var menuToggle = document.querySelector(".menu-toggle");
-        // hamburger.addEventListener("click", function() {
-        //     document.querySelector("body").classList.toggle("active");
-        //     document.querySelector("body").classList.toggle("no_active");
-        //     wrapper.classList.toggle("active");
-        //     menuToggle.classList.toggle("active");
-        // });
-
-        // var hamburger = document.querySelector(".hamburger");
-        // var overlay = document.querySelector(".overlay");
-        // hamburger.addEventListener("click", function () {
-        //     document.querySelector("body").classList.toggle("active");
-        //     overlay.style.display = "block";
-        // });
-    </script>
 </header>
 <!--    </th:block>-->

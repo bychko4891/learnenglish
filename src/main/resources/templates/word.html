@@ -18,10 +18,10 @@
                     <li class="breadcrumb-item"><a href="/">Головна</a></li>
                     <li class="breadcrumb-item"><a href="/words-main-category">категорії словника</a></li>
                     <li class="breadcrumb-item">
-                        <a th:href="@{/words-main-category/{id}(id=${mainId})}">підкатегорії словника</a>
+                        <a th:href="@{/words-main-category/{id}(id=${mainId})}" th:text="${'категорія: ' + mainName}"></a>
                     </li>
                     <li class="breadcrumb-item" >
-                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}" th:text="${'Слова із категорії ' + word.wordCategory.name}"></a>
+                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}" th:text="${'підкатегорія: ' + word.wordCategory.name}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>

@@ -108,7 +108,7 @@
     color: wheat;
     background: #2d2d34;
     /*border-right: 3px solid rgb(5, 68, 104);*/
-    border-right: 4px solid #ffffff;
+    border-right: 4px solid #7b61ff;
 }
 .wrapper .sidebarMobile ul li a:hover,
 .wrapper .sidebarMobile ul li a.active {

@@ -417,7 +417,9 @@ textarea {
 }
 .btn_main:hover {
     color: rgba(245, 222, 179, 1);
-    border-color: #ffffff;
+    background: #30303b;
+    border-color: #7b61ff;
+    transition: 1s ease-in-out;
 }
 
 /*!*  Кнопка яка показує скритий текст END  *!*/
@@ -760,7 +762,7 @@ td {
     /*border-left: ;*/
     border: 2px solid rgba(0, 255, 237, 1);;
     background: #ffffff;
-    border-radius: 5px;
+    border-radius: 20px;
     outline: none;
     color: black;
     font-size: 1em;
@@ -928,3 +930,6 @@ td {
     border-radius: 0;
     background-position: 100% center;
 }
+
+
+
