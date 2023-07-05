@@ -33,9 +33,9 @@ public class AdminController {
     private final TranslationPairService translationPairService;
     private final TextOfAppPageService textOfAppPageService;
     private final PageApplicationService pageApplicationService;
-    private final WordCategoryService wordCategoryService;
+    private final CategoryService wordCategoryService;
     private final WordService wordService;
-    private final WordAudioService wordAudioService;
+    private final AudioService wordAudioService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
@@ -43,9 +43,9 @@ public class AdminController {
                            TranslationPairService translationPairService,
                            TextOfAppPageService textOfAppPageService,
                            PageApplicationService pageApplicationService,
-                           WordCategoryService wordCategoryService,
+                           CategoryService wordCategoryService,
                            WordService wordService,
-                           WordAudioService wordAudioService) {
+                           AudioService wordAudioService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
@@ -224,7 +224,7 @@ public class AdminController {
     @GetMapping("/words-categories")
     public String wordsCategory(Model model, Principal principal) {
         if (principal != null) {
-//            List<WordCategory> wordCategories = wordCategoryService.getWordsCategories();
+//            List<Category> wordCategories = wordCategoryService.getWordsCategories();
             model.addAttribute("wordCategories", wordCategoryService.getWordsCategories());
             return "adminWordsCategories";
         }
@@ -242,12 +242,12 @@ public class AdminController {
     @GetMapping("/{id}/category-create")
     public String wordsCategoryCreate(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            List<Category> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
             model.addAttribute("parentCategory", "Відсутня");
             if(mainWordsCategories != null){
                 model.addAttribute("mainWordsCategories", mainWordsCategories);
             }
-            WordCategory wordCategory = new WordCategory();
+            Category wordCategory = new Category();
             wordCategory.setId(id);
             wordCategory.setName("Enter name category");
             wordCategory.setInfo("Enter info");
@@ -259,8 +259,8 @@ public class AdminController {
     @GetMapping("/{id}/category-edit")
     public String wordsCategoryEdit(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
-            WordCategory wordCategory = wordCategoryService.getWordCategoryToEditor(id);
+            List<Category> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            Category wordCategory = wordCategoryService.getWordCategoryToEditor(id);
             model.addAttribute("parentCategory", "Відсутня");
             if(wordCategory.getParentCategory() != null){
                 model.addAttribute("parentCategory", wordCategory.getParentCategory().getName());
@@ -304,7 +304,7 @@ public class AdminController {
                             Model model,
                             Principal principal) {
         if (principal != null) {
-            List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            List<Category> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
             if(mainWordsCategories != null){
                 model.addAttribute("mainWordsCategories", mainWordsCategories);
             }
@@ -322,7 +322,7 @@ public class AdminController {
     @GetMapping("/words/{id}/word-edit")
     public String wordEdit(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<WordCategory> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
+            List<Category> mainWordsCategories = wordCategoryService.mainWordCategoryList(true);
             Word word = wordService.getWord(id);
             model.addAttribute("category", "Відсутня");
             if(word.getWordCategory() != null){
@@ -342,7 +342,7 @@ public class AdminController {
                                      Model model) {
         if (principal != null) {
             if(page < 0) page = 0;
-            Page<WordAudio> wordAudioPage = wordAudioService.getWordsAudioPage(page, size);
+            Page<Audio> wordAudioPage = wordAudioService.getWordsAudioPage(page, size);
             if(wordAudioPage.getTotalPages() == 0){
                 model.addAttribute("totalPages", 1);
             } else {
@@ -358,7 +358,7 @@ public class AdminController {
     @GetMapping("/word-audio/{id}/audio-upload-page")
     public String wordAudioUpload(@PathVariable("id")Long id, Model model, Principal principal) {
         if (principal != null) {
-            WordAudio wordAudio = wordAudioService.getWordAudio(id);
+            Audio wordAudio = wordAudioService.getWordAudio(id);
             model.addAttribute("wordAudio", wordAudio);
             return "adminWordAudioUpload";
         }

@@ -1,17 +1,25 @@
 package com.example.learnenglish.model;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ *  GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "words_category")
 @Setter
 @Getter
-public class WordCategory {
+@Table(name = "words_category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -29,19 +37,26 @@ public class WordCategory {
     @Column(name = "info", columnDefinition = "text")
     private String info;
 
-//    @JsonManagedReference
+    @ElementCollection(targetClass = CategoryPage.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "category_page", joinColumns = @JoinColumn(name = "category_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<CategoryPage> categoryPages = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
-    private WordCategory parentCategory;
+    private Category parentCategory;
 
-//    @JsonBackReference
+
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    private List<WordCategory> subcategories = new ArrayList<>();
+    private List<Category> subcategories = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "wordCategory")
     private List<Word> words;
 
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "category")
+    private List<TranslationPairsPage> translationPairsPageList;
 
-    public WordCategory() {
+
+    public Category() {
     }
 }

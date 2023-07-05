@@ -14,8 +14,10 @@
     <div class="profile" sec:authorize="isAuthenticated()">
         <!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
 
-        <img th:if="${session.avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
-        <img th:unless="${session.avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
+        <img th:if="${session.avatarName}" id="userAvatar"
+             th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
+        <img th:unless="${session.avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"
+             alt="User avatar"/>
         <h6 th:text="${session.userFirstName} + ' ' + ${session.userLastName}" style="margin-top: 15px;"></h6>
         <!--            <p>Designer</p>-->
     </div>
@@ -65,12 +67,12 @@
             </a>
         </li>
 
-        <!--            <li>-->
-        <!--                <a href="#">-->
-        <!--                    <span class="icon"><i class="fas fa-chart-line"></i></span>-->
-        <!--                    <span class="item">Reports</span>-->
-        <!--                </a>-->
-        <!--            </li>-->
+        <li>
+            <a href="/phrases-categories">
+                <span class="icon"><i class="fas fa-chart-line"></i></span>
+                <span class="item">Фрази</span>
+            </a>
+        </li>
         <!--            <th:block th:if="${userRole == 'ADMIN'}">-->
         <li sec:authorize="hasRole('ROLE_ADMIN')">
             <a href="/admin-page">
@@ -91,10 +93,10 @@
         var hamburger = document.querySelector(".hamburger");
         var close = document.querySelector(".close_menu");
         var wrapper = document.querySelector(".wrapper");
-        hamburger.addEventListener("click", function() {
+        hamburger.addEventListener("click", function () {
             wrapper.classList.toggle("active");
         });
-        close.addEventListener("click", function() {
+        close.addEventListener("click", function () {
             wrapper.classList.remove("active");
         });
         $('document').ready(function () {

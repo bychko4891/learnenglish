@@ -7,10 +7,10 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.WordCategory;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -28,14 +28,14 @@ public class LearnEnglishController {
     private final UserService userService;
     private final LessonService lessonService;
     private final PageApplicationService pageApplicationService;
-    private final WordCategoryService wordCategoryService;
+    private final CategoryService wordCategoryService;
     private final WordService wordService;
 
     public LearnEnglishController(HttpSession session,
                                   UserService userService,
                                   LessonService lessonService,
                                   PageApplicationService pageApplicationService,
-                                  WordCategoryService wordCategoryService,
+                                  CategoryService wordCategoryService,
                                   WordService wordService) {
         this.session = session;
         this.userService = userService;
@@ -105,21 +105,30 @@ public class LearnEnglishController {
 
     @GetMapping("/words-main-category")
     public String wordsMainCategories(Model model) {
-        List<WordCategory> wordsMainCategories = wordCategoryService.mainWordCategoryList(true);
+        List<Category> wordsMainCategories = wordCategoryService.mainWordCategoryList(true);
         if (wordsMainCategories != null) {
             model.addAttribute("wordsMainCategories", wordsMainCategories);
         }
         return "wordsMainCategory";
     }
 
+    @GetMapping("/phrases-categories")
+    public String phrasesMainCategories(Model model) {
+        List<Category> phrasesMainCategories = wordCategoryService.mainTranslationPairsCategoryList(true);
+        if (phrasesMainCategories != null) {
+            model.addAttribute("phrasesMainCategories", phrasesMainCategories);
+        }
+        return "phrasesCategories";
+    }
+
     @GetMapping("/words-main-category/{id}")
     public String wordsSubcategoriesFromMainCategories(@PathVariable Long id, Model model) {
-        WordCategory mainWordsCategory = wordCategoryService.getWordCategoryToEditor(id);
+        Category mainWordsCategory = wordCategoryService.getWordCategoryToEditor(id);
 
         if (mainWordsCategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
             return "wordsSubcategoryNameAndInfo";
         } else {
-            List<WordCategory> wordsSubCategoriesAndSubSubInMainCategory = wordCategoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
+            List<Category> wordsSubCategoriesAndSubSubInMainCategory = wordCategoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
             model.addAttribute("wordsSubCategories", wordsSubCategoriesAndSubSubInMainCategory);
             model.addAttribute("mainCategoryId", mainWordsCategory.getId());
             return "wordsSubcategoryFullAndNoInfo";
@@ -128,25 +137,17 @@ public class LearnEnglishController {
 
     @GetMapping("/subcategory/{id}")
     public String wordsSubcategories(@PathVariable Long id, Model model) {
-        WordCategory subcategory = wordCategoryService.getWordCategoryToEditor(id);
-        WordCategory parentCategory = subcategory.getParentCategory();
+        Category subcategory = wordCategoryService.getWordCategoryToEditor(id);
+        Category parentCategory = subcategory.getParentCategory();
         model.addAttribute("words", subcategory.getWords());
         model.addAttribute("subId", subcategory.getId());
         model.addAttribute("mainId", parentCategory.getParentCategory().getId());
-//        if (subcategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
-//            return "wordsSubcategoryNameAndInfo";
-//        } else {
-////            List<WordCategory> wordsSubCategoriesAndSubSubInMainCategory = wordCategoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
-////            model.addAttribute("wordsSubCategories", wordsSubCategoriesAndSubSubInMainCategory);
-////            model.addAttribute("mainCategoryId", mainWordsCategory.getId());
-//            return "wordsSubcategoryView";
-//        }
         return "wordsSubcategoryView";
     }
     @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
-        WordCategory wordCategory = word.getWordCategory().getParentCategory();
+        Category wordCategory = word.getWordCategory().getParentCategory();
         model.addAttribute("word", word);
         model.addAttribute("mainId", wordCategory.getParentCategory().getId());
         model.addAttribute("mainName", wordCategory.getName());

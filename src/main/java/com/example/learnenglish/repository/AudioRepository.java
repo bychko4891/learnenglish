@@ -7,15 +7,15 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.WordAudio;
+import com.example.learnenglish.model.Audio;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface WordAudioRepository extends JpaRepository<WordAudio, Long> {
+public interface AudioRepository extends JpaRepository<Audio, Long> {
 
-    @Query("SELECT wa FROM WordAudio wa ORDER BY wa.name ASC")
-    Page<WordAudio> findAll(Pageable pageable);
+    @Query("SELECT wa FROM Audio wa ORDER BY wa.name ASC")
+    Page<Audio> findAll(Pageable pageable);
 
 }

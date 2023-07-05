@@ -7,7 +7,7 @@ package com.example.learnenglish.dto;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.WordCategory;
+import com.example.learnenglish.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class DtoWordsCategory {
-    private WordCategory wordsCategory;
-    private WordCategory mainCategorySelect;
-    private WordCategory subcategorySelect;
+    private Category wordsCategory;
+    private Category mainCategorySelect;
+    private Category subcategorySelect;
 
     public DtoWordsCategory() {
     }

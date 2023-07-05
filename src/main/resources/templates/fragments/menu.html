@@ -60,6 +60,12 @@
                     <span class="item">Словник</span>
                 </a>
             </li>
+            <li>
+                <a href="/phrases-categories">
+                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                    <span class="item">Фрази</span>
+                </a>
+            </li>
 <!--            <th:block th:if="${userRole == 'ADMIN'}">-->
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <a href="/admin-page">

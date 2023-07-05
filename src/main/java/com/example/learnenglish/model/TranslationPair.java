@@ -13,10 +13,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
 @Getter
 @Setter
-@ToString
-@Entity
 @Table(name="translation_pair")
 public class TranslationPair {
     @Id
@@ -36,8 +35,9 @@ public class TranslationPair {
     @Column(name = "eng_text", length = 500)
     private String engText;
 
-    @Column(name = "audio_path")
-    private String audioPath;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "audio_id")
+    private Audio audio;
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")
@@ -46,6 +46,10 @@ public class TranslationPair {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne()
+    @JoinColumn(name = "translation_pair_page_id")
+    private TranslationPairsPage translationPairsPage;
 
     public TranslationPair() {
     }

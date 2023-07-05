@@ -7,15 +7,15 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.WordCategory;
+import com.example.learnenglish.model.Category;
+import com.example.learnenglish.model.CategoryPage;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface WordCategoryRepository extends CrudRepository<WordCategory, Long> {
-//    @Query("SELECT w FROM WordCategory w WHERE w.mainCategory = :mainCategory")
-    List<WordCategory> findWordCategoriesByMainCategory(boolean mainCategory);
+public interface CategoryRepository extends CrudRepository<Category, Long> {
+    List<Category> findWordCategoriesByMainCategoryAndCategoryPages(boolean mainCategory, CategoryPage categoryPage);
 
 }

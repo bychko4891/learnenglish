@@ -8,12 +8,10 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoWord;
-import com.example.learnenglish.exception.FileStorageException;
+import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.WordAudio;
-import com.example.learnenglish.model.WordCategory;
-import com.example.learnenglish.property.FileStorageProperties;
-import com.example.learnenglish.repository.WordCategoryRepository;
+import com.example.learnenglish.model.Audio;
+import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
@@ -22,18 +20,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
 public class WordService {
     private final WordRepository wordRepository;
-    private final WordCategoryRepository wordCategoryRepository;
+    private final CategoryRepository wordCategoryRepository;
 
     public WordService(WordRepository wordRepository,
-                       WordCategoryRepository wordCategoryRepository) {
+                       CategoryRepository wordCategoryRepository) {
         this.wordRepository = wordRepository;
         this.wordCategoryRepository = wordCategoryRepository;
     }
@@ -55,7 +50,7 @@ public class WordService {
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
             word.setName(dtoWord.getWord().getName());
-            word.getWordAudio().setName(dtoWord.getWord().getName());
+            word.getAudio().setName(dtoWord.getWord().getName());
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setBrTranscription(dtoWord.getWord().getBrTranscription());
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
@@ -64,11 +59,11 @@ public class WordService {
             word.setPublished(dtoWord.getWord().isPublished());
             word.setText(dtoWord.getWord().getText());
             if(categoryId != 0 && word.getWordCategory() == null){
-                WordCategory wordCategory = wordCategoryRepository.findById(categoryId).get();
+                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
                 wordCategory.getWords().add(word);
             } else if (categoryId != 0 && word.getWordCategory().getId() != categoryId) {
-                WordCategory wordCategoryRemove = word.getWordCategory();
+                Category wordCategoryRemove = word.getWordCategory();
                 wordCategoryRemove.getWords().removeIf(obj -> obj.getId().equals(word.getId()));
                 word.setWordCategory(wordCategoryRepository.findById(categoryId).get());
             }
@@ -76,7 +71,7 @@ public class WordService {
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else {
             Word word = new Word();
-            WordAudio wordAudio = new WordAudio();
+            Audio audio = new Audio();
             word.setName(dtoWord.getWord().getName());
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setPublished(dtoWord.getWord().isPublished());
@@ -85,10 +80,10 @@ public class WordService {
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
             word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
             word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
-            wordAudio.setName(dtoWord.getWord().getName());
-            word.setWordAudio(wordAudio);
+            audio.setName(dtoWord.getWord().getName());
+            word.setAudio(audio);
             if(categoryId != 0){
-                WordCategory wordCategory = wordCategoryRepository.findById(categoryId).get();
+                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
                 wordCategory.getWords().add(word);
             }

@@ -29,16 +29,16 @@ public class AdminRestController {
     private final LessonService lessonService;
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
-    private final WordCategoryService wordCategoryService;
+    private final CategoryService wordCategoryService;
     private final WordService wordService;
-    private final WordAudioService wordAudioService;
+    private final AudioService wordAudioService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
                                TextOfAppPageService textOfAppPageService,
-                               WordCategoryService wordCategoryService,
+                               CategoryService wordCategoryService,
                                WordService wordService,
-                               WordAudioService wordAudioService) {
+                               AudioService wordAudioService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
@@ -96,7 +96,7 @@ public class AdminRestController {
     public ResponseEntity<ResponseMessage> SaveWordsCategory(@RequestBody DtoWordsCategory dtoWordsCategory,
                                                               Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(wordCategoryService.saveWordCategory(dtoWordsCategory));
+            return ResponseEntity.ok(wordCategoryService.saveCategory(dtoWordsCategory));
         }
         return ResponseEntity.notFound().build();
     }

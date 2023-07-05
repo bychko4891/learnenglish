@@ -72,6 +72,7 @@ public class SecurityConfig {
             "/words-main-category/*",
             "/subcategory/*",
             "/word/*",
+            "/phrases-categories",
             "/audio/**"
 
 

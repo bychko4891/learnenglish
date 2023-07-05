@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<body class="active">
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page">
+      <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Головна</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні категорії словника</a>
+          </li>
+        </ol>
+      </nav>
+      <h1>Словник</h1>
+      <div th:if="${phrasesMainCategories != null}" th:each="phrasesMainCategory : ${phrasesMainCategories}">
+        <h3 th:text="${phrasesMainCategory.name}"></h3><br>
+        <div class="left_border" th:utext="${phrasesMainCategory.info}"></div>
+        <form th:action="@{/words-main-category/{id}(id=${phrasesMainCategory.id})}">
+          <button type="submit">Перейти</button>
+        </form>
+      </div>
+
+      <!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
+    </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

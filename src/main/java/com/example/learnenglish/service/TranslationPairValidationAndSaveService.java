@@ -9,9 +9,11 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
+import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.responsemessage.*;
 import com.example.learnenglish.model.TranslationPair;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,15 @@ public class TranslationPairValidationAndSaveService {
     private final UserService userService;
     private final TranslationPairRepository translationPairRepository;
 
-    public TranslationPairValidationAndSaveService(TranslationPairService translationPairService, LessonService lessonService, UserService userService, TranslationPairRepository translationPairRepository) {
+    public TranslationPairValidationAndSaveService(TranslationPairService translationPairService,
+                                                   LessonService lessonService,
+                                                   UserService userService,
+                                                   TranslationPairRepository translationPairRepository) {
         this.translationPairService = translationPairService;
         this.lessonService = lessonService;
         this.userService = userService;
         this.translationPairRepository = translationPairRepository;
+
     }
 
     public Optional<?> check(DtoTranslationPair dtoTranslationPair, String roleUser) {
@@ -56,7 +62,7 @@ public class TranslationPairValidationAndSaveService {
 
         if (validateTranslationPairs(dtoTranslationPairCleared)) {
             if (!translationPairService.existsByEngTextAndUkrText(dtoTranslationPairCleared.getEngText(), dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-                translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared));
+                translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared, roleUser));
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else {
                 return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
@@ -97,13 +103,21 @@ public class TranslationPairValidationAndSaveService {
     }
 
 
-    private TranslationPair convertToTranslationPair(DtoTranslationPair dtoTranslationPair) {
+    private TranslationPair convertToTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
         TranslationPair translationPair = new TranslationPair();
         translationPair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
         translationPair.setUkrText(dtoTranslationPair.getUkrText());
         translationPair.setUkrTextFemale(dtoTranslationPair.getUkrTextFemale());
         translationPair.setEngText(dtoTranslationPair.getEngText());
-        translationPair.setAudioPath("path/no");
+        if(roleUser.equals("[ROLE_ADMIN]")){
+            if(translationPair.getAudio() == null){
+                Audio audio = new Audio();
+                audio.setName(dtoTranslationPair.getEngText());
+                translationPair.setAudio(audio);
+            } else {
+                translationPair.getAudio().setName(dtoTranslationPair.getEngText());
+            }
+        }
         translationPair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
         translationPair.setUser(userService.findById(dtoTranslationPair.getUserId()));
         return translationPair;

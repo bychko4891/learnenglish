@@ -931,5 +931,11 @@ td {
     background-position: 100% center;
 }
 
-
+.left_border {
+    border-left: solid 2px #0F687E;
+    padding-left: 11px;
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 140%;
+}
 

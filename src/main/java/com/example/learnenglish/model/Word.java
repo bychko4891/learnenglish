@@ -40,11 +40,11 @@ public class Word {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_audio_id")
-    private WordAudio wordAudio;
+    private Audio audio;
 
     @ManyToOne
     @JoinColumn(name = "word_catalog_id")
-    private WordCategory wordCategory;
+    private Category wordCategory;
 
     public Word() {
     }

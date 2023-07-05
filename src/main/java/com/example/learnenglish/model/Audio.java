@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "words_audio")
-public class WordAudio {
+public class Audio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -23,10 +23,13 @@ public class WordAudio {
     @Column
     private String usaAudioName;
 
-    @OneToOne(mappedBy = "wordAudio")
+    @OneToOne(mappedBy = "audio")
     private Word word;
 
-    public WordAudio() {
+    @OneToOne(mappedBy = "audio")
+    private TranslationPair translationPair;
+
+    public Audio() {
     }
 
 }

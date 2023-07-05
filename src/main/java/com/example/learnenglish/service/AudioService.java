@@ -9,9 +9,9 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.exception.MyFileNotFoundException;
-import com.example.learnenglish.model.WordAudio;
+import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.property.FileStorageProperties;
-import com.example.learnenglish.repository.WordAudioRepository;
+import com.example.learnenglish.repository.AudioRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -31,15 +31,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class WordAudioService {
+public class AudioService {
     private final Path fileStorageLocation;
-    private final WordAudioRepository wordAudioRepository;
+    private final AudioRepository audioRepository;
 
-    public WordAudioService(FileStorageProperties fileStorageProperties,
-                            WordAudioRepository wordAudioRepository) {
+    public AudioService(FileStorageProperties fileStorageProperties,
+                        AudioRepository audioRepository) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadAudio())
                 .toAbsolutePath().normalize();
-        this.wordAudioRepository = wordAudioRepository;
+        this.audioRepository = audioRepository;
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
@@ -48,28 +48,28 @@ public class WordAudioService {
         }
     }
 
-    public Page<WordAudio> getWordsAudioPage(int page, int size) {
+    public Page<Audio> getWordsAudioPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return wordAudioRepository.findAll(pageable);
+        return audioRepository.findAll(pageable);
     }
 
-    public WordAudio getWordAudio(Long id) {
-        Optional<WordAudio> wordAudioOptional = wordAudioRepository.findById(id);
-        if(wordAudioOptional.isPresent()){
-            return wordAudioOptional.get();
+    public Audio getWordAudio(Long id) {
+        Optional<Audio> audioOptional = audioRepository.findById(id);
+        if(audioOptional.isPresent()){
+            return audioOptional.get();
         }
-        throw new RuntimeException("Error in method 'getWordAudio' class 'WordAudioService'");
+        throw new RuntimeException("Error in method 'getWordAudio' class 'AudioService'");
     }
 
     public String saveAudioFile(MultipartFile brAudio, MultipartFile usaAudio, Long audioId) {
-       WordAudio wordAudio = wordAudioRepository.findById(audioId).get();
+       Audio audio = audioRepository.findById(audioId).get();
         String fileName = StringUtils.cleanPath(brAudio.getOriginalFilename());
         String fileName2 = StringUtils.cleanPath(usaAudio.getOriginalFilename());
         try {
             if (fileName.contains("..") && fileName2.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-            String nameWord = wordAudio.getWord().getName();
+            String nameWord = audio.getWord().getName();
             String uuidFile = UUID.randomUUID().toString();
             String brAudioName = nameWord + "_uk_" + uuidFile + ".mp3";
             String usaAudioName = nameWord + "_usa_" + uuidFile + ".mp3";
@@ -77,9 +77,9 @@ public class WordAudioService {
             Path targetLocationUsaAudio = this.fileStorageLocation.resolve(usaAudioName);
             Files.copy(brAudio.getInputStream(), targetLocationBrAudio, StandardCopyOption.REPLACE_EXISTING);
             Files.copy(brAudio.getInputStream(), targetLocationUsaAudio, StandardCopyOption.REPLACE_EXISTING);
-            wordAudio.setBrAudioName(brAudioName);
-            wordAudio.setUsaAudioName(usaAudioName);
-            wordAudioRepository.save(wordAudio);
+            audio.setBrAudioName(brAudioName);
+            audio.setUsaAudioName(usaAudioName);
+            audioRepository.save(audio);
             return "yes";
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

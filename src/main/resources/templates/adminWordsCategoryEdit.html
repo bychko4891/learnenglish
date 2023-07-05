@@ -33,7 +33,14 @@
                 <div th:if="${wordCategory.mainCategory}">
                     <span style="padding: 10px 0px 0px 25px;">Вигляд підкатегорій на сторінці: </span>
                     <input id="view" type="checkbox" th:checked="${wordCategory.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
-                    <label for="view" class="toggle-switch-label"></label> </div>
+                    <label for="view" class="toggle-switch-label"></label>
+                    <label for="page">Сторінка вивода</label>
+                    <select id="page" name="categoryPage">
+                        <option value="NO_PAGE">Оберіть сторінку вивода</option>
+                        <option value="WORDS">Словник</option>
+                        <option value="TRANSLATION_PAIRS">Фрази</option>
+                    </select>
+                </div>
                 <hr>
                 <label for="wordCategoryInfo">Текст:</label>
                 <textarea id="wordCategoryInfo" name="info" th:text="${wordCategory.info}" required></textarea>
@@ -79,10 +86,12 @@
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         // var id = $('#wordsMainCategories input[name="id"]').val();
         var url = '/admin-page/category-save';
+        var categoryPages = [$('#page').val()];
         var wordsCategory = {
             id: $('#wordCategory input[name="id"]').val(),
             name: $('#wordCategory input[name="name"]').val(),
             mainCategory: $('#toggleSwitch').is(':checked'),
+            categoryPages: categoryPages,
             info: $('#wordCategory textarea[name="info"]').val()
         };
         var mainCategorySelect = {

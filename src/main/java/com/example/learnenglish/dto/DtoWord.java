@@ -7,21 +7,20 @@ package com.example.learnenglish.dto;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.WordCategory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Getter
 @Setter
 public class DtoWord {
     private Word word;
-    private WordCategory mainCategorySelect;
-    private WordCategory subcategorySelect;
-    private WordCategory subSubcategorySelect;
+    private Category mainCategorySelect;
+    private Category subcategorySelect;
+    private Category subSubcategorySelect;
     public DtoWord() {
     }
 }
