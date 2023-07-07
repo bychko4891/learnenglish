@@ -69,6 +69,7 @@
         <a th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Next</a>
       </div>
     </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
   </main>
   <div th:replace="~{fragments/menu :: menu}"></div>
 </div>

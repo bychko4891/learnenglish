@@ -6,11 +6,9 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoTextOfAppPage;
-import com.example.learnenglish.dto.DtoWord;
-import com.example.learnenglish.dto.DtoWordsCategory;
-import com.example.learnenglish.dto.DtoWordsCategoryToUi;
+import com.example.learnenglish.dto.*;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.*;
@@ -32,19 +30,22 @@ public class AdminRestController {
     private final CategoryService wordCategoryService;
     private final WordService wordService;
     private final AudioService wordAudioService;
+    private final TranslationPairService translationPairService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
                                TextOfAppPageService textOfAppPageService,
                                CategoryService wordCategoryService,
                                WordService wordService,
-                               AudioService wordAudioService) {
+                               AudioService wordAudioService,
+                               TranslationPairService translationPairService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
         this.wordCategoryService = wordCategoryService;
         this.wordService = wordService;
         this.wordAudioService = wordAudioService;
+        this.translationPairService = translationPairService;
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -94,31 +95,47 @@ public class AdminRestController {
 
     @PostMapping("/category-save")
     public ResponseEntity<ResponseMessage> SaveWordsCategory(@RequestBody DtoWordsCategory dtoWordsCategory,
-                                                              Principal principal) {
+                                                             Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordCategoryService.saveCategory(dtoWordsCategory));
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/word-save")
     public ResponseEntity<ResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
-                                                              Principal principal) {
+                                                    Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.saveWord(dtoWord));
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/word-audio/{id}/upload")
     public ResponseEntity<ResponseMessage> saveWord(@PathVariable("id") Long wordId,
                                                     @RequestParam("brAudio") MultipartFile brAudio,
                                                     @RequestParam("usaAudio") MultipartFile usaAudio,
                                                     Principal principal) {
         if (principal != null) {
-            wordAudioService.saveAudioFile(brAudio, usaAudio,wordId);
-//            MultipartFile brAudioFile = brAudio;
-//            MultipartFile usaAudioFile = usaAudio;
+            wordAudioService.saveAudioFile(brAudio, usaAudio, wordId);
             return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DtoTranslationPairToUI>> search(@RequestParam("searchTerm") String searchTerm) {
+
+        if(!searchTerm.isBlank()){
+            List<DtoTranslationPairToUI> list = translationPairService.searchResult(searchTerm);
+            return ResponseEntity.ok(list);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/page-phrases-save")
+    public ResponseEntity<ResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
+                                                                   Principal principal) {
+        return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
     }
 }

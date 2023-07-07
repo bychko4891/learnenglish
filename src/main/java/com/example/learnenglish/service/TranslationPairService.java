@@ -7,6 +7,7 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.repository.TranslationPairRepository;
@@ -60,10 +61,7 @@ public class TranslationPairService {
     private DtoTranslationPairToUI translationPairConvertToDtoUserText(Long lessonId, Long userId, Long translationPairRandomId) {
         TranslationPair translationPair = pairForLesson(lessonId, userId, translationPairRandomId);
         if (translationPair != null) {
-            DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-            dtoTranslationPairToUI.setId(translationPair.getId());
-            dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
-            dtoTranslationPairToUI.setEngText(translationPair.getEngText());
+            DtoTranslationPairToUI dtoTranslationPairToUI = convertToDTO(translationPair);
             int generateNumber = new Random().nextInt(1, 5);
             dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
             if (generateNumber == 4) {
@@ -116,4 +114,23 @@ public class TranslationPairService {
         return translationPairRepository.findAll(pageable, userId);
     }
 
+    public List<DtoTranslationPairToUI> searchResult(String src) {
+        List<TranslationPair> list = translationPairRepository.findByFirstLetter(1l, src);
+        List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
+        if (list.size() != 0) {
+            for (TranslationPair arr : list) {
+                toUIList.add(convertToDTO(arr));
+            }
+            return toUIList;
+        }
+        return toUIList;
+    }
+
+    private DtoTranslationPairToUI convertToDTO(TranslationPair translationPair) {
+        DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
+        dtoTranslationPairToUI.setId(translationPair.getId());
+        dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
+        dtoTranslationPairToUI.setEngText(translationPair.getEngText());
+        return dtoTranslationPairToUI;
+    }
 }

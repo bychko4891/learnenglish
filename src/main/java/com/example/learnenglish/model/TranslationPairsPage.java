@@ -26,6 +26,9 @@ public class TranslationPairsPage {
     @Column
     private String name;
 
+    @Column
+    private boolean  published = false;
+
     @Column(columnDefinition = "text")
     private String info;
 

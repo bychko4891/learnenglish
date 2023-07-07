@@ -4,7 +4,7 @@ package com.example.learnenglish.repository;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.Lesson;
@@ -35,4 +35,11 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
 
     @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
     Page<TranslationPair> findAll(Pageable pageable, Long userId);
+
+    //    @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND tr.engText LIKE CONCAT('%', :firstLetter, '%')")
+//    List<TranslationPair> findByFirstLetter(@Param("id") Long id, @Param("firstLetter") String firstLetter);
+    @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND LOWER(tr.engText) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
+    List<TranslationPair> findByFirstLetter(@Param("id") Long id, @Param("firstLetter") String firstLetter);
+
+
 }
