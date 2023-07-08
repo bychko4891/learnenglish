@@ -4,12 +4,14 @@ package com.example.learnenglish.service;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.LessonRepository;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,15 +37,21 @@ public class LessonService {
         return lessonRepository.findAll(pageable);
     }
 
-    public void lessonEdit(Lesson lesson) {
-        Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
-        if (!lessonOptional.isPresent()) {
-            lessonSave(lesson);
+    public ResponseMessage saveLesson(Lesson lesson) {
+        if (lesson.getId() != null) {
+            Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
+            if (!lessonOptional.isPresent()) {
+                lessonSave(lesson);
+                return new ResponseMessage(Message.SUCCESSADDBASE);
+            } else {
+                Lesson lessonFromBase = lessonOptional.get();
+                lessonFromBase.setName(lesson.getName());
+                lessonFromBase.setLessonInfo(lesson.getLessonInfo());
+                lessonRepository.save(lessonFromBase);
+                return new ResponseMessage(Message.SUCCESSADDBASE);
+            }
         } else {
-            Lesson lessonFromBase = lessonOptional.get();
-            lessonFromBase.setName(lesson.getName());
-            lessonFromBase.setLessonInfo(lesson.getLessonInfo());
-            lessonRepository.save(lessonFromBase);
+            return new ResponseMessage(Message.ERROR_SERVER);
         }
     }
 

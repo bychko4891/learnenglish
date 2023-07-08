@@ -60,17 +60,13 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/lessons/lesson/{id}/edit")
-    public ResponseEntity<String> lessonsEdit(@PathVariable("id") Long id,
-                                              @RequestBody Lesson lesson,
+    @PostMapping("/lesson-save")
+    public ResponseEntity<ResponseMessage> lessonsSave(@RequestBody Lesson lesson,
                                               Principal principal) {
-//        model.addAttribute("lesson", lesson);
         if (principal != null) {
-            id = lesson.getId();
-            lessonService.lessonEdit(lesson);
-            return ResponseEntity.ok("Ok");
+            return ResponseEntity.ok(lessonService.saveLesson(lesson));
         }
-        return ResponseEntity.ok("No");
+        return ResponseEntity.notFound().build();
     }
 
 

@@ -13,7 +13,7 @@
     <main class="section main_content ">
         <div class="container layout_page">
             <h1>New text page</h1>
-            <form id="wordCategory">
+            <form id="editor">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${wordCategory.name}" required>
                 <label>Батьківська категорія:</label> <label th:text="${parentCategory}"></label>
@@ -42,8 +42,8 @@
                     </select>
                 </div>
                 <hr>
-                <label for="wordCategoryInfo">Текст:</label>
-                <textarea id="wordCategoryInfo" name="info" th:text="${wordCategory.info}" required></textarea>
+                <label for="info">Текст:</label>
+                <textarea id="info" name="info" th:text="${wordCategory.info}" required></textarea>
                 <input type="hidden" name="id" th:value="${wordCategory.id}" required>
                 <button type="submit">Зберегти</button>
             </form>
@@ -51,112 +51,7 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-
-
-<script>
-    $(document).ready(function () {
-    tinymce.init({
-        selector: 'textarea#wordCategoryInfo',
-        height: 500,
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount'
-        ],
-        toolbar:
-            'undo redo | formatselect |' +
-            ' bold italic underline forecolor | link image media table mergetags |' +
-            ' addcomment showcomments | spellcheckdialog code typography |' +
-            ' align lineheight | checklist numlist bullist indent outdent |' +
-            ' emoticons charmap | removeformat'
-        ,
-        content_css: [
-            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-            '//www.tiny.cloud/css/codepen.min.css'
-        ],
-        api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
-        menubar: true,
-        statusbar: true,
-        branding: true
-    });
-
-    $('#wordCategory').submit(function (event) {
-        event.preventDefault();
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        // var id = $('#wordsMainCategories input[name="id"]').val();
-        var url = '/admin-page/category-save';
-        var categoryPages = [$('#page').val()];
-        var wordsCategory = {
-            id: $('#wordCategory input[name="id"]').val(),
-            name: $('#wordCategory input[name="name"]').val(),
-            mainCategory: $('#toggleSwitch').is(':checked'),
-            categoryPages: categoryPages,
-            info: $('#wordCategory textarea[name="info"]').val()
-        };
-        var mainCategorySelect = {
-            id: $('#mainCategorySelect').val()
-        };
-        var subcategorySelect = {
-            id: $('#subcategorySelect').val()
-        };
-        var data = {
-            wordsCategory: wordsCategory,
-            mainCategorySelect: mainCategorySelect,
-            subcategorySelect: subcategorySelect
-        };
-        console.log(data);
-        $.ajax({
-            // url: $(this).attr('action'),
-            url: url,
-            type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            },
-            success: function (result) {
-                var status = result.status;
-                if (status == "Success") {
-                    showSuccessToast(result.message);
-                } else {
-                    showErrorToast(result.message)
-                }
-            },
-            error: function () {
-                let shel = {};
-                alert(Boolean(shel))
-                showErrorToast('Помилка запиту на сервер');
-            }
-        });
-    });
-    });
-    $(document).ready(function () {
-    const mainCategorySelect = document.getElementById('mainCategorySelect');
-    const subcategorySelect = document.getElementById('subcategorySelect');
-    mainCategorySelect.addEventListener('change', function () {
-        const selectedCategoryId = mainCategorySelect.value;
-        fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
-            .then(response => response.json())
-            .then(subcategories => {
-                if (subcategories.length > 0) {
-                    // subcategorySelect.innerHTML = '';
-                    subcategories.forEach(subcategory => {
-                        const option = document.createElement('option');
-                        option.value = subcategory.id;
-                        option.text = subcategory.name;
-                        subcategorySelect.appendChild(option);
-                    });
-
-                    // Показуємо subcategorySelect, якщо є підкатегорії
-                    // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
-                } else {}
-            })
-            .catch(error => {
-                console.error('Помилка при отриманні підкатегорій:', error);
-            });
-    });
-    });
-</script>
+<script type="text/javascript" th:src="@{/js/tinyMce.js}"></script>
+<script type="text/javascript" th:src="@{/js/categoryEdit.js}"></script>
 </body>
 </html>

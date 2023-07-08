@@ -1,107 +1,101 @@
 // $(document).ready(function () {
-    const searchInput = document.getElementById('searchInput');
+const searchInput = document.getElementById('searchInput');
 
-    searchInput.addEventListener('input', function () {
-        const searchTerm = searchInput.value;
-        if(searchTerm.length > 2) {
-            // Викликати функцію для виконання пошуку на сервері зі значенням searchTerm
-            searchItems(searchTerm);
+searchInput.addEventListener('input', function () {
+    const searchTerm = searchInput.value;
+    if (searchTerm.length > 2) {
+        // Викликати функцію для виконання пошуку на сервері зі значенням searchTerm
+        searchItems(searchTerm);
+    }
+});
+
+function searchItems(searchTerm) {
+    $.ajax({
+        url: '/admin-page/search', // Шлях до вашого ендпоінта пошуку на сервері
+        type: 'GET',
+        data: {searchTerm: searchTerm},
+        success: function (response) {
+            // Обробити отримані результати пошуку
+            displaySearchResults(response);
+        },
+        error: function () {
+            console.error('Помилка при виконанні запиту на сервер');
         }
     });
+}
 
-    function searchItems(searchTerm) {
-        console.log(searchTerm + ' term');
-        $.ajax({
-            url: '/admin-page/search', // Шлях до вашого ендпоінта пошуку на сервері
-            type: 'GET',
-            data: { searchTerm: searchTerm },
-            success: function(response) {
-                // Обробити отримані результати пошуку
-                displaySearchResults(response);
-                console.log(response + ' response');
-            },
-            error: function() {
-                console.error('Помилка при виконанні запиту на сервер');
-            }
-        });
+function displaySearchResults(results) {
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.classList.add('search_result_style');
+    if (results.length === 0) {
+        searchResultsContainer.classList.remove('search_result_style');
     }
+    // Додайте обробник події click на сторінці
+    document.addEventListener('click', function (event) {
+        const targetElement = event.target;
 
-    function displaySearchResults(results) {
-        const searchResultsContainer = document.getElementById('searchResults');
-        searchResultsContainer.classList.add('search_result_style');
-        if (results.length === 0) {
-            console.log(results.length + ' length');
+        // Перевірка, чи клікнули поза блоком результатів пошуку
+        if (!searchResultsContainer.contains(targetElement)) {
+            searchResultsContainer.innerHTML = '';
             searchResultsContainer.classList.remove('search_result_style');
         }
-        // Додайте обробник події click на сторінці
-        document.addEventListener('click', function(event) {
-            const targetElement = event.target;
+    });
+    searchResultsContainer.innerHTML = '';
 
-            // Перевірка, чи клікнули поза блоком результатів пошуку
-            if (!searchResultsContainer.contains(targetElement)) {
-                searchResultsContainer.innerHTML = '';
-                searchResultsContainer.classList.remove('search_result_style');
-            }
+    for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+
+        // Створення блоку для кожного результату
+        const resultBlock = document.createElement('div');
+        resultBlock.classList.add('result-block');
+
+        // Створення назви
+        const nameElement = document.createElement('h2');
+        nameElement.textContent = result.engText;
+        resultBlock.appendChild(nameElement);
+
+        // Створення перекладу
+        const translationElement = document.createElement('p');
+        translationElement.textContent = result.ukrText;
+        resultBlock.appendChild(translationElement);
+
+        // Створення скритого поля з id екземпляра
+        const idElement = document.createElement('input');
+        idElement.type = 'hidden';
+        idElement.value = result.id;
+        resultBlock.appendChild(idElement);
+
+        // Створення кнопки "Додати"
+        const addButton = document.createElement('button');
+        addButton.classList.add('add-button');
+        addButton.textContent = 'Додати';
+        addButton.addEventListener('click', function () {
+            const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
+
+            const addedItemsContainer = document.getElementById('addedItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.classList.add('phrasesList');
+
+            // Створення input з атрибутом name="id" та значенням value="${selectedId}"
+            const inputElement = document.createElement('input');
+            inputElement.type = 'hidden';
+            inputElement.name = 'id';
+            inputElement.value = selectedId;
+            newItem.appendChild(inputElement);
+
+            // Створення label для поля engText
+            const labelElement = document.createElement('label');
+            labelElement.textContent = result.engText;
+            newItem.appendChild(labelElement);
+
+            addedItemsContainer.appendChild(newItem);
         });
-        searchResultsContainer.innerHTML = '';
 
-        for (let i = 0; i < results.length; i++) {
-            const result = results[i];
+        resultBlock.appendChild(addButton);
 
-            // Створення блоку для кожного результату
-            const resultBlock = document.createElement('div');
-            resultBlock.classList.add('result-block');
-
-            // Створення назви
-            const nameElement = document.createElement('h2');
-            nameElement.textContent = result.engText;
-            resultBlock.appendChild(nameElement);
-
-            // Створення перекладу
-            const translationElement = document.createElement('p');
-            translationElement.textContent = result.ukrText;
-            resultBlock.appendChild(translationElement);
-
-            // Створення скритого поля з id екземпляра
-            const idElement = document.createElement('input');
-            idElement.type = 'hidden';
-            idElement.value = result.id;
-            resultBlock.appendChild(idElement);
-
-            // Створення кнопки "Додати"
-            const addButton = document.createElement('button');
-            addButton.classList.add('add-button');
-            addButton.textContent = 'Додати';
-            addButton.addEventListener('click', function () {
-                const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
-
-                const addedItemsContainer = document.getElementById('addedItemsContainer');
-                const newItem = document.createElement('div');
-                newItem.classList.add('phrasesList');
-
-                // Створення input з атрибутом name="id" та значенням value="${selectedId}"
-                const inputElement = document.createElement('input');
-                inputElement.type = 'hidden';
-                inputElement.name = 'id';
-                inputElement.value = selectedId;
-                newItem.appendChild(inputElement);
-
-                // Створення label для поля engText
-                const labelElement = document.createElement('label');
-                labelElement.textContent = result.engText;
-                newItem.appendChild(labelElement);
-
-                addedItemsContainer.appendChild(newItem);
-            });
-
-            resultBlock.appendChild(addButton);
-
-            searchResultsContainer.appendChild(resultBlock);
-        }
+        searchResultsContainer.appendChild(resultBlock);
     }
-
-
-
+}
 
 
 // $(document).ready(function () {
@@ -144,8 +138,8 @@ function save() {
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
     var translationPairList = [];
-    selectedItemsInput.forEach(function(input) {
-        translationPairList.push({ id: input.value });
+    selectedItemsInput.forEach(function (input) {
+        translationPairList.push({id: input.value});
     });
     var url = '/admin-page/page-phrases-save';
     var translationPairsPage = {
@@ -172,7 +166,6 @@ function save() {
         subcategorySelect: subcategorySelect,
         subSubcategorySelect: subSubcategorySelect
     };
-    console.log(data + ' 23423235252352');
     $.ajax({
         // url: $(this).attr('action'),
         url: url,
@@ -197,8 +190,8 @@ function save() {
         }
     });
 }
-// });
 
+// });
 
 
 // $(document).ready(function () {

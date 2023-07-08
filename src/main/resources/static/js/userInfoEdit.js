@@ -70,15 +70,12 @@ $(document).ready(function () {
         var url = $(this).attr('action');
         var formData = $(this).serializeArray();
         if ($('input[name="password"]').val() && $('input[name="newPassword"]').val()) {
-            // console.log(formData);
             $.ajax({
                 url: url,
                 type: "POST",
                 data: formData,
                 success: function (result) {
-                    // console.log(result);
                     var status = result.status;
-                    // console.log(status);
                     if (status == "Success") {
                         $('input[name="password"]').val('');
                         $('input[name="newPassword"]').val('');
@@ -148,7 +145,6 @@ $(document).ready(function () {
         } else {
             minLength.classList.add('valid');
         }
-        // console.log(data);
         return isValid;
     }
 

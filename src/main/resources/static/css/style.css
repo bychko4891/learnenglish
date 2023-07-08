@@ -939,3 +939,18 @@ td {
     line-height: 140%;
 }
 
+.search_result_style {
+    position: absolute;
+    top: 60px;
+    background: rgba(45, 45,52, 0.99);
+    color: wheat;
+    height: auto;
+    width: auto;
+    border-radius: 20px;
+    padding: 15px;
+    z-index: 9999;
+    border: 1px solid;
+}
+.result-block {
+    display: flex;
+}

@@ -1,3 +1,4 @@
+var formData;
 $(document).ready(function () {
     tinymce.init({
         selector: 'textarea#info',
@@ -27,6 +28,7 @@ $(document).ready(function () {
 
     $('#editor').submit(function (event) {
         event.preventDefault();
+        formData = $(this).serializeArray();
         save();
     });
 
