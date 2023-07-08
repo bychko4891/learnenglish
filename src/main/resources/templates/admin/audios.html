@@ -10,7 +10,7 @@
         <div class="container layout_page row">
 
 
-            <div class="page-table">
+            <div class="page-table" style="flex-direction: column;">
                 <h3>Word аудіо</h3>
                 <table style="width: 90%;">
                     <thead>
@@ -56,39 +56,5 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('.check-button').on('click', function () {
-            var userId = $(this).data('user-id');
-            // var form = $('form').find('[data-user-id="' + userId + '"]');
-            var form = $('form').has('[data-user-id="' + userId + '"]');
-            var url = "/admin-page/users/user/user-active";
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            var isChecked = form.find('input[name="userActive"]').prop('checked');
-            console.log(form);
-            console.log(userId);
-            console.log(isChecked);
-            console.log(url);
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    userActive: isChecked,
-                    userId: userId
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function (result) {
-                    // Обробка успішного відгуку
-                },
-                error: function (xhr, status, error) {
-                    // Обробка помилки
-                }
-            });
-        });
-    });
-</script>
 </body>
 </html>

@@ -13,12 +13,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class FileStorageProperties {
     private String uploadDir;
     private String uploadAudio;
+    private String uploadUserAvatar;
 
+
+    public String getUploadUserAvatar() {
+        return uploadUserAvatar;
+    }
     public String getUploadDir() {
         return uploadDir;
     }
     public String getUploadAudio() {
         return uploadAudio;
+    }
+    public void setUploadUserAvatar(String uploadUserAvatar) {
+        this.uploadUserAvatar = uploadUserAvatar;
     }
 
     public void setUploadDir(String uploadDir) {

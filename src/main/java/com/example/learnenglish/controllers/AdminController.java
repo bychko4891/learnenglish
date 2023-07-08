@@ -7,10 +7,15 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.*;
+import com.example.learnenglish.model.users.Images;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 
@@ -37,6 +44,7 @@ public class AdminController {
     private final WordService wordService;
     private final AudioService wordAudioService;
     private final TranslationPairPageService translationPairPageService;
+    private final ImagesService imagesService;
 
     public AdminController(HttpSession session,
                            LessonService lessonService,
@@ -47,7 +55,8 @@ public class AdminController {
                            CategoryService categoryService,
                            WordService wordService,
                            AudioService wordAudioService,
-                           TranslationPairPageService translationPairPageService) {
+                           TranslationPairPageService translationPairPageService,
+                           ImagesService imagesService) {
         this.session = session;
         this.lessonService = lessonService;
         this.userService = userService;
@@ -58,6 +67,7 @@ public class AdminController {
         this.wordService = wordService;
         this.wordAudioService = wordAudioService;
         this.translationPairPageService = translationPairPageService;
+        this.imagesService = imagesService;
     }
 
 
@@ -419,4 +429,37 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
+
+    @GetMapping("/images")
+    public String imagesPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     Principal principal,
+                                     Model model) {
+        if (principal != null) {
+            if(page < 0) page = 0;
+            Page<Images> imagesPage = imagesService.getImages(page, size);
+            if(imagesPage.getTotalPages() == 0){
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", imagesPage.getTotalPages());
+            }
+            model.addAttribute("images", imagesPage.getContent());
+            model.addAttribute("currentPage", page);
+
+            return "admin/webImages";
+        }
+        return "redirect:/login";
+    }
+//    @GetMapping("/image/{fileName:.+}")
+//    public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
+//        Resource resource = imagesService.loadWebImages(fileName);
+//        InputStream in = resource.getInputStream();
+//        byte[] imageBytes = IOUtils.toByteArray(in);
+//        HttpHeaders headers = new HttpHeaders();
+////        headers.setContentType(MediaType.IMAGE_PNG); // встановити тип контенту як image/jpeg, або image/png, залежно від формату зображення
+//        headers.setContentLength(imageBytes.length);
+//        headers.setContentDisposition(ContentDisposition.builder("inline").filename(resource.getFilename()).build());
+//        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+//    }
 }

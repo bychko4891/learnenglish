@@ -25,8 +25,12 @@ $(document).ready(function () {
             type: 'canvas',
             size: 'viewport'
         }).then(function (resp) {
+            var imgM = document.getElementById('userAvatarM');
             var img = document.getElementById('userAvatar');
+            var imgPM = document.getElementById('userAvatarPM');
+            imgM.src = resp;
             img.src = resp;
+            imgPM.src = resp;
         }); }
 
     $('#crop').on('click', function () {

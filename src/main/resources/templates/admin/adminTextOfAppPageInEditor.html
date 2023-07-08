@@ -13,7 +13,7 @@
     <main class="section main_content ">
         <div class="container layout_page">
             <h1>New text page</h1>
-            <form id="textOfAppPage">
+            <form id="editor">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${textOfAppPage.name}" required>
                 <label>Сторінка:</label> <label th:text="${textOfAppPage.pageApplication.namePage}"></label>
@@ -26,8 +26,8 @@
                 </select>
                 <input name="address" placeholder="path page"/>
                 <hr>
-                <label for="lessonInfo">Текст:</label>
-                <textarea id="lessonInfo" name="text" th:text="${textOfAppPage.text}" required></textarea>
+                <label for="info">Текст:</label>
+                <textarea id="info" name="text" th:text="${textOfAppPage.text}" required></textarea>
                 <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
                 <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
                 <input type="hidden" name="pageApplication" th:value="${textOfAppPage.pageApplication}">
@@ -40,7 +40,7 @@
     </main>
     <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
 </div>
-
+<script type="text/javascript" th:src="@{/js/tinyMce.js}"></script>
 <script type="text/javascript" th:src="@{/js/textOfAppPage.js}"></script>
 </body>
 </html>

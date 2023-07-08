@@ -8,7 +8,7 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.exception.FileFormatException;
-import com.example.learnenglish.service.UserAvatarService;
+import com.example.learnenglish.service.ImagesService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -28,11 +28,11 @@ import java.security.Principal;
 @RestController
 public class UserAvatarController {
     private static final Logger logger = LoggerFactory.getLogger(UserAvatarController.class);
-    private final UserAvatarService userAvatarService;
+    private final ImagesService imagesService;
     private final UserService userService;
     private final HttpSession session;
-    public UserAvatarController(UserAvatarService userAvatarService, HttpSession session, UserService userService) {
-        this.userAvatarService = userAvatarService;
+    public UserAvatarController(ImagesService imagesService, HttpSession session, UserService userService) {
+        this.imagesService = imagesService;
         this.session = session;
         this.userService = userService;
     }
@@ -46,7 +46,7 @@ public class UserAvatarController {
             String contentType = file.getContentType();
             if (contentType.equals("image/png")) {
                 // Відкидаємо всі файли, які не є PNG
-                String fileName = userAvatarService.storeFile(file, userId);
+                String fileName = imagesService.storeFile(file, userId);
                 session.setAttribute("avatarName", fileName);
                 return ResponseEntity.ok("Ok");
             } else throw new FileFormatException("Дозволено тільки файли з розширенням .png");
@@ -55,7 +55,7 @@ public class UserAvatarController {
 //                    .path(fileName)
 //                    .toUriString();
 
-//        return new UserAvatar(avatarUri);
+//        return new Images(avatarUri);
         }
         return ResponseEntity.ok("Дозволено тільки файли з розширенням .png");
     }
@@ -63,7 +63,7 @@ public class UserAvatarController {
 
     @GetMapping("/avatar/{fileName:.+}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
-        Resource resource = userAvatarService.loadFileAsResource(fileName);
+        Resource resource = imagesService.loadFileAsResource(fileName);
         InputStream in = resource.getInputStream();
         byte[] imageBytes = IOUtils.toByteArray(in);
         HttpHeaders headers = new HttpHeaders();
@@ -74,6 +74,18 @@ public class UserAvatarController {
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
+
+    @GetMapping("/web-image/{fileName:.+}")
+    public ResponseEntity<byte[]> webImage(@PathVariable String fileName, HttpServletRequest request) throws IOException {
+        Resource resource = imagesService.loadWebImages(fileName);
+        InputStream in = resource.getInputStream();
+        byte[] imageBytes = IOUtils.toByteArray(in);
+        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_PNG); // встановити тип контенту як image/jpeg, або image/png, залежно від формату зображення
+        headers.setContentLength(imageBytes.length);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename(resource.getFilename()).build());
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
 
     @ExceptionHandler(FileFormatException.class)
     public String handleFileFormatException(FileFormatException ex, Model model) {

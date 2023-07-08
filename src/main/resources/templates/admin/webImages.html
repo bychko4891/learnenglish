@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page row">
+
+
+            <div class="page-table" style="flex-direction: row;">
+                <div class="col-md-8">
+                    <h3>Зображення</h3>
+                    <table style="width: 90%;">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Path</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="image : ${images}">
+                            <td th:text="${image.id}"></td>
+                            <td>
+                                <div style="width: 100px; height: auto;">
+                                    <img th:src="@{/web-image/{name}(name=${image.imageName})}">
+                                </div>
+                            </td>
+                            <td th:text="${'/web-image/' + image.imageName}"></td>
+                            <td>
+                                <form th:action="@{/admin-page/images/{id}/image-upload-page(id=${image.id})}">
+                                    <button type="submit">Змінити</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <h3>Завантажити</h3>
+                    <form id="webImage">
+                        <input class="form-control" type="file" id="image" accept="image/*">
+                        <button type="submit">Завантажити</button>
+                    </form>
+                </div>
+
+            </div>
+            <!-- відображення пагінації -->
+            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
+                <a th:href="@{/admin-page/images(page=(${currentPage} - 1))}">Previous</a>
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/images(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
+                <a th:href="@{/admin-page/images(page=(${currentPage} + 1))}">Next</a>
+            </div>
+
+
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<script>
+    $('#webImage').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var webImage = $('#image')[0].files[0];
+        var formData = new FormData();
+
+        formData.append('webImage', webImage);
+        // var url = '/admin-page/image/upload';
+
+        $.ajax({
+            // url: $(this).attr('action'),
+            url: '/admin-page/image/upload',
+            type: 'POST',
+            data: formData, // Використовуємо об'єкт FormData замість JSON
+            processData: false,
+            contentType: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                // Обробка успішної відповіді від сервера
+            },
+            error: function (xhr, status, error) {
+                // Обробка помилки
+            }
+        });
+    });
+</script>
+</body>
+</html>

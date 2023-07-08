@@ -56,6 +56,7 @@ public class SecurityConfig {
             "/js/*",
             "/images/*",
             "/img/*",
+            "/web-image/**",
             "favicon.ico",
             "/robots.txt",
             "/",
@@ -110,7 +111,7 @@ public class SecurityConfig {
                                     session.setAttribute("username", authentication.getName());
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     User user = (User) authentication.getPrincipal();
-                                    session.setAttribute("avatarName", user.getUserAvatar().getAvatarName());
+                                    session.setAttribute("avatarName", user.getUserAvatar().getImageName());
                                     session.setAttribute("userFirstName", user.getFirstName());
                                     session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());

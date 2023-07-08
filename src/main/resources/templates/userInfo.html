@@ -251,7 +251,7 @@
                     <section>
                         <h1>Змінити аватар</h1><br>
                         <div class="user_avatar_profile">
-                        <img th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
+                        <img id="userAvatarPM" th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
                         </div>
                         <div class="demo-wrap upload-demo">
                             <div class="actions">

@@ -55,7 +55,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
             userStatistics.setStudyTimeInTwoWeeks(new ArrayList<>(Arrays.asList(0)));
             userStatistics.setTrainingDaysInMonth(new ArrayList<>(Arrays.asList(LocalDate.now())));
             admin.setStatistics(userStatistics);
-            admin.setUserAvatar(new UserAvatar());
+            admin.setUserAvatar(new Images());
             userRepository.save(admin);
             createUserDemo();
             createPageApplication();
@@ -76,7 +76,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
         userStatistics.setStudyTimeInTwoWeeks(new ArrayList<>(Arrays.asList(0)));
         userStatistics.setTrainingDaysInMonth(new ArrayList<>(Arrays.asList(LocalDate.now())));
         demo.setStatistics(userStatistics);
-        demo.setUserAvatar(new UserAvatar());
+        demo.setUserAvatar(new Images());
         userRepository.save(demo);
 
     }

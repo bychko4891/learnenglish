@@ -50,7 +50,7 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")
-    private UserAvatar userAvatar;
+    private Images userAvatar;
 
     @Column(name = "password", length = 1000)
     private String password;

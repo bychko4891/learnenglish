@@ -12,20 +12,26 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "user_avatars")
+@Entity
 @Getter
 @Setter
-@ToString
-public class UserAvatar {
+@Table(name = "images")
+public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
-    @Column(name = "avatar_name", length = 1000)
-    private String avatarName;
+
+    @Column(name = "image_name", length = 1000)
+    private String imageName;
+
+    @Column(length = 1000)
+    private boolean webImage = false;
+
+
     @OneToOne(mappedBy = "userAvatar", cascade = CascadeType.ALL)
     private User user;
 
-    public UserAvatar() {
+    public Images() {
     }
 }

@@ -7,8 +7,8 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.dto.*;
+import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.*;
@@ -31,6 +31,7 @@ public class AdminRestController {
     private final WordService wordService;
     private final AudioService wordAudioService;
     private final TranslationPairService translationPairService;
+    private final ImagesService imagesService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
@@ -38,7 +39,7 @@ public class AdminRestController {
                                CategoryService wordCategoryService,
                                WordService wordService,
                                AudioService wordAudioService,
-                               TranslationPairService translationPairService) {
+                               TranslationPairService translationPairService, ImagesService imagesService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
@@ -46,6 +47,7 @@ public class AdminRestController {
         this.wordService = wordService;
         this.wordAudioService = wordAudioService;
         this.translationPairService = translationPairService;
+        this.imagesService = imagesService;
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -126,7 +128,7 @@ public class AdminRestController {
     @GetMapping("/search")
     public ResponseEntity<List<DtoTranslationPairToUI>> search(@RequestParam("searchTerm") String searchTerm) {
 
-        if(!searchTerm.isBlank()){
+        if (!searchTerm.isBlank()) {
             List<DtoTranslationPairToUI> list = translationPairService.searchResult(searchTerm);
             return ResponseEntity.ok(list);
         }
@@ -137,5 +139,20 @@ public class AdminRestController {
     public ResponseEntity<ResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
                                                                    Principal principal) {
         return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
+    }
+
+    @PostMapping("/image/upload")
+    public ResponseEntity<ResponseMessage> uploadWebImage(@RequestParam("webImage") MultipartFile file,
+                                                 Principal principal) {
+        if (principal != null) {
+            String contentType = file.getContentType();
+            if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
+                System.out.println("Yes");
+                String fileName = imagesService.saveWebImage(file, contentType);
+                return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
+            } else throw new FileFormatException("Дозволено тільки зображення");
+
+        }
+        return ResponseEntity.notFound().build();
     }
 }
