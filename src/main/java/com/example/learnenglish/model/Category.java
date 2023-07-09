@@ -54,7 +54,7 @@ public class Category {
     private List<Word> words;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "category")
-    private List<TranslationPairsPage> translationPairsPageList;
+    private List<TranslationPairsPage> translationPairsPages;
 
 
     public Category() {

@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Getter
 @Setter
@@ -22,6 +24,7 @@ public class DtoTranslationPairsPage {
     private Category mainCategorySelect;
     private Category subcategorySelect;
     private Category subSubcategorySelect;
+    private List<Long> translationPairsId;
 
     public DtoTranslationPairsPage() {
     }

@@ -137,17 +137,18 @@ function save() {
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
-    var translationPairList = [];
+    var translationPairsId = [];
     selectedItemsInput.forEach(function (input) {
-        translationPairList.push({id: input.value});
+        translationPairsId.push(input.value);
     });
+    console.log(translationPairsId);
     var url = '/admin-page/page-phrases-save';
     var translationPairsPage = {
-        id: $('#editor input[name="id"]').val(),
+        id: $('#phrasesPage').val(),
         name: $('#editor input[name="name"]').val(),
         published: $('#toggleSwitch').is(':checked'),
         info: $('#editor textarea[name="info"]').val(),
-        translationPairList: translationPairList
+        // translationPairList: translationPairList
 
     };
 
@@ -164,7 +165,8 @@ function save() {
         translationPairsPage: translationPairsPage,
         mainCategorySelect: mainCategorySelect,
         subcategorySelect: subcategorySelect,
-        subSubcategorySelect: subSubcategorySelect
+        subSubcategorySelect: subSubcategorySelect,
+        translationPairsId: translationPairsId
     };
     $.ajax({
         // url: $(this).attr('action'),

@@ -32,6 +32,7 @@ public class AdminRestController {
     private final AudioService wordAudioService;
     private final TranslationPairService translationPairService;
     private final ImagesService imagesService;
+    private final TranslationPairPageService translationPairPageService;
 
     public AdminRestController(LessonService lessonService,
                                UserService userService,
@@ -39,7 +40,9 @@ public class AdminRestController {
                                CategoryService wordCategoryService,
                                WordService wordService,
                                AudioService wordAudioService,
-                               TranslationPairService translationPairService, ImagesService imagesService) {
+                               TranslationPairService translationPairService,
+                               ImagesService imagesService,
+                               TranslationPairPageService translationPairPageService) {
         this.lessonService = lessonService;
         this.userService = userService;
         this.textOfAppPageService = textOfAppPageService;
@@ -48,6 +51,7 @@ public class AdminRestController {
         this.wordAudioService = wordAudioService;
         this.translationPairService = translationPairService;
         this.imagesService = imagesService;
+        this.translationPairPageService = translationPairPageService;
     }
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -133,7 +137,10 @@ public class AdminRestController {
 
     @PostMapping("/page-phrases-save")
     public ResponseEntity<ResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
-                                                                   Principal principal) {
+                                                   Principal principal) {
+        if (principal != null) {
+            return ResponseEntity.ok(translationPairPageService.saveTranslationPairsPage(dtoTranslationPairsPage));
+        }
         return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
     }
 

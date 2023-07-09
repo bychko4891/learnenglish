@@ -32,8 +32,9 @@ public class TranslationPairsPage {
     @Column(columnDefinition = "text")
     private String info;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
-    private List<TranslationPair> translationPairList;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+    private List<TranslationPair> translationPairs;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

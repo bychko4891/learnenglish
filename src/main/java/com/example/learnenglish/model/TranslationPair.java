@@ -35,6 +35,9 @@ public class TranslationPair {
     @Column(name = "eng_text", length = 500)
     private String engText;
 
+    @Column(name = "is_repeatable")
+    private boolean isRepeatable = true;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "audio_id")
     private Audio audio;
@@ -47,7 +50,8 @@ public class TranslationPair {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne()
+//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "translation_pair_page_id")
     private TranslationPairsPage translationPairsPage;
 

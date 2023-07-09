@@ -7,23 +7,34 @@ package com.example.learnenglish.service;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoTranslationPair;
+import com.example.learnenglish.dto.DtoTranslationPairsPage;
+import com.example.learnenglish.model.Category;
+import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.TranslationPairsPage;
+import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairPageRepository;
+import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TranslationPairPageService {
 
     private final TranslationPairPageRepository translationPairPageRepository;
+    private final TranslationPairRepository translationPairRepository;
+    private final CategoryRepository categoryRepository;
 
-    public TranslationPairPageService(TranslationPairPageRepository translationPairPageRepository) {
+    public TranslationPairPageService(TranslationPairPageRepository translationPairPageRepository, TranslationPairRepository translationPairRepository, CategoryRepository categoryRepository) {
         this.translationPairPageRepository = translationPairPageRepository;
+        this.translationPairRepository = translationPairRepository;
+        this.categoryRepository = categoryRepository;
     }
 
 
@@ -37,4 +48,47 @@ public class TranslationPairPageService {
     }
 
 
+    public ResponseMessage saveTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage) {
+        Optional<TranslationPairsPage> dtoTranslationPairsPageOptional = translationPairPageRepository.findById(dtoTranslationPairsPage.getTranslationPairsPage().getId());
+        Long categoryId = dtoTranslationPairsPage.getSubSubcategorySelect().getId() != 0 ? dtoTranslationPairsPage.getSubSubcategorySelect().getId() :
+                dtoTranslationPairsPage.getSubcategorySelect().getId() != 0 ? dtoTranslationPairsPage.getSubcategorySelect().getId() :
+                        dtoTranslationPairsPage.getMainCategorySelect().getId() != 0 ? dtoTranslationPairsPage.getMainCategorySelect().getId() : 0;
+        if (dtoTranslationPairsPageOptional.isPresent()) {
+            TranslationPairsPage translationPairsPage = dtoTranslationPairsPageOptional.get();
+            translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
+            translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
+            translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
+            if(categoryId != 0 && translationPairsPage.getCategory() == null){
+                Category category = categoryRepository.findById(categoryId).get();
+                translationPairsPage.setCategory(category);
+                category.getTranslationPairsPages().add(translationPairsPage);
+
+            } else if (categoryId != 0 && translationPairsPage.getCategory().getId() != categoryId) {
+                Category categoryRemove = translationPairsPage.getCategory();
+                categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
+                translationPairsPage.setCategory(categoryRepository.findById(categoryId).get());
+            }
+            translationPairPageRepository.save(translationPairsPage);
+            return new ResponseMessage(Message.SUCCESSADDBASE);
+        } else {
+            TranslationPairsPage translationPairsPage = new TranslationPairsPage();
+            translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
+            translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
+            translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
+            if(dtoTranslationPairsPage.getTranslationPairsId().size() != 0){
+                List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+                for (TranslationPair arr: list) {
+                    arr.setTranslationPairsPage(translationPairsPage);
+                }
+                translationPairsPage.setTranslationPairs(list);
+            }
+            if(categoryId != 0){
+                Category category = categoryRepository.findById(categoryId).get();
+                translationPairsPage.setCategory(category);
+                category.getTranslationPairsPages().add(translationPairsPage);
+            }
+            translationPairPageRepository.save(translationPairsPage);
+            return new ResponseMessage(Message.SUCCESSADDBASE);
+        }
+    }
 }

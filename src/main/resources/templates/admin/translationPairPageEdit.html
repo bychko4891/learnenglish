@@ -4,23 +4,6 @@
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
-<!--<style>-->
-<!--    .search_result_style {-->
-<!--        position: absolute;-->
-<!--        top: 60px;-->
-<!--        background: rgba(45, 45,52, 0.99);-->
-<!--        color: wheat;-->
-<!--        height: auto;-->
-<!--        width: auto;-->
-<!--        border-radius: 20px;-->
-<!--        padding: 15px;-->
-<!--        z-index: 9999;-->
-<!--        border: 1px solid;-->
-<!--    }-->
-<!--    .result-block {-->
-<!--        display: flex;-->
-<!--    }-->
-<!--</style>-->
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
@@ -55,7 +38,7 @@
                 <hr>
                 <label for="info">Текст:</label>
                 <textarea id="info" name="info" th:text="${translationPairsPage.info}"></textarea>
-                <input type="hidden" name="id" th:value="${translationPairsPage.id}" required>
+                <input type="hidden" id="phrasesPage" name="id" th:value="${translationPairsPage.id}" required>
                 <button type="submit">Зберегти</button>
             </form>
         </div>
