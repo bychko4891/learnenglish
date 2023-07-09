@@ -90,7 +90,7 @@ public class AdminRestController {
     @GetMapping("/getSubcategories")
     public ResponseEntity<List<DtoWordsCategoryToUi>> wordsSubcategories(@RequestParam("mainCategoryId") Long id, Principal principal) {
         if (principal != null && id != 0) {
-            return ResponseEntity.ok(wordCategoryService.getSubcategoriesInMainCategory(id));
+            return ResponseEntity.ok(wordCategoryService.getDtoSubcategoriesInMainCategory(id));
         }
         return ResponseEntity.notFound().build();
     }

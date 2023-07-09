@@ -2,40 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+    .main_info table img {
+        width: 100%;
+    }
 
+    .main_info table {
+        border: none;
+    }
+
+
+    .main_info table {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .main_info td {
+        display: table-cell;
+    }
+
+    @media (max-width: 768px) {
+        .main_info tr {
+            display: block;
+        }
+
+        .main_info td {
+            display: block;
+            width: 100%;
+        }
+    }
+</style>
 <body class="active">
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
-            <div th:utext="${mainTop}" style="padding: 40px 40px 10px 40px;"></div>
-            <div class="gallery">
-                <div class="panel">
-                    <h3>З'являється впевненність в собі</h3>
-                    <img class="panel-image" src="/img/confidence.webp" />
-
-                </div>
-                <div class="panel">
-                    <h3>Робота в IT або іншій іноземній компанії</h3>
-                    <img class="panel-image" src="/img/job.webp" />
-
-                </div>
-                <div class="panel active">
-                    <h3>Вільно подорожувати</h3>
-                    <img class="panel-image" src="/img/travel.webp" />
-                </div>
-                <div class="panel">
-                    <h3>Знаходити цікавих друзів по всьому світу</h3>
-                    <img class="panel-image" src="/img/friends.webp" />
-
-                </div>
-                <div class="panel">
-                    <h3>Мігрувати в іншу країну</h3>
-                    <img class="panel-image" src="/img/migration.webp" />
-
-                </div>
-            </div>
-
+            <div class="main_info" th:utext="${mainTop}" style="padding: 40px 40px 10px 40px;"></div>
             <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
@@ -43,30 +46,47 @@
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <script>
-    // const panels = document.querySelectorAll('.panel');
-    //
-    // panels.forEach(panel => {
-    //     panel.addEventListener('click', () => {
-    //         panels.forEach(otherPanel => {
-    //             otherPanel.classList.remove('active');
-    //         });
-    //         panel.classList.add('active');
-    //     });
-    // });
-    const panels = document.querySelectorAll(".panel");
+    window.addEventListener('resize', rearrangeColumns);
 
-    panels.forEach((panel) => {
-        panel.addEventListener("click", () => {
-            removeActiveClasses();
-            panel.classList.add("active");
-        });
-    });
+    function rearrangeColumns() {
+        const firstTable = document.getElementById('firstTable');
+        const secondTable = document.getElementById('secondTable');
 
-    const removeActiveClasses = () => {
-        panels.forEach((panel) => {
-            panel.classList.remove("active");
-        });
-    };
+        if (window.innerWidth < 768) {
+            swapColumns(firstTable);
+            swapColumns(secondTable);
+        } else {
+            restoreColumnsOrder(firstTable);
+            // restoreColumnsOrder(secondTable);
+        }
+    }
+
+    function swapColumns(table) {
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+
+            if (cells.length === 2) {
+                rows[i].appendChild(cells[0]);
+            }
+        }
+    }
+
+    function restoreColumnsOrder(table) {
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+
+            if (cells.length === 2) {
+                rows[i].insertBefore(cells[1], cells[0]);
+            }
+        }
+    }
+
+    // Викликати функцію при завантаженні сторінки
+    rearrangeColumns();
 </script>
 </body>
 </html>

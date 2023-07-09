@@ -61,8 +61,6 @@ public class LearnEnglishController {
             }
             if (mainBottom.getTextOfAppPage() != null) {
                 model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
-            } else {
-                model.addAttribute("mainBottom", "No text in this page");
             }
             model.addAttribute("title", "Англійська за 16 годин - English Learn Application");
             return "index";

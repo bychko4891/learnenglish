@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "words_audio")
+@Table(name = "audio")
 public class Audio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

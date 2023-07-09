@@ -58,15 +58,15 @@ public class TranslationPairPageService {
             translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
             translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
             translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
-            if(categoryId != 0 && translationPairsPage.getCategory() == null){
+            if(categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null){
                 Category category = categoryRepository.findById(categoryId).get();
-                translationPairsPage.setCategory(category);
+                translationPairsPage.setTranslationPairsPageCategory(category);
                 category.getTranslationPairsPages().add(translationPairsPage);
 
-            } else if (categoryId != 0 && translationPairsPage.getCategory().getId() != categoryId) {
-                Category categoryRemove = translationPairsPage.getCategory();
+            } else if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory().getId() != categoryId) {
+                Category categoryRemove = translationPairsPage.getTranslationPairsPageCategory();
                 categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
-                translationPairsPage.setCategory(categoryRepository.findById(categoryId).get());
+                translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
             }
             translationPairPageRepository.save(translationPairsPage);
             return new ResponseMessage(Message.SUCCESSADDBASE);
@@ -84,7 +84,7 @@ public class TranslationPairPageService {
             }
             if(categoryId != 0){
                 Category category = categoryRepository.findById(categoryId).get();
-                translationPairsPage.setCategory(category);
+                translationPairsPage.setTranslationPairsPageCategory(category);
                 category.getTranslationPairsPages().add(translationPairsPage);
             }
             translationPairPageRepository.save(translationPairsPage);

@@ -3,9 +3,10 @@ $(document).ready(function () {
     tinymce.init({
         selector: 'textarea#info',
         convert_urls : false,
+        plugins: 'imagetools',
         height: 500,
         plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'advlist','imagetools', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'help', 'wordcount'
         ],
@@ -20,6 +21,7 @@ $(document).ready(function () {
             '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
             '//www.tiny.cloud/css/codepen.min.css'
         ],
+        imagetools_toolbar: 'alignleft aligncenter alignright alignnone',
         api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
         menubar: true,
         statusbar: true,

@@ -38,5 +38,5 @@ public class TranslationPairsPage {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category translationPairsPageCategory;
 }

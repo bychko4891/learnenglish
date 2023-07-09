@@ -41,31 +41,36 @@ public class CategoryService {
     }
 
     public List<Category> mainWordCategoryList(boolean mainCategory) {
-        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPages(mainCategory, CategoryPage.WORDS);
+//        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPages(mainCategory, CategoryPage.WORDS);
+        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.WORDS);
     }
 
     //               метод для Фраз            //
     public List<Category> mainTranslationPairsCategoryList(boolean mainCategory) {
-        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPages(mainCategory, CategoryPage.TRANSLATION_PAIRS);
+//        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPages(mainCategory, CategoryPage.TRANSLATION_PAIRS);
+        return categoryRepository.findWordCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.TRANSLATION_PAIRS);
     }
 
-    public List<DtoWordsCategoryToUi> getSubcategoriesInMainCategory(Long id) {
-        Optional<Category> categoryOption = categoryRepository.findById(id);
-        if (categoryOption.isPresent()) {
+    public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(Long id) {
+//        Optional<Category> categoryOption = categoryRepository.findById(id);
+        List<Category> subcategories= categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
+//        if (categoryOption.isPresent()) {
             List<DtoWordsCategoryToUi> dtoWordsCategoryToUiList = new ArrayList<>();
-            for (Category arr : categoryOption.get().getSubcategories()) {
+//            for (Category arr : categoryOption.get().getSubcategories()) {
+            for (Category arr : subcategories) {
                 dtoWordsCategoryToUiList.add(DtoWordsCategoryToUi.subcategoriesEditorConvertToDto(arr));
             }
             return dtoWordsCategoryToUiList;
-        }
-        throw new IllegalArgumentException("Main category with id " + id + " not found");
+//        }
+//        throw new IllegalArgumentException("Main category with id " + id + " not found");
     }
     public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        if (categoryOptional.isPresent()) {
-            return categoryOptional.get().getSubcategories();
-        }
-        throw new IllegalArgumentException("Main category with id " + id + " not found");
+//        Optional<Category> categoryOptional = categoryRepository.findById(id);
+//        if (categoryOptional.isPresent()) {
+//            return categoryOptional.get().getSubcategories();
+            return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
+//        }
+//        throw new IllegalArgumentException("Main category with id " + id + " not found");
     }
 
     public ResponseMessage saveCategory(DtoWordsCategory dtoWordsCategory) {
@@ -122,10 +127,10 @@ public class CategoryService {
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             }
         }
-        return saveNewWordsCategory(dtoWordsCategory);
+        return saveNewCategory(dtoWordsCategory);
     }
 
-    private ResponseMessage saveNewWordsCategory(DtoWordsCategory dtoWordsCategory) {
+    private ResponseMessage saveNewCategory(DtoWordsCategory dtoWordsCategory) {
         Category category = new Category();
         if (dtoWordsCategory.getMainCategorySelect().getId() == 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
             category.setName(dtoWordsCategory.getWordsCategory().getName());

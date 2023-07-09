@@ -27,8 +27,8 @@
                         <tr th:each="translationPairsPage : ${translationPairsPages}">
                             <td th:text="${translationPairsPage.id}"></td>
                             <td th:text="${translationPairsPage.name}"></td>
-                            <td th:if="${translationPairsPage.category != null}"   th:text="${translationPairsPage.category.name}"></td>
-                            <td th:if="${translationPairsPage.category == null}">Не назначенно</td>
+                            <td th:if="${translationPairsPage.getTranslationPairsPageCategory != null}" th:text="${translationPairsPage.getTranslationPairsPageCategory.name}"></td>
+                            <td th:if="${translationPairsPage.getTranslationPairsPageCategory == null}">Не назначенно</td>
                             <td>
                                 <span th:if="${translationPairsPage.published}" th:text="Yes"></span>
                                 <span th:if="${!translationPairsPage.published}" th:text="No"></span>
