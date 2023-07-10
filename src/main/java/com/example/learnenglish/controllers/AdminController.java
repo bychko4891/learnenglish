@@ -111,7 +111,7 @@ public class AdminController {
             textOfAppPage.setId(id);
             textOfAppPage.setName("Enter name");
             textOfAppPage.setText("Enter text");
-            textOfAppPage.setPageApplication(new PageApplication(0l,"Сторінка відсутня"));
+            textOfAppPage.setPageApplication(new PageApplication(0l, "Сторінка відсутня"));
             model.addAttribute("textOfAppPage", textOfAppPage);
             model.addAttribute("pageList", pageApplicationList);
             return "admin/adminTextOfAppPageInEditor";
@@ -126,7 +126,8 @@ public class AdminController {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
             List<PageApplication> pageApplicationList = pageApplicationService.pageApplicationList();
-            if(textOfAppPage.getPageApplication() == null) textOfAppPage.setPageApplication(new PageApplication(0l,"Сторінка відсутня"));
+            if (textOfAppPage.getPageApplication() == null)
+                textOfAppPage.setPageApplication(new PageApplication(0l, "Сторінка відсутня"));
             model.addAttribute("textOfAppPage", textOfAppPage);
             model.addAttribute("pageList", pageApplicationList);
             return "admin/adminTextOfAppPageInEditor";
@@ -156,9 +157,9 @@ public class AdminController {
                                        Principal principal,
                                        Model model) {
         if (principal != null) {
-            if(page < 0) page = 0;
+            if (page < 0) page = 0;
             Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
-            if(lessonPage.getTotalPages() == 0){
+            if (lessonPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
                 model.addAttribute("totalPages", lessonPage.getTotalPages());
@@ -229,6 +230,7 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/words-main-page")
     public String words(Principal principal) {
         if (principal != null) {
@@ -254,12 +256,13 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/{id}/category-create")
-    public String wordsCategoryCreate(@PathVariable("id")Long id, Model model, Principal principal) {
+    public String wordsCategoryCreate(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
             model.addAttribute("parentCategory", "Відсутня");
-            if(mainWordsCategories != null){
+            if (mainWordsCategories != null) {
                 model.addAttribute("mainWordsCategories", mainWordsCategories);
             }
             Category wordCategory = new Category();
@@ -271,13 +274,14 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/{id}/category-edit")
-    public String wordsCategoryEdit(@PathVariable("id")Long id, Model model, Principal principal) {
+    public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
             Category wordCategory = categoryService.getWordCategoryToEditor(id);
             model.addAttribute("parentCategory", "Відсутня");
-            if(wordCategory.getParentCategory() != null){
+            if (wordCategory.getParentCategory() != null) {
                 model.addAttribute("parentCategory", wordCategory.getParentCategory().getName());
             }
             model.addAttribute("wordCategory", wordCategory);
@@ -286,15 +290,16 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/words")
-    public String wordsListAdminPage(  @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-                                       Principal principal,
-                                       Model model) {
+    public String wordsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     Principal principal,
+                                     Model model) {
         if (principal != null) {
-            if(page < 0) page = 0;
+            if (page < 0) page = 0;
             Page<Word> wordPage = wordService.getWordsPage(page, size);
-            if(wordPage.getTotalPages() == 0){
+            if (wordPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
                 model.addAttribute("totalPages", wordPage.getTotalPages());
@@ -306,6 +311,7 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/words/new-word")
     public String newWordAdminPage(Principal principal) {
         if (principal != null) {
@@ -314,13 +320,14 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/word/{id}/new-word-in-editor")
     public String newWord(@PathVariable("id") Long id,
-                            Model model,
-                            Principal principal) {
+                          Model model,
+                          Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
-            if(mainWordsCategories != null){
+            if (mainWordsCategories != null) {
                 model.addAttribute("mainWordsCategories", mainWordsCategories);
             }
             Word word = new Word();
@@ -334,13 +341,14 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/words/{id}/word-edit")
-    public String wordEdit(@PathVariable("id")Long id, Model model, Principal principal) {
+    public String wordEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
             Word word = wordService.getWord(id);
             model.addAttribute("category", "Відсутня");
-            if(word.getWordCategory() != null){
+            if (word.getWordCategory() != null) {
                 model.addAttribute("category", word.getWordCategory().getName());
             }
             model.addAttribute("word", word);
@@ -356,9 +364,9 @@ public class AdminController {
                                      Principal principal,
                                      Model model) {
         if (principal != null) {
-            if(page < 0) page = 0;
+            if (page < 0) page = 0;
             Page<Audio> wordAudioPage = wordAudioService.getWordsAudioPage(page, size);
-            if(wordAudioPage.getTotalPages() == 0){
+            if (wordAudioPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
                 model.addAttribute("totalPages", wordAudioPage.getTotalPages());
@@ -370,8 +378,9 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/word-audio/{id}/audio-upload-page")
-    public String wordAudioUpload(@PathVariable("id")Long id, Model model, Principal principal) {
+    public String wordAudioUpload(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             Audio wordAudio = wordAudioService.getWordAudio(id);
             model.addAttribute("wordAudio", wordAudio);
@@ -381,14 +390,14 @@ public class AdminController {
     }
 
     @GetMapping("/phrases-pages")
-    public String translationPairsPages(  @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-                                       Principal principal,
-                                       Model model) {
+    public String translationPairsPages(@RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                        Principal principal,
+                                        Model model) {
         if (principal != null) {
-            if(page < 0) page = 0;
+            if (page < 0) page = 0;
             Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPages(page, size);
-            if(translationPairsPages.getTotalPages() == 0){
+            if (translationPairsPages.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
                 model.addAttribute("totalPages", translationPairsPages.getTotalPages());
@@ -400,6 +409,7 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/phrases-pages/new-page-phrases")
     public String newTranslationPairPage(Principal principal) {
         if (principal != null) {
@@ -411,11 +421,11 @@ public class AdminController {
 
     @GetMapping("/phrase/{id}/new-page-phrases-create")
     public String newTranslationPairPageCreate(@PathVariable("id") Long id,
-                          Model model,
-                          Principal principal) {
+                                               Model model,
+                                               Principal principal) {
         if (principal != null) {
             List<Category> mainTranslationPairsPagesCategories = categoryService.mainTranslationPairsCategoryList(true);
-            if(mainTranslationPairsPagesCategories != null){
+            if (mainTranslationPairsPagesCategories != null) {
                 model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
             }
             TranslationPairsPage translationPairsPage = new TranslationPairsPage();
@@ -430,16 +440,39 @@ public class AdminController {
         return "redirect:/login";
     }
 
+    @GetMapping("/phrase/{id}/page-phrases-edit")
+    public String newTranslationPairPageEdit(@PathVariable("id") Long id,
+                                             Model model,
+                                             Principal principal) {
+        if (principal != null) {
+            List<Category> mainTranslationPairsPagesCategories = categoryService.mainTranslationPairsCategoryList(true);
+            TranslationPairsPage translationPairsPage = translationPairPageService.getTranslationPairsPage(id);
+            model.addAttribute("category", "Відсутня");
+            if(translationPairsPage.getTranslationPairsPageCategory() != null){
+                model.addAttribute("category", translationPairsPage.getTranslationPairsPageCategory().getName());
+            }
+
+            if (mainTranslationPairsPagesCategories != null) {
+                model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
+            }
+            model.addAttribute("translationPairsPage", translationPairsPage);
+
+
+            return "admin/translationPairPageEdit";
+        }
+        return "redirect:/login";
+    }
+
 
     @GetMapping("/images")
     public String imagesPage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-                                     Principal principal,
-                                     Model model) {
+                             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                             Principal principal,
+                             Model model) {
         if (principal != null) {
-            if(page < 0) page = 0;
+            if (page < 0) page = 0;
             Page<Images> imagesPage = imagesService.getImages(page, size);
-            if(imagesPage.getTotalPages() == 0){
+            if (imagesPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
                 model.addAttribute("totalPages", imagesPage.getTotalPages());

@@ -34,7 +34,7 @@
                                 <span th:if="${!translationPairsPage.published}" th:text="No"></span>
                             </td>
                             <td>
-                                <a th:href="@{/admin-page/translationPairsPages/{id}/word-edit(id=${translationPairsPage.id})}"
+                                <a th:href="@{/admin-page/phrase/{id}/page-phrases-edit(id=${translationPairsPage.id})}"
                                    class="btn btn-primary">Edit</a>
                             </td>
                         </tr>

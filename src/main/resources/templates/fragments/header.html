@@ -16,7 +16,7 @@
         <div style="display: flex; margin-left: auto; gap: 10px;">
             <div sec:authorize="isAnonymous()">
                 <form action="/login" target="_parent">
-                    <button class="btn_main" type="submit">Увійти</button>
+                    <button class="btn_main" type="submit">Вхід</button>
                 </form>
             </div>
             <div sec:authorize="isAnonymous()">
@@ -28,7 +28,7 @@
             <div sec:authorize="isAuthenticated()">
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    <button class="btn_main" type="submit">Вийти</button>
+                    <button class="btn_main" type="submit">Вихід</button>
                 </form>
             </div>
         </div>

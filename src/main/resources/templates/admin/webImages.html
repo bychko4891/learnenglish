@@ -86,10 +86,10 @@
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
-                // Обробка успішної відповіді від сервера
+                showSuccessToast("Зображення завантажено, посилання: " + result);
             },
             error: function (xhr, status, error) {
-                // Обробка помилки
+                showErrorToast("Помилка при завантаженні");
             }
         });
     });

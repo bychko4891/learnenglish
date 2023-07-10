@@ -136,19 +136,26 @@ function save() {
     // event.preventDefault();
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
     const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
+    const savedItemsInput = document.querySelectorAll('#savedItemsContainer input[name="id"]');
     var translationPairsId = [];
     selectedItemsInput.forEach(function (input) {
         translationPairsId.push(input.value);
     });
-    console.log(translationPairsId);
+    var translationPairs = [];
+    savedItemsInput.forEach(function (input) {
+        translationPairs.push({id: input.value});
+    });
+
+    console.log(translationPairs);
     var url = '/admin-page/page-phrases-save';
     var translationPairsPage = {
         id: $('#phrasesPage').val(),
         name: $('#editor input[name="name"]').val(),
         published: $('#toggleSwitch').is(':checked'),
         info: $('#editor textarea[name="info"]').val(),
-        // translationPairList: translationPairList
+        translationPairs: translationPairs
 
     };
 

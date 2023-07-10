@@ -145,14 +145,14 @@ public class AdminRestController {
     }
 
     @PostMapping("/image/upload")
-    public ResponseEntity<ResponseMessage> uploadWebImage(@RequestParam("webImage") MultipartFile file,
+    public ResponseEntity<String> uploadWebImage(@RequestParam("webImage") MultipartFile file,
                                                  Principal principal) {
         if (principal != null) {
             String contentType = file.getContentType();
             if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
                 System.out.println("Yes");
                 String fileName = imagesService.saveWebImage(file, contentType);
-                return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
+                return ResponseEntity.ok("/web-image/" + fileName);
             } else throw new FileFormatException("Дозволено тільки зображення");
 
         }

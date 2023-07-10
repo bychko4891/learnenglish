@@ -47,6 +47,13 @@ public class TranslationPairPageService {
         return translationPairPageRepository.count();
     }
 
+    public TranslationPairsPage getTranslationPairsPage(Long id){
+        Optional<TranslationPairsPage> translationPairsPageOptional = translationPairPageRepository.findById(id);
+        if(translationPairsPageOptional.isPresent()){
+            return translationPairsPageOptional.get();
+        } else throw new RuntimeException("Error in method 'getTranslationPairsPage' in class 'TranslationPairPageService'" );
+    }
+
 
     public ResponseMessage saveTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage) {
         Optional<TranslationPairsPage> dtoTranslationPairsPageOptional = translationPairPageRepository.findById(dtoTranslationPairsPage.getTranslationPairsPage().getId());
@@ -58,6 +65,20 @@ public class TranslationPairPageService {
             translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
             translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
             translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
+            if(translationPairsPage.getTranslationPairs().size() != 0){
+                List<TranslationPair> list = translationPairsPage.getTranslationPairs();
+                for (TranslationPair arr: list) {
+                    arr.setTranslationPairsPage(null);
+                }
+                translationPairsPage.setTranslationPairs(list);
+            }
+            if(dtoTranslationPairsPage.getTranslationPairsId().size() != 0){
+                List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+                for (TranslationPair arr: list) {
+                    arr.setTranslationPairsPage(translationPairsPage);
+                }
+                translationPairsPage.setTranslationPairs(list);
+            }
             if(categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null){
                 Category category = categoryRepository.findById(categoryId).get();
                 translationPairsPage.setTranslationPairsPageCategory(category);
@@ -68,7 +89,7 @@ public class TranslationPairPageService {
                 categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
                 translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
             }
-            translationPairPageRepository.save(translationPairsPage);
+//            translationPairPageRepository.save(translationPairsPage);
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else {
             TranslationPairsPage translationPairsPage = new TranslationPairsPage();

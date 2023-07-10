@@ -25,17 +25,12 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
     @Query("SELECT CASE WHEN COUNT(lt) > 0 THEN true ELSE false END FROM TranslationPair lt WHERE lt.user.id = :userId AND lt.lesson.id = :lessonId AND LOWER(lt.engText) = LOWER(:engText)")
     boolean existsByEngTextAndUkrText(@Param("engText") String engText, @Param("lessonId") Long lessonId, @Param("userId") Long userId);
 
-    @Query("SELECT e.id FROM TranslationPair e WHERE e.user.id = :userId AND e.lesson.id = :lessonId")
-    List<Long> findAllIdsByUserAndLesson(@Param("userId") Long userId, @Param("lessonId") Long lessonId);
-
     @Query("SELECT e FROM TranslationPair e WHERE e.user.id = :userId AND e.lesson.id = :lessonId AND e.lessonCounter = :lessonCounter")
     TranslationPair findAllByUserAndLessonAndCounter(@Param("lessonId") Long lessonId, @Param("userId") Long userId, @Param("lessonCounter") Long lessonCounter);
 
     @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
     Page<TranslationPair> findAll(Pageable pageable, Long userId);
 
-    //    @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND tr.engText LIKE CONCAT('%', :firstLetter, '%')")
-//    List<TranslationPair> findByFirstLetter(@Param("id") Long id, @Param("firstLetter") String firstLetter);
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND LOWER(tr.engText) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
     List<TranslationPair> findByFirstLetter(@Param("id") Long id, @Param("firstLetter") String firstLetter);
 

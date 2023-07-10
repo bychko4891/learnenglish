@@ -32,9 +32,20 @@
                 <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
                 <input id="toggleSwitch" type="checkbox" th:checked="${translationPairsPage.published}"
                        class="toggle-switch" name="published">
-                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <label for="toggleSwitch" class="toggle-switch-label"></label><br>
 
-                <div id="addedItemsContainer" ></div>
+
+                <label>Додані фрази на сторінку: </label>
+                <div id="addedItemsContainer" ></div><br>
+
+                <label>Присутні фрази на сторінці: </label>
+                <div id="savedItemsContainer">
+                <div th:each="translationPairs : ${translationPairsPage.getTranslationPairs()}">
+                    <label th:text="${translationPairs.engText}"></label>
+                    <input name="id" type="hidden" th:value="${translationPairs.id}">
+                </div>
+                </div>
+
                 <hr>
                 <label for="info">Текст:</label>
                 <textarea id="info" name="info" th:text="${translationPairsPage.info}"></textarea>
