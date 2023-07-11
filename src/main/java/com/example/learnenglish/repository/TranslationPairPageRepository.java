@@ -20,5 +20,7 @@ public interface TranslationPairPageRepository extends CrudRepository<Translatio
 
     @Query("SELECT w FROM TranslationPairsPage w ORDER BY w.id ASC")
     Page<TranslationPairsPage> findAll(Pageable pageable);
+    @Query("SELECT w FROM TranslationPairsPage w WHERE w.translationPairsPageCategory.id = :id")
+    Page<TranslationPairsPage> findAllToUser(Pageable pageable, Long id);
 
 }

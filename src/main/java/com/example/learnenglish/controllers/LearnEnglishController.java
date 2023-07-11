@@ -7,16 +7,15 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.PageApplication;
-import com.example.learnenglish.model.Word;
+import com.example.learnenglish.model.*;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,19 +29,22 @@ public class LearnEnglishController {
     private final PageApplicationService pageApplicationService;
     private final CategoryService wordCategoryService;
     private final WordService wordService;
+    private final TranslationPairPageService translationPairPageService;
 
     public LearnEnglishController(HttpSession session,
                                   UserService userService,
                                   LessonService lessonService,
                                   PageApplicationService pageApplicationService,
                                   CategoryService wordCategoryService,
-                                  WordService wordService) {
+                                  WordService wordService,
+                                  TranslationPairPageService translationPairPageService) {
         this.session = session;
         this.userService = userService;
         this.lessonService = lessonService;
         this.pageApplicationService = pageApplicationService;
         this.wordCategoryService = wordCategoryService;
         this.wordService = wordService;
+        this.translationPairPageService = translationPairPageService;
     }
 
     @GetMapping("/")
@@ -119,6 +121,29 @@ public class LearnEnglishController {
         return "phrasesCategories";
     }
 
+    @GetMapping("/phrases-category/{id}/phrases")
+    public String translationPairsPages(@PathVariable("id") Long id,
+                                        @RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                        Model model) {
+
+            if (page < 0) page = 0;
+            Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPagesToUser(page, size, id);
+            TranslationPairsPage translationPairsPage = translationPairsPages.toList().get(0);
+            if (translationPairsPages.getTotalPages() == 0) {
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", translationPairsPages.getTotalPages());
+            }
+            model.addAttribute("translationPairsPages", translationPairsPages.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("categoryId", id);
+            model.addAttribute("categoryName", translationPairsPage.getTranslationPairsPageCategory().getName());
+
+            return "phrases";
+
+    }
+
     @GetMapping("/words-main-category/{id}")
     public String wordsSubcategoriesFromMainCategories(@PathVariable Long id, Model model) {
         Category mainWordsCategory = wordCategoryService.getWordCategoryToEditor(id);
@@ -152,5 +177,7 @@ public class LearnEnglishController {
 
         return "word";
     }
+
+
 
 }

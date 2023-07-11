@@ -44,6 +44,10 @@ public class TranslationPairPageService {
         Pageable pageable = PageRequest.of(page, size);
         return translationPairPageRepository.findAll(pageable);
     }
+    public Page<TranslationPairsPage> getTranslationPairsPagesToUser(int page, int size, Long id) {
+        Pageable pageable = PageRequest.of(page, size);
+        return translationPairPageRepository.findAllToUser(pageable, id);
+    }
 
     public Long countTranslationPairPages() {
         return translationPairPageRepository.count();

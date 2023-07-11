@@ -44,8 +44,8 @@
             </nav>
             <h1>Фрази</h1>
             <div class="category-container">
-                <div class="category-grid" th:each="phrasesMainCategory, iter : ${phrasesMainCategories}">
-                    <a th:src="@{/phrases-categorie/{id}}">
+                <div class="category-grid" th:each="phrasesMainCategory : ${phrasesMainCategories}">
+                    <a th:href="@{/phrases-category/{id}/phrases(id=${phrasesMainCategory.id})}">
                         <div style="display: flex; flex-direction: column; align-items: center;">
                             <span th:text="${phrasesMainCategory.name}"></span>
                         </div>
