@@ -112,7 +112,7 @@ public class LearnEnglishController {
 
     @GetMapping("/phrases-categories")
     public String phrasesMainCategories(Model model) {
-        List<Category> phrasesMainCategories = wordCategoryService.mainTranslationPairsCategoryList(true);
+        List<Category> phrasesMainCategories = wordCategoryService.mainTranslationPairsCategoryListUser(true);
         if (phrasesMainCategories != null) {
             model.addAttribute("phrasesMainCategories", phrasesMainCategories);
         }

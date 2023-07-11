@@ -260,7 +260,7 @@ public class AdminController {
     @GetMapping("/{id}/category-create")
     public String wordsCategoryCreate(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
+            List<Category> mainWordsCategories = categoryService.mainCategoryList(true);
             model.addAttribute("parentCategory", "Відсутня");
             if (mainWordsCategories != null) {
                 model.addAttribute("mainWordsCategories", mainWordsCategories);

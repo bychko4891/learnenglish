@@ -1,33 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+    .category-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .category-container > div {
+        flex-basis: calc(33.33% - 20px); /* ширина елемента, 20px - зазор між елементами */
+        margin: 10px; /* зовнішній відступ */
+    }
+
+    .category-grid {
+        display: grid;
+        /*grid-template-columns: repeat(3, 1fr); !* 3 колонки з однаковою шириною *!*/
+        /*grid-gap: 10px; !* зазор між елементами *!*/
+        padding: 20px 10px;
+        border: 1px solid;
+        border-radius: 20px;
+        align-items: center;
+    }
+
+    .category-grid span {
+        color: white;
+        font-size: 21px;
+    }
+
+</style>
 <body class="active">
 <div class="wrapper">
-  <main class="section">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="container layout_page">
-      <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Головна</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні категорії словника</a>
-          </li>
-        </ol>
-      </nav>
-      <h1>Словник</h1>
-      <div th:if="${phrasesMainCategories != null}" th:each="phrasesMainCategory : ${phrasesMainCategories}">
-        <h3 th:text="${phrasesMainCategory.name}"></h3><br>
-        <div class="left_border" th:utext="${phrasesMainCategory.info}"></div>
-        <form th:action="@{/words-main-category/{id}(id=${phrasesMainCategory.id})}">
-          <button type="submit">Перейти</button>
-        </form>
-      </div>
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні
+                        категорії словника</a>
+                    </li>
+                </ol>
+            </nav>
+            <h1>Фрази</h1>
+            <div class="category-container">
+                <div class="category-grid" th:each="phrasesMainCategory, iter : ${phrasesMainCategories}">
+                    <a th:src="@{/phrases-categorie/{id}}">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span th:text="${phrasesMainCategory.name}"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <hr>
+            <div th:each="phrasesMainCategory, iter : ${phrasesMainCategories}">
+                <div th:if="${iter.index == 0}">
+                    <div th:each="translationPairsPage : ${phrasesMainCategory.translationPairsPages}" th:limit="5">
+                        <div style="display: flex; flex-direction: column; padding: 0 20px;">
+                            <h3 th:text="${translationPairsPage.name}" style="border-width: 1px; border-top-width: 1px; border-top-width: 1px; border-style: solid; border-top-style: solid; border-top-style: solid;
+border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 34, 42, 0.5)) 1 0%; border-top: 0; color: white; padding: 10px 20px;"></h3>
+                            <br>
+                            <div class="left_border"
+                                 th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}"></div>
+                            <form th:action="@{/words-main-category/{id}(id=${translationPairsPage.id})}"
+                                  style="margin-left: auto; padding-right: calc(5% + 20px);">
+                                <button class="btn_main" type="submit">Перейти</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!--      <div th:utext="${mainBottom}" style="padding: 20px 40px 20px 40px;"></div>-->
-    </div>
-    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-  </main>
-  <div th:replace="~{fragments/menu :: menu}"></div>
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 
 </body>

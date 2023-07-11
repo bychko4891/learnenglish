@@ -4,7 +4,7 @@ package com.example.learnenglish.service;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairsPage;
@@ -21,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +49,12 @@ public class TranslationPairPageService {
         return translationPairPageRepository.count();
     }
 
-    public TranslationPairsPage getTranslationPairsPage(Long id){
+    public TranslationPairsPage getTranslationPairsPage(Long id) {
         Optional<TranslationPairsPage> translationPairsPageOptional = translationPairPageRepository.findById(id);
-        if(translationPairsPageOptional.isPresent()){
+        if (translationPairsPageOptional.isPresent()) {
             return translationPairsPageOptional.get();
-        } else throw new RuntimeException("Error in method 'getTranslationPairsPage' in class 'TranslationPairPageService'" );
+        } else
+            throw new RuntimeException("Error in method 'getTranslationPairsPage' in class 'TranslationPairPageService'");
     }
 
 
@@ -65,51 +68,77 @@ public class TranslationPairPageService {
             translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
             translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
             translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
-            if(translationPairsPage.getTranslationPairs().size() != 0){
-                List<TranslationPair> list = translationPairsPage.getTranslationPairs();
-                for (TranslationPair arr: list) {
-                    arr.setTranslationPairsPage(null);
-                }
-                translationPairsPage.setTranslationPairs(list);
-            }
-            if(dtoTranslationPairsPage.getTranslationPairsId().size() != 0){
-                List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
-                for (TranslationPair arr: list) {
-                    arr.setTranslationPairsPage(translationPairsPage);
-                }
-                translationPairsPage.setTranslationPairs(list);
-            }
-            if(categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null){
-                Category category = categoryRepository.findById(categoryId).get();
-                translationPairsPage.setTranslationPairsPageCategory(category);
-                category.getTranslationPairsPages().add(translationPairsPage);
+            List<TranslationPair> translationPairs = translationPairsPage.getTranslationPairs();
+            if (translationPairsPage.getTranslationPairs().size() != 0 &&
+                    translationPairsPage.getTranslationPairs().size() != dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs().size()) {
 
-            } else if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory().getId() != categoryId) {
-                Category categoryRemove = translationPairsPage.getTranslationPairsPageCategory();
-                categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
-                translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
-            }
-//            translationPairPageRepository.save(translationPairsPage);
-            return new ResponseMessage(Message.SUCCESSADDBASE);
-        } else {
-            TranslationPairsPage translationPairsPage = new TranslationPairsPage();
-            translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
-            translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
-            translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
-            if(dtoTranslationPairsPage.getTranslationPairsId().size() != 0){
-                List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
-                for (TranslationPair arr: list) {
-                    arr.setTranslationPairsPage(translationPairsPage);
+                List<TranslationPair> dtoTranslationPairs = dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs();
+                Iterator<TranslationPair> iterator = translationPairs.iterator();
+                while (iterator.hasNext()) {
+                    TranslationPair pair = iterator.next();
+                    boolean containsId = false;
+                    for (TranslationPair arr : dtoTranslationPairs) {
+                        if (pair.getId() == arr.getId()) {
+                            containsId = true;
+                            break;
+                        }
+                    }
+                    if (!containsId) {
+                        iterator.remove();
+                        pair.setTranslationPairsPage(null);
+                    }
                 }
-                translationPairsPage.setTranslationPairs(list);
+                translationPairsPage.setTranslationPairs(translationPairs);
             }
-            if(categoryId != 0){
-                Category category = categoryRepository.findById(categoryId).get();
-                translationPairsPage.setTranslationPairsPageCategory(category);
-                category.getTranslationPairsPages().add(translationPairsPage);
+
+
+
+
+        if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
+            List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+            for (TranslationPair arr : list) {
+                arr.setTranslationPairsPage(translationPairsPage);
+//                if(translationPairs == null) translationPairs = new ArrayList<>();
+                translationPairs.add(arr);
             }
-            translationPairPageRepository.save(translationPairsPage);
-            return new ResponseMessage(Message.SUCCESSADDBASE);
+            translationPairsPage.setTranslationPairs(translationPairs);
         }
+        if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null) {
+            Category category = categoryRepository.findById(categoryId).get();
+            translationPairsPage.setTranslationPairsPageCategory(category);
+            category.getTranslationPairsPages().add(translationPairsPage);
+
+        } else if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory().getId() != categoryId) {
+            Category categoryRemove = translationPairsPage.getTranslationPairsPageCategory();
+            categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
+            translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
+        }
+            translationPairPageRepository.save(translationPairsPage);
+        return new ResponseMessage(Message.SUCCESSADDBASE);
+    } else return
+
+    saveNewTranslationPairsPage(dtoTranslationPairsPage, categoryId);
+
+}
+
+    private ResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, Long categoryId) {
+        TranslationPairsPage translationPairsPage = new TranslationPairsPage();
+        translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
+        translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
+        translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
+        if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
+            List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+            for (TranslationPair arr : list) {
+                arr.setTranslationPairsPage(translationPairsPage);
+            }
+            translationPairsPage.setTranslationPairs(list);
+        }
+        if (categoryId != 0) {
+            Category category = categoryRepository.findById(categoryId).get();
+            translationPairsPage.setTranslationPairsPageCategory(category);
+            category.getTranslationPairsPages().add(translationPairsPage);
+        }
+        translationPairPageRepository.save(translationPairsPage);
+        return new ResponseMessage(Message.SUCCESSADDBASE);
     }
 }

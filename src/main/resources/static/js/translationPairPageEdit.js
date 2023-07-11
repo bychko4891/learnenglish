@@ -1,10 +1,8 @@
-// $(document).ready(function () {
 const searchInput = document.getElementById('searchInput');
 
 searchInput.addEventListener('input', function () {
     const searchTerm = searchInput.value;
     if (searchTerm.length > 2) {
-        // Викликати функцію для виконання пошуку на сервері зі значенням searchTerm
         searchItems(searchTerm);
     }
 });
@@ -96,44 +94,23 @@ function displaySearchResults(results) {
         searchResultsContainer.appendChild(resultBlock);
     }
 }
+window.addEventListener('DOMContentLoaded', function () {
+    var deleteButtons = document.getElementsByClassName('deleteBtn');
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function () {
+            var id = this.getAttribute('data-id');
 
+            deleteTranslationPair(id);
+        });
+    }
+});
 
-// $(document).ready(function () {
-//     tinymce.init({
-//         selector: 'textarea#info',
-//         convert_urls : false,
-//         height: 500,
-//         plugins: [
-//             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-//             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-//             'insertdatetime', 'media', 'table', 'help', 'wordcount'
-//         ],
-//         toolbar:
-//             'undo redo | formatselect |' +
-//             ' bold italic underline forecolor | link image media table mergetags |' +
-//             ' addcomment showcomments | spellcheckdialog code typography |' +
-//             ' align lineheight | checklist numlist bullist indent outdent |' +
-//             ' emoticons charmap | removeformat'
-//         ,
-//         content_css: [
-//             '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-//             '//www.tiny.cloud/css/codepen.min.css'
-//         ],
-//         api_key: 'j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6',
-//         menubar: true,
-//         statusbar: true,
-//         branding: true
-//     });
-//
-//     $('#editor').submit(function (event) {
-//         event.preventDefault();
-//         save();
-//     });
-//
-// });
+function deleteTranslationPair(id) {
+    var element = document.querySelector('[data-id="' + id + '"]').parentNode;
+    element.parentNode.removeChild(element);
+}
 
 function save() {
-    // event.preventDefault();
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
@@ -148,7 +125,6 @@ function save() {
         translationPairs.push({id: input.value});
     });
 
-    console.log(translationPairs);
     var url = '/admin-page/page-phrases-save';
     var translationPairsPage = {
         id: $('#phrasesPage').val(),
@@ -176,7 +152,6 @@ function save() {
         translationPairsId: translationPairsId
     };
     $.ajax({
-        // url: $(this).attr('action'),
         url: url,
         type: 'POST',
         contentType: "application/json",
@@ -200,10 +175,6 @@ function save() {
     });
 }
 
-// });
-
-
-// $(document).ready(function () {
 const mainCategorySelect = document.getElementById('mainCategorySelect');
 const subcategorySelect = document.getElementById('subcategorySelect');
 const subSubcategorySelect = document.getElementById('subSubcategorySelect');

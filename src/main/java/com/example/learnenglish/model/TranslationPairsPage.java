@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,9 +33,9 @@ public class TranslationPairsPage {
     @Column(columnDefinition = "text")
     private String info;
 
-//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
-    private List<TranslationPair> translationPairs;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+//    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+    private List<TranslationPair> translationPairs = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")

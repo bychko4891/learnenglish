@@ -50,8 +50,8 @@ public class TranslationPair {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "translation_pair_page_id")
     private TranslationPairsPage translationPairsPage;
 

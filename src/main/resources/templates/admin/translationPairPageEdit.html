@@ -36,14 +36,16 @@
 
 
                 <label>Додані фрази на сторінку: </label>
-                <div id="addedItemsContainer" ></div><br>
+                <div id="addedItemsContainer"></div>
+                <br>
 
                 <label>Присутні фрази на сторінці: </label>
                 <div id="savedItemsContainer">
-                <div th:each="translationPairs : ${translationPairsPage.getTranslationPairs()}">
-                    <label th:text="${translationPairs.engText}"></label>
-                    <input name="id" type="hidden" th:value="${translationPairs.id}">
-                </div>
+                    <div th:each="translationPair : ${translationPairsPage.getTranslationPairs()}">
+                        <label th:text="${translationPair.engText}"></label>
+                        <input name="id" type="hidden" th:value="${translationPair.id}">
+                        <button class="deleteBtn" th:data-id="${translationPair.id}">Видалити</button>
+                    </div>
                 </div>
 
                 <hr>
@@ -57,6 +59,23 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<script>
+    // window.addEventListener('DOMContentLoaded', function () {
+    //     var deleteButtons = document.getElementsByClassName('deleteBtn');
+    //     for (var i = 0; i < deleteButtons.length; i++) {
+    //         deleteButtons[i].addEventListener('click', function () {
+    //             var id = this.getAttribute('data-id');
+    //
+    //             deleteTranslationPair(id);
+    //         });
+    //     }
+    // });
+    //
+    // function deleteTranslationPair(id) {
+    //     var element = document.querySelector('[data-id="' + id + '"]').parentNode;
+    //     element.parentNode.removeChild(element);
+    // }
+</script>
 <script type="text/javascript" th:src="@{/js/tinyMce.js}"></script>
 <script type="text/javascript" th:src="@{/js/translationPairPageEdit.js}"></script>
 </body>
