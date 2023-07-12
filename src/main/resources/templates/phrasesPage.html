@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+    .sound_pic {
+        cursor: pointer;
+    }
+</style>
+<body class="active">
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+                    <li class="breadcrumb-item"><a href="/words-main-category">категорії словника</a></li>
+                    <li class="breadcrumb-item">
+<!--                        <a th:href="@{/words-main-category/{id}(id=${mainId})}" th:text="${'категорія: ' + mainName}"></a>-->
+                    </li>
+                    <li class="breadcrumb-item" >
+<!--                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}" th:text="${'підкатегорія: ' + word.wordCategory.name}"></a>-->
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+<!--                        <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>-->
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="content">
+
+                <h3 th:text="${translationPairsPage.name}"></h3>
+<!--                <div style="display: flex;">-->
+<!--                    <div>-->
+<!--                        <i>Амер.</i>-->
+<!--                        <span style="margin-right: 10px; color: #428BFF; font-size: 20px;"-->
+<!--                              th:text="${word.usaTranscription}"></span>-->
+<!--                        <audio th:if="${word.audio != null}" id="usaAudio" preload="auto">-->
+<!--                            <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}" type="audio/mpeg"/>-->
+<!--                        </audio>-->
+<!--                        <span class="sound_pic"-->
+<!--                              onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">-->
+<!--                <img th:src="@{/images/audio-play.webp}" width="20px"-->
+<!--                     th:alt="${'Американська вимова слова ' + word.name}"-->
+<!--                     th:title="${'Американська вимова слова ' + word.name}"></span>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <i>Бр.</i>-->
+<!--                        <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>-->
+<!--                        <audio th:if="${word.audio != null}" id="ukAudio" preload="auto">-->
+<!--                            <source th:src="@{/audio/{name}(name=${word.audio.brAudioName})}" type="audio/mpeg"/>-->
+<!--                        </audio>-->
+<!--                        <span class="sound_pic"-->
+<!--                              onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">-->
+<!--                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}"-->
+<!--                     th:title="${'Британська вимова слова ' + word.name}"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+
+
+                <div th:utext="${translationPairsPage.info}"></div>
+
+                <div th:each="translationPairs : ${translationPairsPage.getTranslationPairs()}">
+                    <span th:text="${translationPairs.engText + ' - '}"></span>
+                    <span th:text="${translationPairs.ukrText}"></span>
+
+                </div>
+
+            </div>
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+</body>
+</html>

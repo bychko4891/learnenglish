@@ -27,7 +27,7 @@ a {
 }
 
 a:hover {
-    color: #017311;
+    color: #7b61ff;
 }
 img {
     max-width: 100%;
@@ -69,26 +69,16 @@ img {
     margin: 0;
 }
 .layout_page {
-    /*display: block;*/
-    max-width: 93%;
-    width: calc(100% - 40px);
-    /*height: calc(100vh - 90px);*/
+    max-width: 100%;
     height: fit-content;
-    /*padding-left: 0;*/
-    /*padding: 5px;*/
-    margin-left: 40px;
     margin-top: 40px;
-    /*background: rgba(237, 241, 244, 0.90);*/
-    /*background: rgba(255, 255, 255, 0.99);*/
-    /*background: hsl(240, 7.2%, 19%);*/
     background: rgba(45, 45,52, 0.9);;
     overflow-y: auto;
-    /*border: 1px solid;*/
     z-index: 2;
     border-radius: 30px;
-    /*box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7), -5px -5px 10px rgba(255, 255, 255, 1);*/
     color: wheat;
     padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 @media (max-width: 1080px) {
     .layout_page {
@@ -103,7 +93,7 @@ img {
 }
 @media (min-width: 1081px) {
     .layout_page {
-        width: calc(100vw - 40px);
+        width: calc(100vw - 325px);
         margin-left: 40px;
     }
     .profile_container {

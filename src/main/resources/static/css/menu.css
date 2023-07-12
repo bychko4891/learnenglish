@@ -164,7 +164,7 @@
     margin-top: 40px;
     /*left: 40px;*/
     right: 10px;
-    overflow-x: hidden;
+    overflow-x: auto;
     clear: both;
 }
 
@@ -207,10 +207,7 @@
     height: 40px;
     margin: 0;
     color: inherit;
-    /*padding: 3px 2px;*/
-    /*border: none;*/
-    /*background-color: #4d5154;*/
-    /*border-radius: 4px;*/
+
 }
 .sidebarMobile .close_menu i{
     font-size: 28px;
@@ -218,37 +215,13 @@
 }
 
 .sidebarMobile .close_menu a:hover{
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*position: relative;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /*height: 40px;*/
-    /*width: 40px;*/
-    /*background-color: #4d5154;*/
-    /*border-radius: 5px;*/
-    /*color: #a2ecff;*/
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
-    /*width: 40px;*/
-    /*height: 40px;*/
-    /*margin: 0;*/
-    /*padding: 3px 2px;*/
-    /*border: none;*/
     background-color: #4d5154;
     border-radius: 4px;
     color: inherit;
 }
 
 
-/*.wrapper .sidebarMobile {*/
-/*    !*display: none;*!*/
-/*    opacity: 0;*/
-/*    !*z-index:0;*!*/
-/*    transition: opacity 0.5s ease; !* Додайте тут стиль transition *!*/
-/*}*/
+
 .wrapper .section .top_navbar .hamburger i {
     font-size: 28px;
     color: wheat;
@@ -309,4 +282,3 @@
     /*}*/
 
 }
-

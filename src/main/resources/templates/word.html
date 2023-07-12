@@ -35,22 +35,22 @@
                     <i>Амер.</i>
                     <span style="margin-right: 10px; color: #428BFF; font-size: 20px;"
                           th:text="${word.usaTranscription}"></span>
-                    <audio th:if="${word.audio != null}" id="usaAudio" preload="auto">
+                    <audio th:if="${word.audio.usaAudioName != null}" id="usaAudio" preload="auto">
                         <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}" type="audio/mpeg"/>
                     </audio>
-                    <span class="sound_pic"
+                    <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
                           onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
-                <img th:src="@{/images/audio-play.webp}" width="20px"
-                     th:alt="${'Американська вимова слова ' + word.name}"
-                     th:title="${'Американська вимова слова ' + word.name}"></span>
+                                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Американська вимова слова ' + word.name}"
+                                th:title="${'Американська вимова слова ' + word.name}">
+                    </span>
                 </div>
                 <div>
                     <i>Бр.</i>
                     <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>
-                    <audio th:if="${word.audio != null}" id="ukAudio" preload="auto">
+                    <audio th:if="${word.audio.brAudioName != null}" id="ukAudio" preload="auto">
                         <source th:src="@{/audio/{name}(name=${word.audio.brAudioName})}" type="audio/mpeg"/>
                     </audio>
-                    <span class="sound_pic"
+                    <span th:if="${word.audio.brAudioName != null}" class="sound_pic"
                           onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
                 <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}"
                      th:title="${'Британська вимова слова ' + word.name}"></span>

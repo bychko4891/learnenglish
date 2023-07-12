@@ -45,7 +45,7 @@
             <h1>Фрази</h1>
             <div class="category-container">
                 <div class="category-grid" th:each="phrasesMainCategory : ${phrasesMainCategories}">
-                    <a th:href="@{/phrases-category/{id}/phrases(id=${phrasesMainCategory.id})}">
+                    <a th:href="@{/phrases-category/{id}/phrases-pages(id=${phrasesMainCategory.id})}">
                         <div style="display: flex; flex-direction: column; align-items: center;">
                             <span th:text="${phrasesMainCategory.name}"></span>
                         </div>
@@ -62,7 +62,7 @@ border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 3
                             <br>
                             <div class="left_border"
                                  th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}"></div>
-                            <form th:action="@{/words-main-category/{id}(id=${translationPairsPage.id})}"
+                            <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"
                                   style="margin-left: auto; padding-right: calc(5% + 20px);">
                                 <button class="btn_main" type="submit">Перейти</button>
                             </form>
