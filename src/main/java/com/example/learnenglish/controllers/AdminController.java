@@ -241,7 +241,6 @@ public class AdminController {
     @GetMapping("/categories")
     public String wordsCategory(Model model, Principal principal) {
         if (principal != null) {
-//            List<Category> wordCategories = wordCategoryService.getWordsCategories();
             model.addAttribute("wordCategories", categoryService.getWordsCategories());
             return "admin/categories";
         }
