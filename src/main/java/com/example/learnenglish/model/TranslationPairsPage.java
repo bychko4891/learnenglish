@@ -33,7 +33,7 @@ public class TranslationPairsPage {
     @Column(columnDefinition = "text")
     private String info;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPages")
 //    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
     private List<TranslationPair> translationPairs = new ArrayList<>();
 

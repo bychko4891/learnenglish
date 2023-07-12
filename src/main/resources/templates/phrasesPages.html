@@ -5,7 +5,7 @@
     .pagination {
         display: flex;
         justify-content: space-between;
-        margin: 20px 55px 20px 40px;
+        margin: 20px 45px 20px 265px;
         padding: 10px 40px;
         background: rgba(45, 45, 52, 0.9);
         color: white;
@@ -27,9 +27,9 @@
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
 <!--    <main class="section" style="position: relative; padding-bottom: 90px;">-->
-    <main class="section">
+    <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page row">
+        <main class="container layout_page">
 
 
             <!--            <div class="page-table" style="flex-direction: column;">-->
@@ -40,7 +40,7 @@
 border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 34, 42, 0.5)) 1 0%; border-top: 0; color: white; padding: 10px 20px;"></h3>
                     <br>
                     <div class="left_border"
-                         th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}"></div>
+                         th:utext="${translationPairsPage.info.length() > 100 ? #strings.substring(translationPairsPage.info, 0, 100) + '....' : translationPairsPage.info + '....'}"></div>
                     <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"
                           style="margin-left: auto; padding-right: calc(5% + 20px);">
                         <button class="btn_main" type="submit">Перейти</button>
@@ -63,28 +63,30 @@ border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 3
             <!--            </div>-->
 
 
-        </div>
+        </main>
 
 
-        <!-- відображення пагінації -->
-        <div class="pagination">
-            <div>
-                <a th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} - 1), id=${categoryId})}">< Попередня</a>
-            </div>
-            <div>
-            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/phrases-category/{id}/phrases(page=${pageNumber}, id=${categoryId})}"
-                       th:text="${pageNumber + 1}"></a>
-                </span>
-            </div>
-            <div>
-                <a style="margin-right: auto"
-                   th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} + 1), id=${categoryId})}">Наступна ></a>
-            </div>
-        </div>
+
+
 
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
+    </div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/phrases-category/6/phrases-pages(page=(${currentPage} - 1))}">< Попередня</a>
+        </div>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/phrases-category/6/phrases-pages(page=${pageNumber})}"
+                       th:text="${pageNumber + 1}"></a>
+                </span>
+        </div>
+        <div>
+            <a style="margin-right: auto"
+               th:href="@{/phrases-category/6/phrases-pages(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 </body>

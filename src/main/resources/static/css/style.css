@@ -235,7 +235,7 @@ button.hidden {
 
 }
 
-@media (min-width: 480px) {
+@media (max-width: 480px) {
     .block_left {
         flex: 0 0 auto;
         width: 100%;
@@ -256,7 +256,7 @@ button.hidden {
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1281px) {
     .block_left {
         flex: 0 0 auto;
         width: 50%;
@@ -877,4 +877,13 @@ td {
 }
 .result-block {
     display: flex;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.section {
+    flex-grow: 1;
 }

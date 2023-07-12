@@ -134,10 +134,9 @@ public class LearnEnglishController {
 
     @GetMapping("/phrases-category/{id}/phrases-pages")
     public String translationPairsPages(@PathVariable("id") Long id,
-                                        @RequestParam(value = "page", defaultValue = "0") int page,
-                                        @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                        @RequestParam(name = "page", defaultValue = "0") int page,
+                                        @RequestParam(name = "size", defaultValue = "10", required = false) int size,
                                         Model model) {
-
             if (page < 0) page = 0;
             Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPagesToUser(page, size, id);
             Category category = categoryService.getWordCategoryToEditor(id);

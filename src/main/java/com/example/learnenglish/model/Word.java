@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "words")
 @Setter
@@ -45,6 +47,9 @@ public class Word {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_audio_id")
     private Audio audio;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "words")
+    private List<TranslationPair> translationPairs;
 
     @ManyToOne
     @JoinColumn(name = "word_catalog_id")

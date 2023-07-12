@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -46,14 +48,18 @@ public class TranslationPair {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "word_id")
+    private List<Word> words;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "translation_pair_page_id")
-    private TranslationPairsPage translationPairsPage;
+    private List<TranslationPairsPage> translationPairsPages;
 
     public TranslationPair() {
     }

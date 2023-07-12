@@ -89,19 +89,21 @@ public class TranslationPairPageService {
                     }
                     if (!containsId) {
                         iterator.remove();
-                        pair.setTranslationPairsPage(null);
+                        for (int i = 0; i < pair.getTranslationPairsPages().size(); i++) {
+                            if(pair.getTranslationPairsPages().get(i).getId() == translationPairsPage.getId()){
+                                pair.getTranslationPairsPages().remove(i);
+                            }
+
+                        }
+//                        pair.setTranslationPairsPage(null);
                     }
                 }
                 translationPairsPage.setTranslationPairs(translationPairs);
             }
-
-
-
-
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
             for (TranslationPair arr : list) {
-                arr.setTranslationPairsPage(translationPairsPage);
+                arr.getTranslationPairsPages().add(translationPairsPage);
 //                if(translationPairs == null) translationPairs = new ArrayList<>();
                 translationPairs.add(arr);
             }
@@ -119,10 +121,7 @@ public class TranslationPairPageService {
         }
             translationPairPageRepository.save(translationPairsPage);
         return new ResponseMessage(Message.SUCCESSADDBASE);
-    } else return
-
-    saveNewTranslationPairsPage(dtoTranslationPairsPage, categoryId);
-
+    } else return saveNewTranslationPairsPage(dtoTranslationPairsPage, categoryId);
 }
 
     private ResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, Long categoryId) {
@@ -133,7 +132,7 @@ public class TranslationPairPageService {
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
             for (TranslationPair arr : list) {
-                arr.setTranslationPairsPage(translationPairsPage);
+                arr.getTranslationPairsPages().add(translationPairsPage);
             }
             translationPairsPage.setTranslationPairs(list);
         }
@@ -145,4 +144,5 @@ public class TranslationPairPageService {
         translationPairPageRepository.save(translationPairsPage);
         return new ResponseMessage(Message.SUCCESSADDBASE);
     }
+
 }
