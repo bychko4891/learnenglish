@@ -9,9 +9,11 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoWord;
 import com.example.learnenglish.model.Category;
+import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.repository.CategoryRepository;
+import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
@@ -20,17 +22,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class WordService {
     private final WordRepository wordRepository;
     private final CategoryRepository wordCategoryRepository;
+    private final TranslationPairRepository translationPairRepository;
 
     public WordService(WordRepository wordRepository,
-                       CategoryRepository wordCategoryRepository) {
+                       CategoryRepository wordCategoryRepository,
+                       TranslationPairRepository translationPairRepository) {
         this.wordRepository = wordRepository;
         this.wordCategoryRepository = wordCategoryRepository;
+        this.translationPairRepository = translationPairRepository;
     }
 
     public Page<Word> getWordsPage(int page, int size) {
@@ -69,27 +75,36 @@ public class WordService {
             }
             wordRepository.save(word);
             return new ResponseMessage(Message.SUCCESSADDBASE);
-        } else {
-            Word word = new Word();
-            Audio audio = new Audio();
-            word.setName(dtoWord.getWord().getName());
-            word.setTranslate(dtoWord.getWord().getTranslate());
-            word.setPublished(dtoWord.getWord().isPublished());
-            word.setText(dtoWord.getWord().getText());
-            word.setBrTranscription(dtoWord.getWord().getBrTranscription());
-            word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
-            word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
-            word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
-            audio.setName(dtoWord.getWord().getName());
-            word.setAudio(audio);
-            if(categoryId != 0){
-                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-                word.setWordCategory(wordCategory);
-                wordCategory.getWords().add(word);
+        } else return saveNewWord(dtoWord, categoryId);
+    }
+
+    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId){
+        Word word = new Word();
+        Audio audio = new Audio();
+        word.setName(dtoWord.getWord().getName());
+        word.setTranslate(dtoWord.getWord().getTranslate());
+        word.setPublished(dtoWord.getWord().isPublished());
+        word.setText(dtoWord.getWord().getText());
+        word.setBrTranscription(dtoWord.getWord().getBrTranscription());
+        word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
+        word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
+        word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
+        audio.setName(dtoWord.getWord().getName());
+        word.setAudio(audio);
+        if (dtoWord.getTranslationPairsId().size() != 0) {
+            List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
+            for (TranslationPair arr : list) {
+                arr.getWords().add(word);
             }
-            wordRepository.save(word);
-            return new ResponseMessage(Message.SUCCESSADDBASE);
+            word.setTranslationPairs(list);
         }
+        if(categoryId != 0){
+            Category wordCategory = wordCategoryRepository.findById(categoryId).get();
+            word.setWordCategory(wordCategory);
+            wordCategory.getWords().add(word);
+        }
+        wordRepository.save(word);
+        return new ResponseMessage(Message.SUCCESSADDBASE);
     }
 
     public Word getWord(Long id) {

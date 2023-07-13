@@ -4,7 +4,7 @@ package com.example.learnenglish.model;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import jakarta.persistence.*;
@@ -28,13 +28,15 @@ public class TranslationPairsPage {
     private String name;
 
     @Column
-    private boolean  published = false;
+    private boolean published = false;
 
     @Column(columnDefinition = "text")
     private String info;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPages")
-//    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER, mappedBy = "translationPairsPage")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "phrase_and_phrases_page",
+            joinColumns = @JoinColumn(name = "phrases_page_id"),
+            inverseJoinColumns = @JoinColumn(name = "phrase_id"))
     private List<TranslationPair> translationPairs = new ArrayList<>();
 
     @ManyToOne

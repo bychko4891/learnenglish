@@ -49,16 +49,19 @@ public class TranslationPair {
     private Lesson lesson;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "word_id")
+    @JoinTable(name = "phrase_and_word",
+            joinColumns = @JoinColumn(name = "word_id"),
+            inverseJoinColumns = @JoinColumn(name = "phrase_id"))
     private List<Word> words;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "translation_pair_page_id")
+    @JoinTable(name = "phrase_and_phrases_page",
+            joinColumns = @JoinColumn(name = "phrase_id"),
+            inverseJoinColumns = @JoinColumn(name = "phrases_page_id"))
     private List<TranslationPairsPage> translationPairsPages;
 
     public TranslationPair() {

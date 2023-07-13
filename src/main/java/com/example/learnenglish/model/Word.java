@@ -48,11 +48,14 @@ public class Word {
     @JoinColumn(name = "word_audio_id")
     private Audio audio;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "words")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "phrase_and_word",
+            joinColumns = @JoinColumn(name = "phrase_id"),
+            inverseJoinColumns = @JoinColumn(name = "word_id"))
     private List<TranslationPair> translationPairs;
 
     @ManyToOne
-    @JoinColumn(name = "word_catalog_id")
+    @JoinColumn(name = "caregory_id")
     private Category wordCategory;
 
     @ManyToOne

@@ -41,7 +41,7 @@
 
                 <label>Присутні фрази на сторінці: </label>
                 <div id="savedItemsContainer">
-                    <div th:each="translationPair : ${translationPairsPage.getTranslationPairs()}">
+                    <div th:each="translationPair : ${translationPairsPage.translationPairs}">
                         <label th:text="${translationPair.engText}"></label>
                         <input name="id" type="hidden" th:value="${translationPair.id}">
                         <button class="deleteBtn" th:data-id="${translationPair.id}">Видалити</button>

@@ -75,7 +75,6 @@ public class TranslationPairPageService {
             List<TranslationPair> translationPairs = translationPairsPage.getTranslationPairs();
             if (translationPairsPage.getTranslationPairs().size() != 0 &&
                     translationPairsPage.getTranslationPairs().size() != dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs().size()) {
-
                 List<TranslationPair> dtoTranslationPairs = dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs();
                 Iterator<TranslationPair> iterator = translationPairs.iterator();
                 while (iterator.hasNext()) {
@@ -89,26 +88,16 @@ public class TranslationPairPageService {
                     }
                     if (!containsId) {
                         iterator.remove();
-                        for (int i = 0; i < pair.getTranslationPairsPages().size(); i++) {
-                            if(pair.getTranslationPairsPages().get(i).getId() == translationPairsPage.getId()){
-                                pair.getTranslationPairsPages().remove(i);
-                            }
-
-                        }
-//                        pair.setTranslationPairsPage(null);
                     }
                 }
-                translationPairsPage.setTranslationPairs(translationPairs);
             }
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
             for (TranslationPair arr : list) {
-                arr.getTranslationPairsPages().add(translationPairsPage);
-//                if(translationPairs == null) translationPairs = new ArrayList<>();
-                translationPairs.add(arr);
+                translationPairsPage.getTranslationPairs().add(arr);
             }
-            translationPairsPage.setTranslationPairs(translationPairs);
         }
+            translationPairsPage.setTranslationPairs(translationPairs);
         if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null) {
             Category category = categoryRepository.findById(categoryId).get();
             translationPairsPage.setTranslationPairsPageCategory(category);
@@ -131,9 +120,6 @@ public class TranslationPairPageService {
         translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
-            for (TranslationPair arr : list) {
-                arr.getTranslationPairsPages().add(translationPairsPage);
-            }
             translationPairsPage.setTranslationPairs(list);
         }
         if (categoryId != 0) {
