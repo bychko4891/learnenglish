@@ -107,7 +107,7 @@ button, .btn {
     background-color: #189094;
     color: white;
     padding: 10px 15px;
-    border-radius: 3px;
+    border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     font-size: 16px;
     cursor: pointer;
@@ -115,6 +115,20 @@ button, .btn {
     text-shadow: none;
     display: inline-block;
     cursor: pointer;
+}
+
+.btn_plus {
+    background-color: rgba(22, 22, 22, 0);
+    color: white;
+    padding: 10px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: none;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 /*button:hover, .btn:hover {*/
@@ -188,6 +202,12 @@ button.hidden {
 }
 .lesson_enter_ico::before {
     content: '\f105';
+    font-family: fontAwesome;
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+}
+.lesson_plus_ico::before {
+    content: '\f0fe';
     font-family: fontAwesome;
     /*font-weight: normal;*/
     /*font-style: normal;*/

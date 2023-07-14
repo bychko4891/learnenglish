@@ -302,7 +302,16 @@
                     </section>
 
                     <section>
-                        <h1>Вміст для платежів 4</h1>
+                        <h1>Налаштування</h1>
+                        <div style="display: contents; font-size: 20px; font-weight: 500;">
+                            <form>
+                                <span style="padding: 10px 0px 0px 25px;"> Власні фрази: </span>
+                                <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}"
+                                       class="toggle-switch"
+                                       name="userActive" th:data-user-id="${session.userId}"/>
+                                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                            </form>
+                        </div>
                     </section>
                 </div>
             </div>

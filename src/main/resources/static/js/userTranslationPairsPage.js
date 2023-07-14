@@ -113,3 +113,31 @@ function saveChanges(button) {
         }
     });
 }
+
+$('.toggle-switch').on('change', function() {
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var isRepeatable = $(this).prop('checked');
+    var translationPairsId = $(this).data('phrase-id');
+    $.ajax({
+        url: '/phrase/repetition-phrase-check',
+        type: 'POST',
+        data: {isRepeatable: isRepeatable,
+            translationPairsId: translationPairsId},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        },
+        success: function (result) {
+            var status = result.status;
+            if (status == "Success") {
+                showSuccessToast(result.message);
+            } else {
+                showErrorToast(result.message);
+            }
+        },
+        error: function () {
+            // Виникла помилка при відправленні запиту
+            console.log('Помилка при відправленні запиту');
+        }
+    });
+});

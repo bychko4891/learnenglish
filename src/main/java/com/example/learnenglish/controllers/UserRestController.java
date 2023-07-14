@@ -40,6 +40,7 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
+
     @PostMapping("/registration")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (!userService.createUser(user)) {

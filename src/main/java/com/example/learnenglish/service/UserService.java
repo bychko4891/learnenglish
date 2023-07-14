@@ -185,7 +185,7 @@ public class UserService {
             User user = userOptional.get();
             user.setUserTextInLesson(isChecked);
             userRepository.save(user);
-            return new ResponseMessage(Message.SUCCESS_CHECK_USER_TEXT);
+            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
         }else throw new IllegalArgumentException("User with id " + userId + " not found");
     }
 }

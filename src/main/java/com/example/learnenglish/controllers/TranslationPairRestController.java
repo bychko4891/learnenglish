@@ -18,9 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -61,6 +59,26 @@ public class TranslationPairRestController {
             if(object instanceof DtoTranslationPairToUI){
                 return ResponseEntity.ok((DtoTranslationPairToUI)object);
             } else return ResponseEntity.ok((ResponseMessage)object);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/phrase/repetition-phrase-check")
+    public ResponseEntity<ResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
+                                                              @RequestParam("translationPairsId") Long id,
+                                                              Principal principal) {
+        if (principal != null) {
+            return ResponseEntity.ok(translationPairService.setRepetitionPhrase(id, isChecked));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/phrase/user-plus")
+    public ResponseEntity<ResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
+                                                              Principal principal) {
+        if (principal != null) {
+            Long userId = (Long)session.getAttribute("userId");
+            String userGender = (String) session.getAttribute("userGender");
+            return ResponseEntity.ok(translationPairService.userPlusTranslationPairs(userId, translationPairsId, userGender));
         }
         return ResponseEntity.notFound().build();
     }

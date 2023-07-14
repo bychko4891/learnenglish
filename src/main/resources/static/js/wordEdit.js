@@ -127,7 +127,7 @@ function save() {
 
     var url = '/admin-page/word-save';
     var word = {
-        id: $('#editor input[name="id"]').val(),
+        id: $('#editor input[name="wordId"]').val(),
         name: $('#editor input[name="name"]').val(),
         translate: $('#editor input[name="translate"]').val(),
         brTranscription: $('#editor input[name="brTranscription"]').val(),

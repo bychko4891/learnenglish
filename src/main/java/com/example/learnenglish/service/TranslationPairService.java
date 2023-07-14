@@ -9,7 +9,10 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +23,12 @@ import java.util.*;
 @Service
 public class TranslationPairService {
     private final TranslationPairRepository translationPairRepository;
+    private final UserService userService;
 
 
-    public TranslationPairService(TranslationPairRepository repository) {
+    public TranslationPairService(TranslationPairRepository repository, UserService userService) {
         this.translationPairRepository = repository;
+        this.userService = userService;
     }
 
     public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
@@ -68,8 +73,8 @@ public class TranslationPairService {
 
     private DtoTranslationPairToUI translationPairIsNull() {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-        dtoTranslationPairToUI.setUkrText("Завантажте текст будь ласка для навчання");
-        dtoTranslationPairToUI.setEngText("Please download the text for study");
+        dtoTranslationPairToUI.setUkrText("Нема фраз для тренування");
+        dtoTranslationPairToUI.setEngText("There are no phrases for training");
         dtoTranslationPairToUI.setFragment("Fragment 3");
         return dtoTranslationPairToUI;
     }
@@ -118,5 +123,38 @@ public class TranslationPairService {
         dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
         dtoTranslationPairToUI.setEngText(translationPair.getEngText());
         return dtoTranslationPairToUI;
+    }
+
+    public ResponseMessage setRepetitionPhrase(Long id, boolean isChecked) {
+        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(id);
+        if(translationPairOptional.isPresent()){
+            TranslationPair translationPair = translationPairOptional.get();
+            translationPair.setRepeatable(isChecked);
+            translationPairRepository.save(translationPair);
+            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
+        } else return new ResponseMessage(Message.ERROR_SERVER);
+    }
+    public ResponseMessage userPlusTranslationPairs(Long userId, Long translationPairsId, String userGender) {
+        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(translationPairsId);
+        User user = userService.findById(userId);
+        if(translationPairOptional.isPresent()){
+            if(!existsByEngTextAndUkrText(translationPairOptional.get().getEngText(), translationPairOptional.get().getLesson().getId(), user.getId()) ){
+            TranslationPair translationPair = translationPairOptional.get();
+            TranslationPair translationPairUser = new TranslationPair();
+            translationPairUser.setUser(user);
+            translationPairUser.setAudio(translationPair.getAudio());
+            translationPairUser.setUkrText(translationPair.getUkrText());
+            if (userGender.equals("[FEMALE]")) {
+                translationPairUser.setUkrText(translationPair.getUkrTextFemale());
+            }
+            translationPairUser.setEngText(translationPair.getEngText());
+            translationPairUser.setLesson(translationPair.getLesson());
+            translationPairUser.setRepeatable(true);
+            translationPairRepository.save(translationPairUser);
+            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+            } else {
+                return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+            }
+        } else return new ResponseMessage(Message.ERROR_SERVER);
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,31 @@ public class WordService {
             word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
             word.setPublished(dtoWord.getWord().isPublished());
             word.setText(dtoWord.getWord().getText());
+            List<TranslationPair> translationPairs = word.getTranslationPairs();
+            if (translationPairs.size() != 0 && translationPairs.size() != dtoWord.getWord().getTranslationPairs().size()) {
+                List<TranslationPair> dtoTranslationPairs = dtoWord.getWord().getTranslationPairs();
+                Iterator<TranslationPair> iterator = translationPairs.iterator();
+                while (iterator.hasNext()) {
+                    TranslationPair pair = iterator.next();
+                    boolean containsId = false;
+                    for (TranslationPair arr : dtoTranslationPairs) {
+                        if (pair.getId() == arr.getId()) {
+                            containsId = true;
+                            break;
+                        }
+                    }
+                    if (!containsId) {
+                        iterator.remove();
+                    }
+                }
+            }
+            if (dtoWord.getTranslationPairsId().size() != 0) {
+                List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
+                for (TranslationPair arr : list) {
+                    word.getTranslationPairs().add(arr);
+                }
+            }
+            word.setTranslationPairs(translationPairs);
             if(categoryId != 0 && word.getWordCategory() == null){
                 Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);

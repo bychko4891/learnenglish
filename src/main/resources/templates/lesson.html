@@ -279,19 +279,16 @@
                         <div id="replace_div" style="min-height: 350px;"></div>
                         <div class="inline-container" style="display: flex; margin-right: auto;">
                             <form id="nextText">
-                                <button id="nextButton" type="submit">Далі</button>
+                                <button id="nextButton" type="submit">
+                                    <span class="lesson_next_ico"></span>
+                                </button>
                             </form>
                             <button id="checkButton" onclick="getData()" class="checkbox">Перевірити</button>
-                            <button id="textShow" class="checkbox content_toggle btn">Дивитися переклад</button>
-                            <div style="display: contents; font-size: 20px; font-weight: 500;">
-                                <span style="padding: 10px 0px 0px 25px;"> Власні фрази: </span>
-                                <form>
-                                    <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}"
-                                           class="toggle-switch"
-                                           name="userActive" th:data-user-id="${session.userId}"/>
-                                    <label for="toggleSwitch" class="toggle-switch-label"></label>
-                                </form>
-                            </div>
+                            <button id="textShow" class="checkbox content_toggle btn">Переклад</button>
+                            <form id="phrasePlus">
+                                <input id="phraseId" type="hidden" name="phraseId" value="">
+                                <button id="plus" class="btn_plus"><span class="lesson_plus_ico"></span></button>
+                            </form>
                         </div>
                         <hr>
                         <div>

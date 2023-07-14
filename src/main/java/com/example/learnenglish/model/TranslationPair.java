@@ -50,8 +50,8 @@ public class TranslationPair {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "phrase_and_word",
-            joinColumns = @JoinColumn(name = "word_id"),
-            inverseJoinColumns = @JoinColumn(name = "phrase_id"))
+            joinColumns = @JoinColumn(name = "phrase_id"),
+            inverseJoinColumns = @JoinColumn(name = "word_id"))
     private List<Word> words;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

@@ -191,3 +191,38 @@ $(document).ready(function () {
             });
         });
 });
+
+// ************   checkbox   *************** //
+$(document).ready(function () {
+    $('#toggleSwitch').on('change', function () {
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var isChecked = $(this).prop('checked');
+        var userId = $(this).data('user-id');
+        var url = '/user/' + userId + '/user-text-check';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {userActive: isChecked},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                    var nextButton = document.getElementById('nextButton');
+                    sendTooServer();
+                    nextButton.classList.remove('disabled');
+                    nextButton.removeAttribute('disabled');
+                } else {
+                    showErrorToast(result.message);
+                }
+            },
+            error: function () {
+                // Виникла помилка при відправленні запиту
+                console.log('Помилка при відправленні запиту');
+            }
+        });
+    });
+});

@@ -1,5 +1,7 @@
 var lessonId;
 var fragment;
+var phraseId = document.getElementById('phraseId');
+
 $(document).ready(function () {
     lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
 });
@@ -46,6 +48,7 @@ function sendTooServer() {
         type: "GET",
         url: url,
         success: function (result) {
+            phraseId.value = result.id;
             fragment = result.fragment;
             if (result.fragment === "Fragment 1") {
                 checkButton.classList.remove('hidden');
@@ -139,41 +142,6 @@ function getData() {
     });
 }
 
-// ************   checkbox   *************** //
-$(document).ready(function () {
-    $('#toggleSwitch').on('change', function () {
-        // Get CSRF token from the meta tag-->
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        var isChecked = $(this).prop('checked');
-        var userId = $(this).data('user-id');
-        var url = '/user/' + userId + '/user-text-check';
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {userActive: isChecked},
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            },
-            success: function (result) {
-                var status = result.status;
-                if (status == "Success") {
-                    showSuccessToast(result.message);
-                    var nextButton = document.getElementById('nextButton');
-                    sendTooServer();
-                    nextButton.classList.remove('disabled');
-                    nextButton.removeAttribute('disabled');
-                } else {
-                    showErrorToast(result.message);
-                }
-            },
-            error: function () {
-                // Виникла помилка при відправленні запиту
-                console.log('Помилка при відправленні запиту');
-            }
-        });
-    });
-});
 
 // ************   Додавання тексту в базу   *************** //
 $(document).ready(function () {
@@ -282,3 +250,31 @@ $(document).ready(function () {
         window.location.href = url;
     }
 });
+
+$('#phrasePlus').submit(function (event) {
+    event.preventDefault();
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var phraseId = $('input[name="phraseId"]').val();
+
+
+        $.ajax({
+            url: '/phrase/user-plus',
+            type: "POST",
+            data: {translationPairsId: phraseId},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message);
+                }
+            },
+            error: function () {
+                showErrorToast("Помилка сервера");
+            }
+        });
+    });
