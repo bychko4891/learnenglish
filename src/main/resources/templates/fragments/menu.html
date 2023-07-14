@@ -85,11 +85,7 @@
         <script type="text/javascript">
         $('document').ready(function () {
             $('.main-menu a').each(function () {
-                console.log(window.location.href);
-                console.log('https://localhost:8443' + $(this).attr('href'));
-                if ('https://localhost:8443' + $(this).attr('href') == window.location.href) {
-                    // console.log(window.location.href);
-                    // console.log('https://localhost:8443' + $(this).attr('href'));
+                if ('https://e-learn.top' + $(this).attr('href') == window.location.href) {
                     $(this).addClass('active');
                 }
             });
