@@ -235,6 +235,10 @@
             display: block;
         }
     }
+
+
+
+
 </style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
@@ -287,7 +291,9 @@
                             <button id="textShow" class="checkbox content_toggle btn">Переклад</button>
                             <form id="phrasePlus">
                                 <input id="phraseId" type="hidden" name="phraseId" value="">
-                                <button id="plus" class="btn_plus"><span class="lesson_plus_ico"></span></button>
+                                <button type="submit" id="plus" class="btn_plus custom-tooltip" data-tooltip="Додати в свою базу"><span class="lesson_plus_ico"></span></button>
+                                <div class="tooltip_info"></div>
+
                             </form>
                         </div>
                         <hr>
@@ -367,5 +373,27 @@
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <script type="text/javascript" th:src="@{/js/learnScript.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltips = document.querySelectorAll('.custom-tooltip');
+
+        tooltips.forEach(function(tooltip) {
+            tooltip.addEventListener('mouseenter', function() {
+                var tooltipText = this.dataset.tooltip;
+                var tooltipElement = this.nextElementSibling;
+
+                tooltipElement.innerText = tooltipText;
+                tooltipElement.style.left = this.offsetLeft + 'px';
+                tooltipElement.style.top = (this.offsetTop + this.offsetHeight) + 'px';
+                tooltipElement.style.display = 'block';
+            });
+
+            tooltip.addEventListener('mouseleave', function() {
+                var tooltipElement = this.nextElementSibling;
+                tooltipElement.style.display = 'none';
+            });
+        });
+    });
+</script>
 </body>
 </html>

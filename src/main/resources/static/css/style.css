@@ -80,7 +80,8 @@ img {
     padding-bottom: 20px;
     margin-bottom: 20px;
 }
-@media (max-width: 1080px) {
+@media (min-width: 320px) {
+    /* CSS для экранов размером: 576px – 767px */
     .layout_page {
         width: 100vw;
         margin-left: 0;
@@ -90,8 +91,63 @@ img {
         margin-left: 0;
         margin-top: 5px;
     }
+    .tooltip_info {
+        margin-top: -150px;
+        transform: translateX(-50%);
+    }
+
 }
-@media (min-width: 1081px) {
+@media (min-width: 410px) {
+    /* CSS для экранов размером: 576px – 767px */
+
+    .layout_page {
+        width: 100vw;
+        margin-left: 0;
+    }
+    .profile_container {
+        width: 100vw;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+    .tooltip_info {
+        margin-top: -120px;
+        transform: translateX(-35%);
+    }
+}
+/*@media (min-width: 768px) {*/
+/*    !* CSS для: 768px – 991px *!*/
+/*    .layout_page {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*    }*/
+/*    .profile_container {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*        margin-top: 5px;*/
+/*    }*/
+/*    .tooltip_info {*/
+/*        margin-top: -100px;*/
+/*    }*/
+/*}*/
+@media (min-width: 480px) {
+    /* CSS для: 992px – 1119px */
+    .layout_page {
+        width: 100vw;
+        margin-left: 0;
+    }
+    .profile_container {
+        width: 100vw;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+    .tooltip_info {
+        margin-top: -100px;
+        transform: translateX(-35%);
+    }
+}
+@media (min-width: 1200px) {
+    /* CSS для экранов больше 1200px */
+
     .layout_page {
         width: calc(100vw - 325px);
         margin-left: 40px;
@@ -101,7 +157,55 @@ img {
         margin-left: 40px;
         margin-top: 10px;
     }
+    .tooltip_info {
+        margin-top: -90px;
+        transform: translateX(-35%);
+    }
 }
+/*@media (max-width: 320px) {*/
+/*    .layout_page {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*    }*/
+/*    .profile_container {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*        margin-top: 5px;*/
+/*    }*/
+/*    .tooltip_info {*/
+/*        margin-top: -150px;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 1080px) {*/
+/*    .layout_page {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*    }*/
+/*    .profile_container {*/
+/*        width: 100vw;*/
+/*        margin-left: 0;*/
+/*        margin-top: 5px;*/
+/*    }*/
+/*    .tooltip_info {*/
+/*        margin-top: -100px;*/
+/*    }*/
+/*}*/
+
+/*@media (min-width: 1081px) {*/
+/*    .layout_page {*/
+/*        width: calc(100vw - 325px);*/
+/*        margin-left: 40px;*/
+/*    }*/
+/*    .profile_container {*/
+/*        width: calc(100vw - 40px);*/
+/*        margin-left: 40px;*/
+/*        margin-top: 10px;*/
+/*    }*/
+/*    .tooltip_info {*/
+/*        margin-top: -100px;*/
+/*    }*/
+/*}*/
 
 button, .btn {
     background-color: #189094;
@@ -906,4 +1010,34 @@ td {
 }
 .section {
     flex-grow: 1;
+}
+
+.tooltip_info {
+    position: absolute;
+    display: none;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 10px;
+
+}
+
+.custom-tooltip {
+    position: relative;
+}
+
+.custom-tooltip:hover + .tooltip_info{
+    display: block;
+}
+
+
+.tooltip_info::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
 }
