@@ -59,8 +59,7 @@ public class TranslationPairService {
 
     private DtoTranslationPairToUI translationPairConvertToDtoUserText(TranslationPair translationPair) {
         DtoTranslationPairToUI dtoTranslationPairToUI = convertToDTO(translationPair);
-//        int generateNumber = new Random().nextInt(1, 5);
-        int generateNumber = 4;
+        int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {
             List<String> engTextList = new ArrayList<>(Arrays.asList(dtoTranslationPairToUI.getEngText().replaceAll("\\?+", "").split(" ")));
@@ -89,8 +88,7 @@ public class TranslationPairService {
             dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
         }
         dtoTranslationPairToUI.setEngText(translationPair.getEngText());
-//        int generateNumber = new Random().nextInt(1, 5);
-        int generateNumber = 4;
+        int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {
             List<String> engTextList = new ArrayList<>(Arrays.asList(dtoTranslationPairToUI.getEngText().replaceAll("\\?+", "").split(" ")));
