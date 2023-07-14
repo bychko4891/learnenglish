@@ -86,6 +86,7 @@
         $('document').ready(function () {
             $('.main-menu a').each(function () {
                 if ('https://localhost:8443' + $(this).attr('href') == window.location.href) {
+                    console.log(window.location.href);
                     $(this).addClass('active');
                 }
             });

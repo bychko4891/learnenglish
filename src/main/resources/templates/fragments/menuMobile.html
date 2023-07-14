@@ -99,13 +99,6 @@
         close.addEventListener("click", function () {
             wrapper.classList.remove("active");
         });
-        $('document').ready(function () {
-            $('.main-menu a').each(function () {
-                if ('https://localhost:8443' + $(this).attr('href') == window.location.href) {
-                    $(this).addClass('active');
-                }
-            });
-        });
     </script>
 </div>
 <!--</th:block>-->
