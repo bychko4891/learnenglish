@@ -54,9 +54,10 @@
     </script>
 </div>
 
+
 <div th:fragment="lessonFragment4" class="fragments_div">
     <h3>Складіть речення</h3>
-    <div style=" align-self: flex-start;">
+    <div style="align-self: flex-start;">
         <img th:src="@{/images/learn.png}">
         <div id="ukr-text" class="text-show text-show-ukr"></div>
     </div>
@@ -84,21 +85,26 @@
 
             // Перевірити, чи слово вже є в реченні
             var isInSentence = false;
+            var wordIndex = -1;
             for (var i = 0; i < sentenceWords.length; i++) {
                 if (sentenceWords[i] === data) {
                     isInSentence = true;
+                    wordIndex = i;
                     break;
                 }
             }
 
-            if (!isInSentence) {
+            if (isInSentence) {
+                removeFromSentence(wordIndex);
+                addToWordList(data);
+            } else {
                 var word = document.createElement("span");
                 word.textContent = data;
                 word.draggable = true;
                 word.ondragstart = function (event) {
                     drag(event);
-                    removeFromSentence(event.target.innerText);
-                    addToWordList(event.target.innerText);
+                    removeFromSentence(wordIndex);
+                    addToWordList(data);
                 };
 
                 sentence.appendChild(word);
@@ -122,13 +128,13 @@
             }
         }
 
-        function removeFromSentence(word) {
+        function removeFromSentence(index) {
             var sentence = document.getElementById("sentence");
             var words = sentence.getElementsByTagName("span");
+            var removedWord = sentenceWords.splice(index, 1)[0];
             for (var i = 0; i < words.length; i++) {
-                if (words[i].innerText === word) {
+                if (words[i].innerText === removedWord) {
                     words[i].remove();
-                    sentenceWords.splice(i, 1);
                     break;
                 }
             }
@@ -141,12 +147,78 @@
             newWord.ondragstart = function (event) {
                 drag(event);
             };
+            newWord.onclick = function (event){
+                clickWord(event);
+            };
             newWord.textContent = word;
             wordList.appendChild(newWord);
         }
 
+        function clickWord(event) {
+            var word = event.target.innerText;
+            var sentence = document.getElementById("sentence");
+
+            // Перевірити, чи слово вже є в реченні
+            var isInSentence = false;
+            var wordIndex = -1;
+            for (var i = 0; i < sentenceWords.length; i++) {
+                if (sentenceWords[i] === word) {
+                    isInSentence = true;
+                    wordIndex = i;
+                    break;
+                }
+            }
+
+            if (isInSentence) {
+                removeFromSentence(wordIndex);
+                addToWordList(word);
+            } else {
+                var wordSpan = document.createElement("span");
+                wordSpan.textContent = word;
+                wordSpan.draggable = true;
+                wordSpan.onclick = function (event) {
+                    clickSentenceWord(event);
+                };
+                wordSpan.ondragstart = function (event) {
+                    drag(event);
+                    removeFromSentence(wordIndex);
+                    addToWordList(word);
+                };
+
+                sentence.appendChild(wordSpan);
+                sentence.appendChild(document.createTextNode(" "));
+                // Додати слово до речення
+                sentenceWords.push(word);
+
+                // Видалити слово зі списку слів
+                removeFromWordList(word);
+            }
+        }
+
+        function clickSentenceWord(event) {
+            var word = event.target.innerText;
+            var sentence = document.getElementById("sentence");
+
+            // Перевірити, чи слово вже є в реченні
+            var isInSentence = false;
+            var wordIndex = -1;
+            for (var i = 0; i < sentenceWords.length; i++) {
+                if (sentenceWords[i] === word) {
+                    isInSentence = true;
+                    wordIndex = i;
+                    break;
+                }
+            }
+
+            if (isInSentence) {
+                removeFromSentence(wordIndex);
+                addToWordList(word);
+            }
+        }
+
     </script>
 </div>
+
 
 <div th:fragment="successRegistrationFragment" style="display: flex; flex-direction: column; align-items: center;">
     <div id="result-success" style="color: #0054d9; font-size: 2em; padding-bottom: 15px;"></div>

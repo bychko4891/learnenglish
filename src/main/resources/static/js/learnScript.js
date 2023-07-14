@@ -50,28 +50,26 @@ function sendTooServer() {
         success: function (result) {
             phraseId.value = result.id;
             fragment = result.fragment;
-            if (result.fragment === "Fragment 1") {
+            if (fragment === "Fragment 1") {
                 checkButton.classList.remove('hidden');
+                textShow.classList.add('hidden');
+                nextButton.classList.add('disabled');
+                nextButton.setAttribute('disabled', 'disabled');
                 $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
-                    textShow.classList.add('hidden');
-                    nextButton.classList.add('disabled');
-                    nextButton.setAttribute('disabled', 'disabled');
                     $('#ukr-text').html(result.ukrText);
                 });
-            } else if (result.fragment === "Fragment 2") {
+            } else if (fragment === "Fragment 2") {
                 checkButton.classList.remove('hidden');
+                textShow.classList.add('hidden');
+                nextButton.classList.add('disabled');
+                nextButton.setAttribute('disabled', 'disabled');
                 $('#replace_div').load("/fragmentsPages/lessonFragment2", function () {
-                    textShow.classList.add('hidden');
-                    nextButton.classList.add('disabled');
-                    nextButton.setAttribute('disabled', 'disabled');
-
                     $('#eng-text').html(result.engText);
                 });
-            } else if (result.fragment === "Fragment 3") {
+            } else if (fragment === "Fragment 3") {
+                checkButton.classList.add('hidden');
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     $('.content_block').hide();
-                    var checkButton = document.getElementById('checkButton');
-                    checkButton.classList.add('hidden');
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });
@@ -91,6 +89,11 @@ function sendTooServer() {
                         li.ondragstart = function (event) {
                             drag(event);
                         };
+                        //
+                        li.onclick = function (event){
+                            clickWord(event);
+                        };
+                        //
                         ul.append(li);
                     }
                 });
