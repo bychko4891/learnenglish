@@ -108,7 +108,8 @@ public class AdminRestController {
     public ResponseEntity<ResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
                                                     Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(wordService.saveWord(dtoWord));
+            Long userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(wordService.saveWord(userId, dtoWord));
         }
         return ResponseEntity.notFound().build();
     }

@@ -57,13 +57,7 @@
                         </ul>
                     </div>
 
-                    <script>
-                        $(document).ready(function () {
-                            $('.toggle').click(function () {
-                                $(this).siblings('.category').slideToggle().toggleClass('visible');
-                            });
-                        });
-                    </script>
+
 
 
                 </div>
@@ -78,7 +72,6 @@
                         <form action="/admin-page/categories/new-category">
                             <button type="submit">Створити</button>
                         </form>
-                        <div th:text="${message}"></div>
                     </div>
 
                     <!--                </div>-->
@@ -97,6 +90,13 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script>
+    $(document).ready(function () {
+        $('.toggle').click(function () {
+            $(this).siblings('.category').slideToggle().toggleClass('visible');
+        });
+    });
+</script>
 </body>
 </html>

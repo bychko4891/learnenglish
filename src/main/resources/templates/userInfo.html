@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
 <link rel="stylesheet" th:href="@{/css/dycalendar.css}">
+<link rel="stylesheet" th:href="@{/css/croppie.css}" >
 
 <style>
 
@@ -298,7 +299,13 @@
                         </form>
                     </section>
                     <section>
-                        <h1>Вміст для платежів 3</h1>
+                        <h3>Календар занять</h3>
+                        <div class="box_calendar" style="padding-top: 10px;">
+                            <div class="container_calendar">
+                                <div id="calendar"></div>
+                            </div>
+                            <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
+                        </div>
                     </section>
 
                     <section>
@@ -320,9 +327,11 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/croppie.js}"></script>
-<script type="text/javascript" th:src="@{/js/cropAndUploadAvatart.js}"></script>
 <script type="text/javascript" th:src="@{/js/userInfoEdit.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script> <!--календар  -->
+
+<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
 </body>
 </html>

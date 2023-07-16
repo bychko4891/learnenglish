@@ -100,13 +100,13 @@ public class TranslationPairService {
         return dtoTranslationPairToUI;
     }
 
-    public Page<TranslationPair> getTranslationPairsPage(int page, int size, Long userId) {
+    public Page<TranslationPair> getUserTranslationPairs(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
         return translationPairRepository.findAll(pageable, userId);
     }
 
     public List<DtoTranslationPairToUI> searchResult(String src) {
-        List<TranslationPair> list = translationPairRepository.findByFirstLetter(1l, src);
+        List<TranslationPair> list = translationPairRepository.findTranslationPair(1l, src);
         List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
         if (list.size() != 0) {
             for (TranslationPair arr : list) {

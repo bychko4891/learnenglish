@@ -10,6 +10,7 @@
         <div class="container layout_page">
             <div class="page-table" style="flex-direction: column;">
                 <h3>Завантажені тексти</h3>
+                <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a></div>
                 <table style="width: 90%;">
                     <thead>
                     <tr>

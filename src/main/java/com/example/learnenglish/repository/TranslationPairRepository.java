@@ -32,7 +32,7 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
     Page<TranslationPair> findAll(Pageable pageable, Long userId);
 
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND LOWER(tr.engText) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
-    List<TranslationPair> findByFirstLetter(@Param("id") Long id, @Param("firstLetter") String firstLetter);
+    List<TranslationPair> findTranslationPair(@Param("id") Long id, @Param("firstLetter") String firstLetter);
 
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.id IN :ids")
     List<TranslationPair> findByIds(@Param("ids") List<Long> ids);

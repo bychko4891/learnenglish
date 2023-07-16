@@ -24,6 +24,8 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     @Query("SELECT w FROM Word w ORDER BY w.id ASC")
     Page<Word> findAll(Pageable pageable);
 
+    @Query("SELECT w FROM Word w WHERE w.user.id = :id AND LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
+    List<Word> findWord(@Param("id") Long id, @Param("firstLetter") String firstLetter);
 
     // пошук по першій літері
 //    @Query("SELECT tr FROM TranslationPair tr WHERE SUBSTRING(tr.engText, 1, 1) = :firstLetter")

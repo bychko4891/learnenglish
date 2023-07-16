@@ -79,7 +79,7 @@
     border-bottom: 1px solid rgb(61, 62, 62);
     color: rgb(241, 237, 237);
     /*color: #212529;*/
-    font-size: 16px;
+    font-size: 20px;
     position: relative;
 }
 .wrapper .sidebarMobile ul li a {
@@ -87,7 +87,7 @@
     padding: 13px 30px;
     border-bottom: 1px solid #00ffed;
     color: rgb(241, 237, 237);
-    font-size: 16px;
+    font-size: 24px;
     position: relative;
 }
 

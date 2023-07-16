@@ -25,13 +25,13 @@ public class TranslationPairController {
                                                 @PathVariable("id") Long userId) {
         if (principal != null) {
             if(page < 0) page = 0;
-            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsPage(page, size, userId);
-            if(translationPairsPage.getTotalPages() == 0){
+            Page<TranslationPair> userTranslationPairs = translationPairService.getUserTranslationPairs(page, size, userId);
+            if(userTranslationPairs.getTotalPages() == 0){
                 model.addAttribute("totalPages", 1);
             }else{
-                model.addAttribute("totalPages", translationPairsPage.getTotalPages());
+                model.addAttribute("totalPages", userTranslationPairs.getTotalPages());
             }
-            model.addAttribute("translationPairs", translationPairsPage.getContent());
+            model.addAttribute("translationPairs", userTranslationPairs.getContent());
             model.addAttribute("currentPage", page);
             return "userTranslationPairs";
         }

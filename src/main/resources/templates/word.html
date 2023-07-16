@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
     .sound_pic {
         cursor: pointer;
     }
+
 </style>
 <body class="active">
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
@@ -18,10 +20,12 @@
                     <li class="breadcrumb-item"><a href="/">Головна</a></li>
                     <li class="breadcrumb-item"><a href="/words-main-category">категорії словника</a></li>
                     <li class="breadcrumb-item">
-                        <a th:href="@{/words-main-category/{id}(id=${mainId})}" th:text="${'категорія: ' + mainName}"></a>
+                        <a th:href="@{/words-main-category/{id}(id=${mainId})}"
+                           th:text="${'категорія: ' + mainName}"></a>
                     </li>
-                    <li class="breadcrumb-item" >
-                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}" th:text="${'підкатегорія: ' + word.wordCategory.name}"></a>
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}"
+                           th:text="${'підкатегорія: ' + word.wordCategory.name}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>
@@ -29,49 +33,100 @@
                 </ol>
             </nav>
             <div class="content">
-            <h3 th:text="${word.name}"></h3>
-            <div style="display: flex;">
-                <div>
-                    <i>Амер.</i>
-                    <span style="margin-right: 10px; color: #428BFF; font-size: 20px;"
-                          th:text="${word.usaTranscription}"></span>
-                    <audio th:if="${word.audio.usaAudioName != null}" id="usaAudio" preload="auto">
-                        <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}" type="audio/mpeg"/>
-                    </audio>
-                    <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
-                          onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
-                                <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Американська вимова слова ' + word.name}"
-                                th:title="${'Американська вимова слова ' + word.name}">
+                <h3 th:text="${word.name}"></h3>
+                <div style="display: flex;">
+                    <div>
+                        <i>Амер.</i>
+                        <span style="margin-right: 10px; color: #428BFF; font-size: 20px;"
+                              th:text="${word.usaTranscription}"></span>
+                        <audio th:if="${word.audio.usaAudioName != null}" id="usaAudio" preload="auto">
+                            <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}" type="audio/mpeg"/>
+                        </audio>
+                        <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
+                              onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
+                                <img th:src="@{/images/audio-play.webp}" width="20px"
+                                     th:alt="${'Американська вимова слова ' + word.name}"
+                                     th:title="${'Американська вимова слова ' + word.name}">
                     </span>
-                </div>
-                <div>
-                    <i>Бр.</i>
-                    <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>
-                    <audio th:if="${word.audio.brAudioName != null}" id="ukAudio" preload="auto">
-                        <source th:src="@{/audio/{name}(name=${word.audio.brAudioName})}" type="audio/mpeg"/>
-                    </audio>
-                    <span th:if="${word.audio.brAudioName != null}" class="sound_pic"
-                          onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
+                    </div>
+                    <div>
+                        <i>Бр.</i>
+                        <span style="color: #428BFF; font-size: 20px;" th:text="${word.brTranscription}"></span>
+                        <audio th:if="${word.audio.brAudioName != null}" id="ukAudio" preload="auto">
+                            <source th:src="@{/audio/{name}(name=${word.audio.brAudioName})}" type="audio/mpeg"/>
+                        </audio>
+                        <span th:if="${word.audio.brAudioName != null}" class="sound_pic"
+                              onclick="document.getElementById('ukAudio').load();document.getElementById('ukAudio').play();">
                 <img th:src="@{/images/audio-play.webp}" width="20px" th:alt="${'Британська вимова слова ' + word.name}"
                      th:title="${'Британська вимова слова ' + word.name}"></span>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <i>irregular verb:</i>
-                <span>p.t. </span>
-                <span th:text="${word.irregularVerbPt}" style="color: #428BFF; font-size: 18px;"></span>
-                <span>p.p. </span>
-                <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
-            </div>
-            <i>Варіанти перевода: </i>
-            <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
+                <div>
+                    <i>irregular verb:</i>
+                    <span>p.t. </span>
+                    <span th:text="${word.irregularVerbPt}" style="color: #428BFF; font-size: 18px;"></span>
+                    <span>p.p. </span>
+                    <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
+                </div>
+                <i>Варіанти перевода: </i>
+                <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
 
-            <div th:utext="${word.text}"></div>
+                <div th:utext="${word.text}"></div>
+                <div th:each="translationPair : ${word.translationPairs}">
+                    <div style="display: flex; width: auto; height: auto; position: relative;" >
+                        <span th:text="${translationPair.engText + ' -'}"></span>
+                        <span th:text="${'- ' + translationPair.ukrText}"></span>
+                        <form sec:authorize="isAuthenticated()" class="phrasePlus">
+                            <input id="phraseId" type="hidden" name="phraseId" th:value="${translationPair.id}">
+                            <button type="submit" id="plus" class="btn_plus_page custom-tooltip pulse" data-tooltip="Додати в свою базу">
+                                <span class="lesson_plus_ico"></span>
+                            </button>
+                            <div class="tooltip_info"></div>
+                        </form>
+                        <form sec:authorize="isAnonymous()">
+                            <button type="button" class="btn_plus_page custom-tooltip" data-tooltip="Авторизуйтесь будь ласка">
+                                <span class="lesson_plus_ico"></span>
+                            </button>
+                            <div class="tooltip_info"></div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script>
+    $('.phrasePlus').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var phraseId = $('input[name="phraseId"]').val();
+        console.log("yes");
+
+        $.ajax({
+            url: '/phrase/user-plus',
+            type: "POST",
+            data: {translationPairsId: phraseId},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message);
+                }
+            },
+            error: function () {
+                showErrorToast("Помилка сервера");
+            }
+        });
+    });
+</script>
+<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
 </body>
 </html>

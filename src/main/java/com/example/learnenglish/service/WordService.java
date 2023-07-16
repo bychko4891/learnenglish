@@ -8,10 +8,12 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoWord;
+import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.Audio;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +34,16 @@ public class WordService {
     private final WordRepository wordRepository;
     private final CategoryRepository wordCategoryRepository;
     private final TranslationPairRepository translationPairRepository;
+    private final UserService userService;
 
     public WordService(WordRepository wordRepository,
                        CategoryRepository wordCategoryRepository,
-                       TranslationPairRepository translationPairRepository) {
+                       TranslationPairRepository translationPairRepository,
+                       UserService userService) {
         this.wordRepository = wordRepository;
         this.wordCategoryRepository = wordCategoryRepository;
         this.translationPairRepository = translationPairRepository;
+        this.userService = userService;
     }
 
     public Page<Word> getWordsPage(int page, int size) {
@@ -49,7 +55,7 @@ public class WordService {
         return wordRepository.count();
     }
 
-    public ResponseMessage saveWord(DtoWord dtoWord) {
+    public ResponseMessage saveWord(Long userId, DtoWord dtoWord) {
         Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
         Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
                 dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
@@ -101,12 +107,14 @@ public class WordService {
             }
             wordRepository.save(word);
             return new ResponseMessage(Message.SUCCESSADDBASE);
-        } else return saveNewWord(dtoWord, categoryId);
+        } else return saveNewWord(userId, dtoWord, categoryId);
     }
 
-    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId){
+    private ResponseMessage saveNewWord(Long userId, DtoWord dtoWord, Long categoryId){
         Word word = new Word();
         Audio audio = new Audio();
+        User user = userService.findById(userId);
+        word.setUser(user);
         word.setName(dtoWord.getWord().getName());
         word.setTranslate(dtoWord.getWord().getTranslate());
         word.setPublished(dtoWord.getWord().isPublished());
@@ -139,5 +147,15 @@ public class WordService {
             return wordOptional.get();
         }
         throw new RuntimeException("Error in method 'getWordToEditor' class 'WordService'");
+    }
+
+    public List<DtoWordToUI> searchWord(String searchTerm) {
+        List<Word> wordsResult = wordRepository.findWord(1l, searchTerm);
+        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+        for (Word arr: wordsResult) {
+            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+
+        }
+        return dtoWordToUIList;
     }
 }

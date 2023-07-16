@@ -77,6 +77,7 @@ img {
     z-index: 2;
     border-radius: 30px;
     color: wheat;
+    font-size: 20px;
     padding-bottom: 20px;
     margin-bottom: 20px;
 }
@@ -221,7 +222,7 @@ button, .btn {
     cursor: pointer;
 }
 
-.btn_plus {
+.btn_plus_lesson {
     background-color: rgba(22, 22, 22, 0);
     color: white;
     padding: 10px 15px;
@@ -233,6 +234,16 @@ button, .btn {
     text-shadow: none;
     display: inline-block;
     margin-left: 10px;
+}
+.btn_plus_page {
+    background-color: rgba(22, 22, 22, 0);
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: none;
+    display: inline-block;
+    margin: -11px 0 0 15px;
+    border: none;
 }
 
 /*button:hover, .btn:hover {*/
@@ -601,6 +612,240 @@ textarea {
 /*    !*margin-top: 10px;*!*/
 /*}*/
  /* !!!!!!!!!!!!!!!!!!      не чипати   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ____________________________________   */
+.tabs {
+    position: relative;
+    padding: 20px 20px 40px 20px;
+    width: 100vw;
+    height: fit-content;
+    min-width: 240px;
+}
+.tabs input[name=tab-control] {
+    display: none;
+}
+.tabs .content section h2,
+.tabs ul li label {
+    font-family: "Montserrat";
+    font-weight: bold;
+    font-size: 18px;
+    color: #428BFF;
+}
+.tabs ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+.tabs ul li {
+    box-sizing: border-box;
+    flex: 1;
+    width: 25%;
+    padding: 0 10px;
+    text-align: center;
+}
+.tabs ul li label {
+    transition: all 0.3s ease-in-out;
+    color: #929daf;
+    padding: 5px auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.tabs ul li label br {
+    display: none;
+}
+.tabs ul li label svg {
+    fill: #929daf;
+    height: 1.2em;
+    vertical-align: bottom;
+    margin-right: 0.2em;
+    transition: all 0.2s ease-in-out;
+}
+.tabs ul li label:hover, .tabs ul li label:focus, .tabs ul li label:active {
+    outline: 0;
+    color: #bec5cf;
+}
+.tabs ul li label:hover svg, .tabs ul li label:focus svg, .tabs ul li label:active svg {
+    fill: #bec5cf;
+}
+.tabs .slider {
+    position: relative;
+    width: 33.33%;
+    transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+}
+.tabs .slider .indicator {
+    position: relative;
+    width: 50px;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 4px;
+    background: #428BFF;
+    border-radius: 1px;
+}
+.tabs .content {
+    margin-top: 30px;
+}
+.tabs .content section {
+    display: none;
+    -webkit-animation-name: content;
+    animation-name: content;
+    -webkit-animation-direction: normal;
+    animation-direction: normal;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    line-height: 1.4;
+}
+.tabs .content section h2 {
+    color: #428BFF;
+    display: none;
+}
+.tabs .content section h2::after {
+    content: "";
+    position: relative;
+    display: block;
+    width: 30px;
+    height: 3px;
+    background: #428BFF;
+    margin-top: 5px;
+    left: 1px;
+}
+.tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+    cursor: default;
+    color: #428BFF;
+}
+.tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label i {
+    fill: #428BFF;
+}
+@media (max-width: 600px) {
+    .tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+        background: rgba(0, 0, 0, 0.08);
+    }
+}
+.tabs input[name=tab-control]:nth-of-type(1):checked ~ .slider {
+    transform: translateX(0%);
+}
+.tabs input[name=tab-control]:nth-of-type(1):checked ~ .content > section:nth-child(1) {
+    display: block;
+}
+.tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+    cursor: default;
+    color: #428BFF;
+}
+.tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label i {
+    fill: #428BFF;
+}
+@media (max-width: 600px) {
+    .tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+        background: rgba(0, 0, 0, 0.08);
+    }
+}
+.tabs input[name=tab-control]:nth-of-type(2):checked ~ .slider {
+    transform: translateX(100%);
+}
+.tabs input[name=tab-control]:nth-of-type(2):checked ~ .content > section:nth-child(2) {
+    display: block;
+}
+.tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+    cursor: default;
+    color: #428BFF;
+}
+.tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label i {
+    fill: #428BFF;
+}
+@media (max-width: 600px) {
+    .tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+        background: rgba(0, 0, 0, 0.08);
+    }
+}
+.tabs input[name=tab-control]:nth-of-type(3):checked ~ .slider {
+    transform: translateX(200%);
+}
+.tabs input[name=tab-control]:nth-of-type(3):checked ~ .content > section:nth-child(3) {
+    display: block;
+}
+.tabs input[name=tab-control]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label {
+    cursor: default;
+    color: #428BFF;
+}
+.tabs input[name=tab-control]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label i {
+    fill: #428BFF;
+}
+@media (max-width: 600px) {
+    .tabs input[name=tab-control]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label {
+        background: rgba(0, 0, 0, 0.08);
+    }
+}
+.tabs input[name=tab-control]:nth-of-type(4):checked ~ .slider {
+    transform: translateX(300%);
+}
+.tabs input[name=tab-control]:nth-of-type(4):checked ~ .content > section:nth-child(4) {
+    display: block;
+}
+@-webkit-keyframes content {
+    from {
+        opacity: 0;
+        transform: translateY(5%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@keyframes content {
+    from {
+        opacity: 0;
+        transform: translateY(5%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@media (max-width: 1000px) {
+    .tabs ul li label {
+        white-space: initial;
+    }
+    .tabs ul li label br {
+        display: initial;
+    }
+    .tabs ul li label i {
+        height: 1.5em;
+    }
+}
+@media (max-width: 600px) {
+    .tabs ul li label {
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .tabs ul li label span {
+        display: none;
+    }
+    .tabs .slider {
+        display: none;
+    }
+    .tabs .content {
+        margin-top: 20px;
+    }
+    .tabs .content section h2 {
+        display: block;
+    }
+}
+
 
 * {
     font-family: "Work Sans", sans-serif;
@@ -808,12 +1053,15 @@ td {
     width: 100%;
     padding: 10px;
     /*border-left: ;*/
-    border: 2px solid rgba(0, 255, 237, 1);;
-    background: #ffffff;
+    background: rgba(0, 0, 0, 0);
     border-radius: 20px;
     outline: none;
-    color: black;
-    font-size: 1em;
+    color: white;
+    font-size: 1.1em;
+    border-width: 1px;
+    border-style: solid;
+    border-image: linear-gradient(to right, #3FB6A8, rgba(126, 211, 134, 0.5)) 1 0%;
+    border-top: 0;
 }
 
 .inputBox .span-text {
@@ -822,7 +1070,7 @@ td {
     padding: 10px;
     pointer-events: none;
     font-size: 1em;
-    color: rgba(3, 3, 3, 0.55);
+    color: rgba(245, 222, 179, 0.55);
     transition: 0.5s;
 }
 
@@ -837,26 +1085,29 @@ td {
 /*}             no    */
 .inputBox input:valid ~ .span-text,
 .inputBox input:focus ~ .span-text {
-    color: #000000;
+    color: wheat;
     transform: translateX(10px) translateY(-7px);
     font-size: 0.65em;
     padding: 0 10px;
-    background: #ffffff;
-    border-left: 1px solid #020202;
-    border-right: 1px solid #000000;
+    /*background: #ffffff;*/
+    /*border-left: 1px solid #020202;*/
+    /*border-right: 1px solid #000000;*/
     letter-spacing: 0.2em;
 }
 
 .inputBox:nth-child(4) input:valid ~ .span-text,
 .inputBox:nth-child(4) input:focus ~ .span-text {
     background: #0dcaf0;
-    color: black;
+    color: wheat;
     border-radius: 2px;
 }
 
 .inputBox input:valid,
 .inputBox input:focus {
-    border: 1px solid #000000;
+    /*border-width: 1px;*/
+    /*border-style: solid;*/
+    border-image: linear-gradient(to right, #8b63ef, rgba(205, 200, 238, 0.5)) 1 0%;
+    /*border-top: 0;*/
 }
 
 .form-registration .inputBox #toggleBtn {
@@ -865,7 +1116,7 @@ td {
     right: 10px;
     width: 30px;
     height: 30px;
-    background: #9a9a9a;
+    /*background: #9a9a9a;*/
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -989,9 +1240,10 @@ td {
 
 .search_result_style {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     top: 60px;
     background: rgba(45, 45,52, 0.99);
-    color: wheat;
     height: auto;
     width: auto;
     border-radius: 20px;
@@ -999,10 +1251,23 @@ td {
     z-index: 9999;
     border: 1px solid;
 }
+.search_result_style p {
+    color: wheat;
+    font-size: 18px;
+}
+.search_result_style h5 {
+    color: #2b82e5;
+    font-size: 18px;
+    line-height: 1.5;
+    padding-right: 5px;
+}
 .result-block {
     display: flex;
 }
-
+.result-block:hover {
+    background-color: #383838;
+    border-radius: 10px;
+}
 .wrapper{
     display: flex;
     flex-direction: column;
@@ -1019,7 +1284,7 @@ td {
     color: #fff;
     padding: 5px;
     border-radius: 10px;
-
+    font-size: 14px;
 }
 
 .custom-tooltip {
@@ -1040,4 +1305,59 @@ td {
     border-width: 6px;
     border-style: solid;
     border-color: #000 transparent transparent transparent;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    33% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.pulse {
+    position: relative;
+}
+.phrasePlus .pulse:before, .phrasePlus .pulse:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(107, 107, 107, 0.4);
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    margin: auto;
+}
+#phrasePlusLesson .pulse:before, #phrasePlusLesson .pulse:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(96, 96, 96, 0.4);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    margin: auto;
+}
+.pulse:before {
+    animation: pulse 6s infinite linear;
+}
+.pulse:after {
+    animation: pulse 6s 1s infinite linear;
+}
+.pulse:hover:before, .pulse:hover:after {
+    display: none;
 }

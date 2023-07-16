@@ -10,12 +10,8 @@ import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Images;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 
@@ -221,7 +215,7 @@ public class AdminController {
                                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                                 @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         if (principal != null) {
-            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsPage(page, size, 1l);
+            Page<TranslationPair> translationPairsPage = translationPairService.getUserTranslationPairs(page, size, 1l);
             model.addAttribute("translationPairs", translationPairsPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", translationPairsPage.getTotalPages());

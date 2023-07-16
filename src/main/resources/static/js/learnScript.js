@@ -254,13 +254,11 @@ $(document).ready(function () {
     }
 });
 
-$('#phrasePlus').submit(function (event) {
+$('#phrasePlusLesson').submit(function (event) {
     event.preventDefault();
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var phraseId = $('input[name="phraseId"]').val();
-console.log("yes");
-
         $.ajax({
             url: '/phrase/user-plus',
             type: "POST",

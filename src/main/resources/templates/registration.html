@@ -60,7 +60,7 @@
                                         </ul>
                                     </div>
                                     <div style="padding-left: 38px; padding-top: 15px;">
-                                        <button type="submit">Зареєструватися</button>
+                                        <button type="submit">Підтвердити</button>
                                     </div>
                                 </form>
                                 <div id="result-success" style="color: #4ffd4f"></div>
@@ -84,6 +84,8 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/checkPassword.js}"></script>
+<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
 </body>
 </html>

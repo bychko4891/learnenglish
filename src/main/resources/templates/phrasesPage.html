@@ -64,7 +64,7 @@
 
                 <div th:utext="${translationPairsPage.info}"></div>
 
-                <div th:each="translationPairs : ${translationPairsPage.getTranslationPairs()}">
+                <div th:each="translationPairs : ${translationPairsPage.translationPairs}">
                     <span th:text="${translationPairs.engText + ' - '}"></span>
                     <span th:text="${translationPairs.ukrText}"></span>
 
@@ -76,5 +76,6 @@
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
