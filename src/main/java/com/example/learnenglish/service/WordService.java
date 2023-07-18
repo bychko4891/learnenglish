@@ -113,8 +113,8 @@ public class WordService {
     private ResponseMessage saveNewWord(Long userId, DtoWord dtoWord, Long categoryId){
         Word word = new Word();
         Audio audio = new Audio();
-        User user = userService.findById(userId);
-        word.setUser(user);
+//        User user = userService.findById(userId);
+//        word.setUser(user);
         word.setName(dtoWord.getWord().getName());
         word.setTranslate(dtoWord.getWord().getTranslate());
         word.setPublished(dtoWord.getWord().isPublished());
@@ -150,7 +150,7 @@ public class WordService {
     }
 
     public List<DtoWordToUI> searchWord(String searchTerm) {
-        List<Word> wordsResult = wordRepository.findWord(1l, searchTerm);
+        List<Word> wordsResult = wordRepository.findWord(searchTerm);
         List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
         for (Word arr: wordsResult) {
             dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
@@ -158,4 +158,5 @@ public class WordService {
         }
         return dtoWordToUIList;
     }
+
 }

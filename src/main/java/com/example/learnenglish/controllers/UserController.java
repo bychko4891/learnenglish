@@ -4,18 +4,22 @@ package com.example.learnenglish.controllers;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.PageApplication;
+import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.PageApplicationService;
 import com.example.learnenglish.service.UserService;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+
 @Controller
 //@RequestMapping(method = RequestMethod.GET)
 public class UserController {
@@ -31,7 +35,7 @@ public class UserController {
     public String registration(Model model) {
         model.addAttribute("title", "About the app Learn English");
         PageApplication pageApplication = pageApplicationService.getPageApplication(2l);
-        if(pageApplication.getTextOfAppPage() != null){
+        if (pageApplication.getTextOfAppPage() != null) {
             model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
         } else {
             model.addAttribute("pageText", "No text in this page");
@@ -46,7 +50,7 @@ public class UserController {
                         Model model) {
         model.addAttribute("title", "About the app Learn English");
         PageApplication pageApplication = pageApplicationService.getPageApplication(1l);
-        if(pageApplication.getTextOfAppPage() != null){
+        if (pageApplication.getTextOfAppPage() != null) {
             model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
         } else {
             model.addAttribute("pageText", "No text in this page");
@@ -60,15 +64,16 @@ public class UserController {
     }
 
     @GetMapping("/activate/{code}")
-    public String activateUser(@PathVariable ("code")String code, Model model){
+    public String activateUser(@PathVariable("code") String code, Model model) {
         boolean active = userService.activateUser(code);
-        if(active){
+        if (active) {
             model.addAttribute("message", "Activate");
         } else model.addAttribute("message", "No activate");
         return "login";
     }
+
     @GetMapping("/forgot-password")
-    public String forgotPassword(){
+    public String forgotPassword() {
         return "forgotPassword";
     }
 
@@ -95,5 +100,14 @@ public class UserController {
             return "userStatistics";
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/user/{id}/words")
+    public String getUserWords(@PathVariable("id") Long userId, Model model, Principal principal) {
+        if (principal != null) {
+//            List<Word> words = userService.findById(userId).getWords();                        \\ ****************************************************
+            model.addAttribute("words","words");
+            return "userWords";
+        } else return "redirect:/login";
     }
 }

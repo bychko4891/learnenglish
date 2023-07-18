@@ -14,6 +14,7 @@ import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,12 @@ import java.util.*;
 @Service
 public class TranslationPairService {
     private final TranslationPairRepository translationPairRepository;
+
     private final UserService userService;
 
 
-    public TranslationPairService(TranslationPairRepository repository, UserService userService) {
+    public TranslationPairService(TranslationPairRepository repository,
+                                  UserService userService) {
         this.translationPairRepository = repository;
         this.userService = userService;
     }
@@ -45,15 +48,18 @@ public class TranslationPairService {
     }
 
 
-    public DtoTranslationPairToUI getDtoTranslationPair(long lessonId, long userId, String userGender) {
-        Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPair(userId, lessonId);
-        if (translationPairOptional.isPresent()) {
-            if (userId == 1) {
+    public DtoTranslationPairToUI getDtoTranslationPair(User user, Long lessonId,  String userGender) {
+        if(!user.isUserTextInLesson()){
+            Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPair(1l, lessonId);
+            if(translationPairOptional.isPresent()){
                 return translationPairConvertToDtoApplicationText(translationPairOptional.get(), userGender);
-            } else {
+            } else return translationPairIsNull();
+        }else {
+            Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPairUserText(user.getId(), lessonId);
+            if(translationPairOptional.isPresent()){
                 return translationPairConvertToDtoUserText(translationPairOptional.get());
-            }
-        } else return translationPairIsNull();
+            } else return translationPairIsNull();
+        }
     }
 
 
@@ -102,7 +108,15 @@ public class TranslationPairService {
 
     public Page<TranslationPair> getUserTranslationPairs(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
-        return translationPairRepository.findAll(pageable, userId);
+        Page<Object[]> resultPage = translationPairRepository.findAll(pageable, userId);
+        List<TranslationPair> translationPairs = new ArrayList<>();
+        for (Object[] result : resultPage.getContent()) {
+            TranslationPair translationPair = (TranslationPair) result[0];
+            Boolean isRepeatable = (Boolean) result[1];
+            translationPair.setRepeatable(isRepeatable);
+            translationPairs.add(translationPair);
+        }
+        return new PageImpl<>(translationPairs, pageable, resultPage.getTotalElements());
     }
 
     public List<DtoTranslationPairToUI> searchResult(String src) {
@@ -125,36 +139,4 @@ public class TranslationPairService {
         return dtoTranslationPairToUI;
     }
 
-    public ResponseMessage setRepetitionPhrase(Long id, boolean isChecked) {
-        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(id);
-        if(translationPairOptional.isPresent()){
-            TranslationPair translationPair = translationPairOptional.get();
-            translationPair.setRepeatable(isChecked);
-            translationPairRepository.save(translationPair);
-            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
-        } else return new ResponseMessage(Message.ERROR_SERVER);
-    }
-    public ResponseMessage userPlusTranslationPairs(Long userId, Long translationPairsId, String userGender) {
-        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(translationPairsId);
-        User user = userService.findById(userId);
-        if(translationPairOptional.isPresent()){
-            if(!existsByEngTextAndUkrText(translationPairOptional.get().getEngText(), translationPairOptional.get().getLesson().getId(), user.getId()) ){
-            TranslationPair translationPair = translationPairOptional.get();
-            TranslationPair translationPairUser = new TranslationPair();
-            translationPairUser.setUser(user);
-            translationPairUser.setAudio(translationPair.getAudio());
-            translationPairUser.setUkrText(translationPair.getUkrText());
-            if (userGender.equals("[FEMALE]")) {
-                translationPairUser.setUkrText(translationPair.getUkrTextFemale());
-            }
-            translationPairUser.setEngText(translationPair.getEngText());
-            translationPairUser.setLesson(translationPair.getLesson());
-            translationPairUser.setRepeatable(true);
-            translationPairRepository.save(translationPairUser);
-            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
-            } else {
-                return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
-            }
-        } else return new ResponseMessage(Message.ERROR_SERVER);
-    }
 }

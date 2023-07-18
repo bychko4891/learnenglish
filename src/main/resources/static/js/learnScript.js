@@ -260,7 +260,7 @@ $('#phrasePlusLesson').submit(function (event) {
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var phraseId = $('input[name="phraseId"]').val();
         $.ajax({
-            url: '/phrase/user-plus',
+            url: '/user/phrase-plus',
             type: "POST",
             data: {translationPairsId: phraseId},
             beforeSend: function (xhr) {

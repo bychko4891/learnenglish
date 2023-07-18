@@ -113,7 +113,48 @@ function saveChanges(button) {
         }
     });
 }
+function confirmRemove(button) {
+    var confirmation = confirm("Ви впевнені, що хочете видалити цю фразу?");
+    if (confirmation) {
+        console.log("Зайшов");
+        deleteChanges(button);
+    }
+}
 
+
+
+function deleteChanges(button) {
+    var row = button.parentNode.parentNode;
+    var inputs = row.getElementsByTagName('input');
+    var phraseId = inputs[0].value;
+    console.log(phraseId);
+
+    // var updatedData = {
+    //     id: inputs[0].value,
+    //     ukrText: inputs[1].value,
+    //     engText: inputs[2].value
+    // };
+    // var id = updatedData.id;
+    var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+    $.ajax({
+        // url: $(this).attr('action'),
+        url: '/user-phrase/remove',
+        type: 'POST',
+        data: {phraseId: phraseId},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        },
+        success: function (result) {
+        }
+    });
+
+}
+
+
+function removeChanges(button) {
+    // Виконати код для видалення фрази зі списку
+}
 $('.toggle-switch').on('change', function() {
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");

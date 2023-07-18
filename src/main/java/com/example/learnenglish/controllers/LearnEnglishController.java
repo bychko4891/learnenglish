@@ -50,9 +50,7 @@ public class LearnEnglishController {
     @GetMapping("/")
     public String index(Principal principal, Model model) {
         if (principal != null) {
-            Long userId = userService.findByEmail(principal.getName()).getId();
-            model.addAttribute("userId", userId);
-            return "redirect:/user/" + userId;
+            return "redirect:/lesson/1";
         } else {
             PageApplication mainTop = pageApplicationService.getPageApplication(5l);
             PageApplication mainBottom = pageApplicationService.getPageApplication(6l);
@@ -64,7 +62,7 @@ public class LearnEnglishController {
             if (mainBottom.getTextOfAppPage() != null) {
                 model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
             }
-            model.addAttribute("title", "Англійська за 16 годин - English Learn Application");
+            model.addAttribute("title", "Англійська за 16 годин - e-learn.top");
             return "index";
         }
     }

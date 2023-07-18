@@ -85,7 +85,7 @@ public class SecurityConfig {
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
-    public static final String DEFAULT_SUCCESS_URL = "/about-the-app";
+    public static final String DEFAULT_SUCCESS_URL = "/lesson/1";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
@@ -96,7 +96,6 @@ public class SecurityConfig {
         http.authorizeRequests(request ->
                         request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
                                 .requestMatchers("/admin-page/**").hasRole("ADMIN")
-//                                .requestMatchers("/user/**").hasRole("USER")
                                 .anyRequest()
                                 .authenticated()
                                 .and()
@@ -109,7 +108,7 @@ public class SecurityConfig {
                                 .failureUrl(LOGIN_FAIL_URL)
                                 .usernameParameter(USERNAME)
                                 .passwordParameter(PASSWORD)
-//                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+//                                .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                                 .successHandler((request, response, authentication) -> {
                                     HttpSession session = request.getSession();
                                     session.setAttribute("username", authentication.getName());
@@ -123,7 +122,7 @@ public class SecurityConfig {
                                     session.setAttribute("userId", user.getId());
                                     session.setAttribute("userTextInLesson", user.isUserTextInLesson());
 
-                                    response.sendRedirect("/");
+                                    response.sendRedirect(DEFAULT_SUCCESS_URL);
                                 })
                 )
                 .logout(logout -> logout

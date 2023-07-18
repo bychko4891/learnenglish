@@ -63,24 +63,7 @@ public class TranslationPairRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/phrase/repetition-phrase-check")
-    public ResponseEntity<ResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
-                                                              @RequestParam("translationPairsId") Long id,
-                                                              Principal principal) {
-        if (principal != null) {
-            return ResponseEntity.ok(translationPairService.setRepetitionPhrase(id, isChecked));
-        }
-        return ResponseEntity.notFound().build();
-    }
-    @PostMapping("/phrase/user-plus")
-    public ResponseEntity<ResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
-                                                              Principal principal) {
-        if (principal != null) {
-            Long userId = (Long)session.getAttribute("userId");
-            String userGender = (String) session.getAttribute("userGender");
-            return ResponseEntity.ok(translationPairService.userPlusTranslationPairs(userId, translationPairsId, userGender));
-        }
-        return ResponseEntity.notFound().build();
-    }
+
+
 
 }

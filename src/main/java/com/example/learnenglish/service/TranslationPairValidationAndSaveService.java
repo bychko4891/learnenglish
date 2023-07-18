@@ -10,10 +10,11 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.Audio;
+import com.example.learnenglish.model.TranslationPairUser;
 import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.TranslationPairUserRepository;
 import com.example.learnenglish.responsemessage.*;
 import com.example.learnenglish.model.TranslationPair;
-import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +27,17 @@ public class TranslationPairValidationAndSaveService {
     private final LessonService lessonService;
     private final UserService userService;
     private final TranslationPairRepository translationPairRepository;
+    private final TranslationPairUserRepository translationPairUserRepository;
 
     public TranslationPairValidationAndSaveService(TranslationPairService translationPairService,
                                                    LessonService lessonService,
                                                    UserService userService,
-                                                   TranslationPairRepository translationPairRepository) {
+                                                   TranslationPairRepository translationPairRepository, TranslationPairUserRepository translationPairUserRepository) {
         this.translationPairService = translationPairService;
         this.lessonService = lessonService;
         this.userService = userService;
         this.translationPairRepository = translationPairRepository;
-
+        this.translationPairUserRepository = translationPairUserRepository;
     }
 
     public Optional<?> check(DtoTranslationPair dtoTranslationPair, String roleUser) {
@@ -122,6 +124,15 @@ public class TranslationPairValidationAndSaveService {
         }
         translationPair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
         translationPair.setUser(userService.findById(dtoTranslationPair.getUserId()));
+        if(roleUser.equals("[ROLE_USER]")){
+            translationPair.setUserTranslationPair(true);
+            TranslationPairUser translationPairUser = new TranslationPairUser();
+            translationPairUser.setTranslationPair(translationPair);
+            translationPairUser.setUser(userService.findById(dtoTranslationPair.getUserId()));
+            translationPairUser.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
+            translationPairUser.setRepeatable(true);
+            translationPairUserRepository.save(translationPairUser);
+        }
         return translationPair;
     }
 

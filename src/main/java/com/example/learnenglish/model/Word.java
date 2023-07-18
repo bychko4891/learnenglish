@@ -1,6 +1,5 @@
 package com.example.learnenglish.model;
 
-import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,13 +29,13 @@ public class Word {
     private String irregularVerbPt;
     @Column
     private String irregularVerbPp;
-    @Column
-    private String brAudioName;
-    @Column
-    private String usaAudioName;
+//    @Column
+//    private String brAudioName;
+//    @Column
+//    private String usaAudioName;
 
-    @Column(name = "is_repeatable")
-    private boolean isRepeatable = true;
+//    @Column(name = "is_repeatable")
+//    private boolean isRepeatable = true;
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
@@ -58,9 +57,9 @@ public class Word {
     @JoinColumn(name = "caregory_id")
     private Category wordCategory;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     public Word() {
     }

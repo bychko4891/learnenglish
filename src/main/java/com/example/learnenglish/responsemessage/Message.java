@@ -26,6 +26,8 @@ public enum Message {
     ERROR_SAVE_TEXT_OF_PAGE("Error", "На обраній сторінці текст вже існує"),
     SUCCESS_CHECKBOX("Success", "Параметр успішно застосовано"),
     ERROR_SAVE_CATEGORY("Error", "Не можно додати поточну категорію в вибрану"),
+    SUCCESS_SAVE_WORD_USER("Success", "Слово успішно збережено до Вашого списку"),
+    SUCCESS_REMOVE_USER_PHRASE("Success", "Видалення успішне"),
     ERROR_SERVER("Error", "Помилка на сервері");
 
     private String status;

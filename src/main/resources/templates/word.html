@@ -15,17 +15,17 @@
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
 
-            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 5px; margin: 20px 5px;">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Головна</a></li>
-                    <li class="breadcrumb-item"><a href="/words-main-category">категорії словника</a></li>
+                    <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/words-main-category">всі категорії</a></li>
                     <li class="breadcrumb-item">
                         <a th:href="@{/words-main-category/{id}(id=${mainId})}"
-                           th:text="${'категорія: ' + mainName}"></a>
+                           th:text="${mainName}"></a>
                     </li>
                     <li class="breadcrumb-item">
                         <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}"
-                           th:text="${'підкатегорія: ' + word.wordCategory.name}"></a>
+                           th:text="${word.wordCategory.name}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>
@@ -33,7 +33,22 @@
                 </ol>
             </nav>
             <div class="content">
+                <div style="display: flex; flex-direction: row;">
                 <h3 th:text="${word.name}"></h3>
+                <form sec:authorize="isAuthenticated()" class="wordPlus">
+                    <input id="wordId" type="hidden" name="phraseId" th:value="${word.id}">
+                    <button type="submit" id="wordPlus" class="btn_plus_page custom-tooltip pulse" data-tooltip="Додати в свою базу">
+                        <span class="lesson_plus_ico"></span>
+                    </button>
+                    <div class="tooltip_info"></div>
+                </form>
+                <form sec:authorize="isAnonymous()">
+                    <button type="button" class="btn_plus_page custom-tooltip" data-tooltip="Авторизуйтесь будь ласка">
+                        <span class="lesson_plus_ico"></span>
+                    </button>
+                    <div class="tooltip_info"></div>
+                </form>
+                </div>
                 <div style="display: flex;">
                     <div>
                         <i>Амер.</i>
@@ -68,7 +83,7 @@
                     <span>p.p. </span>
                     <span th:text="${word.irregularVerbPp}" style="color: #428BFF; font-size: 18px;"></span>
                 </div>
-                <i>Варіанти перевода: </i>
+                <i>Варіанти перекладу: </i>
                 <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
 
                 <div th:utext="${word.text}"></div>
@@ -99,17 +114,43 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     $('.phrasePlus').submit(function (event) {
         event.preventDefault();
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
         var phraseId = $('input[name="phraseId"]').val();
         console.log("yes");
 
         $.ajax({
-            url: '/phrase/user-plus',
+            url: '/user/phrase-plus',
             type: "POST",
             data: {translationPairsId: phraseId},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message);
+                }
+            },
+            error: function () {
+                showErrorToast("Помилка сервера");
+            }
+        });
+    });
+
+    $('.wordPlus').submit(function (event) {
+        event.preventDefault();
+        var wordId = $('input[name="wordId"]').val();
+        console.log("yes");
+
+        $.ajax({
+            url: '/word/user-plus',
+            type: "POST",
+            data: {wordId: wordId},
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },

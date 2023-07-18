@@ -245,6 +245,17 @@ button, .btn {
     margin: -11px 0 0 15px;
     border: none;
 }
+.removeButton {
+    background-color:rgba(224, 62, 45, 0.1);
+    border-color: #5e5e5e;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.removeButton:hover{
+    background-color:rgba(224, 62, 45, 0.8);
+
+}
 
 /*button:hover, .btn:hover {*/
 /*    color: white !important;*/
@@ -306,26 +317,20 @@ button.hidden {
 .lesson_next_ico::before {
     content: '\f101';
     font-family: fontAwesome;
-    /*font-weight: normal;*/
-    /*font-style: normal;*/
+
 }
 .lesson_prev_ico::before {
     content: '\f100';
     font-family: fontAwesome;
-    /*font-weight: normal;*/
-    /*font-style: normal;*/
+
 }
 .lesson_enter_ico::before {
     content: '\f105';
     font-family: fontAwesome;
-    /*font-weight: normal;*/
-    /*font-style: normal;*/
 }
 .lesson_plus_ico::before {
     content: '\f0fe';
     font-family: fontAwesome;
-    /*font-weight: normal;*/
-    /*font-style: normal;*/
 }
 
 .file-btn {
@@ -1050,7 +1055,7 @@ td {
 
 .form-registration .inputBox input {
     position: relative;
-    width: 100%;
+    width: 95%;
     padding: 10px;
     /*border-left: ;*/
     background: rgba(0, 0, 0, 0);
@@ -1360,4 +1365,8 @@ td {
 }
 .pulse:hover:before, .pulse:hover:after {
     display: none;
+}
+
+.content h3 {
+    color: #428BFF !important;
 }

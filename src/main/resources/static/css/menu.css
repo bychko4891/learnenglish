@@ -3,26 +3,29 @@
 }
 
 .wrapper .sidebar {
+    position: absolute;
+    width: 225px;
+    min-height: 100vh;
+    height: fit-content;
     background: rgb(36 36 38);
     /*background: rgb(34 34 42);*/
-    position: fixed;
     top: 0;
     left: 0;
-    width: 225px;
-    height: 100vh;
+    bottom: 0;
     padding: 5px 0;
     transition: all 0.5s ease;
 }
 .wrapper .sidebarMobile {
-    background: rgb(36 36 38);
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: absolute;
     width: 70vw;
     min-width: 260px;
     max-width: 400px;
+    min-height: 100vh;
+    height: fit-content;
+    background: rgb(36 36 38);
+    top: 0;
+    left: 0;
     font-size: 1em;
-    height: 100vh;
     padding: 5px 0;
     z-index: 9999;
     transform: translateX(-100%);

@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @Repository
 public interface TranslationPairRepository extends CrudRepository<TranslationPair, Long> {
+
     Long countTranslationPairByUserIdAndLessonId(Long userId, Long lessonId);
 
     @Query("SELECT CASE WHEN COUNT(lt) > 0 THEN true ELSE false END FROM TranslationPair lt WHERE lt.user.id = :userId AND lt.lesson.id = :lessonId AND LOWER(lt.engText) = LOWER(:engText)")
@@ -28,8 +29,10 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
     @Query("SELECT e FROM TranslationPair e WHERE e.user.id = :userId AND e.lesson.id = :lessonId AND e.lessonCounter = :lessonCounter")
     TranslationPair findAllByUserAndLessonAndCounter(@Param("lessonId") Long lessonId, @Param("userId") Long userId, @Param("lessonCounter") Long lessonCounter);
 
-    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
-    Page<TranslationPair> findAll(Pageable pageable, Long userId);
+    //    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
+//    @Query("SELECT t FROM TranslationPair t INNER JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId ORDER BY t.id ASC")
+    @Query("SELECT t, tu.isRepeatable FROM TranslationPair t LEFT JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId")
+    Page<Object[]> findAll(Pageable pageable, @Param("userId")Long userId);
 
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND LOWER(tr.engText) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
     List<TranslationPair> findTranslationPair(@Param("id") Long id, @Param("firstLetter") String firstLetter);
@@ -37,7 +40,10 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.id IN :ids")
     List<TranslationPair> findByIds(@Param("ids") List<Long> ids);
 
-    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId AND t.lesson.id = :lessonId AND t.isRepeatable = true ORDER BY RANDOM() LIMIT 1")
-    Optional<TranslationPair> randomTranslationPair(@Param("userId")Long userId, @Param("lessonId") Long lessonId);
+    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId AND t.lesson.id = :lessonId ORDER BY RANDOM() LIMIT 1")
+    Optional<TranslationPair> randomTranslationPair(@Param("userId") Long userId, @Param("lessonId") Long lessonId);
+
+    @Query("SELECT t FROM TranslationPair t INNER JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId AND tu.lesson.id = :lessonId AND tu.isRepeatable = true ORDER BY RANDOM() LIMIT 1")
+    Optional<TranslationPair> randomTranslationPairUserText(@Param("userId") Long userId, @Param("lessonId") Long lessonId);
 
 }

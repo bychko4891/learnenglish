@@ -17,15 +17,15 @@
         </div>
 
         <ul class="main-menu">
-            <li sec:authorize="isAnonymous()">
-                <a href="/">
+            <li>
+                <a sec:authorize="isAnonymous()" href="/">
                     <span class="icon"><i class="fas fa-home"></i></span>
-                    <span class="item">Home</span>
+                    <span class="item">Головна</span>
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
                 <a th:href="@{/user/{id}(id=${session.userId})}">
-                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span class="icon"><i class="fas fa-user"></i></span>
                     <span class="item">Профіль</span>
                 </a>
             </li>
@@ -44,25 +44,26 @@
             </li>
             <li sec:authorize="hasRole('ROLE_USER')">
                 <a th:href="@{/user/{id}/translation-pairs (id=${session.userId})}">
-                    <span class="icon"><i class="fas fa-database"></i></span>
+                    <span class="icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
                     <span class="item">Мої фрази</span>
                 </a>
             </li>
-            <li>
-                <a href="/about-the-app">
-                    <span class="icon"><i class="fas fa-user-friends"></i></span>
-                    <span class="item">Про додаток</span>
+            <li sec:authorize="hasRole('ROLE_USER')">
+                <a th:href="@{/user/{id}/words (id=${session.userId})}">
+                    <span class="icon"><i class="fa-solid fa-table"></i></span>
+                    <span class="item">Мої слова</span>
                 </a>
             </li>
+
             <li>
                 <a href="/words-main-category">
-                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                    <span class="icon"><i class="fas fa-spell-check"></i></span>
                     <span class="item">Словник</span>
                 </a>
             </li>
             <li>
                 <a href="/phrases-categories">
-                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                    <span class="icon"><i class="fas fa-comments"></i></span>
                     <span class="item">Фрази</span>
                 </a>
             </li>
@@ -71,6 +72,14 @@
                 <a href="/admin-page">
                     <span class="icon"><i class="fas fa-user-shield"></i></span>
                     <span class="item">Admin</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about-the-app">
+                    <!--                    <span class="icon"><i class="fas fa-user-friends"></i></span>-->
+                    <span class="icon"><i class="fa-solid fa-circle-info"></i></span>
+                    <!--                    <i class="fa-regular fa-square-info"></i>-->
+                    <span class="item">Про додаток</span>
                 </a>
             </li>
 <!--            </th:block>-->

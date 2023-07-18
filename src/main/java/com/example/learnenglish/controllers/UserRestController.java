@@ -10,7 +10,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
-import com.example.learnenglish.service.UserService;
+import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,10 @@ import java.security.Principal;
 public class UserRestController {
 
     private final UserService userService;
+
+    private final WordUserService wordUserService;
+
+    private final TranslationPairUserService translationPairUserService;
 
     private final HttpSession session;
 
@@ -114,6 +118,44 @@ public class UserRestController {
         return "redirect:/";
     }
 
+    @PostMapping("/user/word-plus")
+    public ResponseEntity<ResponseMessage> wordUserPlus(@RequestParam("wordId") Long wordId,
+                                                          Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(wordUserService.userWordPlus(user, wordId));
+        }
+        return ResponseEntity.notFound().build();
+    }
 
+    @PostMapping("/user/phrase-plus")
+    public ResponseEntity<ResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
+                                                          Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+
+            return ResponseEntity.ok(translationPairUserService.userPlusTranslationPairs(user, translationPairsId));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/phrase/repetition-phrase-check")
+    public ResponseEntity<ResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
+                                                              @RequestParam("translationPairsId") Long id,
+                                                              Principal principal) {
+        if (principal != null) {
+            Long userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(translationPairUserService.setRepetitionPhrase(id, userId, isChecked));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/user-phrase/remove")
+    public ResponseEntity<ResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
+                                                            Principal principal) {
+        if (principal != null) {
+            Long userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(translationPairUserService.userPhraseRemove(translationPairId, userId));
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
 

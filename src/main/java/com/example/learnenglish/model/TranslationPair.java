@@ -37,8 +37,11 @@ public class TranslationPair {
     @Column(name = "eng_text", length = 500)
     private String engText;
 
-    @Column(name = "is_repeatable")
-    private boolean isRepeatable = true;
+    @Transient
+    private boolean isRepeatable;
+
+    @Column
+    private boolean userTranslationPair = false;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "audio_id")
@@ -47,6 +50,9 @@ public class TranslationPair {
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "translationPair")
+//    private List<TranslationPairUser> translationPairUser;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "phrase_and_word",

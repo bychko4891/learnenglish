@@ -10,6 +10,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
@@ -54,13 +55,9 @@ public class LessonController {
     public ResponseEntity<DtoTranslationPairToUI> randomTranslationPairToLesson(@PathVariable(value = "lessonId") long lessonId,
                                                                                 Principal principal) {
         if (principal != null) {
-            long userId = (long)session.getAttribute("userId");
-            if(!(boolean)session.getAttribute("userTextInLesson")){
-                userId = 1;
-            }
-//            userStatisticsService.userRepetitionCount(userService.findByEmail(principal.getName()).getId());
+            User user = userService.findByEmail(principal.getName());
             String userGender = (String) session.getAttribute("userGender");
-            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.getDtoTranslationPair(lessonId, userId, userGender);
+            DtoTranslationPairToUI dtoTranslationPairToUI = translationPairService.getDtoTranslationPair(user, lessonId, userGender);
             session.setAttribute("ukrText", dtoTranslationPairToUI.getUkrText());
             session.setAttribute("engText", dtoTranslationPairToUI.getEngText());
             session.setAttribute("fragment", dtoTranslationPairToUI.getFragment());
