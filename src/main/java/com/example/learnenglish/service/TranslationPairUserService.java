@@ -54,7 +54,7 @@ public class TranslationPairUserService {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, userId);
         TranslationPairUser translationPairUser = translationPairUserOptional.get();
         if(translationPairUser.getTranslationPair().getUser().getId() == userId){
-            System.out.println("Зайшов **********************************************");
+            System.out.println("Зайшов *********************************************");
         }
         translationPairUserRepository.delete(translationPairUser);
         return new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
