@@ -152,8 +152,18 @@ public class UserRestController {
     public ResponseEntity<ResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
                                                             Principal principal) {
         if (principal != null) {
-            Long userId = userService.findByEmail(principal.getName()).getId();
-            return ResponseEntity.ok(translationPairUserService.userPhraseRemove(translationPairId, userId));
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(translationPairUserService.userPhraseRemove(translationPairId, user));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user-profile/delete")
+    public ResponseEntity<ResponseMessage> userProfileRemove(@RequestParam("checkboxState") boolean checkboxState,
+                                                            Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE));
         }
         return ResponseEntity.notFound().build();
     }

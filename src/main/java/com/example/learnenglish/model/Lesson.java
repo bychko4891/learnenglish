@@ -49,12 +49,4 @@ public class Lesson {
         this.lessonInfo = lessonInfo;
     }
 
-    @Override
-    public String toString() {
-        return "Lesson{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lessonInfo='" + lessonInfo + '\'' +
-                '}';
-    }
 }

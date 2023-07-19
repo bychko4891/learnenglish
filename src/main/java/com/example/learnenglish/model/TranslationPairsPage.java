@@ -39,6 +39,10 @@ public class TranslationPairsPage {
             inverseJoinColumns = @JoinColumn(name = "phrase_id"))
     private List<TranslationPair> translationPairs = new ArrayList<>();
 
+//    @OneToMany
+//    @JoinColumn(name = "translation_pair_id")
+//    private List<TranslationPair> translationPairs = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category translationPairsPageCategory;

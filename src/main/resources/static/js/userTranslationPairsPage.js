@@ -1,3 +1,5 @@
+var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
 function toggleEditMode(button) {
     var row = button.closest('tr');
     var spans = row.getElementsByTagName('span');
@@ -51,8 +53,8 @@ function saveChanges(button) {
         engText: inputs[2].value
     };
     var id = updatedData.id;
-    var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-    var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+    // var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    // var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
     $.ajax({
         // url: $(this).attr('action'),
         url: '/translation-pair/check-edit',
@@ -116,29 +118,15 @@ function saveChanges(button) {
 function confirmRemove(button) {
     var confirmation = confirm("Ви впевнені, що хочете видалити цю фразу?");
     if (confirmation) {
-        console.log("Зайшов");
         deleteChanges(button);
     }
 }
-
-
 
 function deleteChanges(button) {
     var row = button.parentNode.parentNode;
     var inputs = row.getElementsByTagName('input');
     var phraseId = inputs[0].value;
-    console.log(phraseId);
-
-    // var updatedData = {
-    //     id: inputs[0].value,
-    //     ukrText: inputs[1].value,
-    //     engText: inputs[2].value
-    // };
-    // var id = updatedData.id;
-    var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-    var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
     $.ajax({
-        // url: $(this).attr('action'),
         url: '/user-phrase/remove',
         type: 'POST',
         data: {phraseId: phraseId},
@@ -146,6 +134,16 @@ function deleteChanges(button) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
         success: function (result) {
+            var status = result.status;
+            if (status == "Success") {
+                showSuccessToast(result.message);
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            } else {
+                showErrorToast(result.message);
+            }
+
         }
     });
 
@@ -156,8 +154,8 @@ function removeChanges(button) {
     // Виконати код для видалення фрази зі списку
 }
 $('.toggle-switch').on('change', function() {
-    var csrfToken = $("meta[name='_csrf']").attr("content");
-    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    // var csrfToken = $("meta[name='_csrf']").attr("content");
+    // var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var isRepeatable = $(this).prop('checked');
     var translationPairsId = $(this).data('phrase-id');
     $.ajax({

@@ -52,9 +52,13 @@ public class Word {
             joinColumns = @JoinColumn(name = "word_id"),
             inverseJoinColumns = @JoinColumn(name = "phrase_id"))
     private List<TranslationPair> translationPairs;
+//
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinColumn(name = "translation_pairs_id")
+//    private List<TranslationPair> translationPairs;
 
-    @ManyToOne
-    @JoinColumn(name = "caregory_id")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "category_id")
     private Category wordCategory;
 
 //    @ManyToOne

@@ -127,9 +127,9 @@ public class WordService {
         word.setAudio(audio);
         if (dtoWord.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
-            for (TranslationPair arr : list) {
-                arr.getWords().add(word);
-            }
+//            for (TranslationPair arr : list) {
+//                arr.getWords().add(word);
+//            }
             word.setTranslationPairs(list);
         }
         if(categoryId != 0){

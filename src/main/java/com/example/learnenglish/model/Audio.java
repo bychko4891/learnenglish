@@ -26,8 +26,8 @@ public class Audio {
     @OneToOne(mappedBy = "audio")
     private Word word;
 
-    @OneToOne(mappedBy = "audio")
-    private TranslationPair translationPair;
+//    @OneToOne(mappedBy = "audio")
+//    private TranslationPair translationPair;
 
     public Audio() {
     }

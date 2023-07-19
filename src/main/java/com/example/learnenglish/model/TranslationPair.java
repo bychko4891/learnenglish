@@ -23,7 +23,7 @@ public class TranslationPair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name="lesson_counter")
     private Long lessonCounter;
@@ -51,24 +51,9 @@ public class TranslationPair {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "translationPair")
-//    private List<TranslationPairUser> translationPairUser;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "phrase_and_word",
-            joinColumns = @JoinColumn(name = "phrase_id"),
-            inverseJoinColumns = @JoinColumn(name = "word_id"))
-    private List<Word> words;
-
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "phrase_and_phrases_page",
-            joinColumns = @JoinColumn(name = "phrase_id"),
-            inverseJoinColumns = @JoinColumn(name = "phrases_page_id"))
-    private List<TranslationPairsPage> translationPairsPages;
 
     public TranslationPair() {
     }

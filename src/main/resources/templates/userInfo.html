@@ -3,12 +3,12 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
 <link rel="stylesheet" th:href="@{/css/dycalendar.css}">
-<link rel="stylesheet" th:href="@{/css/croppie.css}" >
+<link rel="stylesheet" th:href="@{/css/croppie.css}">
 
 <style>
 
     .profile_tabs {
-        background: rgba(45, 45,52, 0.9);
+        background: rgba(45, 45, 52, 0.9);
         height: calc(100vh - 110px);
         position: relative;
         margin-top: 30px;
@@ -66,6 +66,7 @@
         .profile_tabs {
             height: calc(100vh - 80px);
         }
+
         .user_avatar_profile {
             display: block;
         }
@@ -75,6 +76,7 @@
         .right_box {
             width: 88%;
         }
+
         .user_avatar_profile {
             display: none;
         }
@@ -155,7 +157,6 @@
         font-family: "Roboto", sans-serif;
         width: 80%;
         text-transform: uppercase;
-        font-size: 12px;
         letter-spacing: 1px;
         margin-left: 2px;
     }
@@ -195,13 +196,13 @@
         display: block;
     }
 
-.user_avatar_profile img{
-    width: 150px;
-    height: 150px;
-    margin: 0 auto;
-    border: 2px solid rgb(50 50 50);
-    border-radius: 50%;
-}
+    .user_avatar_profile img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        border: 2px solid rgb(50 50 50);
+        border-radius: 50%;
+    }
 </style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
@@ -252,7 +253,8 @@
                     <section>
                         <h1>Змінити аватар</h1><br>
                         <div class="user_avatar_profile">
-                        <img id="userAvatarPM" th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
+                            <img id="userAvatarPM"
+                                 th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
                         </div>
                         <div class="demo-wrap upload-demo">
                             <div class="actions">
@@ -304,19 +306,38 @@
                             <div class="container_calendar">
                                 <div id="calendar"></div>
                             </div>
-                            <div id="numberOfDaysUser" style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
+                            <div id="numberOfDaysUser"
+                                 style="padding-top: 20px; font-weight: 500; font-size: 18px;"></div>
                         </div>
                     </section>
 
                     <section>
                         <h1>Налаштування</h1>
+                        <div style="display: flex; flex-direction: column; border: 1px solid; padding: 20px; border-radius: 20px; gap: 10px;">
+                        <h5>Налаштування занять</h5>
                         <div style="display: contents; font-size: 20px; font-weight: 500;">
                             <form>
-                                <span style="padding: 10px 0px 0px 25px;"> Власні фрази: </span>
+                                <span style="padding: 10px 0px 0px 25px;">Фрази в уроці з власного списку: </span>
                                 <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}"
                                        class="toggle-switch"
                                        name="userActive" th:data-user-id="${session.userId}"/>
                                 <label for="toggleSwitch" class="toggle-switch-label"></label>
+                            </form>
+                        </div>
+                        </div>
+
+                        <br>
+                        <div style="display: flex; flex-direction: column; border: 1px solid; padding: 20px; border-radius: 20px; gap: 10px;">
+                            <h5>Видалити профіль</h5>
+                                <strong>
+                                    <span style="color: #e03e2d; font-size: 18px;">Увага, цю дію неможливо буде відмінити!</span>
+                                </strong><br>
+                                <span>Якщо Ви видалите свій аккаунт, також буде видалена вся інформація, пов'язана з вашим
+                                профілем і відновити її не буде можливості.</span>
+                            <form id="deleteProfile" class="inline-container">
+                                <span style="padding-top: 10px;">Підтвердити видалення&nbsp;&nbsp;</span>
+                                <input type="checkbox" class="checkbox" style="margin-right: 50px;">
+                                <button class="removeButton" type="button">Видалити профіль</button>
                             </form>
                         </div>
                     </section>
@@ -333,5 +354,42 @@
 <script type="text/javascript" th:src="@{/js/jquery-ui.min.js}"></script> <!--календар  -->
 
 <script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
+<script>
+    $(document).ready(function() {
+        var deleteButton = $("#deleteProfile .removeButton");
+        var checkbox = $("#deleteProfile .checkbox");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        deleteButton.on("click", function() {
+            // console.log("one");
+            // if (!checkbox.prop("checked")) {
+            //     console.log("two");
+                // alert("Підтвердіть видалення, поставивши галочку у чекбоксі.");
+            // } else {
+            //     console.log("three");
+                // if (confirm("Ви впевнені, що бажаєте видалити профіль?")) {
+                //     console.log("four");
+                    $.ajax({
+                        url: "/user-profile/delete",
+                        type: "POST",
+                        data: {
+                            checkboxState: checkbox.prop("checked")
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function(response) {
+                            alert(response);
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Помилка сервера: " + error);
+                        }
+                    });
+                // }
+            // }
+        });
+    });
+</script>
 </body>
 </html>
