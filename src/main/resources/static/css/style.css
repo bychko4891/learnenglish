@@ -982,7 +982,7 @@ td {
 .box {
     position: relative;
     width: 380px;
-    height: 680px;
+    height: 640px;
     background: #323232;
     /*border-radius: 8px;*/
     overflow: hidden;
@@ -996,7 +996,7 @@ td {
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 680px;
+    height: 640px;
     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -1008,7 +1008,7 @@ td {
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 680px;
+    height: 640px;
     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -1044,6 +1044,7 @@ td {
     align-items: center;
     /*min-height: 60vh;*/
     flex-direction: column;
+    font-size: 18px;
     /*border: 1px solid #000000;*/
 
 }
@@ -1055,7 +1056,7 @@ td {
 
 .form-registration .inputBox input {
     position: relative;
-    width: 95%;
+    width: 100%;
     padding: 10px;
     /*border-left: ;*/
     background: rgba(0, 0, 0, 0);
@@ -1145,8 +1146,8 @@ td {
 
 .validation {
     background: rgba(199, 199, 199, 0.8);
-    padding: 10px;
-    margin-top: 30px;
+    padding: 5px;
+    margin-top: 10px;
     border-radius: 8px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
 }
@@ -1163,7 +1164,7 @@ td {
     position: relative;
     list-style: none;
     color: #0800ff;
-    font-size: 0.75em;
+    font-size: 0.65em;
     transition: 0.5s;
 }
 
@@ -1175,8 +1176,8 @@ td {
 .validation ul li::before {
     content: '\f10c';
     font-family: fontAwesome;
-    width: 20px;
-    height: 10px;
+    width: 15px;
+    height: 6px;
     display: inline-flex;
 }
 

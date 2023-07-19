@@ -38,17 +38,16 @@
                                         <span class="span-text">Email</span>
                                     </div>
                                     <br>
-                                    <div class="inputBox">
-                                        <input type="password" required name="password" th:attr="id='psw'">
+                                    <div class="inputBox" style="display: flex;">
+                                        <input type="password" required name="password" autocomplete="new-password" id="psw">
                                         <!--                                       onkeyup="checkPassword(this.value)">-->
                                         <span class="span-text">Пароль</span>
                                         <span id="toggleBtn"></span>
 
                                     </div>
-                                    <div class="inputBox" style="top: 20px;">
-                                        <input type="password" required name="confirmPassword"
-                                               th:attr="id='confirmPassword'">
-                                        <span class="span-text">confirmPassword</span>
+                                    <div class="inputBox" style="margin-top: 20px;">
+                                        <input type="password" required name="confirmPassword" autocomplete="new-password" id="confirmPassword">
+                                        <span class="span-text">Повторити пароль</span>
                                     </div>
                                     <div class="validation">
                                         <ul>
@@ -59,7 +58,7 @@
                                             <li id="length">Довжина - щонайменше 8 символів</li>
                                         </ul>
                                     </div>
-                                    <div style="padding-left: 38px; padding-top: 15px;">
+                                    <div style="padding-left: 25%; padding-top: 15px;">
                                         <button type="submit">Підтвердити</button>
                                     </div>
                                 </form>

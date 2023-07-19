@@ -11,6 +11,7 @@ import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -19,7 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -38,8 +42,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private MailSenderInApp mailSender;
+//    @Autowired
+    private final MailSenderInApp mailSender;
+//    @Autowired
+    private final HttpServletRequest request;
 
     public boolean createUser(User user) {
         String email = user.getEmail();
@@ -111,6 +117,25 @@ public class UserService {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
 //        userRepository.save(user);
+    }
+
+
+    public ResponseMessage userProfileDelete(User user, String userPassword) {
+            String encodedPassword = user.getPassword();
+            if (passwordEncoder.matches(userPassword, encodedPassword)) {
+                userRepository.delete(user);
+                logoutUser(request); // Виклик методу розлогінення
+                return new ResponseMessage(Message.SUCCESS_UPDATEPASSWORD);
+            } else return new ResponseMessage(Message.ERROR_UPDATEPASSWORD);
+
+
+    }
+
+    private void logoutUser(HttpServletRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, null, auth);
+        }
     }
 
     public Page<User> getUsersPage(int page, int size) {

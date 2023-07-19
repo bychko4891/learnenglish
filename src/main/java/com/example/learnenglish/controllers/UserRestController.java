@@ -101,17 +101,16 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/user/{userId}/delete")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<User> userDelete(@PathVariable("userId") Long userId,
-                                           Principal principal) {
+    @PostMapping("/user-profile/delete")
+    public ResponseEntity<ResponseMessage> userProfileRemove(@RequestParam("password") String userPassword,
+                                                             Principal principal) {
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
-
-            return ResponseEntity.notFound().build();
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(userService.userProfileDelete(user, userPassword));
         }
         return ResponseEntity.notFound().build();
     }
+
 
     @RequestMapping("/logout")
     public String logout() {
@@ -158,14 +157,6 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/user-profile/delete")
-    public ResponseEntity<ResponseMessage> userProfileRemove(@RequestParam("checkboxState") boolean checkboxState,
-                                                            Principal principal) {
-        if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            return ResponseEntity.ok(new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE));
-        }
-        return ResponseEntity.notFound().build();
-    }
+
 }
 
