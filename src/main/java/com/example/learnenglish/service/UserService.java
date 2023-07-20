@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import java.security.SecureRandom;
-
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,9 +40,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-//    @Autowired
+
     private final MailSenderInApp mailSender;
-//    @Autowired
+
     private final HttpServletRequest request;
 
     public boolean createUser(User user) {
@@ -93,7 +91,7 @@ public class UserService {
             User user = optionalUser.get();
             user.setLastName(lastName);
             user.setFirstName(firstName);
-            user.getGender().clear();  // Очистити поточні значення гендеру
+            user.getGender().clear();
             user.getGender().add(UserGender.valueOf(gender.toUpperCase()));
             userRepository.save(user);
 //            return userRepository.save(user);
@@ -143,9 +141,10 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public void userActiveEdit(Long userId, boolean userActive) {
+    public void userActiveEditAdminPage(Long userId, boolean userActive) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
+
             User user = optionalUser.get();
             user.setActive(userActive);
             userRepository.save(user);

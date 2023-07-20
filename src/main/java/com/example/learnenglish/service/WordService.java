@@ -19,7 +19,9 @@ import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,21 +32,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class WordService {
     private final WordRepository wordRepository;
     private final CategoryRepository wordCategoryRepository;
     private final TranslationPairRepository translationPairRepository;
     private final UserService userService;
 
-    public WordService(WordRepository wordRepository,
-                       CategoryRepository wordCategoryRepository,
-                       TranslationPairRepository translationPairRepository,
-                       UserService userService) {
-        this.wordRepository = wordRepository;
-        this.wordCategoryRepository = wordCategoryRepository;
-        this.translationPairRepository = translationPairRepository;
-        this.userService = userService;
-    }
 
     public Page<Word> getWordsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -159,4 +153,16 @@ public class WordService {
         return dtoWordToUIList;
     }
 
+    public Page<Word> getUserWords(int page, int size, Long userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Object[]> resultPage = wordRepository.findAll(pageable, userId);
+        List<Word> words = new ArrayList<>();
+        for (Object[] result : resultPage.getContent()) {
+            Word word = (Word) result[0];
+            Boolean isRepeatable = (Boolean) result[1];
+            word.setRepeatable(isRepeatable);
+            words.add(word);
+        }
+        return new PageImpl<>(words, pageable, resultPage.getTotalElements());
+    }
 }

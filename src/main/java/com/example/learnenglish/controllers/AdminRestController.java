@@ -12,6 +12,7 @@ import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import com.example.learnenglish.service.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin-page")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class AdminRestController {
     private final LessonService lessonService;
     private final UserService userService;
@@ -34,25 +36,6 @@ public class AdminRestController {
     private final ImagesService imagesService;
     private final TranslationPairPageService translationPairPageService;
 
-    public AdminRestController(LessonService lessonService,
-                               UserService userService,
-                               TextOfAppPageService textOfAppPageService,
-                               CategoryService wordCategoryService,
-                               WordService wordService,
-                               AudioService wordAudioService,
-                               TranslationPairService translationPairService,
-                               ImagesService imagesService,
-                               TranslationPairPageService translationPairPageService) {
-        this.lessonService = lessonService;
-        this.userService = userService;
-        this.textOfAppPageService = textOfAppPageService;
-        this.wordCategoryService = wordCategoryService;
-        this.wordService = wordService;
-        this.wordAudioService = wordAudioService;
-        this.translationPairService = translationPairService;
-        this.imagesService = imagesService;
-        this.translationPairPageService = translationPairPageService;
-    }
 
     @PostMapping("/text-of-app-page/{id}/edit")
     public ResponseEntity<ResponseMessage> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
@@ -80,7 +63,7 @@ public class AdminRestController {
                                 @RequestParam("userId") Long userId,
                                 Principal principal) {
         if (principal != null) {
-            userService.userActiveEdit(userId, userActive);
+            userService.userActiveEditAdminPage(userId, userActive);
             System.out.println(userActive);
 //                return ResponseEntity.ok(new ResponseStatus(Message.SUCCESS_CREATELESSON));
         }

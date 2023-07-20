@@ -15,6 +15,7 @@ import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import com.example.learnenglish.responsemessage.*;
 import com.example.learnenglish.model.TranslationPair;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class TranslationPairValidationAndSaveService {
     private final TranslationPairService translationPairService;
     private final LessonService lessonService;
@@ -29,16 +31,7 @@ public class TranslationPairValidationAndSaveService {
     private final TranslationPairRepository translationPairRepository;
     private final TranslationPairUserRepository translationPairUserRepository;
 
-    public TranslationPairValidationAndSaveService(TranslationPairService translationPairService,
-                                                   LessonService lessonService,
-                                                   UserService userService,
-                                                   TranslationPairRepository translationPairRepository, TranslationPairUserRepository translationPairUserRepository) {
-        this.translationPairService = translationPairService;
-        this.lessonService = lessonService;
-        this.userService = userService;
-        this.translationPairRepository = translationPairRepository;
-        this.translationPairUserRepository = translationPairUserRepository;
-    }
+
 
     public Optional<?> check(DtoTranslationPair dtoTranslationPair, String roleUser) {
         Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(dtoTranslationPair.getId());

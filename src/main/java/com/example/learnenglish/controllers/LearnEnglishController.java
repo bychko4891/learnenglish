@@ -10,6 +10,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-//@RequestMapping(method = RequestMethod.GET)
+@RequiredArgsConstructor
 public class LearnEnglishController {
     private final HttpSession session;
     private final UserService userService;
@@ -31,21 +32,6 @@ public class LearnEnglishController {
     private final WordService wordService;
     private final TranslationPairPageService translationPairPageService;
 
-    public LearnEnglishController(HttpSession session,
-                                  UserService userService,
-                                  LessonService lessonService,
-                                  PageApplicationService pageApplicationService,
-                                  CategoryService categoryService,
-                                  WordService wordService,
-                                  TranslationPairPageService translationPairPageService) {
-        this.session = session;
-        this.userService = userService;
-        this.lessonService = lessonService;
-        this.pageApplicationService = pageApplicationService;
-        this.categoryService = categoryService;
-        this.wordService = wordService;
-        this.translationPairPageService = translationPairPageService;
-    }
 
     @GetMapping("/")
     public String index(Principal principal, Model model) {
@@ -180,10 +166,25 @@ public class LearnEnglishController {
         Word word = wordService.getWord(id);
         Category wordCategory = word.getWordCategory().getParentCategory();
         model.addAttribute("word", word);
-        model.addAttribute("mainId", wordCategory.getParentCategory().getId());
-        model.addAttribute("mainName", wordCategory.getName());
-
+        if(wordCategory != null){
+            model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
+            model.addAttribute("mainCategoryName", wordCategory.getName());
+        }
         return "word";
+    }
+
+    @GetMapping("/word/training")
+    public String wordTraining(Model model, Principal principal) {
+        if(principal != null) {
+//        Word word = wordService.getWord(id);
+//        Category wordCategory = word.getWordCategory().getParentCategory();
+//        model.addAttribute("word", word);
+//        if(wordCategory != null){
+//            model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
+//            model.addAttribute("mainCategoryName", wordCategory.getName());
+//        }
+        return "wordTraining";
+        } return "redirect:/login";
     }
 
 

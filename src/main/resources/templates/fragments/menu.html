@@ -48,8 +48,8 @@
                     <span class="item">Мої фрази</span>
                 </a>
             </li>
-            <li sec:authorize="hasRole('ROLE_USER')">
-                <a th:href="@{/user/{id}/words (id=${session.userId})}">
+            <li sec:authorize="isAuthenticated()">
+                <a href="/user/words">
                     <span class="icon"><i class="fa-solid fa-table"></i></span>
                     <span class="item">Мої слова</span>
                 </a>
@@ -68,18 +68,19 @@
                 </a>
             </li>
 <!--            <th:block th:if="${userRole == 'ADMIN'}">-->
-            <li sec:authorize="hasRole('ROLE_ADMIN')">
-                <a href="/admin-page">
-                    <span class="icon"><i class="fas fa-user-shield"></i></span>
-                    <span class="item">Admin</span>
-                </a>
-            </li>
+
             <li>
                 <a href="/about-the-app">
                     <!--                    <span class="icon"><i class="fas fa-user-friends"></i></span>-->
                     <span class="icon"><i class="fa-solid fa-circle-info"></i></span>
                     <!--                    <i class="fa-regular fa-square-info"></i>-->
                     <span class="item">Про додаток</span>
+                </a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
+                <a href="/admin-page">
+                    <span class="icon"><i class="fas fa-user-shield"></i></span>
+                    <span class="item">Admin</span>
                 </a>
             </li>
 <!--            </th:block>-->

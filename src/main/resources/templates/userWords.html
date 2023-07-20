@@ -1,52 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-  <div class="section">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="container layout_page">
-      <div class="page-table" style="flex-direction: column;">
-        <h3>Мої слова</h3>
-        <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a></div>
-
-          <div th:each="word : ${words}">
-           <input type="hidden" name="id" th:value="${word.id}"/></td>
-
-              <span th:text="${word.name}"></span>
+    <!--    <main class="section" style="position: relative; padding-bottom: 90px;">-->
+    <div class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <main class="container layout_page">
 
 
-              <span th:text="${word.translate}"></span>
-<!--              <input th:id="'ukrText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.ukrText}"/>-->
-<!--              <div th:id="'ukrTextError' + ${translationPair.id}" class="error_message"></div>-->
 
-<!--              <span th:text="${translationPair.engText}"></span>-->
-<!--              <input th:id="'engText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.engText}"/>-->
-<!--              <div th:id="'engTextError' + ${translationPair.id}" class="error_message"></div>-->
+            <div class="navigation_admin_page" style="width: fit-content; border-radius: 20px">
+                <a href="#">Категорії</a>
+            </div>
+            <hr>
+            <div class="page-table" style="flex-direction: column;">
+                <h3>Мої слова</h3>
+                <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a>
+                </div>
 
-<!--              <form>-->
-<!--                <input th:id="${'toggleSwitch-' + translationPair.id}" type="checkbox" th:checked="${translationPair.repeatable}"-->
-<!--                       class="toggle-switch"-->
-<!--                       name="isRepeatable" th:data-phrase-id="${translationPair.id}"/>-->
-<!--                <label th:for="${'toggleSwitch-' + translationPair.id}" class="toggle-switch-label"></label>-->
-<!--              </form>-->
+                <div th:each="word : ${words}">
+                    <input type="hidden" name="id" th:value="${word.id}"/></td>
 
-          </div>
-      </div>
-<!--      <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">-->
-<!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} - 1), id=${session.userId})}">Previous</a>-->
-<!--        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">-->
-<!--                    <a th:href="@{/user/{id}/translation-pairs(page=${pageNumber}, id=${session.userId})}"-->
-<!--                       th:text="${pageNumber + 1}"></a>-->
-<!--                </span>-->
-<!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} + 1), id=${session.userId})}">Next</a>-->
-<!--      </div>-->
+                    <span th:text="${word.name}"></span>
+
+
+                    <span th:text="${word.translate}"></span>
+                    <!--              <input th:id="'ukrText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.ukrText}"/>-->
+                    <!--              <div th:id="'ukrTextError' + ${translationPair.id}" class="error_message"></div>-->
+
+                    <!--              <span th:text="${translationPair.engText}"></span>-->
+                    <!--              <input th:id="'engText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.engText}"/>-->
+                    <!--              <div th:id="'engTextError' + ${translationPair.id}" class="error_message"></div>-->
+
+                    <!--              <form>-->
+                    <!--                <input th:id="${'toggleSwitch-' + translationPair.id}" type="checkbox" th:checked="${translationPair.repeatable}"-->
+                    <!--                       class="toggle-switch"-->
+                    <!--                       name="isRepeatable" th:data-phrase-id="${translationPair.id}"/>-->
+                    <!--                <label th:for="${'toggleSwitch-' + translationPair.id}" class="toggle-switch-label"></label>-->
+                    <!--              </form>-->
+
+                </div>
+            </div>
+            <!--      <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">-->
+            <!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} - 1), id=${session.userId})}">Previous</a>-->
+            <!--        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">-->
+            <!--                    <a th:href="@{/user/{id}/translation-pairs(page=${pageNumber}, id=${session.userId})}"-->
+            <!--                       th:text="${pageNumber + 1}"></a>-->
+            <!--                </span>-->
+            <!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} + 1), id=${session.userId})}">Next</a>-->
+            <!--      </div>-->
+
+
+        </main>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </div>
-  </div>
-  <div th:replace="~{fragments/menu :: menu}"></div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/user/words(page=(${currentPage} - 1))}"><
+                Попередня</a>
+        </div>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/user/words(page=${pageNumber})}"
+                       th:text="${pageNumber + 1}"></a>
+            </span>
+        </div>
+        <div>
+            <a style="margin-right: auto"
+               th:href="@{/user/words(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-<script type="text/javascript" th:src="@{/js/userTranslationPairsPage.js}"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.example.learnenglish.dto.DtoUserStatisticsToUi;
 import com.example.learnenglish.model.users.UserStatistics;
 import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +21,11 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserStatisticsController {
     private final UserStatisticsService userStatisticsService;
     private final UserService userService;
 
-    public UserStatisticsController(UserStatisticsService userStatisticsService, UserService userService) {
-        this.userStatisticsService = userStatisticsService;
-        this.userService = userService;
-    }
 
     @GetMapping("/user/{userId}/training-days")
     public ResponseEntity<List> getUserCalendarDays(@PathVariable(value = "userId") long userId,

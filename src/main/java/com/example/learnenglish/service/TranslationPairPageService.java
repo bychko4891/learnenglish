@@ -16,6 +16,7 @@ import com.example.learnenglish.repository.TranslationPairPageRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,17 +28,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TranslationPairPageService {
 
     private final TranslationPairPageRepository translationPairPageRepository;
     private final TranslationPairRepository translationPairRepository;
     private final CategoryRepository categoryRepository;
-
-    public TranslationPairPageService(TranslationPairPageRepository translationPairPageRepository, TranslationPairRepository translationPairRepository, CategoryRepository categoryRepository) {
-        this.translationPairPageRepository = translationPairPageRepository;
-        this.translationPairRepository = translationPairRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
 
     public Page<TranslationPairsPage> getTranslationPairsPages(int page, int size) {

@@ -1,10 +1,10 @@
 package com.example.learnenglish.config;
 
+import com.example.learnenglish.model.UserContextHolder;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
+import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
 @EnableWebSecurity
@@ -22,22 +23,21 @@ import org.springframework.security.web.authentication.*;
         // securedEnabled = true,
         // jsr250Enabled = true,
         prePostEnabled = true)
+@ComponentScan(basePackages = "com.example.learnenglish")
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
-
 
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
 
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -78,7 +78,8 @@ public class SecurityConfig {
             "/phrases-page**",
             "/phrases-page/**",
             "/search-word**",
-            "/audio/**"
+            "/audio/**",
+            "/login-page*"
 
 
     };
@@ -94,12 +95,12 @@ public class SecurityConfig {
         //        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse
         //        http.csrf().disable();
         http.authorizeRequests(request ->
-                        request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                                .requestMatchers("/admin-page/**").hasRole("ADMIN")
-                                .anyRequest()
-                                .authenticated()
-                                .and()
-                                .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
+                                request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+                                        .requestMatchers("/admin-page/**").hasRole("ADMIN")
+                                        .anyRequest()
+                                        .authenticated()
+                                        .and()
+                                        .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
 //                                .antMatchers("/api/test/**").addFilterBefore(customRequestLoggingFilter.getFilter(), BasicAuthenticationFilter.class)
                 )
                 .formLogin(form -> form
@@ -133,8 +134,8 @@ public class SecurityConfig {
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll());
         return http.build();
     }
+
     @Bean
-//    @Lazy
     public CustomRequestLoggingFilter customRequestLoggingFilter() {
         CustomRequestLoggingFilter filter = new CustomRequestLoggingFilter();
         filter.setIncludeQueryString(true);

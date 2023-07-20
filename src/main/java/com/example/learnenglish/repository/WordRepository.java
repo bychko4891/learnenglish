@@ -7,7 +7,6 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.Word;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +26,7 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     @Query("SELECT w FROM Word w WHERE LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
     List<Word> findWord(@Param("firstLetter") String firstLetter);
 
-    // пошук по першій літері
-//    @Query("SELECT tr FROM TranslationPair tr WHERE SUBSTRING(tr.engText, 1, 1) = :firstLetter")
-//    List<TranslationPair> findByFirstLetter(@Param("firstLetter") String firstLetter);
+    @Query("SELECT w, wu.isRepeatable FROM Word w LEFT JOIN WordUser wu ON w.id = wu.word.id WHERE wu.user.id = :userId")
+    Page<Object[]> findAll(Pageable pageable, @Param("userId")Long userId);
 
 }

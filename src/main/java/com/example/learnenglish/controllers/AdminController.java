@@ -11,6 +11,7 @@ import com.example.learnenglish.model.users.Images;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin-page")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class AdminController {
     private final HttpSession session;
     private final LessonService lessonService;
@@ -40,29 +42,6 @@ public class AdminController {
     private final TranslationPairPageService translationPairPageService;
     private final ImagesService imagesService;
 
-    public AdminController(HttpSession session,
-                           LessonService lessonService,
-                           UserService userService,
-                           TranslationPairService translationPairService,
-                           TextOfAppPageService textOfAppPageService,
-                           PageApplicationService pageApplicationService,
-                           CategoryService categoryService,
-                           WordService wordService,
-                           AudioService wordAudioService,
-                           TranslationPairPageService translationPairPageService,
-                           ImagesService imagesService) {
-        this.session = session;
-        this.lessonService = lessonService;
-        this.userService = userService;
-        this.translationPairService = translationPairService;
-        this.textOfAppPageService = textOfAppPageService;
-        this.pageApplicationService = pageApplicationService;
-        this.categoryService = categoryService;
-        this.wordService = wordService;
-        this.wordAudioService = wordAudioService;
-        this.translationPairPageService = translationPairPageService;
-        this.imagesService = imagesService;
-    }
 
 
     @GetMapping

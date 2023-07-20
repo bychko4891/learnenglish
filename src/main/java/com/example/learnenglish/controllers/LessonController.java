@@ -19,6 +19,7 @@ import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@RequiredArgsConstructor
 public class LessonController {
     private final HttpSession session;
     private final TranslationPairService translationPairService;
@@ -39,17 +41,6 @@ public class LessonController {
     private final UserStatisticsService userStatisticsService;
     private final UserService userService;
 
-    public LessonController(HttpSession session,
-                            TranslationPairService translationPairService,
-                            UserStatisticsService userStatisticsService,
-                            TranslationPairValidationAndSaveService validationTranslationPair,
-                            UserService userService) {
-        this.session = session;
-        this.translationPairService = translationPairService;
-        this.userStatisticsService = userStatisticsService;
-        this.validationTranslationPair = validationTranslationPair;
-        this.userService = userService;
-    }
 
     @GetMapping(path = "/lesson/{lessonId}/reload")
     public ResponseEntity<DtoTranslationPairToUI> randomTranslationPairToLesson(@PathVariable(value = "lessonId") long lessonId,

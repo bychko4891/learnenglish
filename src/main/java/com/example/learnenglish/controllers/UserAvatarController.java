@@ -12,6 +12,7 @@ import com.example.learnenglish.service.ImagesService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
@@ -26,16 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
 @RestController
+@RequiredArgsConstructor
 public class UserAvatarController {
     private static final Logger logger = LoggerFactory.getLogger(UserAvatarController.class);
     private final ImagesService imagesService;
     private final UserService userService;
     private final HttpSession session;
-    public UserAvatarController(ImagesService imagesService, HttpSession session, UserService userService) {
-        this.imagesService = imagesService;
-        this.session = session;
-        this.userService = userService;
-    }
+
     @PostMapping("/user/{userId}/upload-avatar")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<String> uploadFile(@PathVariable("userId") Long userId,

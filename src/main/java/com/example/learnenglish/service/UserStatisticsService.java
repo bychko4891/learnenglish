@@ -14,6 +14,7 @@ import com.example.learnenglish.repository.UserStatisticsRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.scheduling.annotation.Async;
@@ -28,18 +29,12 @@ import java.util.Optional;
 
 @Aspect
 @Service
+@RequiredArgsConstructor
 public class UserStatisticsService {
     private LocalDateTime localDateTimeNow;
     private final UserStatisticsRepository userStatisticsRepository;
-    private final EntityManager entityManager;
     private final HttpSession session;
 
-    public UserStatisticsService(UserStatisticsRepository userStatisticsRepository,
-                                 EntityManager entityManager, HttpSession session) {
-        this.userStatisticsRepository = userStatisticsRepository;
-        this.entityManager = entityManager;
-        this.session = session;
-    }
 
     public DtoUserStatisticsToUi trainingStatistics(Long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);

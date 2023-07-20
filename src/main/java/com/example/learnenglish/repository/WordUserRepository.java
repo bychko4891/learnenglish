@@ -11,6 +11,10 @@ import com.example.learnenglish.model.WordUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface WordUserRepository extends JpaRepository<WordUser, Long>  {
+
+    Optional<WordUser> findWordUsersByUser_IdAndAndWordId(Long userId, Long wordId);
 }

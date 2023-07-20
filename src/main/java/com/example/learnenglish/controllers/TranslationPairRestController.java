@@ -16,6 +16,7 @@ import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,21 +27,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 public class TranslationPairRestController {
     private final UserService userService;
     private final HttpSession session;
     private final TranslationPairService translationPairService;
     private final TranslationPairValidationAndSaveService translationPairValidationAndSaveService;
 
-    public TranslationPairRestController(UserService userService,
-                                         HttpSession session,
-                                         TranslationPairService translationPairService,
-                                         TranslationPairValidationAndSaveService translationPairValidationAndSaveService) {
-        this.userService = userService;
-        this.session = session;
-        this.translationPairService = translationPairService;
-        this.translationPairValidationAndSaveService = translationPairValidationAndSaveService;
-    }
 
     @PostMapping("/translation-pair/check-edit")
     public ResponseEntity<?> checkEditTranslationPair(@Valid @RequestBody DtoTranslationPair dtoTranslationPair,

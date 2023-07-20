@@ -21,21 +21,21 @@ public class Word {
 
     @Column
     private String translate;
+
     @Column
     private String brTranscription;
+
     @Column
     private String usaTranscription;
+
     @Column
     private String irregularVerbPt;
+
     @Column
     private String irregularVerbPp;
-//    @Column
-//    private String brAudioName;
-//    @Column
-//    private String usaAudioName;
 
-//    @Column(name = "is_repeatable")
-//    private boolean isRepeatable = true;
+    @Transient
+    private boolean isRepeatable = true;
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
@@ -52,18 +52,10 @@ public class Word {
             joinColumns = @JoinColumn(name = "word_id"),
             inverseJoinColumns = @JoinColumn(name = "phrase_id"))
     private List<TranslationPair> translationPairs;
-//
-//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinColumn(name = "translation_pairs_id")
-//    private List<TranslationPair> translationPairs;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id")
     private Category wordCategory;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 
     public Word() {
     }

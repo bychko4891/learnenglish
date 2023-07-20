@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -95,7 +96,7 @@ public class UserRestController {
                                                            @RequestParam(value = "newPassword") String newPassword,
                                                            Principal principal) {
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
+//            userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
         }
         return ResponseEntity.notFound().build();
@@ -119,7 +120,7 @@ public class UserRestController {
 
     @PostMapping("/user/word-plus")
     public ResponseEntity<ResponseMessage> wordUserPlus(@RequestParam("wordId") Long wordId,
-                                                          Principal principal) {
+                                                        Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
             return ResponseEntity.ok(wordUserService.userWordPlus(user, wordId));
@@ -137,6 +138,7 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/phrase/repetition-phrase-check")
     public ResponseEntity<ResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
                                                               @RequestParam("translationPairsId") Long id,
@@ -147,6 +149,7 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/user-phrase/remove")
     public ResponseEntity<ResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
                                                             Principal principal) {
@@ -156,7 +159,6 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
 }
 

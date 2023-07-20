@@ -33,7 +33,9 @@ public class TranslationPairUserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) { // додати перевірку на дублікати
+    public ResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) {
+        Optional<TranslationPairUser> optionalTranslationPairUser = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairsId, user.getId());
+        if(optionalTranslationPairUser.isEmpty()){
         TranslationPair translationPair = translationPairRepository.findById(translationPairsId).get();
         TranslationPairUser translationPairUser = new TranslationPairUser();
         translationPairUser.setUser(user);
@@ -42,6 +44,7 @@ public class TranslationPairUserService {
         translationPairUser.setRepeatable(true);
         translationPairUserRepository.save(translationPairUser);
         return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+        } return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
 
     }
 

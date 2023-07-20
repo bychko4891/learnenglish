@@ -20,8 +20,8 @@
                     <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
                     <li class="breadcrumb-item"><a href="/words-main-category">всі категорії</a></li>
                     <li class="breadcrumb-item">
-                        <a th:href="@{/words-main-category/{id}(id=${mainId})}"
-                           th:text="${mainName}"></a>
+                        <a th:href="@{/words-main-category/{id}(id=${mainCategoryId})}"
+                           th:text="${mainCategoryName}"></a>
                     </li>
                     <li class="breadcrumb-item">
                         <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}"
@@ -36,7 +36,7 @@
                 <div style="display: flex; flex-direction: row;">
                 <h3 th:text="${word.name}"></h3>
                 <form sec:authorize="isAuthenticated()" class="wordPlus">
-                    <input id="wordId" type="hidden" name="phraseId" th:value="${word.id}">
+                    <input id="wordId" type="hidden" name="wordId" th:value="${word.id}">
                     <button type="submit" id="wordPlus" class="btn_plus_page custom-tooltip pulse" data-tooltip="Додати в свою базу">
                         <span class="lesson_plus_ico"></span>
                     </button>
@@ -146,9 +146,10 @@
         event.preventDefault();
         var wordId = $('input[name="wordId"]').val();
         console.log("yes");
+        console.log(wordId);
 
         $.ajax({
-            url: '/word/user-plus',
+            url: '/user/word-plus',
             type: "POST",
             data: {wordId: wordId},
             beforeSend: function (xhr) {
