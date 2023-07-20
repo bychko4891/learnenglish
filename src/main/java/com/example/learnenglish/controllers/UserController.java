@@ -60,7 +60,7 @@ public class UserController {
         if (error != null) {
             model.addAttribute("error", "Не вірний логін, або пароль!");
             if(!userContextHolder.isActive()){
-            model.addAttribute("error", "Пройдіть будь ласка верифікацію Email");
+            model.addAttribute("error", "Верифікуйте будь ласка Email");
             }
         } else if (logout != null) {
             model.addAttribute("logout", "Ви вийшли із системи.");
