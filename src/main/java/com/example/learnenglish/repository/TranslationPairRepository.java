@@ -33,6 +33,8 @@ public interface TranslationPairRepository extends CrudRepository<TranslationPai
 //    @Query("SELECT t FROM TranslationPair t INNER JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId ORDER BY t.id ASC")
     @Query("SELECT t, tu.isRepeatable FROM TranslationPair t LEFT JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId")
     Page<Object[]> findAll(Pageable pageable, @Param("userId")Long userId);
+    @Query("SELECT t FROM TranslationPair t WHERE t.user.id = :userId ORDER BY t.id ASC")
+    Page<TranslationPair> findAllForAdmin(Pageable pageable, @Param("userId")Long userId);
 
     @Query("SELECT tr FROM TranslationPair tr WHERE tr.user.id = :id AND LOWER(tr.engText) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
     List<TranslationPair> findTranslationPair(@Param("id") Long id, @Param("firstLetter") String firstLetter);

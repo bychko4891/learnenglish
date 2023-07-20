@@ -119,6 +119,11 @@ public class TranslationPairService {
         return new PageImpl<>(translationPairs, pageable, resultPage.getTotalElements());
     }
 
+    public Page<TranslationPair> getTranslationPairsFourAdmin(int page, int size, Long userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return translationPairRepository.findAllForAdmin(pageable, userId);
+    }
+
     public List<DtoTranslationPairToUI> searchResult(String src) {
         List<TranslationPair> list = translationPairRepository.findTranslationPair(1l, src);
         List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
