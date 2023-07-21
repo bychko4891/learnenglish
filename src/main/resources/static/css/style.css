@@ -16,16 +16,24 @@ body {
     background-repeat: no-repeat;
     box-sizing: border-box;
 }
-
+input {
+    background: rgba(34, 34, 42, 0) !important;
+}
 input[type="text"],
 input[type="password"] {
-    background: rgba(34, 34, 42, 0);
+    background: rgba(34, 34, 42, 0) !important;
 }
 
 input[type="text"]:-ms-input-placeholder,
 input[type="password"]:-ms-input-placeholder {
     /* Встановіть прозорий фон для плейсхолдера у Edge */
     background: rgba(34, 34, 42, 0);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background: rgba(34, 34, 42, 0);
+    outline: none;
 }
 
 p {
