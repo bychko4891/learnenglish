@@ -17,6 +17,17 @@ body {
     box-sizing: border-box;
 }
 
+input[type="text"],
+input[type="password"] {
+    background: rgba(34, 34, 42, 0);
+}
+
+input[type="text"]:-ms-input-placeholder,
+input[type="password"]:-ms-input-placeholder {
+    /* Встановіть прозорий фон для плейсхолдера у Edge */
+    background: rgba(34, 34, 42, 0);
+}
+
 p {
     font-size: 24px;
     font-family: Helvetica Arial sans-serif;
@@ -1059,8 +1070,7 @@ td {
     width: 100%;
     padding: 10px;
     /*border-left: ;*/
-    background: rgba(0, 0, 0, 0);
-    border-radius: 20px;
+    background: rgba(34, 34, 42, 0);
     outline: none;
     color: white;
     font-size: 1.1em;
@@ -1112,6 +1122,7 @@ td {
 .inputBox input:focus {
     /*border-width: 1px;*/
     /*border-style: solid;*/
+    background: rgba(34, 34, 42, 0);
     border-image: linear-gradient(to right, #8b63ef, rgba(205, 200, 238, 0.5)) 1 0%;
     /*border-top: 0;*/
 }

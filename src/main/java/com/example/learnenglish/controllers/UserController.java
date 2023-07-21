@@ -116,9 +116,13 @@ public class UserController {
             if (page < 0) page = 0;
             Long userId = userService.findByEmail(principal.getName()).getId();
             Page<Word> words = wordService.getUserWords(page, size, userId);
+            if (words.getTotalPages() == 0) {
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", words.getTotalPages());
+            }
             model.addAttribute("words",words);
             model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", words.getTotalPages());
             return "userWords";
         } else return "redirect:/login";
     }
