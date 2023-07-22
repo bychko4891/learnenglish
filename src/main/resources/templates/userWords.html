@@ -51,7 +51,8 @@
                                      th:alt="${'Американська вимова слова ' + word.name}"
                                      th:title="${'Американська вимова слова ' + word.name}">
                                 </span>
-                                <span th:if="${word.translationPairs != null}" class="toggle">▼</span>
+<!--                                <div th:if="${word.translationPairs != null}"-->
+                                <span th:if="${#lists.size(word.translationPairs) > 0}" class="toggle" >▼</span>
                                 <ul th:if="${word.translationPairs}" class="category phrase_content">
                                     <li th:each="translationPair : ${word.translationPairs}" style="margin-top: 5px;">
                                         <span th:text="${translationPair.engText}"></span>
