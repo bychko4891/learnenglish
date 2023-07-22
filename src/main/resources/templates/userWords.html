@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
+<style>
+    .phrase_content {
+        position: absolute;
+        display: none;
+        flex-direction: column;
+        background: rgba(45, 45,52, 0.99);
+        height: auto;
+        width: auto;
+        padding: 15px;
+        z-index: 9999;
+        border: 1px solid;
+        list-style-type: none;
+    }
+</style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
@@ -8,7 +22,6 @@
     <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <main class="container layout_page">
-
 
 
             <div class="navigation_admin_page" style="width: fit-content; border-radius: 20px">
@@ -21,38 +34,49 @@
                 </div>
 
                 <div th:each="word : ${words}">
-                    <input type="hidden" name="id" th:value="${word.id}"/></td>
+                    <input type="hidden" name="id" th:value="${word.id}"/>
+                    <div style="display: flex; flex-direction: row;">
+                        <table>
+                            <td style="height: 25px;">
+                                <span th:text="${word.name}" style="color: #428BFF; padding-right: 2px;"></span>
+                                <span th:text="${word.usaTranscription}"
+                                      style="color: white; padding-right: 1px;"></span>
+                                <span th:text="${' - ' + word.translate}"></span>
+                                <audio th:if="${word.audio.usaAudioName != null}" id="usaAudio" preload="auto">
+                                    <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}" type="audio/mpeg"/>
+                                </audio>
+                                <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
+                                      onclick="document.getElementById('usaAudio').load();document.getElementById('usaAudio').play();">
+                                <img th:src="@{/images/audio-play.webp}" style="width:20px; cursor: pointer;"
+                                     th:alt="${'Американська вимова слова ' + word.name}"
+                                     th:title="${'Американська вимова слова ' + word.name}">
+                                </span>
+                                <span th:if="${word.translationPairs != null}" class="toggle">▼</span>
+                                <ul th:if="${word.translationPairs}" class="category phrase_content">
+                                    <li th:each="translationPair : ${word.translationPairs}" style="margin-top: 5px;">
+                                        <span th:text="${translationPair.engText}"></span>
+                                        <span th:text="${translationPair.ukrText }"></span>
+<!--                                        <a th:href="@{'/admin-page/' + ${subcategoryTwo.id} + '/category-edit'}" style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>-->
+                                    </li>
+                                </ul>
 
-                    <span th:text="${word.name}"></span>
+                            </td>
+                            <td>
+                                <form>
+                                    <label>| Повторюється: </label>
+                                    <input th:id="${'toggleSwitch-' + word.id}" type="checkbox"
+                                           th:checked="${word.repeatable}"
+                                           class="toggle-switch"
+                                           name="isRepeatable" th:data-phrase-id="${word.id}"/>
+                                    <label th:for="${'toggleSwitch-' + word.id}" class="toggle-switch-label"></label>
+                                </form>
+                            </td>
+                        </table>
+                    </div>
 
-
-                    <span th:text="${word.translate}"></span>
-                    <!--              <input th:id="'ukrText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.ukrText}"/>-->
-                    <!--              <div th:id="'ukrTextError' + ${translationPair.id}" class="error_message"></div>-->
-
-                    <!--              <span th:text="${translationPair.engText}"></span>-->
-                    <!--              <input th:id="'engText' + ${translationPair.id}" class="hidden_content" type="text" th:value="${translationPair.engText}"/>-->
-                    <!--              <div th:id="'engTextError' + ${translationPair.id}" class="error_message"></div>-->
-
-                    <!--              <form>-->
-                    <!--                <input th:id="${'toggleSwitch-' + translationPair.id}" type="checkbox" th:checked="${translationPair.repeatable}"-->
-                    <!--                       class="toggle-switch"-->
-                    <!--                       name="isRepeatable" th:data-phrase-id="${translationPair.id}"/>-->
-                    <!--                <label th:for="${'toggleSwitch-' + translationPair.id}" class="toggle-switch-label"></label>-->
-                    <!--              </form>-->
 
                 </div>
             </div>
-            <!--      <div style="position: fixed; bottom: 40px; margin-left: 40px; width: 100%;">-->
-            <!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} - 1), id=${session.userId})}">Previous</a>-->
-            <!--        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">-->
-            <!--                    <a th:href="@{/user/{id}/translation-pairs(page=${pageNumber}, id=${session.userId})}"-->
-            <!--                       th:text="${pageNumber + 1}"></a>-->
-            <!--                </span>-->
-            <!--        <a th:href="@{/user/{id}/translation-pairs(page=(${currentPage} + 1), id=${session.userId})}">Next</a>-->
-            <!--      </div>-->
-
-
         </main>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </div>
@@ -75,5 +99,12 @@
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.toggle').click(function () {
+            $(this).siblings('.category').slideToggle().toggleClass('visible');
+        });
+    });
+</script>
 </body>
 </html>

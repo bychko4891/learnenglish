@@ -19,12 +19,10 @@ public class LearnEnglishRestController {
 
     @GetMapping("/search-word")
     public ResponseEntity<List<DtoWordToUI>> searchWord(@RequestParam("searchTerm") String searchTerm) {
-        System.out.println("yes");
         if (!searchTerm.isBlank()) {
             List<DtoWordToUI> wordsResult = wordService.searchWord(searchTerm);
             return ResponseEntity.ok(wordsResult);
         }
-
         return ResponseEntity.notFound().build();
     }
 }

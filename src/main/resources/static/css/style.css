@@ -9,7 +9,7 @@ body {
 }
 
 body {
-    background: #22222A;
+    background-color: #22222A;
     background-image: url("../images/bg-abstract-2-dark.jpg");
     background-position: center;
     background-size: cover;
@@ -33,6 +33,34 @@ select:-webkit-autofill:focus {
     background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,174,255,0.04) 50%,rgba(255,255,255,0) 51%,rgba(0,174,255,0.03) 100%);
 }
 
+.input_style {
+    background: rgba(45, 45, 52, 0);
+    color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-top: 0;
+    border-image: linear-gradient(to right, #3FB6A8, rgba(126, 211, 134, 0.5)) 1 0%;
+}
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('../images/arrow_mini.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 25px; /* Розмір padding може змінюватися залежно від розміру зображення стрілки */
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    color: white;
+}
+select option {
+    background: rgba(45, 45, 52, 0);
+    color: black;
+}
+select option:hover,
+select option:focus {
+    background: rgba(45, 45, 52, 0.9);
+}
 p {
     font-size: 24px;
     font-family: Helvetica Arial sans-serif;
@@ -553,20 +581,21 @@ textarea {
 
 .toggle-switch-label {
     display: inline-block;
-    width: 60px;
-    height: 30px;
+    width: 55px;
+    height: 24px;
     background-color: gray;
     border-radius: 15px;
     position: relative;
     cursor: pointer;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
+    margin-bottom: -4px;
 }
 
 .toggle-switch-label:before {
     content: '';
     position: absolute;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     left: 2px;
     top: 2px;
@@ -575,7 +604,7 @@ textarea {
 }
 
 .toggle-switch:checked + .toggle-switch-label {
-    background-color: green;
+    background-color: #6d23d9;
 }
 
 .toggle-switch:checked + .toggle-switch-label:before {
@@ -595,6 +624,7 @@ textarea {
 }
 
 #words li {
+    width: auto;
     display: inline-block;
     background-color: #1e1e1e;
     border: 1px solid wheat;
@@ -873,7 +903,7 @@ textarea {
 }
 
 label, a {
-    cursor: pointer;
+    /*cursor: pointer;*/
     user-select: none;
     text-decoration: none;
     display: inline-block;
@@ -917,67 +947,70 @@ label, a {
 /*!*!* ----------     Tabs  END ---------******************************************************************************************************************----*!*!*/
 
 /*  *********   profile edit start  ****************8       */
-.input,
-.input-buffer {
-    font-family: Arial, Verdana, sans-serif;
-    font-size: 20px;
-    letter-spacing: 0.1em;
-}
+/*.input,*/
+/*.input-buffer {*/
+/*    font-family: Arial, Verdana, sans-serif;*/
+/*    font-size: 20px;*/
+/*    letter-spacing: 0.1em;*/
+/*}*/
 
 .input {
     border: none;
-    border-bottom: 2px solid #ccc;
     outline: none;
     min-width: 100px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0);
 }
 
-.input-buffer {
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    visibility: hidden;
-    white-space: nowrap;
-}
-
-.input[type=text]:focus {
+/*.input-buffer {*/
+/*    position: absolute;*/
+/*    top: -1000px;*/
+/*    left: -1000px;*/
+/*    visibility: hidden;*/
+/*    white-space: nowrap;*/
+/*}*/
+.input[type=text],
+.input[type=password]{
     border-style: solid;
     border-width: 2px;
-    border-image: linear-gradient(to right, #f8063d, rgba(4, 241, 24, 0.5)) 1 0%;
+    border-image: linear-gradient(to right, #3FB6A8, rgba(126, 211, 134, 0.5)) 1 0%;
     border-top: 0;
-}
-.input[type=password]:focus {
-    border-style: solid;
-    border-width: 2px;
-    border-image: linear-gradient(to right, #f8063d, rgba(4, 241, 24, 0.5)) 1 0%;
-    border-top: 0;
+    color: white;
 }
 
-.profile-edit {
-    border-collapse: collapse;
-    width: 100%;
+.input[type=text]:focus,
+.input[type=password]:focus{
+    /*border-style: solid;*/
+    /*border-width: 2px;*/
+    border-image: linear-gradient(to right, #8b63ef, rgba(205, 200, 238, 0.5)) 1 0%;
+    /*border-top: 0;*/
 }
+
+
+/*.profile-edit {*/
+/*    border-collapse: collapse;*/
+/*    width: 100%;*/
+/*}*/
 
 td {
     padding: 10px;
 }
 
-.label-profile {
-    display: inline-block;
-    width: 100px;
-    text-align: left;
-    /*margin-left: 10px;*/
-}
+/*.label-profile {*/
+/*    display: inline-block;*/
+/*    width: 100px;*/
+/*    text-align: left;*/
+/*    !*margin-left: 10px;*!*/
+/*}*/
 
-.inline-container {
-    display: flex;
-    left: 10px;
-    /*align-items: center;*/
-}
+/*.inline-container {*/
+/*    display: flex;*/
+/*    left: 10px;*/
+/*    !*align-items: center;*!*/
+/*}*/
 
-.checkbox {
-    margin-left: 10px;
-}
+/*.checkbox {*/
+/*    margin-left: 10px;*/
+/*}*/
 
 .admin_page {
     display: flex;
@@ -1346,14 +1379,15 @@ td {
 .pulse {
     position: relative;
 }
-.phrasePlus .pulse:before, .phrasePlus .pulse:after {
+.phrasePlus .pulse:before, .phrasePlus .pulse:after,
+.wordPlus .pulse:before, .wordPlus .pulse:after {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(107, 107, 107, 0.4);
+    background: rgba(174, 174, 1473, 0.55);
     border-radius: 50%;
     width: 12px;
     height: 12px;
@@ -1407,4 +1441,16 @@ td {
 
 .pagination > div:last-child {
     margin-left: auto;
+}
+
+.category {
+    margin-left: 20px;
+    display: none;
+}
+.toggle {
+    cursor: pointer;
+}
+
+.category.visible {
+    display: block;
 }

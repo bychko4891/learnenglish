@@ -1,23 +1,24 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="active">
-<div id="toastContainer" class="toast-container"></div>
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
-            <h1>New text page</h1>
+
+
+
+            <h1>Нова категорія</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" id="name" name="name" th:value="${wordCategory.name}" required>
-                <label>Батьківська категорія:</label> <label th:text="${parentCategory}"></label>
-                <label for="mainCategorySelect">| Змінити категорію: </label>
+                <input type="text" class="input" id="name" name="name" th:value="${wordCategory.name}" required>
+                <label>Батьківська категорія:</label> <label style="color: white;" th:text="${parentCategory}"></label><br>
+                <label for="mainCategorySelect">Змінити категорію: </label>
                 <select id="mainCategorySelect" name="selectedPageApplication">
                     <option name="id" value="0">Оберіть категорію</option>
                     <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
@@ -31,9 +32,9 @@
                 <input id="toggleSwitch" type="checkbox" th:checked="${wordCategory.mainCategory}" class="toggle-switch" name="mainCategory" >
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
                 <div th:if="${wordCategory.mainCategory}">
-                    <span style="padding: 10px 0px 0px 25px;">Вигляд підкатегорій на сторінці: </span>
+                    <span>Вигляд підкатегорій на сторінці: </span>
                     <input id="view" type="checkbox" th:checked="${wordCategory.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
-                    <label for="view" class="toggle-switch-label"></label>
+                    <label for="view" class="toggle-switch-label"></label><br>
                     <label for="page">Сторінка вивода</label>
                     <select id="page" name="categoryPage">
                         <option value="NO_PAGE">Оберіть сторінку вивода</option>
@@ -47,9 +48,14 @@
                 <input type="hidden" name="id" th:value="${wordCategory.id}" required>
                 <button type="submit">Зберегти</button>
             </form>
+
+
+
+
         </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/tinyMce.js}"></script>
