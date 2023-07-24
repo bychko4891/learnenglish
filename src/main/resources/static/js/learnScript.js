@@ -36,12 +36,12 @@ $(document).ready(function () {
         }
     });
 });
-
+var textShow = document.getElementById('textShow');
+var checkButton = document.getElementById('checkButton');
+var nextButton = document.getElementById('nextButton');
 
 function sendTooServer() {
-    var textShow = document.getElementById('textShow');
-    var checkButton = document.getElementById('checkButton');
-    var nextButton = document.getElementById('nextButton');
+
     var lessonId = document.getElementById('lessonId').getAttribute('data-lesson-id');
     var url = "/lesson/" + lessonId + "/reload";
     $.ajax({
@@ -51,33 +51,34 @@ function sendTooServer() {
             phraseId.value = result.id;
             fragment = result.fragment;
             if (fragment === "Fragment 1") {
-                checkButton.classList.remove('hidden');
-                textShow.classList.add('hidden');
-                nextButton.classList.add('disabled');
-                nextButton.setAttribute('disabled', 'disabled');
+                checkButton.style.display = 'block';
+                textShow.style.display = 'none';
+                // nextButton.classList.add('disabled');
+                nextButton.style.display = 'none';
                 $('#replace_div').load("/fragmentsPages/lessonFragment1", function () {
                     $('#ukr-text').html(result.ukrText);
                 });
             } else if (fragment === "Fragment 2") {
-                checkButton.classList.remove('hidden');
-                textShow.classList.add('hidden');
-                nextButton.classList.add('disabled');
-                nextButton.setAttribute('disabled', 'disabled');
+                checkButton.style.display = 'block';
+                textShow.style.display = 'none';
+                nextButton.style.display = 'none';
+                // nextButton.setAttribute('disabled', 'disabled');
                 $('#replace_div').load("/fragmentsPages/lessonFragment2", function () {
                     $('#eng-text').html(result.engText);
                 });
             } else if (fragment === "Fragment 3") {
-                checkButton.classList.add('hidden');
+                textShow.style.display = 'block';
+                checkButton.style.display = 'none';
                 $('#replace_div').load("/fragmentsPages/lessonFragment3", function () {
                     $('.content_block').hide();
                     $('#ukr-text').html(result.ukrText);
                     $('#eng-text').html(result.engText);
                 });
             } else {
-                textShow.classList.add('hidden');
-                checkButton.classList.remove('hidden');
-                nextButton.classList.add('disabled');
-                nextButton.setAttribute('disabled', 'disabled');
+                textShow.style.display = 'none';
+                checkButton.style.display = 'block';
+                nextButton.style.display = 'none';
+                // nextButton.setAttribute('disabled', 'disabled');
                 var ul = document.getElementById("words");
                 $('#replace_div').load("/fragmentsPages/lessonFragment4", function () {
                     $('#ukr-text').html(result.ukrText);
@@ -129,12 +130,12 @@ function getData() {
         type: "GET",
         data: data,
         success: function (result) {
-            var nextButton = document.getElementById('nextButton');
-            var checkButton = document.getElementById('checkButton');
-            nextButton.classList.remove('disabled');
-            nextButton.removeAttribute('disabled');
-            checkButton.classList.add('disabled');
-            checkButton.setAttribute('disabled', 'disabled');
+            // var nextButton = document.getElementById('nextButton');
+            // var checkButton = document.getElementById('checkButton');
+            nextButton.style.display = 'block';
+            // nextButton.removeAttribute('disabled');
+            checkButton.style.display = 'none';
+            // checkButton.setAttribute('disabled', 'disabled');
             $('#result').html(result);
         },
         error: function () {

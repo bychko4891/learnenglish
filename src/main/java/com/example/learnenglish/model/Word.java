@@ -1,5 +1,6 @@
 package com.example.learnenglish.model;
 
+import com.example.learnenglish.model.users.Images;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,10 @@ public class Word {
 
     @Column
     private boolean published = false;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "images_id")
+    private Images images;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_audio_id")
