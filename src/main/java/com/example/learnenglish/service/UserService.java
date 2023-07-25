@@ -59,7 +59,7 @@ public class UserService {
         userStatistics.setStudyTimeInTwoWeeks(new ArrayList<>(Arrays.asList(0)));
         userStatistics.setTrainingDaysInMonth(new ArrayList<>(Arrays.asList(LocalDate.now())));
         user.setStatistics(userStatistics);
-        user.setUserAvatar(new Images());
+        user.setUserAvatar(new Image());
         userRepository.save(user);
         if (!StringUtils.isEmpty(user.getEmail())) {
             String mailText = String.format("Hello, %s \n" + "Welcome to Learn English. Please, visit next link: %s/activate/%s",

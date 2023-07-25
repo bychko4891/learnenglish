@@ -14,6 +14,7 @@ public class FileStorageProperties {
     private String uploadDir;
     private String uploadAudio;
     private String uploadUserAvatar;
+    private String uploadWordImage;
 
 
     public String getUploadUserAvatar() {
@@ -34,5 +35,13 @@ public class FileStorageProperties {
     }
     public void setUploadAudio(String uploadAudio) {
         this.uploadAudio = uploadAudio;
+    }
+
+    public String getUploadWordImage() {
+        return uploadWordImage;
+    }
+
+    public void setUploadWordImage(String uploadWordImage) {
+        this.uploadWordImage = uploadWordImage;
     }
 }

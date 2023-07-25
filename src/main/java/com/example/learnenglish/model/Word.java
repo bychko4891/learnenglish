@@ -1,6 +1,6 @@
 package com.example.learnenglish.model;
 
-import com.example.learnenglish.model.users.Images;
+import com.example.learnenglish.model.users.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,8 +45,12 @@ public class Word {
     private boolean published = false;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "images_id")
-    private Images images;
+    @JoinColumn(name = "image_id")
+    private Image images;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "word_lesson_id")
+    private WordLesson wordLesson;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_audio_id")

@@ -10,13 +10,12 @@ package com.example.learnenglish.model.users;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "images")
-public class Images {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -32,6 +31,6 @@ public class Images {
     @OneToOne(mappedBy = "userAvatar", cascade = CascadeType.ALL)
     private User user;
 
-    public Images() {
+    public Image() {
     }
 }

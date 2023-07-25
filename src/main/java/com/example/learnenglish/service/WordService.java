@@ -13,8 +13,7 @@ import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.users.Images;
-import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
@@ -108,8 +107,7 @@ public class WordService {
     private ResponseMessage saveNewWord(Long userId, DtoWord dtoWord, Long categoryId){
         Word word = new Word();
         Audio audio = new Audio();
-        Images images = new Images();
-        images.setImageName(dtoWord.getWord().getName());
+        Image images = new Image();
         word.setName(dtoWord.getWord().getName());
         word.setTranslate(dtoWord.getWord().getTranslate());
         word.setPublished(dtoWord.getWord().isPublished());
@@ -123,9 +121,6 @@ public class WordService {
         word.setImages(images);
         if (dtoWord.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
-//            for (TranslationPair arr : list) {
-//                arr.getWords().add(word);
-//            }
             word.setTranslationPairs(list);
         }
         if(categoryId != 0){

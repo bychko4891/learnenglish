@@ -7,7 +7,7 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.*;
-import com.example.learnenglish.model.users.Images;
+import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -443,7 +443,7 @@ public class AdminController {
                              Model model) {
         if (principal != null) {
             if (page < 0) page = 0;
-            Page<Images> imagesPage = imagesService.getImages(page, size);
+            Page<Image> imagesPage = imagesService.getImages(page, size);
             if (imagesPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {

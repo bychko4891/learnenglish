@@ -9,17 +9,26 @@
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="container layout_page ">
       <div class="page-table row">
-        <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">
-          <h3>Заняття</h3>
+<!--        <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">-->
+<!--        <div style="display:flex; flex-direction: row">-->
+          <h3 style="margin-bottom: auto;">Слова додатка</h3>
+          <div style="margin-left: auto; margin-bottom: auto;">
+            <form action="/admin-page/words/new-word">
+              <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
+            </form>
+          </div>
+<!--        </div>-->
           <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
           <!--                    <div class="page-table">-->
-          <table style="width: 100%">
+          <table style="width: 100%; margin-top: 20px;">
             <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
               <th>Category</th>
               <th>Published</th>
+              <th>Images</th>
+              <th>Upload Images</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -34,29 +43,42 @@
                 <span th:if="${!word.published}" th:text="No"></span>
               </td>
               <td>
-                <a th:href="@{/admin-page/words/{id}/word-edit(id=${word.id})}"
-                   class="btn btn-primary">Edit</a>
+<!--                <div style="width: 100px; height: auto;">-->
+                  <img th:if="${word.images.imageName != null}" th:src="@{/web-image/{name}(name=${word.images.imageName})}">
+                  <span th:if="${word.images.imageName == null}">Відсутнє</span>
+<!--                </div>-->
+              </td>
+              <td>
+                <form th:action="@{/admin-page/word-image/{id}/upload(id=${word.id})}" id="wordImage" class="image-form">
+                  <input class="form-control" type="file" id="image" accept="image/*">
+                  <button type="submit"><i class="fa-solid fa-upload"></i></button>
+                </form>
+              </td>
+              <td>
+                <form th:href="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
+                     <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
+                </form>
               </td>
             </tr>
             </tbody>
           </table>
           <!--                    </div>-->
-        </div>
+<!--        </div>-->
 
 
-        <div class="col-md-6 col-lg-5 block_right">
-          <!--                <div class="row">-->
+<!--        <div class="col-md-6 col-lg-5 block_right">-->
+<!--          &lt;!&ndash;                <div class="row">&ndash;&gt;-->
 
 
-          <h3>Додати нове слово</h3>
-          <div>
-            <form action="/admin-page/words/new-word">
-              <button type="submit">New word</button>
-            </form>
-          </div>
+<!--          <h3>Додати нове слово</h3>-->
+<!--          <div>-->
+<!--            <form action="/admin-page/words/new-word">-->
+<!--              <button type="submit">New word</button>-->
+<!--            </form>-->
+<!--          </div>-->
 
-          <!--                </div>-->
-        </div>
+<!--          &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--        </div>-->
 
       </div>
       <!-- відображення пагінації -->
@@ -72,6 +94,35 @@
   </main>
   <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script>
+    $('#wordImage').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var wordImage = $('#image')[0].files[0];
+        var formData = new FormData();
+        var url = $(this).attr('action');
+        formData.append('wordImage', wordImage);
 
+        $.ajax({
+            // url: $(this).attr('action'),
+            url: url,
+            type: 'POST',
+            data: formData, // Використовуємо об'єкт FormData замість JSON
+            processData: false,
+            contentType: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                showSuccessToast("Зображення завантажено");
+            },
+            error: function (xhr, status, error) {
+                showErrorToast("Помилка при завантаженні");
+            }
+        });
+    });
+</script>
 </body>
 </html>

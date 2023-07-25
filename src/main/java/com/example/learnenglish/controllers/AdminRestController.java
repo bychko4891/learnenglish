@@ -142,4 +142,17 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PostMapping("/word-image/{id}/upload")
+    public ResponseEntity<ResponseMessage> uploadWordImage(@PathVariable("id")Long wordId, @RequestParam("wordImage") MultipartFile file,
+                                                 Principal principal) {
+        if (principal != null) {
+            String contentType = file.getContentType();
+            if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
+                System.out.println("Yes");
+                return ResponseEntity.ok(imagesService.saveWordImage(file, wordId, contentType));
+            } else throw new FileFormatException("Дозволено тільки зображення");
+
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -8,7 +8,6 @@ package com.example.learnenglish.model.users;
  */
 
 import com.example.learnenglish.model.TranslationPair;
-import com.example.learnenglish.model.Word;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,7 +50,7 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")
-    private Images userAvatar;
+    private Image userAvatar;
 
     @Column(name = "password", length = 1000)
     private String password;

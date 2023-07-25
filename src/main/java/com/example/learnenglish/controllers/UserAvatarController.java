@@ -53,7 +53,7 @@ public class UserAvatarController {
 //                    .path(fileName)
 //                    .toUriString();
 
-//        return new Images(avatarUri);
+//        return new Image(avatarUri);
         }
         return ResponseEntity.ok("Дозволено тільки файли з розширенням .png");
     }

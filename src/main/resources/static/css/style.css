@@ -1454,3 +1454,19 @@ td {
 .category.visible {
     display: block;
 }
+
+.image-form {
+    display: flex; /* Встановлюємо властивість flex для розміщення елементів в один ряд */
+    align-items: center; /* Це для вертикального вирівнювання елементів по центру */
+}
+
+.image-form input {
+    flex: 1; /* Встановлюємо flex-grow для input, щоб займав увесь вільний простір в рядку */
+    margin-right: 10px; /* Додатковий відступ між input і кнопкою */
+    width: 80px;
+}
+
+table img {
+    width: 100px;
+    height: auto;
+}

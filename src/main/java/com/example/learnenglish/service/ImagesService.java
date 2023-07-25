@@ -9,10 +9,11 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.exception.MyFileNotFoundException;
-import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.users.Images;
+import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.ImagesRepository;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -36,15 +37,20 @@ import java.util.UUID;
 public class ImagesService {
     private final Path fileStorageLocation;
     private final Path storageLocationUserAvatar;
+    private final Path storageLocationWordImage;
     private final ImagesRepository imagesRepository;
+    private final WordService wordService;
 
     @Autowired
-    public ImagesService(FileStorageProperties fileStorageProperties, ImagesRepository imagesRepository) {
+    public ImagesService(FileStorageProperties fileStorageProperties, ImagesRepository imagesRepository, WordService wordService) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
         this.storageLocationUserAvatar = Paths.get(fileStorageProperties.getUploadUserAvatar())
                 .toAbsolutePath().normalize();
+        this.storageLocationWordImage = Paths.get(fileStorageProperties.getUploadWordImage())
+                .toAbsolutePath().normalize();
         this.imagesRepository = imagesRepository;
+        this.wordService = wordService;
         try {
             Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.storageLocationUserAvatar);
@@ -91,10 +97,10 @@ public class ImagesService {
     }
 
     private void saveUserAvatar(Long userId, String userAvatarName) {
-        Optional<Images> optionalUserAvatar = imagesRepository.findById(userId);
+        Optional<Image> optionalUserAvatar = imagesRepository.findById(userId);
         if (optionalUserAvatar.isPresent()) {
-            Images avatar = optionalUserAvatar.get();
-            if (avatar.getImageName() != null) deleteImageToDirektori(avatar.getImageName());
+            Image avatar = optionalUserAvatar.get();
+            if (avatar.getImageName() != null) deleteImageToDirectory(avatar.getImageName());
             avatar.setImageName(userAvatarName);
             imagesRepository.save(avatar);
 //            return userRepository.save(user);
@@ -103,7 +109,9 @@ public class ImagesService {
         }
     }
 
-    private void deleteImageToDirektori(String avatarNameDelete) {
+
+
+    private void deleteImageToDirectory(String avatarNameDelete) {
         Path targetLocation = this.storageLocationUserAvatar.resolve(avatarNameDelete);
         try {
             Files.delete(targetLocation);
@@ -114,7 +122,7 @@ public class ImagesService {
         }
     }
 
-    public Page<Images> getImages(int page, int size) {
+    public Page<Image> getImages(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return imagesRepository.findAll(pageable, true);
     }
@@ -130,7 +138,7 @@ public class ImagesService {
             String resultFilename = uuidFile + contentType;
             Path targetLocation = this.fileStorageLocation.resolve(resultFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            Images image = new Images();
+            Image image = new Image();
             image.setImageName(resultFilename);
             image.setWebImage(true);
             imagesRepository.save(image);
@@ -140,7 +148,27 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
-
+    public ResponseMessage saveWordImage(MultipartFile file, Long wordId, String contentType) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            if (fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+            contentType = contentType.replaceAll("image/", ".");
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + contentType;
+            Path targetLocation = this.storageLocationWordImage.resolve(resultFilename);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Long imageId = wordService.getWord(wordId).getImages().getId();
+            Image image = imagesRepository.findById(imageId).get();
+            image.setImageName(resultFilename);
+            imagesRepository.save(image);
+            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+//            System.out.println(ex.getMessage());
+        }
+    }
     public Resource loadWebImages(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
