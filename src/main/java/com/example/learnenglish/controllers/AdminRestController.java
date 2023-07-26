@@ -155,4 +155,18 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/category-image/{id}/upload")
+    public ResponseEntity<ResponseMessage> uploadCategoryImage(@PathVariable("id")Long categoryId, @RequestParam("categoryImage") MultipartFile file,
+                                                 Principal principal) {
+        if (principal != null) {
+            String contentType = file.getContentType();
+            if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
+                System.out.println("Yes");
+                return ResponseEntity.ok(imagesService.saveCategoryImage(file, categoryId, contentType));
+            } else throw new FileFormatException("Дозволено тільки зображення");
+
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

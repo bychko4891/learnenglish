@@ -76,6 +76,7 @@ a:hover {
 img {
     max-width: 100%;
     height: auto;
+    border-radius: 20px;
 }
 
 /* Alert message */
@@ -106,7 +107,7 @@ img {
 }
 .toast-error {
     background-color: #f2dede;
-    color: #a94442;
+    color: #e03e2d;
 }
 /* **** Alert message end **** */
 .row {
@@ -122,8 +123,8 @@ img {
     border-radius: 30px;
     color: wheat;
     font-size: 20px;
-    padding-bottom: 20px;
     margin-bottom: 20px;
+    padding: 40px;
 }
 @media (min-width: 320px) {
     /* CSS для экранов размером: 576px – 767px */
@@ -1469,4 +1470,10 @@ td {
 table img {
     width: 100px;
     height: auto;
+}
+
+.word-image {
+    float: right;
+    margin-left: 10px;
+    margin-right: 50px;
 }

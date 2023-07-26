@@ -38,25 +38,32 @@ public class ImagesService {
     private final Path fileStorageLocation;
     private final Path storageLocationUserAvatar;
     private final Path storageLocationWordImage;
+    private final Path storageLocationCategoryImage;
     private final ImagesRepository imagesRepository;
     private final WordService wordService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ImagesService(FileStorageProperties fileStorageProperties, ImagesRepository imagesRepository, WordService wordService) {
+    public ImagesService(FileStorageProperties fileStorageProperties,
+                         ImagesRepository imagesRepository,
+                         WordService wordService,
+                         CategoryService categoryService) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
         this.storageLocationUserAvatar = Paths.get(fileStorageProperties.getUploadUserAvatar())
                 .toAbsolutePath().normalize();
         this.storageLocationWordImage = Paths.get(fileStorageProperties.getUploadWordImage())
                 .toAbsolutePath().normalize();
+        this.storageLocationCategoryImage = Paths.get(fileStorageProperties.getUploadCategoryImage())
+                .toAbsolutePath().normalize();
         this.imagesRepository = imagesRepository;
         this.wordService = wordService;
+        this.categoryService = categoryService;
         try {
             Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.storageLocationUserAvatar);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-//            System.out.println(ex.getMessage());
         }
     }
 
@@ -169,6 +176,28 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
+
+    public ResponseMessage saveCategoryImage(MultipartFile file, Long categoryId, String contentType) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            if (fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+            contentType = contentType.replaceAll("image/", ".");
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + contentType;
+            Path targetLocation = this.storageLocationCategoryImage.resolve(resultFilename);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Long imageId = categoryService.getCategoryToEditor(categoryId).getImage().getId();
+            Image image = imagesRepository.findById(imageId).get();
+            image.setImageName(resultFilename);
+            imagesRepository.save(image);
+            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+
     public Resource loadWebImages(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -182,6 +211,19 @@ public class ImagesService {
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
 //            System.out.println(ex.getMessage());
+        }
+    }
+    public Resource loadwordImages(String fileName) {
+        try {
+            Path filePath = this.storageLocationWordImage.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new MyFileNotFoundException("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
     }
 }

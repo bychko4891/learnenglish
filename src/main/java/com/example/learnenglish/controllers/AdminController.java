@@ -251,7 +251,7 @@ public class AdminController {
     public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
-            Category wordCategory = categoryService.getWordCategoryToEditor(id);
+            Category wordCategory = categoryService.getCategoryToEditor(id);
             model.addAttribute("parentCategory", "Відсутня");
             if (wordCategory.getParentCategory() != null) {
                 model.addAttribute("parentCategory", wordCategory.getParentCategory().getName());

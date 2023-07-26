@@ -32,7 +32,8 @@
                     </li>
                 </ol>
             </nav>
-            <div class="content">
+            <div class="content d-flex">
+            <div class="flex-grow-1">
                 <div style="display: flex; flex-direction: row;">
                 <h3 th:text="${word.name}"></h3>
                 <form sec:authorize="isAuthenticated()" class="wordPlus">
@@ -49,6 +50,9 @@
                     <div class="tooltip_info"></div>
                 </form>
                 </div>
+<!--                <div th:if="${word.images.imageName != null}" class="word-image">-->
+<!--                    <img th:src="@{/word-image/{name}(name=${word.images.imageName})}" />-->
+<!--                </div>-->
                 <div style="display: flex;">
                     <div>
                         <i>Амер.</i>
@@ -105,6 +109,10 @@
                             <div class="tooltip_info"></div>
                         </form>
                     </div>
+                </div>
+                </div>
+                <div th:if="${word.images.imageName != null}" class="word-image">
+                    <img th:src="@{/word-image/{name}(name=${word.images.imageName})}" />
                 </div>
             </div>
         </div>

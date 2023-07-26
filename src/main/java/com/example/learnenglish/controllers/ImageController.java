@@ -28,8 +28,8 @@ import java.io.InputStream;
 import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
-public class UserAvatarController {
-    private static final Logger logger = LoggerFactory.getLogger(UserAvatarController.class);
+public class ImageController {
+    private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
     private final ImagesService imagesService;
     private final UserService userService;
     private final HttpSession session;
@@ -76,6 +76,18 @@ public class UserAvatarController {
     @GetMapping("/web-image/{fileName:.+}")
     public ResponseEntity<byte[]> webImage(@PathVariable String fileName, HttpServletRequest request) throws IOException {
         Resource resource = imagesService.loadWebImages(fileName);
+        InputStream in = resource.getInputStream();
+        byte[] imageBytes = IOUtils.toByteArray(in);
+        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_PNG); // встановити тип контенту як image/jpeg, або image/png, залежно від формату зображення
+        headers.setContentLength(imageBytes.length);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename(resource.getFilename()).build());
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/word-image/{fileName:.+}")
+    public ResponseEntity<byte[]> wordImage(@PathVariable String fileName, HttpServletRequest request) throws IOException {
+        Resource resource = imagesService.loadwordImages(fileName);
         InputStream in = resource.getInputStream();
         byte[] imageBytes = IOUtils.toByteArray(in);
         HttpHeaders headers = new HttpHeaders();

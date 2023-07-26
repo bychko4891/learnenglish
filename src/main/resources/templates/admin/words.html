@@ -9,17 +9,12 @@
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="container layout_page ">
       <div class="page-table row">
-<!--        <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">-->
-<!--        <div style="display:flex; flex-direction: row">-->
           <h3 style="margin-bottom: auto;">Слова додатка</h3>
           <div style="margin-left: auto; margin-bottom: auto;">
             <form action="/admin-page/words/new-word">
               <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
             </form>
           </div>
-<!--        </div>-->
-          <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
-          <!--                    <div class="page-table">-->
           <table style="width: 100%; margin-top: 20px;">
             <thead>
             <tr>
@@ -44,7 +39,7 @@
               </td>
               <td>
 <!--                <div style="width: 100px; height: auto;">-->
-                  <img th:if="${word.images.imageName != null}" th:src="@{/web-image/{name}(name=${word.images.imageName})}">
+                  <img th:if="${word.images.imageName != null}" th:src="@{/word-image/{name}(name=${word.images.imageName})}">
                   <span th:if="${word.images.imageName == null}">Відсутнє</span>
 <!--                </div>-->
               </td>
@@ -55,7 +50,7 @@
                 </form>
               </td>
               <td>
-                <form th:href="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
+                <form th:action="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
                      <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                 </form>
               </td>
@@ -116,7 +111,15 @@
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
-                showSuccessToast("Зображення завантажено");
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    showErrorToast(result.message);
+                }
             },
             error: function (xhr, status, error) {
                 showErrorToast("Помилка при завантаженні");

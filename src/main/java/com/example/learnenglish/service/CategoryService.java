@@ -4,6 +4,7 @@ import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
+import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
@@ -19,7 +20,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getWordCategoryToEditor(Long id) {
+    public Category getCategoryToEditor(Long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
@@ -37,7 +38,7 @@ public class CategoryService {
     }
 
     public Long countWordCategory() {
-        return categoryRepository.count();
+        return categoryRepository.lastId();
     }
 
     public List<Category> mainCategoryList(boolean mainCategory) {
@@ -56,25 +57,15 @@ public class CategoryService {
     }
 
     public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(Long id) {
-//        Optional<Category> categoryOption = categoryRepository.findById(id);
         List<Category> subcategories= categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
-//        if (categoryOption.isPresent()) {
             List<DtoWordsCategoryToUi> dtoWordsCategoryToUiList = new ArrayList<>();
-//            for (Category arr : categoryOption.get().getSubcategories()) {
             for (Category arr : subcategories) {
                 dtoWordsCategoryToUiList.add(DtoWordsCategoryToUi.subcategoriesEditorConvertToDto(arr));
             }
             return dtoWordsCategoryToUiList;
-//        }
-//        throw new IllegalArgumentException("Main category with id " + id + " not found");
     }
     public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
-//        Optional<Category> categoryOptional = categoryRepository.findById(id);
-//        if (categoryOptional.isPresent()) {
-//            return categoryOptional.get().getSubcategories();
             return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
-//        }
-//        throw new IllegalArgumentException("Main category with id " + id + " not found");
     }
 
     public ResponseMessage saveCategory(DtoWordsCategory dtoWordsCategory) {
@@ -106,7 +97,6 @@ public class CategoryService {
                 categoryRepository.save(wordsCategory);
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else if (dtoWordsCategory.getMainCategorySelect().getId() != 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
-//                if(wordsCategory.getId() == dtoWordsCategory.getMainCategorySelect().getId()) return new ResponseMessage(Message.ERROR_SAVE_CATEGORY);
                 Category parentWordsCategory = categoryRepository.findById(dtoWordsCategory.getMainCategorySelect().getId()).get();
                 if (wordsCategory.getParentCategory() != null) {
                     Category parentWordsCategoryRemove = wordsCategory.getParentCategory();
@@ -118,7 +108,6 @@ public class CategoryService {
                 categoryRepository.save(wordsCategory);
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else {
-//                if(wordsCategory.getId() == dtoWordsCategory.getSubcategorySelect().getId()) return new ResponseMessage(Message.ERROR_SAVE_CATEGORY);
                 Category parentWordsCategory = categoryRepository.findById(dtoWordsCategory.getSubcategorySelect().getId()).get();
                 if (wordsCategory.getParentCategory() != null) {
                     Category parentWordsCategoryRemove = wordsCategory.getParentCategory();
@@ -136,16 +125,16 @@ public class CategoryService {
 
     private ResponseMessage saveNewCategory(DtoWordsCategory dtoWordsCategory) {
         Category category = new Category();
+        Image image = new Image();
+        category.setName(dtoWordsCategory.getWordsCategory().getName());
+        category.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
+        category.setImage(image);
         if (dtoWordsCategory.getMainCategorySelect().getId() == 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
-            category.setName(dtoWordsCategory.getWordsCategory().getName());
-            category.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
             category.setMainCategory(dtoWordsCategory.getWordsCategory().isMainCategory());
             categoryRepository.save(category);
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else if (dtoWordsCategory.getMainCategorySelect().getId() != 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
             Category parentWordCategory = categoryRepository.findById(dtoWordsCategory.getMainCategorySelect().getId()).get();
-            category.setName(dtoWordsCategory.getWordsCategory().getName());
-            category.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
             category.setMainCategory(false);
             parentWordCategory.getSubcategories().add(category);
             category.setParentCategory(parentWordCategory);
@@ -153,8 +142,6 @@ public class CategoryService {
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else {
             Category parentWordCategory = categoryRepository.findById(dtoWordsCategory.getSubcategorySelect().getId()).get();
-            category.setName(dtoWordsCategory.getWordsCategory().getName());
-            category.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
             category.setMainCategory(false);
             parentWordCategory.getSubcategories().add(category);
             category.setParentCategory(parentWordCategory);

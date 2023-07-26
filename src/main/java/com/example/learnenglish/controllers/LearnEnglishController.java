@@ -123,7 +123,7 @@ public class LearnEnglishController {
                                         Model model) {
             if (page < 0) page = 0;
             Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPagesToUser(page, size, id);
-            Category category = categoryService.getWordCategoryToEditor(id);
+            Category category = categoryService.getCategoryToEditor(id);
             if (translationPairsPages.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -140,7 +140,7 @@ public class LearnEnglishController {
 
     @GetMapping("/words-main-category/{id}")
     public String wordsSubcategoriesFromMainCategories(@PathVariable Long id, Model model) {
-        Category mainWordsCategory = categoryService.getWordCategoryToEditor(id);
+        Category mainWordsCategory = categoryService.getCategoryToEditor(id);
 
         if (mainWordsCategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
             return "wordsSubcategoryNameAndInfo";
@@ -154,7 +154,7 @@ public class LearnEnglishController {
 
     @GetMapping("/subcategory/{id}")
     public String wordsSubcategories(@PathVariable Long id, Model model) {
-        Category subcategory = categoryService.getWordCategoryToEditor(id);
+        Category subcategory = categoryService.getCategoryToEditor(id);
         Category parentCategory = subcategory.getParentCategory();
         model.addAttribute("words", subcategory.getWords());
         model.addAttribute("subId", subcategory.getId());

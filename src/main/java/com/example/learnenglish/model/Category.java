@@ -7,6 +7,7 @@ package com.example.learnenglish.model;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.users.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,10 @@ public class Category {
 
     @Column
     private boolean mainCategory = false;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column(name="view_subcategory_full_no_info_or_name_and_info")
     private boolean viewSubcategoryFullNoInfoOrNameAndInfo = false;
