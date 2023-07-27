@@ -24,6 +24,9 @@ public class Word {
     private String translate;
 
     @Column
+    private String description;
+
+    @Column
     private String brTranscription;
 
     @Column

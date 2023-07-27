@@ -49,7 +49,7 @@ public class WordService {
         return wordRepository.count();
     }
 
-    public ResponseMessage saveWord(Long userId, DtoWord dtoWord) {
+    public ResponseMessage saveWord(DtoWord dtoWord) {
         Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
         Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
                 dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
@@ -101,10 +101,10 @@ public class WordService {
             }
             wordRepository.save(word);
             return new ResponseMessage(Message.SUCCESSADDBASE);
-        } else return saveNewWord(userId, dtoWord, categoryId);
+        } else return saveNewWord(dtoWord, categoryId);
     }
 
-    private ResponseMessage saveNewWord(Long userId, DtoWord dtoWord, Long categoryId){
+    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId){
         Word word = new Word();
         Audio audio = new Audio();
         Image images = new Image();
@@ -140,15 +140,6 @@ public class WordService {
         throw new RuntimeException("Error in method 'getWordToEditor' class 'WordService'");
     }
 
-    public List<DtoWordToUI> searchWord(String searchTerm) {
-        List<Word> wordsResult = wordRepository.findWord(searchTerm);
-        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr: wordsResult) {
-            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-
-        }
-        return dtoWordToUIList;
-    }
 
     public Page<Word> getUserWords(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
@@ -161,5 +152,23 @@ public class WordService {
             words.add(word);
         }
         return new PageImpl<>(words, pageable, resultPage.getTotalElements());
+    }
+    public List<DtoWordToUI> searchWord(String searchTerm) {
+        List<Word> wordsResult = wordRepository.findWord(searchTerm);
+        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+        for (Word arr: wordsResult) {
+            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+
+        }
+        return dtoWordToUIList;
+    }
+
+    public List<DtoWordToUI> searchWordToAdminPage(String searchTerm) {
+        List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
+        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+        for (Word arr: wordsResult) {
+            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+        }
+        return dtoWordToUIList;
     }
 }

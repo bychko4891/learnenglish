@@ -8,9 +8,18 @@ package com.example.learnenglish.repository;
  */
 
 import com.example.learnenglish.model.WordLesson;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
+
+    @Query("SELECT wl FROM WordLesson wl ORDER BY wl.id ASC")
+    Page<WordLesson> findAll(Pageable pageable);
+
+    @Query("SELECT MAX(wl.id) FROM WordLesson wl")
+    Long lastId();
 }

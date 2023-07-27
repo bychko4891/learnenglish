@@ -177,11 +177,11 @@ public class LearnEnglishController {
     public String wordTraining(Model model, Principal principal) {
         if(principal != null) {
 //        Word word = wordService.getWord(id);
-//        Category wordCategory = word.getWordCategory().getParentCategory();
+//        Category category = word.getWordCategory().getParentCategory();
 //        model.addAttribute("word", word);
-//        if(wordCategory != null){
-//            model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
-//            model.addAttribute("mainCategoryName", wordCategory.getName());
+//        if(category != null){
+//            model.addAttribute("mainCategoryId", category.getParentCategory().getId());
+//            model.addAttribute("mainCategoryName", category.getName());
 //        }
         return "wordTraining";
         } return "redirect:/login";

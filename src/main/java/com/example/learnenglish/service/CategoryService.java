@@ -24,8 +24,13 @@ public class CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
+        } else {
+            Category category = new Category();
+            category.setId(id);
+            category.setName("Enter new name category");
+            category.setInfo("Enter new info category");
+            return category;
         }
-        throw new RuntimeException("Error base in method 'getWordCategory' class 'CategoryService'");
     }
 
     public List<DtoWordsCategoryToUi> getWordsCategories() {
@@ -46,6 +51,9 @@ public class CategoryService {
     }
     public List<Category> mainWordCategoryList(boolean mainCategory) {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.WORDS);
+    }
+    public List<Category> mainWordLessonCategoryList(boolean mainCategory) {
+        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.LESSON_WORDS);
     }
 
     //               метод для Фраз            //
@@ -71,52 +79,55 @@ public class CategoryService {
     public ResponseMessage saveCategory(DtoWordsCategory dtoWordsCategory) {
         Optional<Category> categoryOptional = categoryRepository.findById(dtoWordsCategory.getWordsCategory().getId());
         if (categoryOptional.isPresent()) {
-            Category wordsCategory = categoryOptional.get();
-            if(wordsCategory.getId() == dtoWordsCategory.getMainCategorySelect().getId() ||
-                    wordsCategory.getId() == dtoWordsCategory.getSubcategorySelect().getId())  return new ResponseMessage(Message.ERROR_SAVE_CATEGORY);
-            wordsCategory.setName(dtoWordsCategory.getWordsCategory().getName());
-            wordsCategory.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
-            wordsCategory.setViewSubcategoryFullNoInfoOrNameAndInfo(dtoWordsCategory.getWordsCategory().isViewSubcategoryFullNoInfoOrNameAndInfo());
+            Category сategory = categoryOptional.get();
+            if(сategory.getId() == dtoWordsCategory.getMainCategorySelect().getId() ||
+                    сategory.getId() == dtoWordsCategory.getSubcategorySelect().getId())  return new ResponseMessage(Message.ERROR_SAVE_CATEGORY);
+            сategory.setName(dtoWordsCategory.getWordsCategory().getName());
+            сategory.setInfo(dtoWordsCategory.getWordsCategory().getInfo());
+            сategory.setViewSubcategoryFullNoInfoOrNameAndInfo(dtoWordsCategory.getWordsCategory().isViewSubcategoryFullNoInfoOrNameAndInfo());
             String page = dtoWordsCategory.getWordsCategory().getCategoryPages().toString();
             if(!page.equals("[NO_PAGE]")){
                 if(page.equals("[WORDS]")){
-                    wordsCategory.getCategoryPages().clear();
-                    wordsCategory.getCategoryPages().add(CategoryPage.WORDS);
-                } else {
-                    wordsCategory.getCategoryPages().clear();
-                    wordsCategory.getCategoryPages().add(CategoryPage.TRANSLATION_PAIRS);
+                    сategory.getCategoryPages().clear();
+                    сategory.getCategoryPages().add(CategoryPage.WORDS);
+                } else if(page.equals("[LESSON_WORDS]")){
+                    сategory.getCategoryPages().clear();
+                    сategory.getCategoryPages().add(CategoryPage.LESSON_WORDS);
+                }else {
+                    сategory.getCategoryPages().clear();
+                    сategory.getCategoryPages().add(CategoryPage.TRANSLATION_PAIRS);
                 }
             }
             if (dtoWordsCategory.getMainCategorySelect().getId() == 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
-                wordsCategory.setMainCategory(dtoWordsCategory.getWordsCategory().isMainCategory());
-                if (dtoWordsCategory.getWordsCategory().isMainCategory() && wordsCategory.getParentCategory() != null) {
-                    Category parentCategory = wordsCategory.getParentCategory();
-                    parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(wordsCategory.getId()));
-                    wordsCategory.setParentCategory(null);
+                сategory.setMainCategory(dtoWordsCategory.getWordsCategory().isMainCategory());
+                if (dtoWordsCategory.getWordsCategory().isMainCategory() && сategory.getParentCategory() != null) {
+                    Category parentCategory = сategory.getParentCategory();
+                    parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(сategory.getId()));
+                    сategory.setParentCategory(null);
                 }
-                categoryRepository.save(wordsCategory);
+                categoryRepository.save(сategory);
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else if (dtoWordsCategory.getMainCategorySelect().getId() != 0 && dtoWordsCategory.getSubcategorySelect().getId() == 0) {
                 Category parentWordsCategory = categoryRepository.findById(dtoWordsCategory.getMainCategorySelect().getId()).get();
-                if (wordsCategory.getParentCategory() != null) {
-                    Category parentWordsCategoryRemove = wordsCategory.getParentCategory();
-                    parentWordsCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(wordsCategory.getId()));
+                if (сategory.getParentCategory() != null) {
+                    Category parentWordsCategoryRemove = сategory.getParentCategory();
+                    parentWordsCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(сategory.getId()));
                 }
-                wordsCategory.setMainCategory(false);
-                wordsCategory.setParentCategory(parentWordsCategory);
-                parentWordsCategory.getSubcategories().add(wordsCategory);
-                categoryRepository.save(wordsCategory);
+                сategory.setMainCategory(false);
+                сategory.setParentCategory(parentWordsCategory);
+                parentWordsCategory.getSubcategories().add(сategory);
+                categoryRepository.save(сategory);
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             } else {
                 Category parentWordsCategory = categoryRepository.findById(dtoWordsCategory.getSubcategorySelect().getId()).get();
-                if (wordsCategory.getParentCategory() != null) {
-                    Category parentWordsCategoryRemove = wordsCategory.getParentCategory();
-                    parentWordsCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(wordsCategory.getId()));
+                if (сategory.getParentCategory() != null) {
+                    Category parentWordsCategoryRemove = сategory.getParentCategory();
+                    parentWordsCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(сategory.getId()));
                 }
-                wordsCategory.setMainCategory(false);
-                wordsCategory.setParentCategory(parentWordsCategory);
-                parentWordsCategory.getSubcategories().add(wordsCategory);
-                categoryRepository.save(wordsCategory);
+                сategory.setMainCategory(false);
+                сategory.setParentCategory(parentWordsCategory);
+                parentWordsCategory.getSubcategories().add(сategory);
+                categoryRepository.save(сategory);
                 return new ResponseMessage(Message.SUCCESSADDBASE);
             }
         }

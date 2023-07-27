@@ -32,6 +32,9 @@ function save() {
             var status = result.status;
             if (status == "Success") {
                 showSuccessToast(result.message);
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
             } else {
                 showErrorToast(result.message)
             }

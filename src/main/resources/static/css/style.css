@@ -1016,13 +1016,12 @@ td {
 .admin_page {
     display: flex;
     justify-content: space-between;
-    padding: 20px 90px 1px 90px;
     width: 100%;
 }
 
 .navigation_admin_page {
     border: 2px solid #4d5154;
-    padding: 15px 40px;
+    padding: 15px 10px;
 }
 
 /*  *********8   profile edit start   ********88      */
@@ -1476,4 +1475,8 @@ table img {
     float: right;
     margin-left: 10px;
     margin-right: 50px;
+}
+.add-button {
+    padding: 5px;
+    margin: 0 50px;
 }

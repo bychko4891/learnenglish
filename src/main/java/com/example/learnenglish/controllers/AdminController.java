@@ -41,6 +41,7 @@ public class AdminController {
     private final AudioService wordAudioService;
     private final TranslationPairPageService translationPairPageService;
     private final ImagesService imagesService;
+    private final WordLessonService wordLessonService;
 
 
 
@@ -224,40 +225,43 @@ public class AdminController {
     public String wordsCategoryNewCategory(Principal principal) {
         if (principal != null) {
             Long count = categoryService.countWordCategory() + 1;
-            return "redirect:/admin-page/" + count + "/category-create";
+            return "redirect:/admin-page/" + count + "/category-edit";
         }
         return "redirect:/login";
     }
 
-    @GetMapping("/{id}/category-create")
-    public String wordsCategoryCreate(@PathVariable("id") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainCategoryList(true);
-            model.addAttribute("parentCategory", "Відсутня");
-            if (mainWordsCategories != null) {
-                model.addAttribute("mainWordsCategories", mainWordsCategories);
-            }
-            Category wordCategory = new Category();
-            wordCategory.setId(id);
-            wordCategory.setName("Enter name category");
-            wordCategory.setInfo("Enter info");
-            model.addAttribute("wordCategory", wordCategory);
-            return "admin/categoryEdit";
-        }
-        return "redirect:/login";
-    }
+//    @GetMapping("/{id}/category-create")
+//    public String wordsCategoryCreate(@PathVariable("id") Long id, Model model, Principal principal) {
+//        if (principal != null) {
+//            List<Category> mainCategories = categoryService.mainCategoryList(true);
+//            model.addAttribute("parentCategory", "Відсутня");
+//            if (mainCategories != null) {
+//                model.addAttribute("mainCategories", mainCategories);
+//            }
+//            Category category = new Category();
+//            category.setId(id);
+//            category.setName("Enter name category");
+//            category.setInfo("Enter info");
+//            model.addAttribute("category", category);
+//            return "admin/categoryEdit";
+//        }
+//        return "redirect:/login";
+//    }
 
     @GetMapping("/{id}/category-edit")
     public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
-            Category wordCategory = categoryService.getCategoryToEditor(id);
-            model.addAttribute("parentCategory", "Відсутня");
-            if (wordCategory.getParentCategory() != null) {
-                model.addAttribute("parentCategory", wordCategory.getParentCategory().getName());
+            List<Category> mainWordsCategories = categoryService.mainCategoryList(true);
+            Category category = categoryService.getCategoryToEditor(id);
+            if(category.isMainCategory()){
+                mainWordsCategories.removeIf(obj -> obj.getId().equals(id));
             }
-            model.addAttribute("wordCategory", wordCategory);
-            model.addAttribute("mainWordsCategories", mainWordsCategories);
+            model.addAttribute("parentCategory", "Відсутня");
+            if (category.getParentCategory() != null) {
+                model.addAttribute("parentCategory", category.getParentCategory().getName());
+            }
+            model.addAttribute("category", category);
+            model.addAttribute("mainCategories", mainWordsCategories);
             return "admin/categoryEdit";
         }
         return "redirect:/login";
@@ -329,6 +333,53 @@ public class AdminController {
         }
         return "redirect:/login";
     }
+
+    @GetMapping("/word-lessons")
+    public String wordLessonsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     Principal principal,
+                                     Model model) {
+
+        if (principal != null) {
+            if (page < 0) page = 0;
+            Page<WordLesson> wordLessonsPage = wordLessonService.getWordLessonsPage(page, size);
+            if (wordLessonsPage.getTotalPages() == 0) {
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", wordLessonsPage.getTotalPages());
+            }
+            model.addAttribute("wordLessons", wordLessonsPage.getContent());
+            model.addAttribute("currentPage", page);
+
+            return "admin/wordLessons";
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/word-lessons/new-lesson")
+    public String newWordLessonAdminPage(Principal principal) {
+        if (principal != null) {
+            Long count = wordLessonService.countWordLesson() + 1;
+            return "redirect:/admin-page/word-lesson/" + count + "/word-lesson-edit";
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/word-lesson/{id}/word-lesson-edit")
+    public String wordLessonEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+        if (principal != null) {
+            List<Category> mainCategories = categoryService.mainWordLessonCategoryList(true);
+            WordLesson wordLesson = wordLessonService.getWordLesson(id);
+            model.addAttribute("category", "Відсутня");
+            if (wordLesson.getCategory() != null) {
+                model.addAttribute("category", wordLesson.getCategory().getName());
+            }
+            model.addAttribute("wordLesson", wordLesson);
+            model.addAttribute("mainCategories", mainCategories);
+            return "admin/wordLessonEdit";
+        }
+        return "redirect:/login";
+    }
+
 
     @GetMapping("/audios")
     public String audioListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,

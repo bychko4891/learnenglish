@@ -35,6 +35,7 @@ public class AdminRestController {
     private final TranslationPairService translationPairService;
     private final ImagesService imagesService;
     private final TranslationPairPageService translationPairPageService;
+    private final WordLessonService wordLessonService;
 
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -92,7 +93,15 @@ public class AdminRestController {
                                                     Principal principal) {
         if (principal != null) {
             Long userId = userService.findByEmail(principal.getName()).getId();
-            return ResponseEntity.ok(wordService.saveWord(userId, dtoWord));
+            return ResponseEntity.ok(wordService.saveWord(dtoWord));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/word-lesson-save")
+    public ResponseEntity<ResponseMessage> saveWordLesson(@RequestBody DtoWordLesson dtoWordLesson,
+                                                    Principal principal) {
+        if (principal != null) {
+            return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
         }
         return ResponseEntity.notFound().build();
     }
@@ -114,6 +123,16 @@ public class AdminRestController {
 
         if (!searchTerm.isBlank()) {
             List<DtoTranslationPairToUI> list = translationPairService.searchResult(searchTerm);
+            return ResponseEntity.ok(list);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search-word")
+    public ResponseEntity<List<DtoWordToUI>> searchWord(@RequestParam("searchTerm") String searchTerm) {
+
+        if (!searchTerm.isBlank()) {
+            List<DtoWordToUI> list = wordService.searchWordToAdminPage(searchTerm);
             return ResponseEntity.ok(list);
         }
         return ResponseEntity.notFound().build();

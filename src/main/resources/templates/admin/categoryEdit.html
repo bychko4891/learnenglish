@@ -16,36 +16,37 @@
             <h1>Нова категорія</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" class="input" id="name" name="name" th:value="${wordCategory.name}" required>
+                <input type="text" class="input" id="name" name="name" th:value="${category.name}" required>
                 <label>Батьківська категорія:</label> <label style="color: white;" th:text="${parentCategory}"></label><br>
                 <label for="mainCategorySelect">Змінити категорію: </label>
                 <select id="mainCategorySelect" name="selectedPageApplication">
                     <option name="id" value="0">Оберіть категорію</option>
-                    <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
-                            th:text="${wordsMainCategory.name}">
+                    <option th:each="mainCategory : ${mainCategories}" th:value="${mainCategory.id}"
+                            th:text="${mainCategory.name}">
                     </option>
                 </select>
                 <select id="subcategorySelect" name="subcategorySelect">
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select>
                 <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${wordCategory.mainCategory}" class="toggle-switch" name="mainCategory" >
+                <input id="toggleSwitch" type="checkbox" th:checked="${category.mainCategory}" class="toggle-switch" name="mainCategory" >
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
-                <div th:if="${wordCategory.mainCategory}">
+                <div th:if="${category.mainCategory}">
                     <span>Вигляд підкатегорій на сторінці: </span>
-                    <input id="view" type="checkbox" th:checked="${wordCategory.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
+                    <input id="view" type="checkbox" th:checked="${category.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
                     <label for="view" class="toggle-switch-label"></label><br>
                     <label for="page">Сторінка вивода</label>
                     <select id="page" name="categoryPage">
                         <option value="NO_PAGE">Оберіть сторінку вивода</option>
                         <option value="WORDS">Словник</option>
                         <option value="TRANSLATION_PAIRS">Фрази</option>
+                        <option value="LESSON_WORDS">Заняття для слів</option>
                     </select>
                 </div>
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="info" th:text="${wordCategory.info}" required></textarea>
-                <input type="hidden" name="id" th:value="${wordCategory.id}" required>
+                <textarea id="info" name="info" th:text="${category.info}" required></textarea>
+                <input type="hidden" name="id" th:value="${category.id}" required>
                 <button type="submit">Зберегти</button>
             </form>
 

@@ -124,8 +124,8 @@ public class TranslationPairService {
         return translationPairRepository.findAllForAdmin(pageable, userId);
     }
 
-    public List<DtoTranslationPairToUI> searchResult(String src) {
-        List<TranslationPair> list = translationPairRepository.findTranslationPair(1l, src);
+    public List<DtoTranslationPairToUI> searchResult(String searchTerm) {
+        List<TranslationPair> list = translationPairRepository.findTranslationPair(1l, searchTerm);
         List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
         if (list.size() != 0) {
             for (TranslationPair arr : list) {
