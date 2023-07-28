@@ -80,7 +80,8 @@ public class SecurityConfig {
             "/search-word**",
             "/audio/*",
             "/word-image/*",
-            "/login-page*"
+            "/login-page*",
+            "/lessons"
 
 
     };

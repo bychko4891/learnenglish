@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body class="active">
+<div class="wrapper">
+    <main class="section" style="z-index: 2">
+        <header th:replace="~{fragments/header :: header}"></header>
+
+            <div class="d-flex flex-column flex-lg-row lessons">
+                <div class="flex-fill  lessons-block">
+                    <h1>Вчимо мову по методиці Дмитра Петрова</h1>
+                    <img src="/images/phrase_lessons.webp"><br>
+                    <a href="/lesson/1" class="btn btn_main">Навчитися</a>
+                </div>
+                <div class="flex-fill lessons-block">
+                    <h1>Поповнення свого словникового запаса</h1>
+                    <img src="/images/word_lessons.webp"><br>
+                    <a href="/word/training" class="btn btn_main">Навчитися</a>
+                </div>
+            </div>
+
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
+</body>
+</html>

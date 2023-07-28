@@ -1480,3 +1480,22 @@ table img {
     padding: 5px;
     margin: 0 50px;
 }
+.lessons {
+    margin: 50px 50px 50px 40px;
+    min-height: calc(100vh - 110px);
+    height: fit-content;
+}
+.lessons-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 40px;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(45, 45,52, 0.9);
+    gap: 25px;
+}
+.lessons-block a {
+    margin-left: auto;
+}

@@ -65,6 +65,17 @@ public class LearnEnglishController {
         }
         return "about-the-app";
     }
+    @GetMapping("/lessons")
+    public String lessons(Model model) {
+        model.addAttribute("title", "About the app Learn English");
+        PageApplication pageApplication = pageApplicationService.getPageApplication(3l);
+        if (pageApplication.getTextOfAppPage() != null) {
+            model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+        } else {
+            model.addAttribute("pageText", "No text in this page");
+        }
+        return "lessons";
+    }
 
 
     @GetMapping("/lesson/{lessonId}")
@@ -176,6 +187,7 @@ public class LearnEnglishController {
     @GetMapping("/word/training")
     public String wordTraining(Model model, Principal principal) {
         if(principal != null) {
+            List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
 //        Word word = wordService.getWord(id);
 //        Category category = word.getWordCategory().getParentCategory();
 //        model.addAttribute("word", word);
