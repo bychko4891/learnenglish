@@ -2,11 +2,19 @@ html,
 body {
     height: 100vh;
     width: 100vw;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     overflow-x: hidden;
     color: wheat;
     font-family: "Roboto", sans-serif;
 }
+.box::-webkit-scrollbar {
+    background-color: rgba(0,0,0,0.5);
+}
+
+/*!* ползунок скроллбара *!*/
+/*.box::-webkit-scrollbar-thumb {*/
+/*    background-color: #143861;*/
+/*}*/
 
 body {
     background-color: #22222A;
@@ -61,10 +69,10 @@ select option:hover,
 select option:focus {
     background: rgba(45, 45, 52, 0.9);
 }
-p {
-    font-size: 24px;
-    font-family: Helvetica Arial sans-serif;
-}
+/*p {*/
+/*    font-size: 24px;*/
+/*    font-family: Helvetica Arial sans-serif;*/
+/*}*/
 
 a {
     color: whitesmoke;
@@ -1466,7 +1474,7 @@ td {
     width: 80px;
 }
 
-table img {
+.page-table table img {
     width: 100px;
     height: auto;
 }
@@ -1481,21 +1489,30 @@ table img {
     margin: 0 50px;
 }
 .lessons {
-    margin: 50px 50px 50px 40px;
+
     min-height: calc(100vh - 110px);
     height: fit-content;
 }
-.lessons-block{
+.lessons-block {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 40px;
-    padding: 40px;
+    /*margin: 40px;*/
+    /*padding: 40px;*/
     border-radius: 20px;
     background: rgba(45, 45,52, 0.9);
-    gap: 25px;
+    /*gap: 25px;*/
 }
 .lessons-block a {
     margin-left: auto;
+}
+.lessons-categories {
+    display: flex;
+    border-radius: 20px;
+    background: rgba(45, 45,52, 0.9);
+}
+.lessons-categories img{
+    min-width: 88px;
+    min-height: 132px;
 }

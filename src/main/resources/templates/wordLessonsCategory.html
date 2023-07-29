@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+    .category-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .category-container > div {
+        flex-basis: calc(33.33% - 20px); /* ширина елемента, 20px - зазор між елементами */
+        margin: 10px; /* зовнішній відступ */
+    }
+
+    .category-grid {
+        display: grid;
+        /*grid-template-columns: repeat(3, 1fr); !* 3 колонки з однаковою шириною *!*/
+        /*grid-gap: 10px; !* зазор між елементами *!*/
+        padding: 20px 10px;
+        border: 1px solid;
+        border-radius: 20px;
+        align-items: center;
+    }
+
+    .category-grid span {
+        color: white;
+        font-size: 21px;
+    }
+
+</style>
+<body class="active">
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <!--        <div class="container layout_page">-->
+        <!--        <div class="d-flex flex-column flex-lg-row lessons">-->
+        <!--            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">-->
+        <!--                <ol class="breadcrumb">-->
+        <!--                    <li class="breadcrumb-item"><a href="/">Головна</a></li>-->
+        <!--                    <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні-->
+        <!--                        категорії словника</a>-->
+        <!--                    </li>-->
+        <!--                </ol>-->
+        <!--            </nav>-->
+        <!--            <h1>Фрази</h1>-->
+        <!--            <div class="category-container">-->
+        <!--                <div class="category-grid" th:each="phrasesMainCategory : ${phrasesMainCategories}">-->
+        <!--                    <a th:href="@{/phrases-category/{id}/phrases-pages(id=${phrasesMainCategory.id})}">-->
+        <!--                        <div style="display: flex; flex-direction: column; align-items: center;">-->
+        <!--                            <span th:text="${phrasesMainCategory.name}"></span>-->
+        <!--                        </div>-->
+        <!--                    </a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <hr>-->
+        <div th:each="wordLesson, iter : ${wordLessonMainCategory}" th:limit="1">
+            <h1 th:text="${wordLesson.name}"></h1>
+            <div th:utext="${wordLesson.info}"></div>
+
+            <div th:if="${iter.index == 0}" class="d-flex flex-column flex-lg-column lessons">
+                <div th:each="subcatery : ${wordLesson.subcategories}">
+                    <div class="flex-fill lessons-categories">
+<!--                        <div style="margin-right: 20px;">-->
+                            <img th:src="@{/category-image/{name}(name=${subcatery.image.imageName})}"/>
+<!--                        </div>-->
+                        <div class="d-flex flex-column flex-grow-1 justify-content-between">
+                            <a th:href="@{/}"><h3 th:text="${subcatery.name}"></h3></a>
+                            <p th:text="${#arrays.length(subcatery.wordLessons) + ' занять(тя)'}"></p>
+                            <div th:utext="${subcatery.info}" class="text_info"></div>
+                            <div th:utext="${subcatery.info.length() > 110 ? #strings.substring(subcatery.info, 0, 110) + '....' : subcatery.info + '....'}" class="text_info_m"></div>
+                        <a th:href="@{/}" class="btn btn_main" style="width: fit-content;">Навчатися</a>
+                        </div>
+                        <br>
+                        <!--                            <div class="left_border"-->
+                        <!--                                 th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}">-->
+                        <!--                                -->
+                        <!--                            </div>-->
+                        <!--                            <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"-->
+                        <!--                                  style="margin-left: auto; padding-right: calc(5% + 20px);">-->
+                        <!--                                <button class="btn_main" type="submit">Перейти</button>-->
+                        <!--                            </form>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--            </div>-->
+
+        <!--        </div>-->
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+
+</body>
+</html>

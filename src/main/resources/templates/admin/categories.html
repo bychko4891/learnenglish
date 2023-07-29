@@ -35,6 +35,10 @@
                                     <span th:if="${subcategory.subcategories != null}" class="toggle">▼</span>
                                     <a th:href="@{'/admin-page/' + ${subcategory.id} + '/category-edit'}"
                                        style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
+                                    <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" th:data-category-id="${subcategory.id}">
+                                        <i class="fa-solid fa-upload"></i>
+                                    </button>
                                     <ul th:if="${subcategory.subcategories != null}" class="category">
                                         <li th:each="subcategoryTwo : ${subcategory.subcategories}"
                                             style="margin-top: 5px;">

@@ -81,6 +81,8 @@ public class SecurityConfig {
             "/audio/*",
             "/word-image/*",
             "/login-page*",
+            "/word/training",
+            "/category-image/**",
             "/lessons"
 
 

@@ -87,7 +87,18 @@ public class ImageController {
 
     @GetMapping("/word-image/{fileName:.+}")
     public ResponseEntity<byte[]> wordImage(@PathVariable String fileName, HttpServletRequest request) throws IOException {
-        Resource resource = imagesService.loadwordImages(fileName);
+        Resource resource = imagesService.loadWordImages(fileName);
+        InputStream in = resource.getInputStream();
+        byte[] imageBytes = IOUtils.toByteArray(in);
+        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_PNG); // встановити тип контенту як image/jpeg, або image/png, залежно від формату зображення
+        headers.setContentLength(imageBytes.length);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename(resource.getFilename()).build());
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+    @GetMapping("/category-image/{fileName:.+}")
+    public ResponseEntity<byte[]> categoryImage(@PathVariable String fileName, HttpServletRequest request) throws IOException {
+        Resource resource = imagesService.loadCategoryImages(fileName);
         InputStream in = resource.getInputStream();
         byte[] imageBytes = IOUtils.toByteArray(in);
         HttpHeaders headers = new HttpHeaders();

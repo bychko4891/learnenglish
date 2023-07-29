@@ -61,6 +61,9 @@ public class Category {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPageCategory")
     private List<TranslationPairsPage> translationPairsPages;
 
+    @OneToMany(mappedBy = "category")
+    private List<WordLesson> wordLessons;
+
     public Category() {
     }
 }

@@ -172,7 +172,7 @@ public class LearnEnglishController {
         model.addAttribute("mainId", parentCategory.getParentCategory().getId());
         return "wordsSubcategoryView";
     }
-    @GetMapping("/word/{id}")
+    @GetMapping("/word-lessons/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
         Category wordCategory = word.getWordCategory().getParentCategory();
@@ -184,18 +184,30 @@ public class LearnEnglishController {
         return "word";
     }
 
-    @GetMapping("/word/training")
-    public String wordTraining(Model model, Principal principal) {
+    @GetMapping("/word-lessons/categories")
+    public String wordLessonsCategories(Model model, Principal principal) {
         if(principal != null) {
             List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
-//        Word word = wordService.getWord(id);
-//        Category category = word.getWordCategory().getParentCategory();
-//        model.addAttribute("word", word);
-//        if(category != null){
-//            model.addAttribute("mainCategoryId", category.getParentCategory().getId());
-//            model.addAttribute("mainCategoryName", category.getName());
-//        }
-        return "wordTraining";
+            model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
+        return "wordLessonsCategory";
+        } return "redirect:/login";
+    }
+
+    @GetMapping("/word-lesson/{id}/lessons")
+    public String wordLessons(@PathVariable("id")Long categoryId, Model model, Principal principal) {
+        if(principal != null) {
+            Category category = categoryService.getCategoryToEditor(categoryId);
+            model.addAttribute("category", category);
+        return "wordLessons";
+        } return "redirect:/login";
+    }
+
+    @GetMapping("/word-lesson")
+    public String wordLesson(Model model, Principal principal) {
+        if(principal != null) {
+            List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
+            model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
+        return "wordLessons";
         } return "redirect:/login";
     }
 

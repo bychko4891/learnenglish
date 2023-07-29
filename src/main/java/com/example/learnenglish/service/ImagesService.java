@@ -213,9 +213,22 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
-    public Resource loadwordImages(String fileName) {
+    public Resource loadWordImages(String fileName) {
         try {
             Path filePath = this.storageLocationWordImage.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new MyFileNotFoundException("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new MyFileNotFoundException("File not found " + fileName, ex);
+        }
+    }
+    public Resource loadCategoryImages(String fileName) {
+        try {
+            Path filePath = this.storageLocationCategoryImage.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;
