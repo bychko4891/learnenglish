@@ -12,7 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
@@ -22,4 +25,7 @@ public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
 
     @Query("SELECT MAX(wl.id) FROM WordLesson wl")
     Long lastId();
+
+    @Query("SELECT wl FROM WordLesson wl WHERE wl.category.id = :categoryId ORDER BY LENGTH(wl.name), wl.name")
+    List<WordLesson> wordLessonsCategory(@Param("categoryId") Long categoryId);
 }

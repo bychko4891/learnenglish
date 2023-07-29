@@ -2,7 +2,6 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoWordLesson;
 import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.WordLesson;
 import com.example.learnenglish.repository.CategoryRepository;
@@ -119,5 +118,9 @@ public class WordLessonService {
         }
         wordLessonRepository.save(wordLesson);
         return new ResponseMessage(Message.SUCCESSADDBASE);
+    }
+
+    public List<WordLesson> getWordLessonsCategory(Long categoryId) {
+        return wordLessonRepository.wordLessonsCategory(categoryId);
     }
 }

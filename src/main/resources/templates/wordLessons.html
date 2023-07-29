@@ -1,10 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+    .category-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
+    .category-container > div {
+        flex-basis: calc(33.33% - 20px); /* ширина елемента, 20px - зазор між елементами */
+        margin: 10px; /* зовнішній відступ */
+    }
+
+    .category-grid {
+        display: grid;
+        /*grid-template-columns: repeat(3, 1fr); !* 3 колонки з однаковою шириною *!*/
+        /*grid-gap: 10px; !* зазор між елементами *!*/
+        padding: 20px 10px;
+        border: 1px solid;
+        border-radius: 20px;
+        align-items: center;
+    }
+
+    .category-grid span {
+        color: white;
+        font-size: 21px;
+    }
+
+</style>
+<body class="active">
+<div class="wrapper">
+    <div class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="flex-grow-1">
+<!--            <div>-->
+                <!--                <div class="container">-->
+                <div class="d-flex l_info">
+                    <img th:src="@{/category-image/{name}(name=${wordLessonCategory.image.imageName})}"/>
+                    <div class="d-flex flex-grow-1" style="align-content: center; flex-wrap: wrap;">
+                        <div class="d-flex flex-column">
+                            <a th:href="@{/}"><h3 th:text="${wordLessonCategory.name}"></h3></a>
+                            <!--                        <p th:text="${#arrays.length(subcatery.wordLessons) + ' занять(тя)'}"></p>-->
+<!--                            <div th:utext="${wordLessonCategory.info}" class="text_info"></div>-->
+                            <div th:utext="${wordLessonCategory.info}" ></div>
+
+                            <span th:text="${#arrays.length(wordLessonCategory.wordLessons) + ' занять(тя) - ' + words + ' слів'}"></span>
+                            <!--                            <span th:text="${words}"></span>-->
+                        </div>
+                        <!--                            <a th:href="@{/}" class="btn btn_main" style="width: fit-content;">Навчатися</a>-->
+                    </div>
+                </div>
+                <!--                </div>-->
+<!--            </div>-->
+            <!--        <div th:each="wordLesson : ${wordLessonCategory}">-->
+            <!--            <h1 th:text="${wordLesson.name}"></h1>-->
+            <!--            <div th:utext="${wordLesson.info}"></div>-->
+
+            <!--            <div th:if="${iter.index == 0}" class="d-flex flex-column flex-lg-column lessons">-->
+            <!--                <div th:each="subcatery : ${wordLesson.subcategories}">-->
+            <!--                    <div class="flex-fill lessons-categories">-->
+            <!--                        &lt;!&ndash;                        <div style="margin-right: 20px;">&ndash;&gt;-->
+            <!--                        <img th:src="@{/category-image/{name}(name=${subcatery.image.imageName})}"/>-->
+            <!--                        &lt;!&ndash;                        </div>&ndash;&gt;-->
+            <!--                        <div class="d-flex flex-column flex-grow-1 justify-content-between">-->
+            <!--                            <a th:href="@{/}"><h3 th:text="${subcatery.name}"></h3></a>-->
+            <!--                            <p th:text="${#arrays.length(subcatery.wordLessons) + ' занять(тя)'}"></p>-->
+            <!--                            <div th:utext="${subcatery.info}" class="text_info"></div>-->
+            <!--                            <div th:utext="${subcatery.info.length() > 100 ? #strings.substring(subcatery.info, 0, 100) + '....' : subcatery.info + '....'}" class="text_info_m"></div>-->
+            <!--                            <a th:href="@{/}" class="btn btn_main" style="width: fit-content;">Навчатися</a>-->
+            <!--                        </div>-->
+            <!--                        <br>-->
+            <!--                        &lt;!&ndash;                            <div class="left_border"&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                                 th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}">&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                                &ndash;&gt;-->
+            <!--                        &lt;!&ndash;                            </div>&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                            <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                                  style="margin-left: auto; padding-right: calc(5% + 20px);">&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                                <button class="btn_main" type="submit">Перейти</button>&ndash;&gt;-->
+            <!--                        &lt;!&ndash;                            </form>&ndash;&gt;-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <div class="row mt-5 mt-md-5 mx-xl-0 mb-5 mb-md-12 word_lessons">
+                <div th:each="lesson, lessonIndex : ${wordLessons}" class="col-md-6 bb" style="padding: 20px;">
+                    <div class="d-flex" style="flex-flow: wrap; justify-content: space-between;">
+                        <div class="d-flex justify-content-between w-100">
+                            <div>
+                                <h5 th:text="${lesson.name}"></h5>
+                                <h3 th:text="${lesson.description}"></h3>
+                                <h6 th:text="${#arrays.length(lesson.words) + ' слів'}"></h6>
+                            </div>
+                            <div>
+                                <h1 th:text="${lessonIndex.index + 1}"></h1>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between w-100 align-items-center align-items-md-end">
+                            <a role="button" tabindex="0" href="/en/vocab/subcategory/1/word-list" title="Word list" class="SubcategoryItem_circleButton__j_98Q button shadow normalText btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 202.5 202.5" width="23"><g><g><rect x="7.5" y="7.5" width="75" height="75" rx="18" ry="18" style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect><rect x="120" y="7.5" width="75" height="75" rx="18" ry="18" style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect><rect x="7.5" y="120" width="75" height="75" rx="18" ry="18" style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect><rect x="120" y="120" width="75" height="75" rx="18" ry="18" style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect></g></g></svg></a>
+                            <a th:href="@{/word-lesson/{id}/lessons(id=${lesson.id})}" class="btn btn_main"
+                               style="width: fit-content;">Навчатися</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+        <!--            </div>-->
+
+        <!--        </div>-->
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<script>
+    // var elements = document.querySelectorAll('.word_lessons');
+    //
+    // elements.forEach(function(element) {
+    //     // Перевіряємо, чи є прокрутка видимою
+    //     var isOverflowVisible = element.scrollHeight > element.clientHeight;
+    //
+    //     if (isOverflowVisible) {
+    //         // Якщо прокрутка видима, додаємо відступ
+    //         element.style.paddingRight = '20px';
+    //     } else {
+    //         // Якщо прокрутка не видима, забираємо відступ
+    //         element.style.paddingRight = '0';
+    //     }
+    // });
+    // Функція для перевірки наявності полоси прокрутки в body
+    function isBodyOverflowed() {
+        return document.body.scrollHeight > document.body.clientHeight;
+    }
+
+    // Функція для додавання або видалення padding на елементі з класом .word_lessons
+    function updateWordLessonsPadding() {
+        var wordLessonsElements = document.querySelectorAll('.word_lessons');
+
+        wordLessonsElements.forEach(function(element) {
+            // Перевіряємо наявність полоси прокрутки в body
+            var isBodyOverflowedNow = isBodyOverflowed();
+
+            // Перевіряємо ширину вікна браузера
+            var isMobileViewport = window.innerWidth <= 767; // Наприклад, вважаємо ширину менше або рівно 767 пікселів як мобільний пристрій
+
+            // Додавання або видалення padding на елементі в залежності від наявності полоси прокрутки в body та перегляду з мобільного пристрою
+            if (isBodyOverflowedNow && !isMobileViewport) {
+                element.style.paddingRight = '20px';
+            } else {
+                element.style.paddingRight = '0';
+            }
+        });
+    }
+
+    // Викликаємо функцію при завантаженні сторінки та при зміні розміру вікна
+    window.addEventListener('DOMContentLoaded', updateWordLessonsPadding);
+    window.addEventListener('resize', updateWordLessonsPadding);
+</script>
 </body>
 </html>

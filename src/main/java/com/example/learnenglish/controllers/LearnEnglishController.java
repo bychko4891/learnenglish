@@ -30,6 +30,7 @@ public class LearnEnglishController {
     private final PageApplicationService pageApplicationService;
     private final CategoryService categoryService;
     private final WordService wordService;
+    private final WordLessonService wordLessonService;
     private final TranslationPairPageService translationPairPageService;
 
 
@@ -196,18 +197,25 @@ public class LearnEnglishController {
     @GetMapping("/word-lesson/{id}/lessons")
     public String wordLessons(@PathVariable("id")Long categoryId, Model model, Principal principal) {
         if(principal != null) {
-            Category category = categoryService.getCategoryToEditor(categoryId);
-            model.addAttribute("category", category);
+            Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
+            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(categoryId);
+            int summWords = 0;
+            for (WordLesson arr: wordLessonCategory.getWordLessons()) {
+                summWords += arr.getWords().size();
+            }
+            model.addAttribute("wordLessonCategory", wordLessonCategory);
+            model.addAttribute("wordLessons", wordLessons);
+            model.addAttribute("words", summWords);
         return "wordLessons";
         } return "redirect:/login";
     }
 
-    @GetMapping("/word-lesson")
+    @GetMapping("/word-lesson/{id}")
     public String wordLesson(Model model, Principal principal) {
         if(principal != null) {
             List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
             model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
-        return "wordLessons";
+        return "wordLesson";
         } return "redirect:/login";
     }
 

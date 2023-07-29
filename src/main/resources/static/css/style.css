@@ -87,6 +87,10 @@ img {
     border-radius: 20px;
 }
 
+.bb {
+    background: rgba(45, 45,52, 0.9);
+    border-radius: 20px;
+}
 /* Alert message */
 .error_message{
     color: #e03e2d;
@@ -1489,7 +1493,6 @@ td {
     margin: 0 50px;
 }
 .lessons {
-
     min-height: calc(100vh - 110px);
     height: fit-content;
 }
@@ -1515,4 +1518,8 @@ td {
 .lessons-categories img{
     min-width: 88px;
     min-height: 132px;
+}
+
+.l_info {
+    margin: 20px;
 }
