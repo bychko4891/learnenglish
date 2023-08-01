@@ -1526,3 +1526,9 @@ td {
 .l_info {
     margin: 20px;
 }
+
+.slider_block {
+    max-width: 100%;
+    height: fit-content;
+    margin-top: 20px;
+}

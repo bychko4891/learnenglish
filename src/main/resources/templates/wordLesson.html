@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <style>
+
+
     .slider-container {
-        overflow: hidden;
+        overflow: auto;
         position: relative;
         width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
         height: calc(100vh - 100px); /* Висота контейнера слайдера */
@@ -19,7 +21,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 520px; /* Висота слайда */
+        height: 540px; /* Висота слайда */
         text-align: center;
         /*line-height: 100px;*/
         border-radius: 20px;
@@ -27,15 +29,23 @@
     }
 
     .slide img {
-        margin: 20px;
+        margin: 20px 0 10px 0;
         width: auto;
         height: auto;
+    }
+
+    #formPlus button {
+        margin-top: 10px;
     }
 
     .name_and_audio {
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    .name_and_audio h3{
+        margin: 0 10px;
     }
 
     .block_name {
@@ -47,6 +57,7 @@
     .word_description {
         background: #fff;
         color: #000;
+        height: 72px;
         padding: 0 10px;
     }
 
@@ -69,13 +80,13 @@
 
     @media (min-width: 280px) {
         .slide {
-            flex: 0 0 95vw; /* Розмір слайда для планшетів */
+            flex: 0 0 94vw; /* Розмір слайда для планшетів */
             margin-left: 5px;
             margin-right: 5px;
         }
 
         .slider-container {
-            width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
+            width: calc(100% - 10px);
         }
     }
 
@@ -127,19 +138,11 @@
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page">
-            <!--            <div th:each="word : ${words}">-->
-            <!--                <h3 th:text="${word.name}"></h3>-->
-            <!--            </div>-->
-            <div id="result"></div>
-            <!--            <form id="next">-->
-            <!--                <input type="hidden" name="categoryId" th:value="${categoryId}">-->
-            <!--                <button type="submit">Next</button>-->
-            <!--            </form>-->
+        <div class="d-flex flex-column flex-lg-row slider_block">
             <div class="slider-container">
                 <div class="slider">
                     <!-- Слова тут -->
-                    <div class="slide" th:each="word : ${words}">
+                    <div class="slide bb" th:each="word : ${words}">
                         <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>
                         <div class="block_name">
                             <div class="name_and_audio">
@@ -167,7 +170,6 @@
                     <button type="submit" class="next-button button_slide"><i class="fa-solid fa-chevron-right"></i></button>
                 </form>
             </div>
-<!--            <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>-->
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
         <div th:replace="~{fragments/menu :: menu}"></div>
@@ -178,7 +180,7 @@
 <script>
     const slider = document.querySelector('.slider');
     // const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
+    // const nextButton = document.querySelector('.next-button');
     var page = 1;
     var totalPage = 4;
     let currentIndex = 0;
@@ -205,31 +207,30 @@
         page += 1;
         var categoryId = $('input[name="categoryId"]').val();
         var url = '/word-lesson/' + categoryId + '/word-next';
-        if (page > 1 && page < totalPage) {
+        if (page < totalPage) {
             $.ajax({
                 url: url,
                 type: "GET",
                 data: {page: page},
                 success: function (result) {
                     totalPage = result.totalPage;
-                    console.log(result);
                     addWordToSlider(result);
                     currentIndex = slider.children.length - 2;
                     updateSlider();
-
                 },
                 error: function () {
                     let shel = {};
                     alert(Boolean(shel))
-                    // resultDivError.text('Помилка запиту на сервер');
-                    // setTimeout(hideMessageError, 5000);
                 }
             });
-        } else {
-            next();
+        } else if(page === totalPage){
+            addEndSlide()
+            currentIndex = slider.children.length - 2;
+            updateSlider();
+        } else if(page  === totalPage + 1){
+            currentIndex = slider.children.length - 1;
+            updateSlider();
         }
-
-
     });
 
 
@@ -254,24 +255,34 @@
 
 
     }
-
-    function next() {
-
-        nextButton.addEventListener('click', () => {
-            currentIndex++;
-            if (currentIndex >= slider.children.length) {
-                currentIndex = slider.children.length - 1;
-            }
-            updateSlider();
+    function addEndSlide() {
+        const slide = document.createElement('div');
+        slide.className = 'slide bb';
+        slide.id = 'endSlide';
+        slider.appendChild(slide);
+        $('#endSlide').load("/fragmentsPages/endSlide", function () {
         });
-
+        currentIndex++;
+        updateSlider();
     }
+
+    // function next() {
+    //
+    //     nextButton.addEventListener('click', () => {
+    //         currentIndex++;
+    //         if (currentIndex >= slider.children.length) {
+    //             currentIndex = slider.children.length - 1;
+    //         }
+    //         updateSlider();
+    //     });
+    //
+    // }
 
     function addWordToSlider(word) {
 
         console.log(word);
         const slide = document.createElement('div');
-        slide.className = 'slide';
+        slide.className = 'slide bb';
 
         const imageElement = document.createElement('img');
         imageElement.src = '/word-image/' + word.imageName;
@@ -327,6 +338,28 @@
         description.appendChild(descriptionInfo);
         blockName.appendChild(description);
 
+        // Створення кнопки "Додати"
+
+        const formPlus = document.createElement('form');
+        formPlus.id = 'formPlus';
+
+        // Створення input з атрибутом name="id" та значенням value="${selectedId}"
+        const inputElement = document.createElement('input');
+        inputElement.type = 'hidden';
+        inputElement.name = 'id';
+        inputElement.value = word.id;
+        formPlus.appendChild(inputElement);
+
+        const addButton = document.createElement('button');
+        addButton.classList.add('btn_plus_lesson');
+        addButton.classList.add('pulse');
+        addButton.innerHTML = '<span class="lesson_plus_ico"></span>';
+        addButton.type = 'submit';
+
+        formPlus.appendChild(addButton);
+
+
+        blockName.appendChild(formPlus);
 
         slide.appendChild(blockName);
         slider.appendChild(slide);

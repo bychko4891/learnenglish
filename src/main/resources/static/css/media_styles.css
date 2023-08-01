@@ -41,6 +41,9 @@
         margin-left: 0;
         padding: 5px;
     }
+    .slider_block {
+        padding: 0;
+    }
 }
 @media (min-width: 768px) {
     .lessons {
@@ -77,6 +80,9 @@
     .l_info{
         flex-direction: row;
         text-align: initial;
+    }
+    .slider_block {
+        padding: 0 20px;
     }
 
 }
@@ -128,5 +134,8 @@
     .layout_page {
         width: calc(100vw - 325px);
         margin-left: 40px;
+    }
+    .slider_block {
+        padding: 0 50px;
     }
 }

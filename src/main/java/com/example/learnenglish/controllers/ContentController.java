@@ -32,6 +32,10 @@ public class ContentController {
     public String getContent4() {
         return "fragmentsPages :: lessonFragment4";
     }
+    @RequestMapping("endSlide")
+    public String getEndSlid() {
+        return "fragmentsPages :: endSlide";
+    }
     @RequestMapping("successRegistrationFragment")
     public String getContent5() {
         return "fragmentsPages :: successRegistrationFragment";

@@ -140,6 +140,7 @@
             }
         }
 
+
         function addToWordList(word) {
             var wordList = document.getElementById("words");
             var newWord = document.createElement("li");
@@ -147,7 +148,7 @@
             newWord.ondragstart = function (event) {
                 drag(event);
             };
-            newWord.onclick = function (event){
+            newWord.onclick = function (event) {
                 clickWord(event);
             };
             newWord.textContent = word;
@@ -225,6 +226,20 @@
     <p>Дякую за реєстрацію в додатку Learn English.</p>
     <p>Залишився останній крок, щоб почати користуватися додатком - активувати аккаунт за посиланням, яке надійшло на
         пошту.</p>
+</div>
+
+<div th:fragment="endSlide">
+    <!--        <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>-->
+    <div class="block_name">
+        <div class="name_and_audio">
+            <h3>End slide</h3>
+
+        </div>
+        <!--            <h6 th:text="${word.usaTranscription}"></h6>-->
+        <!--            <div class="word_description">-->
+        <!--                <h5 th:text="${word.description}"></h5>-->
+        <!--            </div>-->
+    </div>
 </div>
 
 </body>

@@ -67,6 +67,8 @@ function displaySearchResults(results) {
         const addButton = document.createElement('button');
         addButton.classList.add('add-button');
         addButton.textContent = 'Додати';
+
+
         addButton.addEventListener('click', function () {
             const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
 
