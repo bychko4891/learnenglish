@@ -33,9 +33,6 @@ public class WordLessonService {
     }
 
     public Long countWordLesson() {
-        if (wordLessonRepository.lastId() == null) {
-            return 0l;
-        }
         return wordLessonRepository.lastId();
     }
 

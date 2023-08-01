@@ -26,7 +26,7 @@
                             <a th:href="@{'/admin-page/' + ${category.id} + '/category-edit'}"
                                style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                             <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" th:data-category-id="${category.id}">
+                                    data-bs-target="#exampleModal" th:data-entity-id="${category.id}">
                                 <i class="fa-solid fa-upload"></i>
                             </button>
                             <ul th:if="${category.subcategories != null}" class="category">
@@ -65,27 +65,8 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <!-- Модальне вікно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Завантажити зображення</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Форма для завантаження зображення -->
-                <form id="imageForm">
-                    <input id="categoryId" type="hidden" name="categoryId">
-                    <input class="form-control" type="file" id="image" accept="image/*" style="height: 32px;">
-                    <button type="submit" class="btn btn-primary mt-3">Завантажити</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:replace="~{fragments/popup :: popup}"></div>
+
 <script>
     $(document).ready(function () {
         $('.toggle').click(function () {
@@ -95,8 +76,8 @@
 
     $(document).ready(function () {
         $('.open-modal').click(function () {
-            var categoryId = $(this).data('category-id');
-            $('#categoryId').val(categoryId);
+            var entityId = $(this).data('entity-id');
+            $('#entityId').val(entityId);
         });
 
 
@@ -104,11 +85,11 @@
             event.preventDefault();
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            var categoryImage = $('#image')[0].files[0];
+            var image = $('#image')[0].files[0];
             var formData = new FormData();
-            var categoryId = $('#imageForm input[name="categoryId"]').val();
-            var url = '/admin-page/category-image/' + categoryId + '/upload';
-            formData.append('categoryImage', categoryImage);
+            var entityId = $('#imageForm input[name="entityId"]').val();
+            var url = '/admin-page/category-image/' + entityId + '/upload';
+            formData.append('categoryImage', image);
             $.ajax({
                 url: url,
                 type: 'POST',

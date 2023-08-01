@@ -12,6 +12,11 @@ public class DtoWordToUI {
     private Long id;
     private String name;
     private String translate;
+    private String description;
+    private String imageName;
+    private String transcription;
+    private String audioName;
+    private int totalPage;
 
     public DtoWordToUI() {
     }
@@ -20,7 +25,11 @@ public class DtoWordToUI {
         DtoWordToUI dtoWordToUI = new DtoWordToUI();
         dtoWordToUI.setId(word.getId());
         dtoWordToUI.setName(word.getName());
+        dtoWordToUI.setTranscription(word.getUsaTranscription());
         dtoWordToUI.setTranslate(word.getTranslate());
+        dtoWordToUI.setDescription(word.getDescription());
+        dtoWordToUI.setImageName(word.getImages().getImageName());
+        dtoWordToUI.setAudioName(word.getAudio().getUsaAudioName());
         return dtoWordToUI;
     }
 }

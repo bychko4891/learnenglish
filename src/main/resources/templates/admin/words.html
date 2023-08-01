@@ -5,127 +5,141 @@
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-  <main class="section">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="container layout_page ">
-      <div class="page-table row">
-          <h3 style="margin-bottom: auto;">Слова додатка</h3>
-          <div style="margin-left: auto; margin-bottom: auto;">
-            <form action="/admin-page/words/new-word">
-              <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
-            </form>
-          </div>
-          <table style="width: 100%; margin-top: 20px;">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Published</th>
-              <th>Images</th>
-              <th>Upload Images</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="word : ${words}">
-              <td th:text="${word.id}"></td>
-              <td th:text="${word.name}"></td>
-              <td th:if="${word.wordCategory != null}"   th:text="${word.wordCategory.name}"></td>
-              <td th:if="${word.wordCategory == null}">Не назначенно</td>
-              <td>
-                <span th:if="${word.published}" th:text="Yes"></span>
-                <span th:if="${!word.published}" th:text="No"></span>
-              </td>
-              <td>
-<!--                <div style="width: 100px; height: auto;">-->
-                  <img th:if="${word.images.imageName != null}" th:src="@{/word-image/{name}(name=${word.images.imageName})}">
-                  <span th:if="${word.images.imageName == null}">Відсутнє</span>
-<!--                </div>-->
-              </td>
-              <td>
-                <form th:action="@{/admin-page/word-image/{id}/upload(id=${word.id})}" id="wordImage" class="image-form">
-                  <input class="form-control" type="file" id="image" accept="image/*">
-                  <button type="submit"><i class="fa-solid fa-upload"></i></button>
-                </form>
-              </td>
-              <td>
-                <form th:action="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
-                     <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
-                </form>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <!--                    </div>-->
-<!--        </div>-->
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page ">
+            <div class="page-table row">
+                <h3 style="margin-bottom: auto;">Слова додатка</h3>
+                <div style="margin-left: auto; margin-bottom: auto;">
+                    <form action="/admin-page/words/new-word">
+                        <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
+                    </form>
+                </div>
+                <table style="width: 100%; margin-top: 20px;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Published</th>
+                        <th>Images</th>
+                        <th>Upload Images</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="word : ${words}">
+                        <td th:text="${word.id}"></td>
+                        <td th:text="${word.name}"></td>
+                        <td th:if="${word.wordCategory != null}" th:text="${word.wordCategory.name}"></td>
+                        <td th:if="${word.wordCategory == null}">Не назначенно</td>
+                        <td>
+                            <span th:if="${word.published}" th:text="Yes"></span>
+                            <span th:if="${!word.published}" th:text="No"></span>
+                        </td>
+                        <td>
+                            <!--                <div style="width: 100px; height: auto;">-->
+                            <img th:if="${word.images.imageName != null}"
+                                 th:src="@{/word-image/{name}(name=${word.images.imageName})}">
+                            <span th:if="${word.images.imageName == null}">Відсутнє</span>
+                            <!--                </div>-->
+                        </td>
+                        <td>
+                            <!--                <form th:action="@{/admin-page/word-image/{id}/upload(id=${word.id})}" id="wordImage" class="image-form">-->
+                            <!--                  <input class="form-control" type="file" id="image" accept="image/*">-->
+                            <!--                  <button type="submit"><i class="fa-solid fa-upload"></i></button>-->
+                            <!--                </form>-->
+                            <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" th:data-entity-id="${word.id}">
+                                <i class="fa-solid fa-upload"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <form th:action="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
+                                <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--                    </div>-->
+                <!--        </div>-->
 
 
-<!--        <div class="col-md-6 col-lg-5 block_right">-->
-<!--          &lt;!&ndash;                <div class="row">&ndash;&gt;-->
+                <!--        <div class="col-md-6 col-lg-5 block_right">-->
+                <!--          &lt;!&ndash;                <div class="row">&ndash;&gt;-->
 
 
-<!--          <h3>Додати нове слово</h3>-->
-<!--          <div>-->
-<!--            <form action="/admin-page/words/new-word">-->
-<!--              <button type="submit">New word</button>-->
-<!--            </form>-->
-<!--          </div>-->
+                <!--          <h3>Додати нове слово</h3>-->
+                <!--          <div>-->
+                <!--            <form action="/admin-page/words/new-word">-->
+                <!--              <button type="submit">New word</button>-->
+                <!--            </form>-->
+                <!--          </div>-->
 
-<!--          &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--        </div>-->
+                <!--          &lt;!&ndash;                </div>&ndash;&gt;-->
+                <!--        </div>-->
 
-      </div>
-      <!-- відображення пагінації -->
-      <div style="position: fixed; margin-left: 80px; width: 100%;">
-        <a th:href="@{/admin-page/words(page=(${currentPage} - 1))}">Previous</a>
-        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+            </div>
+            <!-- відображення пагінації -->
+            <div style="position: fixed; margin-left: 80px; width: 100%;">
+                <a th:href="@{/admin-page/words(page=(${currentPage} - 1))}">Previous</a>
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/words(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
-        <a th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Next</a>
-      </div>
-    </div>
-    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-  </main>
-  <div th:replace="~{fragments/menu :: menu}"></div>
+                <a th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Next</a>
+            </div>
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/popup :: popup}"></div>
 <script>
-    $('#wordImage').submit(function (event) {
-        event.preventDefault();
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        var wordImage = $('#image')[0].files[0];
-        var formData = new FormData();
-        var url = $(this).attr('action');
-        formData.append('wordImage', wordImage);
 
-        $.ajax({
-            // url: $(this).attr('action'),
-            url: url,
-            type: 'POST',
-            data: formData, // Використовуємо об'єкт FormData замість JSON
-            processData: false,
-            contentType: false,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            },
-            success: function (result) {
-                var status = result.status;
-                if (status == "Success") {
-                    showSuccessToast(result.message);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000);
-                } else {
-                    showErrorToast(result.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                showErrorToast("Помилка при завантаженні");
-            }
+    $(document).ready(function () {
+        $('.open-modal').click(function () {
+            var entityId = $(this).data('entity-id');
+            $('#entityId').val(entityId);
         });
-    });
+
+        $('#imageForm').submit(function (event) {
+            event.preventDefault();
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var entityId = $('#imageForm input[name="entityId"]').val();
+            var wordImage = $('#image')[0].files[0];
+            var formData = new FormData();
+            var url = '/admin-page/word-image/' + entityId + '/upload';
+            formData.append('wordImage', wordImage);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData, // Використовуємо об'єкт FormData замість JSON
+                processData: false,
+                contentType: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    var status = result.status;
+                    if (status == "Success") {
+                        showSuccessToast(result.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    } else {
+                        showErrorToast(result.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorToast("Помилка при завантаженні");
+                }
+            });
+        });
+        });
 </script>
 </body>
 </html>

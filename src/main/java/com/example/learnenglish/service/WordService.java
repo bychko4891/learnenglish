@@ -46,7 +46,7 @@ public class WordService {
     }
 
     public Long countWords() {
-        return wordRepository.count();
+        return wordRepository.lastId();
     }
 
     public ResponseMessage saveWord(DtoWord dtoWord) {
@@ -63,6 +63,7 @@ public class WordService {
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
             word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
             word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
+            word.setDescription(dtoWord.getWord().getDescription());
             word.setPublished(dtoWord.getWord().isPublished());
             word.setText(dtoWord.getWord().getText());
             List<TranslationPair> translationPairs = word.getTranslationPairs();
@@ -116,6 +117,7 @@ public class WordService {
         word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
         word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
         word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
+        word.setDescription(dtoWord.getWord().getDescription());
         audio.setName(dtoWord.getWord().getName());
         word.setAudio(audio);
         word.setImages(images);
@@ -170,5 +172,10 @@ public class WordService {
             dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
         }
         return dtoWordToUIList;
+    }
+
+    public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId){
+        Pageable pageable = PageRequest.of(page, size);
+        return wordRepository.wordsFromLesson(pageable, wordLessonId);
     }
 }

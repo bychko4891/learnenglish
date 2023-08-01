@@ -136,6 +136,7 @@ function save() {
         irregularVerbPp: $('#editor input[name="irregularVerbPp"]').val(),
         published: $('#toggleSwitch').is(':checked'),
         translationPairs: translationPairs,
+        description: $('#editor textarea[name="description"]').val(),
         text: $('#editor textarea[name="text"]').val()
     };
     var mainCategorySelect = {
@@ -226,5 +227,12 @@ $(document).ready(function () {
             .catch(error => {
                 console.error('Помилка при отриманні підкатегорій:', error);
             });
+    });
+});
+
+$(document).ready(function () {
+    $('textarea').on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
     });
 });

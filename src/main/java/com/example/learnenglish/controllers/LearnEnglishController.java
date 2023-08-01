@@ -94,7 +94,7 @@ public class LearnEnglishController {
             session.setAttribute("lessonId", lesson.getId());
             model.addAttribute("lessonId", lesson.getId());
             model.addAttribute("lesson", lesson);
-            return "lesson";
+            return "translationPairLesson";
         }
         return "redirect:/login";
     }
@@ -211,10 +211,20 @@ public class LearnEnglishController {
     }
 
     @GetMapping("/word-lesson/{id}")
-    public String wordLesson(Model model, Principal principal) {
+    public String wordLesson(@PathVariable("id") Long wordLessonId,
+                             Model model,
+                             Principal principal) {
         if(principal != null) {
-            List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
-            model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
+            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
+
+            if (wordsFromLesson.getTotalPages() == 0) {
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
+            }
+            model.addAttribute("words", wordsFromLesson.getContent());
+            model.addAttribute("categoryId", wordLessonId);
+
         return "wordLesson";
         } return "redirect:/login";
     }

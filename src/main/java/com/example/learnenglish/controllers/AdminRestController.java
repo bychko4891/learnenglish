@@ -92,7 +92,6 @@ public class AdminRestController {
     public ResponseEntity<ResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
                                                     Principal principal) {
         if (principal != null) {
-            Long userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(wordService.saveWord(dtoWord));
         }
         return ResponseEntity.notFound().build();
@@ -167,7 +166,6 @@ public class AdminRestController {
         if (principal != null) {
             String contentType = file.getContentType();
             if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
-                System.out.println("Yes");
                 return ResponseEntity.ok(imagesService.saveWordImage(file, wordId, contentType));
             } else throw new FileFormatException("Дозволено тільки зображення");
 

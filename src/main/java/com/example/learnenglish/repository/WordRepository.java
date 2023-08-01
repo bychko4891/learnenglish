@@ -20,6 +20,8 @@ import java.util.List;
 
 @Repository
 public interface WordRepository extends CrudRepository<Word, Long> {
+    @Query("SELECT MAX(w.id) FROM Word  w")
+    Long lastId();
 
     @Query("SELECT w FROM Word w ORDER BY w.id ASC")
     Page<Word> findAll(Pageable pageable);
@@ -34,5 +36,8 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     List<Word> findWordToAdminPage(@Param("firstLetter") String firstLetter);
     @Query("SELECT w FROM Word w WHERE w.id IN :ids")
     List<Word> findByIds(@Param("ids") List<Long> ids);
+
+    @Query("SELECT w FROM Word w WHERE w.wordLesson.id = :wordLessonId ORDER BY w.name ASC")
+    Page<Word> wordsFromLesson(Pageable pageable, @Param("wordLessonId")Long wordLessonId);
 
 }

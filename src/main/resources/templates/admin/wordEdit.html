@@ -19,7 +19,7 @@
                 <input type="text" id="name" name="name" th:value="${word.name}">
                 <label for="name">Український перевод:</label>
                 <input type="text" id="translate" name="translate" th:value="${word.translate}"
-                       placeholder="Український перевод">
+                       placeholder="Український перевод"><br>
                 <label for="usaTranscription">Ам. транскрипція:</label>
                 <input type="text" id="usaTranscription" name="usaTranscription" th:value="${word.usaTranscription}"
                        placeholder="Український перевод">
@@ -28,10 +28,10 @@
                        placeholder="Український перевод"><br>
 
 
-                <label for="irregularVerbPt">Ам. транскрипція:</label>
+                <label for="irregularVerbPt">irregular verb: p.t.</label>
                 <input type="text" id="irregularVerbPt" name="irregularVerbPt" th:value="${word.irregularVerbPt}"
                        placeholder="Український перевод">
-                <label for="irregularVerbPp">Бр. транскрипція:</label>
+                <label for="irregularVerbPp">irregular verb: p.p.</label>
                 <input type="text" id="irregularVerbPp" name="irregularVerbPp" th:value="${word.irregularVerbPp}"
                        placeholder="Український перевод"><br>
 
@@ -49,11 +49,14 @@
                 </select>
                 <select id="subSubcategorySelect" name="subcategorySelect">
                     <option name="id" value="0">Оберіть підкатегорію</option>
-                </select>
+                </select><br>
                 <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
                 <input id="toggleSwitch" type="checkbox" th:checked="${word.published}" class="toggle-switch"
                        name="published">
-                <label for="toggleSwitch" class="toggle-switch-label"></label><hr>
+                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <label>Опис:</label>
+                <textarea type="text" name="description" th:text="${word.description}"></textarea>
+                <hr>
 
 
                 <label>Додані фрази на сторінку: </label>

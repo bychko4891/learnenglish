@@ -224,7 +224,13 @@ public class AdminController {
     @GetMapping("/categories/new-category")
     public String wordsCategoryNewCategory(Principal principal) {
         if (principal != null) {
-            Long count = categoryService.countWordCategory() + 1;
+            Long count = 0l;
+            try{
+                count = categoryService.countWordCategory() + 1;
+            }catch(NullPointerException e){
+                count = 1l;
+                return "redirect:/admin-page/" + count + "/category-edit";
+            }
             return "redirect:/admin-page/" + count + "/category-edit";
         }
         return "redirect:/login";
@@ -291,8 +297,12 @@ public class AdminController {
     @GetMapping("/words/new-word")
     public String newWordAdminPage(Principal principal) {
         if (principal != null) {
-            Long count = wordService.countWords() + 1;
-            return "redirect:/admin-page/word/" + count + "/new-word-in-editor";
+            try {
+                Long count = wordService.countWords() + 1;
+                return "redirect:/admin-page/word/" + count + "/new-word-in-editor";
+            }catch (NullPointerException e){
+                return "redirect:/admin-page/word/1/new-word-in-editor";
+            }
         }
         return "redirect:/login";
     }
@@ -358,8 +368,12 @@ public class AdminController {
     @GetMapping("/word-lessons/new-lesson")
     public String newWordLessonAdminPage(Principal principal) {
         if (principal != null) {
-            Long count = wordLessonService.countWordLesson() + 1;
-            return "redirect:/admin-page/word-lesson/" + count + "/word-lesson-edit";
+            try {
+                Long count = wordLessonService.countWordLesson() + 1;
+                return "redirect:/admin-page/word-lesson/" + count + "/word-lesson-edit";
+            }catch (NullPointerException e){
+                return "redirect:/admin-page/word-lesson/1/word-lesson-edit";
+            }
         }
         return "redirect:/login";
     }

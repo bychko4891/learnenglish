@@ -91,6 +91,9 @@ img {
     background: rgba(45, 45,52, 0.9);
     border-radius: 20px;
 }
+.sound_pic {
+    cursor: pointer;
+}
 /* Alert message */
 .error_message{
     color: #e03e2d;
@@ -140,10 +143,10 @@ img {
 }
 @media (min-width: 320px) {
     /* CSS для экранов размером: 576px – 767px */
-    .layout_page {
-        width: 100vw;
-        margin-left: 0;
-    }
+    /*.layout_page {*/
+    /*    width: 100vw;*/
+    /*    margin-left: 0;*/
+    /*}*/
     .profile_container {
         width: 100vw;
         margin-left: 0;
@@ -158,10 +161,10 @@ img {
 @media (min-width: 410px) {
     /* CSS для экранов размером: 576px – 767px */
 
-    .layout_page {
-        width: 100vw;
-        margin-left: 0;
-    }
+    /*.layout_page {*/
+    /*    width: 100vw;*/
+    /*    margin-left: 0;*/
+    /*}*/
     .profile_container {
         width: 100vw;
         margin-left: 0;
@@ -189,10 +192,10 @@ img {
 /*}*/
 @media (min-width: 480px) {
     /* CSS для: 992px – 1119px */
-    .layout_page {
-        width: 100vw;
-        margin-left: 0;
-    }
+    /*.layout_page {*/
+    /*    width: 100vw;*/
+    /*    margin-left: 0;*/
+    /*}*/
     .profile_container {
         width: 100vw;
         margin-left: 0;
@@ -206,10 +209,10 @@ img {
 @media (min-width: 1200px) {
     /* CSS для экранов больше 1200px */
 
-    .layout_page {
-        width: calc(100vw - 325px);
-        margin-left: 40px;
-    }
+    /*.layout_page {*/
+    /*    width: calc(100vw - 325px);*/
+    /*    margin-left: 40px;*/
+    /*}*/
     .profile_container {
         width: calc(100vw - 40px);
         margin-left: 40px;
