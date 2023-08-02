@@ -135,7 +135,8 @@
         width: calc(100vw - 325px);
         margin-left: 40px;
     }
-    .slider_block {
-        padding: 0 50px;
-    }
+    /*.slider_block {*/
+    /*    width: calc(100vw - 40px);*/
+    /*    margin: 20px 0;*/
+    /*}*/
 }

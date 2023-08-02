@@ -1496,7 +1496,7 @@ td {
     margin: 0 50px;
 }
 .lessons {
-    min-height: calc(100vh - 110px);
+    /*min-height: calc(100vh - 110px);*/
     height: fit-content;
 }
 .lessons-block {
@@ -1527,8 +1527,8 @@ td {
     margin: 20px;
 }
 
-.slider_block {
-    max-width: 100%;
-    height: fit-content;
-    margin-top: 20px;
-}
+/*.slider_block {*/
+/*    max-width: 100%;*/
+/*    height: fit-content;*/
+/*    margin-top: 20px;*/
+/*}*/

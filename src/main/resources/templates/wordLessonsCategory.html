@@ -31,30 +31,9 @@
 </style>
 <body class="active">
 <div class="wrapper">
-    <main class="section">
+    <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <!--        <div class="container layout_page">-->
-        <!--        <div class="d-flex flex-column flex-lg-row lessons">-->
-        <!--            <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">-->
-        <!--                <ol class="breadcrumb">-->
-        <!--                    <li class="breadcrumb-item"><a href="/">Головна</a></li>-->
-        <!--                    <li class="breadcrumb-item active" aria-current="page"><a href="/words-main-category">Головні-->
-        <!--                        категорії словника</a>-->
-        <!--                    </li>-->
-        <!--                </ol>-->
-        <!--            </nav>-->
-        <!--            <h1>Фрази</h1>-->
-        <!--            <div class="category-container">-->
-        <!--                <div class="category-grid" th:each="phrasesMainCategory : ${phrasesMainCategories}">-->
-        <!--                    <a th:href="@{/phrases-category/{id}/phrases-pages(id=${phrasesMainCategory.id})}">-->
-        <!--                        <div style="display: flex; flex-direction: column; align-items: center;">-->
-        <!--                            <span th:text="${phrasesMainCategory.name}"></span>-->
-        <!--                        </div>-->
-        <!--                    </a>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            <hr>-->
-        <div th:each="wordLesson, iter : ${wordLessonMainCategory}" th:limit="1">
+        <div th:each="wordLesson, iter : ${wordLessonMainCategory}" th:limit="1" class="d-flex flex-column">
             <h1 th:text="${wordLesson.name}"></h1>
             <div th:utext="${wordLesson.info}"></div>
 
@@ -88,7 +67,7 @@
 
         <!--        </div>-->
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
+    </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 
