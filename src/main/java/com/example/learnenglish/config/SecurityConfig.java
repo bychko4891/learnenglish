@@ -90,7 +90,7 @@ public class SecurityConfig {
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
-    public static final String DEFAULT_SUCCESS_URL = "/lesson/1";
+    public static final String DEFAULT_SUCCESS_URL = "/about-the-app";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
@@ -100,7 +100,6 @@ public class SecurityConfig {
         //        http.csrf().disable();
         http.authorizeRequests(request ->
                                 request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                                        .requestMatchers("/admin-page/**").hasRole("ADMIN")
                                         .anyRequest()
                                         .authenticated()
                                         .and()

@@ -2,9 +2,11 @@ package com.example.learnenglish.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "pages_application")
-public class PageApplication {
+public class PageApplication implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column

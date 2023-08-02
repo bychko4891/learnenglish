@@ -9,9 +9,11 @@ package com.example.learnenglish.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "lesson")
-public class Lesson {
+public class Lesson implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OrderBy

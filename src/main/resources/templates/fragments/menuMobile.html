@@ -48,7 +48,7 @@
                 <span class="item">Заняття</span>
             </a>
         </li>
-        <li sec:authorize="hasRole('ROLE_USER')">
+        <li sec:authorize="isAuthenticated()">
             <a th:href="@{/user/{id}/translation-pairs (id=${session.userId})}">
                 <span class="icon"><i class="fas fa-database"></i></span>
                 <span class="item">Мої фрази</span>

@@ -12,7 +12,7 @@
 
     .slider {
         display: flex;
-        transition: transform 0.3s ease;
+        transition: all 0.5s ease-in;
     }
 
     .slide {
@@ -21,15 +21,30 @@
         align-items: center;
         height: 540px; /* Висота слайда */
         text-align: center;
-        /*line-height: 100px;*/
-        border-radius: 20px;
         border: 1px solid #ccc;
+        /*transition: all 0.6s ease-in;*/
     }
 
     .slide img {
         margin: 20px;
         width: auto;
         height: auto;
+    }
+    .slide_active {
+        transform: scale(1);
+        transition: all 0.6s ease-in;
+    }
+    .slide_no_active {
+        filter: blur(calc(0.4 * 1rem));
+        transform: scale(0.8);
+        transition: all 0.6s ease-in;
+    }
+    .slide_no_active img{
+        width: 0;
+        height: 0;
+    }
+    .slide_no_active .word_description{
+       background: #2c2c2c;
     }
 
     .name_and_audio {
@@ -70,6 +85,10 @@
     #formPlus button {
         margin-top: 10px;
     }
+    .bottom_block{
+        position: fixed;
+        bottom: 0;
+    }
 
     @media (max-width: 279.99px) {
         .slide {
@@ -89,20 +108,21 @@
         .slider-container {
             width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
         }
+        .bottom_block {
+            width: 100%;
+        }
     }
 
     /* Стилі для планшетів */
     @media (min-width: 576px) {
         .slide {
-            flex: 0 0 300px; /* Розмір слайда для планшетів */
+            flex: 0 0 300px;
             margin-left: 10px;
             margin-right: 10px;
         }
 
         .slider-container {
-
-            width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
-
+            width: 100%;
         }
     }
 
@@ -132,6 +152,9 @@
         .slider {
             margin-left: 30%;
         }
+        .bottom_block {
+            width: 70%;
+        }
     }
 </style>
 <body class="active">
@@ -139,7 +162,7 @@
 <div class="wrapper">
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="d-flex flex-column flex-lg-row slider_block">
+        <div class="d-flex flex-column overflow-hidden justify-content-center align-items-center container-fluid slider_block">
             <div class="slider-container">
                 <div class="slider">
                     <!-- Слова тут -->
@@ -171,6 +194,8 @@
                     <button type="submit" class="next-button button_slide"><i class="fa-solid fa-chevron-right"></i></button>
                 </form>
             </div>
+            <div class="bb bottom_block"><h1>Bottom</h1></div>
+
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
         <div th:replace="~{fragments/menu :: menu}"></div>
@@ -180,60 +205,73 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>
     const slider = document.querySelector('.slider');
-    // const prevButton = document.querySelector('.prev-button');
-    // const nextButton = document.querySelector('.next-button');
+    const prevButton = document.querySelector('.prev-button');
     var page = 1;
+    var pagePrev = 1;
     var totalPage = 4;
     let currentIndex = 0;
     // Очікуємо завантаження сторінки
     document.addEventListener('DOMContentLoaded', function () {
-        // Викликаємо функцію updateSlider() з індексом 1 (перший слайд має індекс 0, другий - 1)
-        updateSlider(1);
+        const mainSlide = slider.children[0];
+        const secondSlide = slider.children[1];
+        if (mainSlide) {
+            mainSlide.classList.add('slide_active');
+        }
+        if (secondSlide) {
+            secondSlide.classList.add('slide_no_active');
+        }
     });
 
-    function updateSlider(startIndex = 0) {
-        // Решта коду updateSlider()
-        // ...
-
-        // Додати клас .enter до другого слайда при завантаженні сторінки
-        const secondSlide = slider.children[startIndex];
-        if (secondSlide) {
-            secondSlide.classList.add('enter');
-        }
-    }
 
     $('#next').submit(function (event) {
         event.preventDefault();
-        console.log('yes');
-        page += 1;
+        ++ pagePrev ;
         var categoryId = $('input[name="categoryId"]').val();
         var url = '/word-lesson/' + categoryId + '/word-next';
-        if (page < totalPage) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                data: {page: page},
-                success: function (result) {
-                    totalPage = result.totalPage;
-                    addWordToSlider(result);
-                    currentIndex = slider.children.length - 2;
-                    updateSlider();
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                }
-            });
-        } else if(page === totalPage){
-            addEndSlide()
-            currentIndex = slider.children.length - 2;
-            updateSlider();
-        } else if(page  === totalPage + 1){
-            currentIndex = slider.children.length - 1;
+        if(page + 1 === pagePrev) {
+            ++ page;
+            if (page < totalPage) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: {page: page},
+                    success: function (result) {
+                        totalPage = result.totalPage;
+                        addWordToSlider(result);
+                        currentIndex = slider.children.length - 2;
+                        updateSlider();
+                    },
+                    error: function () {
+                        let shel = {};
+                        alert(Boolean(shel))
+                    }
+                });
+            } else if (page === totalPage) {
+                addEndSlide()
+                currentIndex = slider.children.length - 2;
+                updateSlider();
+            } else if (page === totalPage + 1) {
+                currentIndex = slider.children.length - 1;
+                updateSlider();
+            }
+        } else {
+            currentIndex++;
+            if (currentIndex >= slider.children.length) {
+                currentIndex = slider.children.length - 1;
+            }
             updateSlider();
         }
     });
-
+    prevButton.addEventListener('click', () => {
+        if(pagePrev > 1) {
+        pagePrev --;
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        }
+        updateSlider();
+        }
+    });
 
     function updateSlider() {
         const slide = slider.firstElementChild;
@@ -241,24 +279,25 @@
         const slideWidth = slide.offsetWidth + parseInt(slideStyles.marginLeft) + parseInt(slideStyles.marginRight);
         slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 
-        // Додати клас наступному слайду перед зникненням
-        const nextSlide = slider.children[currentIndex + 1];
-        if (nextSlide) {
-            nextSlide.classList.add('enter');
+
+        const mainSlide = slider.children[currentIndex];
+
+        if (mainSlide) {
+            mainSlide.classList.remove('slide_no_active');
+            mainSlide.classList.add('slide_active');
         }
 
-        // Видалити клас поточного слайду перед зникненням
-        const currentSlide = slider.children[currentIndex];
+        const currentSlide = slider.children[currentIndex - 1];
         if (currentSlide) {
-            currentSlide.classList.remove('enter');
-            currentSlide.classList.add('exit');
+            currentSlide.classList.remove('slide_active');
+            currentSlide.classList.add('slide_no_active');
         }
 
 
     }
     function addEndSlide() {
         const slide = document.createElement('div');
-        slide.className = 'slide bb';
+        slide.className = 'slide bb slide_no_active';
         slide.id = 'endSlide';
         slider.appendChild(slide);
         $('#endSlide').load("/fragmentsPages/endSlide", function () {
@@ -267,23 +306,12 @@
         updateSlider();
     }
 
-    // function next() {
-    //
-    //     nextButton.addEventListener('click', () => {
-    //         currentIndex++;
-    //         if (currentIndex >= slider.children.length) {
-    //             currentIndex = slider.children.length - 1;
-    //         }
-    //         updateSlider();
-    //     });
-    //
-    // }
 
     function addWordToSlider(word) {
 
         console.log(word);
         const slide = document.createElement('div');
-        slide.className = 'slide bb';
+        slide.className = 'slide bb slide_no_active';
 
         const imageElement = document.createElement('img');
         imageElement.src = '/word-image/' + word.imageName;

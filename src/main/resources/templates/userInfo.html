@@ -236,13 +236,13 @@
                 <div class="right_box">
                     <section>
                         <h1>Персональна інформація</h1>
-                        <form id="update_profile" th:action="@{/user/{id}/edit(id = ${session.userId})}" method="post">
+                        <form id="update_profile" th:action="@{/user/{id}/edit(id = ${user.id})}" method="post">
                             <h5>Ім'я</h5>
                             <input type="text" class="input" id="first-name"
-                                   name="firstName" th:value="${user.getFirstName()}">
+                                   name="firstName" th:value="${user.firstName}">
                             <h5>Призвіще</h5>
                             <input type="text" class="input" id="last-name"
-                                   name="lastName" th:value="${user.getLastName()}">
+                                   name="lastName" th:value="${user.lastName}">
 
                             <h5>Стать:</h5>
                             <input type="radio" id="male" name="gender" value="MALE" th:field="${user.gender}"
@@ -252,9 +252,9 @@
                                    style="display: inline-block;">
                             <label for="female">Жінка</label>
                             <h5>Email:</h5>
-                            <p th:text="${session.username}">
+                            <p th:text="${user.email}">
                             <h5>Дата реєстрації:</h5>
-                            <p th:text="${#temporals.format(session.userDateOfCreated, 'dd.MM.yyyy')}"></p>
+                            <p th:text="${#temporals.format(user.dateOfCreated, 'dd.MM.yyyy')}"></p>
                             <button type="submit" id="save-button">Оновити данні</button>
                         </form>
                     </section>
@@ -262,7 +262,7 @@
                         <h1>Змінити аватар</h1><br>
                         <div class="user_avatar_profile">
                             <img id="userAvatarPM"
-                                 th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"/>
+                                 th:src="@{/avatar/{avatarName}(avatarName = ${user.userAvatar.imageName})}"/>
                         </div>
                         <div class="demo-wrap upload-demo">
                             <div class="actions">
@@ -280,7 +280,7 @@
                     </section>
                     <section>
                         <h1>Змінити пароль</h1>
-                        <form id="update_password" th:action="@{/user/{id}/update-password(id=${session.userId})}"
+                        <form id="update_password" th:action="@{/user/{id}/update-password(id=${user.id})}"
                               method="post">
 
                             <h5>Пароль:</h5>
@@ -298,7 +298,7 @@
                                     <li id="lover">Мінімум один символ у нижньому регістрі</li>
                                     <li id="upper">Мінімум один символ верхнього регістру</li>
                                     <li id="number">Мінімум одна цифра</li>
-                                    <li id="special">Мінімум один спеціальний символ</li>
+                                    <li id="special">Мінімум один спец. символ</li>
                                     <li id="length">Довжина - щонайменше 8 символів</li>
                                 </ul>
                             </div>
