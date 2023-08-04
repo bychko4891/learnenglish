@@ -241,7 +241,7 @@
     transition: transform 0.5s ease;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 992px) {
     body.active .wrapper .sidebar {
         left:-225px;
     }

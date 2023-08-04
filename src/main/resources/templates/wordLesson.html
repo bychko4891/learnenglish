@@ -2,15 +2,235 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <style>
+
+    .word_tabs {
+        /*position: relative;*/
+        /*padding: 20px 20px 40px 20px;*/
+        width: 100vw;
+        /*height: fit-content;*/
+        min-width: 240px;
+    }
+    .bottom_block input[name=tab-control] {
+        display: none;
+    }
+    .tab_content section h2,
+    .word_tabs ul li label {
+        font-family: "Montserrat";
+        font-weight: bold;
+        font-size: 18px;
+        color: #428BFF;
+    }
+    .word_tabs ul {
+        list-style-type: none;
+        padding-left: 0;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
+    .word_tabs ul li {
+        box-sizing: border-box;
+        flex: 1;
+        width: 25%;
+        padding: 0 10px;
+        text-align: center;
+    }
+    .word_tabs ul li label {
+        transition: all 0.3s ease-in-out;
+        color: #929daf;
+        padding: 5px auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        white-space: nowrap;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        z-index: 9999;
+    }
+    .word_tabs ul li label br {
+        display: none;
+    }
+    .word_tabs ul li label svg {
+        fill: #929daf;
+        height: 1.2em;
+        vertical-align: bottom;
+        margin-right: 0.2em;
+        transition: all 0.2s ease-in-out;
+    }
+    .word_tabs ul li label:hover, .tabs ul li label:focus, .tabs ul li label:active {
+        outline: 0;
+        color: #bec5cf;
+    }
+    .word_tabs ul li label:hover svg, .tabs ul li label:focus svg, .tabs ul li label:active svg {
+        fill: #bec5cf;
+    }
+    .word_tabs .slider {
+        position: relative;
+        width: 33.33%;
+        transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+    }
+    .word_tabs .slider .indicator {
+        position: relative;
+        width: 100%;
+        /*max-width: 100%;*/
+        margin: 0 auto;
+        height: 4px;
+        background: #428BFF;
+        border-radius: 1px;
+    }
+
+
+    /*.tab_content div{*/
+    /*    display: none;*/
+    /*    !*-webkit-animation-name: content;*!*/
+    /*    !*animation-name: content;*!*/
+    /*    !*-webkit-animation-direction: normal;*!*/
+    /*    !*animation-direction: normal;*!*/
+    /*    !*-webkit-animation-duration: 0.3s;*!*/
+    /*    !*animation-duration: 0.3s;*!*/
+    /*    !*-webkit-animation-timing-function: ease-in-out;*!*/
+    /*    !*animation-timing-function: ease-in-out;*!*/
+    /*    !*-webkit-animation-iteration-count: 1;*!*/
+    /*    !*animation-iteration-count: 1;*!*/
+    /*    !*line-height: 1.4;*!*/
+    /*}*/
+    .tab-panel {
+        display: none;
+    }
+
+    .tab-panel.active {
+        display: block;
+    }
+    /*.tab_content section h2 {*/
+    /*    color: #428BFF;*/
+    /*    display: none;*/
+    /*}*/
+    /*.tab_content section h2::after {*/
+    /*    content: "";*/
+    /*    position: relative;*/
+    /*    display: block;*/
+    /*    width: 30px;*/
+    /*    height: 3px;*/
+    /*    background: #428BFF;*/
+    /*    margin-top: 5px;*/
+    /*    left: 1px;*/
+    /*}*/
+    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+        cursor: default;
+        color: #428BFF;
+    }
+
+    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label i {
+        fill: #428BFF;
+    }
+    @media (max-width: 600px) {
+        .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+            background: rgba(0, 0, 0, 0.08);
+        }
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ .slider {
+        transform: translateX(0%);
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+        cursor: default;
+        color: #428BFF;
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label i {
+        fill: #428BFF;
+    }
+    @media (max-width: 600px) {
+        .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+            background: rgba(0, 0, 0, 0.08);
+        }
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ .slider {
+        transform: translateX(100%);
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+        cursor: default;
+        color: #428BFF;
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label i {
+        fill: #428BFF;
+    }
+    @media (max-width: 600px) {
+        .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+            background: rgba(0, 0, 0, 0.08);
+        }
+    }
+    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ .slider {
+        transform: translateX(200%);
+    }
+
+    @-webkit-keyframes tab_content {
+        from {
+            opacity: 0;
+            transform: translateY(5%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+    @keyframes tab_content {
+        from {
+            opacity: 0;
+            transform: translateY(5%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+    @media (max-width: 1000px) {
+        .word_tabs ul li label {
+            white-space: initial;
+        }
+        .word_tabs ul li label br {
+            display: initial;
+        }
+        .word_tabs ul li label i {
+            height: 1.5em;
+        }
+    }
+    @media (max-width: 600px) {
+        .word_tabs ul li label {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .word_tabs ul li label span {
+            display: none;
+        }
+        .word_tabs .slider {
+            display: none;
+        }
+        .tab_content section h2 {
+            display: block;
+        }
+    }
+
+
+
+
+
+
+
     .slider-container {
         overflow: hidden;
         position: relative;
-        width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
-        height: calc(100vh - 100px); /* Висота контейнера слайдера */
+        /*width: 100%; !* Визначте ширину контейнера слайдера відповідно до потреб *!*/
+        /*height: calc(100vh - 100px); !* Висота контейнера слайдера *!*/
         z-index: 1;
     }
 
-    .slider {
+    .slider_word {
         display: flex;
         transition: all 0.5s ease-in;
     }
@@ -30,21 +250,25 @@
         width: auto;
         height: auto;
     }
+
     .slide_active {
         transform: scale(1);
         transition: all 0.6s ease-in;
     }
+
     .slide_no_active {
         filter: blur(calc(0.4 * 1rem));
         transform: scale(0.8);
         transition: all 0.6s ease-in;
     }
-    .slide_no_active img{
+
+    .slide_no_active img {
         width: 0;
         height: 0;
     }
-    .slide_no_active .word_description{
-       background: #2c2c2c;
+
+    .slide_no_active .word_description {
+        background: #2c2c2c;
     }
 
     .name_and_audio {
@@ -82,19 +306,32 @@
         right: 0;
         z-index: 9999;
     }
+
     #formPlus button {
         margin-top: 10px;
     }
-    .bottom_block{
+
+    .bottom_block {
+        align-items: center;
+        background: rgba(45, 45, 52, 0.9);
         position: fixed;
         bottom: 0;
+        z-index: 9999;
     }
+
+    /*.bottom_block div{*/
+    /*    flex-grow: 1;*/
+    /*}*/
 
     @media (max-width: 279.99px) {
         .slide {
             flex: 0 0 97vw; /* Розмір слайда для планшетів */
             margin-left: 5px;
             margin-right: 5px;
+        }
+        .tab_content {
+            width: 100vw;
+            margin-top: 5px;
         }
     }
 
@@ -108,8 +345,13 @@
         .slider-container {
             width: 100%; /* Визначте ширину контейнера слайдера відповідно до потреб */
         }
+
         .bottom_block {
             width: 100%;
+        }
+        .tab_content {
+            width: 100vw;
+            margin-top: 5px;
         }
     }
 
@@ -133,6 +375,10 @@
             margin-left: 10px;
             margin-right: 10px;
         }
+        .tab_content {
+            width: 100vw;
+            margin-top: 20px;
+        }
     }
 
     @media (min-width: 1200px) {
@@ -142,18 +388,24 @@
             margin-right: 20px;
         }
 
-        .slider-container {
-            /*width: calc(100% - 20%);*/
-            width: 99%;
-            /*margin-left: 20%;*/
-            margin-top: 40px;
+        /*.slider-container {*/
+        /*    !*width: calc(100% - 20%);*!*/
+        /*    width: 99%;*/
+        /*    !*margin-left: 20%;*!*/
+        /*    margin-top: 40px;*/
 
-        }
-        .slider {
+        /*}*/
+
+        .slider_word {
             margin-left: 30%;
         }
+
         .bottom_block {
             width: 70%;
+        }
+        .tab_content {
+            width: calc(100vw - 270px);
+            margin-top: 40px;
         }
     }
 </style>
@@ -163,38 +415,93 @@
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="d-flex flex-column overflow-hidden justify-content-center align-items-center container-fluid slider_block">
-            <div class="slider-container">
-                <div class="slider">
-                    <!-- Слова тут -->
-                    <div class="slide bb" th:each="word : ${words}">
-                        <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>
-                        <div class="block_name">
-                            <div class="name_and_audio">
-                                <h3 th:text="${word.name}"></h3>
-                                <audio th:if="${word.audio.brAudioName != null}" id="audio" preload="auto">
-                                    <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}"
-                                            type="audio/mpeg"/>
-                                </audio>
-                                <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
-                                      onclick="document.getElementById('audio').load();document.getElementById('audio').play();">
+
+
+            <div class="tab_content">
+                <section id="content-tab1" class="tab-panel">
+
+                    <div class="slider-container">
+                        <div class="slider_word">
+                            <!-- Слова тут -->
+                            <div class="slide bb" th:each="word : ${words}">
+                                <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>
+                                <div class="block_name">
+                                    <div class="name_and_audio">
+                                        <h3 th:text="${word.name}"></h3>
+                                        <audio th:if="${word.audio.brAudioName != null}" id="audio" preload="auto">
+                                            <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}"
+                                                    type="audio/mpeg"/>
+                                        </audio>
+                                        <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
+                                              onclick="document.getElementById('audio').load();document.getElementById('audio').play();">
                                         <img th:src="@{/images/audio-play.webp}" width="20px">
                         </span>
+                                    </div>
+                                    <h6 th:text="${word.usaTranscription}"></h6>
+                                    <div class="word_description">
+                                        <h5 th:text="${word.description}"></h5>
+                                    </div>
+                                </div>
                             </div>
-                            <h6 th:text="${word.usaTranscription}"></h6>
-                            <div class="word_description">
-                                <h5 th:text="${word.description}"></h5>
-                            </div>
+
                         </div>
+                        <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <form id="next">
+                            <input type="hidden" name="categoryId" th:value="${categoryId}">
+                            <button type="submit" class="next-button button_slide"><i
+                                    class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </form>
                     </div>
 
-                </div>
-                <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
-                <form id="next">
-                    <input type="hidden" name="categoryId" th:value="${categoryId}">
-                    <button type="submit" class="next-button button_slide"><i class="fa-solid fa-chevron-right"></i></button>
-                </form>
+                </section>
+                <section id="content-tab2" class="tab-panel">
+                    <h1>Hello</h1>
+                </section>
+                <section id="content-tab3" class="tab-panel">
+                    <h1>Hello 2</h1>
+                </section>
+
+
             </div>
-            <div class="bb bottom_block"><h1>Bottom</h1></div>
+
+
+            <div class="d-flex bottom_block" style="background: rgba(45, 45,52, 0.9)">
+
+                <div>
+                    <button>Назад</button>
+                </div>
+                <div class="word_tabs">
+                    <input type="radio" id="tab1" name="tab-control" checked>
+                    <input type="radio" id="tab2" name="tab-control">
+                    <input type="radio" id="tab3" name="tab-control">
+                    <div class="slider">
+                        <div class="indicator"></div>
+                    </div>
+                    <ul>
+                        <li title="Features">
+                            <label for="tab1" role="button">
+                                <i class="fa-solid fa-chalkboard-user"></i><br>
+                                <span>Тренування</span>
+                            </label>
+                        </li>
+                        <li title="Delivery Contents">
+                            <label for="tab2" role="button"><i class="fa-regular fa-circle-question"></i><br>
+                                <span>Опис заняття</span>
+                            </label>
+                        </li>
+                        <li title="Shipping">
+                            <label for="tab3" role="button"><i class="fa-solid fa-upload"></i><br>
+                                <span>Завантажити</span>
+                            </label>
+                        </li>
+                    </ul>
+
+
+
+                </div>
+            </div>
+
 
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
@@ -204,7 +511,34 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>
-    const slider = document.querySelector('.slider');
+    document.addEventListener('DOMContentLoaded', function () {
+        // Отримати всі переключальники табів
+        const tabInputs = document.querySelectorAll('[name="tab-control"]');
+
+        const tabContents = document.querySelectorAll('.tab-panel');
+        const firstTabId = tabInputs[0].id;
+        const firstTabContent = document.getElementById('content-' + firstTabId);
+        if (firstTabContent) {
+            firstTabContent.classList.add('active');
+        }
+
+        tabInputs.forEach((input) => {
+            input.addEventListener('change', () => {
+                tabContents.forEach((content) => {
+                    content.classList.remove('active');
+                });
+
+                const activeTabId = document.querySelector('[name="tab-control"]:checked').id;
+                const activeTabContent = document.getElementById('content-' + activeTabId);
+                if (activeTabContent) {
+                    activeTabContent.classList.add('active');
+                }
+            });
+        });
+    });
+
+
+    const slider = document.querySelector('.slider_word');
     const prevButton = document.querySelector('.prev-button');
     var page = 1;
     var pagePrev = 1;
@@ -225,11 +559,11 @@
 
     $('#next').submit(function (event) {
         event.preventDefault();
-        ++ pagePrev ;
+        ++pagePrev;
         var categoryId = $('input[name="categoryId"]').val();
         var url = '/word-lesson/' + categoryId + '/word-next';
-        if(page + 1 === pagePrev) {
-            ++ page;
+        if (page + 1 === pagePrev) {
+            ++page;
             if (page < totalPage) {
                 $.ajax({
                     url: url,
@@ -263,13 +597,13 @@
         }
     });
     prevButton.addEventListener('click', () => {
-        if(pagePrev > 1) {
-        pagePrev --;
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = 0;
-        }
-        updateSlider();
+        if (pagePrev > 1) {
+            pagePrev--;
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+            updateSlider();
         }
     });
 
@@ -295,6 +629,7 @@
 
 
     }
+
     function addEndSlide() {
         const slide = document.createElement('div');
         slide.className = 'slide bb slide_no_active';
