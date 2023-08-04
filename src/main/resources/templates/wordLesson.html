@@ -5,14 +5,15 @@
 
     .word_tabs {
         /*position: relative;*/
-        /*padding: 20px 20px 40px 20px;*/
         width: 100vw;
-        /*height: fit-content;*/
         min-width: 240px;
+        min-height: 50px;
     }
+
     .bottom_block input[name=tab-control] {
         display: none;
     }
+
     .tab_content section h2,
     .word_tabs ul li label {
         font-family: "Montserrat";
@@ -20,16 +21,18 @@
         font-size: 18px;
         color: #428BFF;
     }
+
     .word_tabs ul {
         list-style-type: none;
         padding-left: 0;
         display: flex;
         flex-direction: row;
-        margin-bottom: 10px;
+        margin-top: 10px;
         justify-content: space-between;
         align-items: flex-end;
         flex-wrap: wrap;
     }
+
     .word_tabs ul li {
         box-sizing: border-box;
         flex: 1;
@@ -37,6 +40,7 @@
         padding: 0 10px;
         text-align: center;
     }
+
     .word_tabs ul li label {
         transition: all 0.3s ease-in-out;
         color: #929daf;
@@ -54,9 +58,11 @@
         user-select: none;
         z-index: 9999;
     }
+
     .word_tabs ul li label br {
         display: none;
     }
+
     .word_tabs ul li label svg {
         fill: #929daf;
         height: 1.2em;
@@ -64,18 +70,22 @@
         margin-right: 0.2em;
         transition: all 0.2s ease-in-out;
     }
+
     .word_tabs ul li label:hover, .tabs ul li label:focus, .tabs ul li label:active {
         outline: 0;
         color: #bec5cf;
     }
+
     .word_tabs ul li label:hover svg, .tabs ul li label:focus svg, .tabs ul li label:active svg {
         fill: #bec5cf;
     }
+
     .word_tabs .slider {
         position: relative;
         width: 33.33%;
         transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
     }
+
     .word_tabs .slider .indicator {
         position: relative;
         width: 100%;
@@ -108,6 +118,7 @@
     .tab-panel.active {
         display: block;
     }
+
     /*.tab_content section h2 {*/
     /*    color: #428BFF;*/
     /*    display: none;*/
@@ -130,41 +141,51 @@
     .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label i {
         fill: #428BFF;
     }
+
     @media (max-width: 600px) {
         .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
             background: rgba(0, 0, 0, 0.08);
         }
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ .slider {
         transform: translateX(0%);
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
         cursor: default;
         color: #428BFF;
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label i {
         fill: #428BFF;
     }
+
     @media (max-width: 600px) {
         .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
             background: rgba(0, 0, 0, 0.08);
         }
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ .slider {
         transform: translateX(100%);
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
         cursor: default;
         color: #428BFF;
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label i {
         fill: #428BFF;
     }
+
     @media (max-width: 600px) {
         .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
             background: rgba(0, 0, 0, 0.08);
         }
     }
+
     .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ .slider {
         transform: translateX(200%);
     }
@@ -179,6 +200,7 @@
             transform: translateY(0%);
         }
     }
+
     @keyframes tab_content {
         from {
             opacity: 0;
@@ -189,37 +211,39 @@
             transform: translateY(0%);
         }
     }
+
     @media (max-width: 1000px) {
         .word_tabs ul li label {
             white-space: initial;
         }
+
         .word_tabs ul li label br {
             display: initial;
         }
+
         .word_tabs ul li label i {
             height: 1.5em;
         }
     }
+
     @media (max-width: 600px) {
         .word_tabs ul li label {
             padding: 5px;
             border-radius: 5px;
         }
+
         .word_tabs ul li label span {
             display: none;
         }
+
         .word_tabs .slider {
             display: none;
         }
+
         .tab_content section h2 {
             display: block;
         }
     }
-
-
-
-
-
 
 
     .slider-container {
@@ -312,10 +336,14 @@
     }
 
     .bottom_block {
+        /*width: calc(100% - 225px);*/
         align-items: center;
-        background: rgba(45, 45, 52, 0.9);
+        /*background: rgba(45, 45, 52, 0.9);*/
         position: fixed;
         bottom: 0;
+
+        /*right: 0;*/
+        /*margin-left: 225px;*/
         z-index: 9999;
     }
 
@@ -329,6 +357,7 @@
             margin-left: 5px;
             margin-right: 5px;
         }
+
         .tab_content {
             width: 100vw;
             margin-top: 5px;
@@ -347,8 +376,9 @@
         }
 
         .bottom_block {
-            width: 100%;
+            /*width: 100%;*/
         }
+
         .tab_content {
             width: 100vw;
             margin-top: 5px;
@@ -375,6 +405,7 @@
             margin-left: 10px;
             margin-right: 10px;
         }
+
         .tab_content {
             width: 100vw;
             margin-top: 20px;
@@ -393,16 +424,15 @@
         /*    width: 99%;*/
         /*    !*margin-left: 20%;*!*/
         /*    margin-top: 40px;*/
-
         /*}*/
-
         .slider_word {
             margin-left: 30%;
         }
 
         .bottom_block {
-            width: 70%;
+            /*width: 70%;*/
         }
+
         .tab_content {
             width: calc(100vw - 270px);
             margin-top: 40px;
@@ -461,48 +491,102 @@
                 <section id="content-tab3" class="tab-panel">
                     <h1>Hello 2</h1>
                 </section>
-
-
             </div>
 
 
-            <div class="d-flex bottom_block" style="background: rgba(45, 45,52, 0.9)">
-
+            <div class="d-flex bottom_block">
+                <div style="margin-right: 20px;">
+                    <button>Prev</button>
+                </div>
                 <div>
-                    <button>Назад</button>
-                </div>
-                <div class="word_tabs">
-                    <input type="radio" id="tab1" name="tab-control" checked>
-                    <input type="radio" id="tab2" name="tab-control">
-                    <input type="radio" id="tab3" name="tab-control">
-                    <div class="slider">
-                        <div class="indicator"></div>
+                    <div class="word_tabs" style="width: calc(80vw - 225px); background: rgba(45, 45,52, 0.9);">
+
+                        <input type="radio" id="tab1" name="tab-control" checked>
+                        <input type="radio" id="tab2" name="tab-control">
+                        <input type="radio" id="tab3" name="tab-control">
+                        <div class="slider">
+                            <div class="indicator"></div>
+                        </div>
+                        <ul>
+                            <li title="Review">
+                                <label for="tab1" role="button">
+                                    <i class="fa-brands fa-readme"></i><br>
+                                    <span>Огляд</span>
+                                </label>
+                            </li>
+
+                            <li title="Spelling">
+                                <label for="tab2" role="button"><i class="fa-solid fa-spell-check"></i><br>
+                                    <span>Правопис</span>
+                                </label>
+                            </li>
+                            <li title="Audit">
+                                <label for="tab3" role="button"><i class="fa-solid fa-clipboard-question"></i><br>
+                                    <span>Перевірка</span>
+                                </label>
+                            </li>
+                        </ul>
+
+
                     </div>
-                    <ul>
-                        <li title="Features">
-                            <label for="tab1" role="button">
-                                <i class="fa-solid fa-chalkboard-user"></i><br>
-                                <span>Тренування</span>
-                            </label>
-                        </li>
-                        <li title="Delivery Contents">
-                            <label for="tab2" role="button"><i class="fa-regular fa-circle-question"></i><br>
-                                <span>Опис заняття</span>
-                            </label>
-                        </li>
-                        <li title="Shipping">
-                            <label for="tab3" role="button"><i class="fa-solid fa-upload"></i><br>
-                                <span>Завантажити</span>
-                            </label>
-                        </li>
-                    </ul>
-
-
-
                 </div>
+
+<!--                <div class=" tw-flex tw-w-full tw-justify-center tw-items-center tw-relative tw-mb-0 sm:tw-mb-[12px]">-->
+
+
+<!--                <div style="position: relative;">-->
+
+<!--                    <a th:href="@{/}">-->
+<!--                        <div class="d-flex !tw-h-auto"-->
+<!--                             style="width:30px; height: auto; border-top: 1px solid; border-left: 1px solid; border-right: 1px solid;">-->
+<!--                            <div>-->
+<!--                                <i class="fa-solid fa-chevron-left"></i>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </a>-->
+
+
+<!--                    <div class="word_tabs">-->
+<!--                        <input type="radio" id="tab1" name="tab-control" checked>-->
+<!--                        <input type="radio" id="tab2" name="tab-control">-->
+<!--                        <input type="radio" id="tab3" name="tab-control">-->
+<!--                        <div class="slider">-->
+<!--                            <div class="indicator"></div>-->
+<!--                        </div>-->
+<!--                        <ul>-->
+<!--                            <li title="Review">-->
+<!--                                <label for="tab1" role="button">-->
+<!--                                    <i class="fa-brands fa-readme"></i><br>-->
+<!--                                    <span>Огляд</span>-->
+<!--                                </label>-->
+<!--                            </li>-->
+
+<!--                            <li title="Spelling">-->
+<!--                                <label for="tab2" role="button"><i class="fa-solid fa-spell-check"></i><br>-->
+<!--                                    <span>Правопис</span>-->
+<!--                                </label>-->
+<!--                            </li>-->
+<!--                            <li title="Audit">-->
+<!--                                <label for="tab3" role="button"><i class="fa-solid fa-clipboard-question"></i><br>-->
+<!--                                    <span>Перевірка</span>-->
+<!--                                </label>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+
+
+
+
+<!--                </div>-->
+
+
+
+<!--                </div>-->
+
+
+
             </div>
-
-
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
         <div th:replace="~{fragments/menu :: menu}"></div>
