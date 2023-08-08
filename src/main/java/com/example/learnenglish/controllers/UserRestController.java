@@ -31,6 +31,7 @@ public class UserRestController {
     private final WordUserService wordUserService;
 
     private final TranslationPairUserService translationPairUserService;
+    private final UserWordLessonProgressService userWordLessonProgressService;
 
     private final HttpSession session;
 
@@ -160,5 +161,15 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/word-lesson/{id}/start")
+    public ResponseEntity<String> wordLessonStart(@PathVariable("id") Long wordLessonId, @RequestParam("start") boolean start,
+                                                  Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            userWordLessonProgressService.startWordLesson(user, wordLessonId,start);
+            return ResponseEntity.ok("tab2");
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
 

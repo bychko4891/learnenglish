@@ -392,6 +392,10 @@ button.hidden {
     content: '\f0fe';
     font-family: fontAwesome;
 }
+.success_ico::before {
+    content: '\f00c';
+    font-family: fontAwesome;
+}
 
 .file-btn {
     position: relative;
@@ -678,7 +682,7 @@ textarea {
 /*    !*margin-left: 40px;*!*/
 /*    !*margin-top: 10px;*!*/
 /*}*/
- /* !!!!!!!!!!!!!!!!!!      не чипати   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ____________________________________   */
+/* !!!!!!!!!!!!!!!!!!      не чипати   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ____________________________________   */
 .tabs {
     position: relative;
     padding: 20px 20px 40px 20px;

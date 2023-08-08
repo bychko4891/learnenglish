@@ -16,6 +16,7 @@ public class DtoWordToUI {
     private String imageName;
     private String transcription;
     private String audioName;
+    private Long wordLessonId;
     private int totalPage;
 
     public DtoWordToUI() {
@@ -28,6 +29,7 @@ public class DtoWordToUI {
         dtoWordToUI.setTranscription(word.getUsaTranscription());
         dtoWordToUI.setTranslate(word.getTranslate());
         dtoWordToUI.setDescription(word.getDescription());
+        dtoWordToUI.setWordLessonId(word.getWordLesson().getId());
         dtoWordToUI.setImageName(word.getImages().getImageName());
         dtoWordToUI.setAudioName(word.getAudio().getUsaAudioName());
         return dtoWordToUI;

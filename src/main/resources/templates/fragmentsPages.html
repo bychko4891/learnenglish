@@ -230,16 +230,52 @@
 
 <div th:fragment="endSlide">
     <!--        <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>-->
-    <div class="block_name">
-        <div class="name_and_audio">
-            <h3>End slide</h3>
-
+    <div class="end_success">
+        <h3>Гарна робота!</h3> <p>Ви завершили перший етап. Пропоную перейти до наступного завдання.</p>
+        <div class="d-flex icon-box">
+            <span class="success_ico"></span>
         </div>
-        <!--            <h6 th:text="${word.usaTranscription}"></h6>-->
-        <!--            <div class="word_description">-->
-        <!--                <h5 th:text="${word.description}"></h5>-->
-        <!--            </div>-->
     </div>
+    <div class="slide_end_button">
+        <form id="nextTraining">
+            <button type="submit" class="btn_main">Далі</button>
+        </form>
+
+    </div>
+    <script>
+        $('#nextTraining').submit(function (event) {
+            event.preventDefault();
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var url = '/word-lesson/' + wordLessonId + '/start';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {start: true},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    switchTab('tab2');
+                    const activeTabContent = document.getElementById('content-tab1');
+                    if (activeTabContent) {
+                        activeTabContent.classList.remove('active');
+                    }
+                    const nextTabContent = document.getElementById('content-' + result);
+                    if (nextTabContent) {
+                        nextTabContent.classList.add('active');
+                    }
+
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                }
+            });
+
+        });
+    </script>
 </div>
 
 </body>

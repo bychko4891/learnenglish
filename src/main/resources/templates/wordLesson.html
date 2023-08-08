@@ -2,6 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <style>
+    .icon-box{
+        color: #fff;
+        margin: 0 auto;
+        width: 95px;
+        height: 95px;
+        border-radius: 50%;
+        background: #82ce34;
+        padding: 9px;
+        text-align: center;
+        box-shadow: 2px 5px 10px rgba(3, 3, 3, 0.5);
+    }
+
+    .icon-box span{
+        left: 20%;
+        position: relative;
+        align-content: center;
+        text-align: center;
+        font-size: 50px;
+    }
+
+    .end_success{
+        margin-top: 50px;
+    }
+    .end_success h3{
+        color: #428BFF;
+    }
+    .slide_end_button{
+        margin-top: 100px;
+    }
+
+    .slide_end_button button{
+        width: 90px;
+        height: auto;
+    }
+
 
     .word_tabs {
         /*position: relative;*/
@@ -133,60 +168,74 @@
     /*    margin-top: 5px;*/
     /*    left: 1px;*/
     /*}*/
-    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
-        cursor: default;
-        color: #428BFF;
-    }
 
-    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label i {
-        fill: #428BFF;
-    }
 
-    @media (max-width: 600px) {
-        .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
-            background: rgba(0, 0, 0, 0.08);
-        }
-    }
 
-    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ .slider {
+    /*.word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {*/
+    /*    cursor: default;*/
+    /*    color: #428BFF;*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label i {*/
+    /*    fill: #428BFF;*/
+    /*}*/
+
+    /*@media (max-width: 600px) {*/
+    /*    .word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {*/
+    /*        background: rgba(0, 0, 0, 0.08);*/
+    /*    }*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(1):checked ~ .slider {*/
+    /*    transform: translateX(0%);*/
+    /*}*/
+
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {*/
+    /*    cursor: default;*/
+    /*    color: #428BFF;*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label i {*/
+    /*    fill: #428BFF;*/
+    /*}*/
+
+    /*@media (max-width: 600px) {*/
+    /*    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {*/
+    /*        background: rgba(0, 0, 0, 0.08);*/
+    /*    }*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(2):checked ~ .slider {*/
+    /*    transform: translateX(100%);*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {*/
+    /*    cursor: default;*/
+    /*    color: #428BFF;*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label i {*/
+    /*    fill: #428BFF;*/
+    /*}*/
+
+    /*@media (max-width: 600px) {*/
+    /*    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {*/
+    /*        background: rgba(0, 0, 0, 0.08);*/
+    /*    }*/
+    /*}*/
+
+    /*.word_tabs input[name=tab-control]:nth-of-type(3):checked ~ .slider {*/
+    /*    transform: translateX(200%);*/
+    /*}*/
+
+    .word_tabs #tab1-btn.active ~ .slider{
         transform: translateX(0%);
     }
-
-    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
-        cursor: default;
-        color: #428BFF;
-    }
-
-    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label i {
-        fill: #428BFF;
-    }
-
-    @media (max-width: 600px) {
-        .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
-            background: rgba(0, 0, 0, 0.08);
-        }
-    }
-
-    .word_tabs input[name=tab-control]:nth-of-type(2):checked ~ .slider {
+    .word_tabs #tab2-btn.active ~ .slider{
         transform: translateX(100%);
     }
-
-    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
-        cursor: default;
-        color: #428BFF;
-    }
-
-    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label i {
-        fill: #428BFF;
-    }
-
-    @media (max-width: 600px) {
-        .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
-            background: rgba(0, 0, 0, 0.08);
-        }
-    }
-
-    .word_tabs input[name=tab-control]:nth-of-type(3):checked ~ .slider {
+    .word_tabs #tab3-btn.active ~ .slider{
         transform: translateX(200%);
     }
 
@@ -265,7 +314,7 @@
         align-items: center;
         height: 540px; /* Висота слайда */
         text-align: center;
-        border: 1px solid #ccc;
+        /*border: 1px solid #ccc;*/
         /*transition: all 0.6s ease-in;*/
     }
 
@@ -438,6 +487,15 @@
             margin-top: 40px;
         }
     }
+    .word_tabs button{
+        border: none;
+        background: rgba(0,0,0,0);
+        width: 100%;
+        padding: 0;
+    }
+    .button_bottom_panel.active{
+        color: #428BFF;;
+    }
 </style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
@@ -500,91 +558,33 @@
                 </div>
                 <div>
                     <div class="word_tabs" style="width: calc(80vw - 225px); background: rgba(45, 45,52, 0.9);">
-
-                        <input type="radio" id="tab1" name="tab-control" checked>
-                        <input type="radio" id="tab2" name="tab-control">
-                        <input type="radio" id="tab3" name="tab-control">
                         <div class="slider">
                             <div class="indicator"></div>
                         </div>
                         <ul>
                             <li title="Review">
-                                <label for="tab1" role="button">
+                                <button id="tab1-btn" onclick="switchTab('tab1')" class="button_bottom_panel active"> <!-- Додано onclick-подію -->
                                     <i class="fa-brands fa-readme"></i><br>
                                     <span>Огляд</span>
-                                </label>
+                                </button>
                             </li>
-
                             <li title="Spelling">
-                                <label for="tab2" role="button"><i class="fa-solid fa-spell-check"></i><br>
+                                <button id="tab2-btn" onclick="switchTab('tab2')" class="button_bottom_panel"> <!-- Додано onclick-подію -->
+                                    <i class="fa-solid fa-spell-check"></i><br>
                                     <span>Правопис</span>
-                                </label>
+                                </button>
                             </li>
                             <li title="Audit">
-                                <label for="tab3" role="button"><i class="fa-solid fa-clipboard-question"></i><br>
+                                <button id="tab3-btn" onclick="switchTab('tab3')" class="button_bottom_panel "> <!-- Додано onclick-подію -->
+                                    <i class="fa-solid fa-clipboard-question"></i><br>
                                     <span>Перевірка</span>
-                                </label>
+                                </button>
                             </li>
                         </ul>
 
 
                     </div>
                 </div>
-
-<!--                <div class=" tw-flex tw-w-full tw-justify-center tw-items-center tw-relative tw-mb-0 sm:tw-mb-[12px]">-->
-
-
-<!--                <div style="position: relative;">-->
-
-<!--                    <a th:href="@{/}">-->
-<!--                        <div class="d-flex !tw-h-auto"-->
-<!--                             style="width:30px; height: auto; border-top: 1px solid; border-left: 1px solid; border-right: 1px solid;">-->
-<!--                            <div>-->
-<!--                                <i class="fa-solid fa-chevron-left"></i>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-
-
-<!--                    <div class="word_tabs">-->
-<!--                        <input type="radio" id="tab1" name="tab-control" checked>-->
-<!--                        <input type="radio" id="tab2" name="tab-control">-->
-<!--                        <input type="radio" id="tab3" name="tab-control">-->
-<!--                        <div class="slider">-->
-<!--                            <div class="indicator"></div>-->
-<!--                        </div>-->
-<!--                        <ul>-->
-<!--                            <li title="Review">-->
-<!--                                <label for="tab1" role="button">-->
-<!--                                    <i class="fa-brands fa-readme"></i><br>-->
-<!--                                    <span>Огляд</span>-->
-<!--                                </label>-->
-<!--                            </li>-->
-
-<!--                            <li title="Spelling">-->
-<!--                                <label for="tab2" role="button"><i class="fa-solid fa-spell-check"></i><br>-->
-<!--                                    <span>Правопис</span>-->
-<!--                                </label>-->
-<!--                            </li>-->
-<!--                            <li title="Audit">-->
-<!--                                <label for="tab3" role="button"><i class="fa-solid fa-clipboard-question"></i><br>-->
-<!--                                    <span>Перевірка</span>-->
-<!--                                </label>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-
-
-
-
-
-<!--                </div>-->
-
-
-
-<!--                </div>-->
-
-
 
             </div>
         </div>
@@ -595,39 +595,13 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Отримати всі переключальники табів
-        const tabInputs = document.querySelectorAll('[name="tab-control"]');
-
-        const tabContents = document.querySelectorAll('.tab-panel');
-        const firstTabId = tabInputs[0].id;
-        const firstTabContent = document.getElementById('content-' + firstTabId);
-        if (firstTabContent) {
-            firstTabContent.classList.add('active');
-        }
-
-        tabInputs.forEach((input) => {
-            input.addEventListener('change', () => {
-                tabContents.forEach((content) => {
-                    content.classList.remove('active');
-                });
-
-                const activeTabId = document.querySelector('[name="tab-control"]:checked').id;
-                const activeTabContent = document.getElementById('content-' + activeTabId);
-                if (activeTabContent) {
-                    activeTabContent.classList.add('active');
-                }
-            });
-        });
-    });
-
-
     const slider = document.querySelector('.slider_word');
     const prevButton = document.querySelector('.prev-button');
     var page = 1;
     var pagePrev = 1;
     var totalPage = 4;
     let currentIndex = 0;
+    var wordLessonId;
     // Очікуємо завантаження сторінки
     document.addEventListener('DOMContentLoaded', function () {
         const mainSlide = slider.children[0];
@@ -655,6 +629,7 @@
                     data: {page: page},
                     success: function (result) {
                         totalPage = result.totalPage;
+                        wordLessonId = result.wordLessonId;
                         addWordToSlider(result);
                         currentIndex = slider.children.length - 2;
                         updateSlider();
@@ -728,7 +703,6 @@
 
     function addWordToSlider(word) {
 
-        console.log(word);
         const slide = document.createElement('div');
         slide.className = 'slide bb slide_no_active';
 
@@ -817,6 +791,58 @@
         // Оновлюємо слайдер з новим індексом
         updateSlider();
     }
+
+
+    function switchTab(tabId) {
+        // Забираємо активний клас від усіх кнопок
+        $('.word_tabs li button').removeClass('active');
+
+        // Вмикаємо вибрану кнопку
+        $('#' + tabId + '-btn').addClass('active');
+
+        // Вимикаємо всі radio-кнопки
+        $('input[name="tab-control"]').prop('checked', false);
+
+        // Вмикаємо потрібний radio-кнопку, яка відповідає вибраній вкладці
+        $('#' + tabId).prop('checked', true);
+
+        // Оновлення стилів слайдера при активній вкладці
+        var slider = $('.slider');
+        var activeTab = $('.word_tabs li button.active');
+        var index = activeTab.parent().index();
+
+        var translationValue = index * 100; // Вираховуємо значення трансформації для слайдера
+
+        slider.css('transform', 'translateX(' + translationValue + '%)');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Отримати всі кнопки табів
+        const tabButtons = document.querySelectorAll('.word_tabs li button');
+
+        const tabContents = document.querySelectorAll('.tab-panel');
+        const firstTabId = tabButtons[0].id.replace('-btn', '');
+        const firstTabContent = document.getElementById('content-' + firstTabId);
+        if (firstTabContent) {
+            firstTabContent.classList.add('active');
+        }
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const tabId = button.id.replace('-btn', '');
+                tabContents.forEach((content) => {
+                    content.classList.remove('active');
+                });
+
+                const activeTabContent = document.getElementById('content-' + tabId);
+                if (activeTabContent) {
+                    activeTabContent.classList.add('active');
+                }
+                // Викликаємо функцію для перемикання табів, яка забезпечить оновлення слайдера
+                switchTab(tabId);
+            });
+        });
+    });
 </script>
 
 <!--<script type="text/javascript" th:src="@{/js/userTranslationPairsPage.js}"></script>-->
