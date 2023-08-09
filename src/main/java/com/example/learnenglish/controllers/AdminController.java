@@ -100,8 +100,11 @@ public class AdminController {
         if (principal != null) {
             TextOfAppPage textOfAppPage = textOfAppPageService.findByIdTextOfAppPage(id);
             List<PageApplication> pageApplicationList = pageApplicationService.pageApplicationList();
-            if (textOfAppPage.getPageApplication() == null)
-                textOfAppPage.setPageApplication(new PageApplication(0l, "Сторінка відсутня"));
+            if (textOfAppPage.getPageApplication() != null) {
+                model.addAttribute("pageName",textOfAppPage.getPageApplication().getNamePage());
+            } else {
+                model.addAttribute("pageName", "Сторінка відсутня");
+            }
             model.addAttribute("textOfAppPage", textOfAppPage);
             model.addAttribute("pageList", pageApplicationList);
             return "admin/adminTextOfAppPageInEditor";

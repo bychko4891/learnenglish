@@ -1,4 +1,3 @@
-
 $('select#entitySelect').on('change', function () {
     var selectedOption = $('option:selected', this);
     $('input[name="address"]').val(selectedOption.attr('data-page-address'));
@@ -17,12 +16,12 @@ $('select#entitySelect').on('change', function () {
             id: $('#editor input[name="id"]').val(),
             name: $('#editor input[name="name"]').val(),
             text: $('#editor textarea[name="text"]').val(),
-            pageApplication: $('#editor input[name="pageApplication"]').val()
+            // pageApplication: $('#editor input[name="pageApplication"]').val()
         };
         var selectedPageApplication = {
             id: $('#entitySelect').val(),
             namePage: $('#entitySelect option:selected').text(),
-            // address: $('#entitySelect option:selected').data('page-address')
+            // address: $('#entitySelect option:selected').data('page-address'),
             address: $('#editor input[name="address"]').val()
         };
         var data = {

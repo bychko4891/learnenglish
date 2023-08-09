@@ -15,25 +15,23 @@
             <h1>New text page</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" id="name" name="name" th:value="${textOfAppPage.name}" required>
-                <label>Сторінка:</label> <label th:text="${textOfAppPage.pageApplication.namePage}"></label>
-                <label for="entitySelect">| Змінити сторінку: </label>
+                <input type="text" id="name" name="name" th:value="${textOfAppPage.name}">
+                <label>Сторінка:</label>
+                <label th:text="${pageName}"></label><br>
+                <label for="entitySelect">Змінити сторінку: </label>
                 <select id="entitySelect" name="selectedPageApplication">
                     <option name="id" value="0">Оберіть сторінку для текста</option>
                     <option th:each="pageApplication : ${pageList}" th:value="${pageApplication.id}"
-                            th:text="${pageApplication.namePage}" th:data-page-address="${pageApplication.address}">
+                            th:text="${pageApplication.namePage}">
                     </option>
                 </select>
-                <input name="address" placeholder="path page"/>
+                <input name="address" placeholder="path page">
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="text" th:text="${textOfAppPage.text}" required></textarea>
-                <!--                <span th:if="${#fields.hasErrors('lessonInfo')}" th:errors="*{lessonInfo}"></span>-->
-                <input type="hidden" name="id" th:value="${textOfAppPage.id}" required>
-                <input type="hidden" name="pageApplication" th:value="${textOfAppPage.pageApplication}">
+                <textarea id="info" name="text" th:text="${textOfAppPage.text}"></textarea>
+                <input type="hidden" name="id" th:value="${textOfAppPage.id}">
                 <button type="submit">Зберегти</button>
             </form>
-<!--            <div id="alertContainer"></div>-->
             <div id="resultDivError" style="color: #e03e2d; font-size: 18px; font-weight: 600;"></div>
             <div id="resultDivSuccess" style="color: #0f5132; font-size: 18px; font-weight: 600;"></div>
         </div>
