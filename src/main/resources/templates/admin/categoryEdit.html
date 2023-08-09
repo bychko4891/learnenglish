@@ -10,13 +10,10 @@
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
-
-
-
-            <h1>Нова категорія</h1>
+            <h3>Редагування категорії</h3>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" class="input" id="name" name="name" th:value="${category.name}" required>
+                <input type="text" class="input" id="name" name="name" th:value="${category.name}">
                 <label>Батьківська категорія:</label> <label style="color: white;" th:text="${parentCategory}"></label><br>
                 <label for="mainCategorySelect">Змінити категорію: </label>
                 <select id="mainCategorySelect" name="selectedPageApplication">
@@ -29,11 +26,11 @@
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select>
                 <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${category.mainCategory}" class="toggle-switch" name="mainCategory" >
+                <input id="toggleSwitch" type="checkbox" th:checked="${category.mainCategory}" class="toggle-switch" name="mainCategory">
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
                 <div th:if="${category.mainCategory}">
                     <span>Вигляд підкатегорій на сторінці: </span>
-                    <input id="view" type="checkbox" th:checked="${category.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view" >
+                    <input id="view" type="checkbox" th:checked="${category.viewSubcategoryFullNoInfoOrNameAndInfo}" class="toggle-switch" name="view">
                     <label for="view" class="toggle-switch-label"></label><br>
                     <label for="page">Сторінка вивода</label>
                     <select id="page" name="categoryPage">
@@ -45,14 +42,10 @@
                 </div>
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="info" th:text="${category.info}" required></textarea>
-                <input type="hidden" name="id" th:value="${category.id}" required>
+                <textarea id="info" name="info" th:text="${category.info}"></textarea>
+                <input type="hidden" name="id" th:value="${category.id}"><br>
                 <button type="submit">Зберегти</button>
             </form>
-
-
-
-
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>

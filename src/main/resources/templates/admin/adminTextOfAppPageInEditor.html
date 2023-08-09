@@ -1,18 +1,16 @@
-<!DOCTYPE HTML >
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="active">
-<div id="toastContainer" class="toast-container"></div>
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <header th:replace="~{fragments/header :: header}"></header>
-    <div class="sidebar">
-        <div th:replace="~{fragments/menu :: menu}"></div>
-    </div>
-    <main class="section main_content ">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
-            <h1>New text page</h1>
+            <h3>Редагування інформації на сторінці</h3>
             <form id="editor">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${textOfAppPage.name}">
@@ -29,12 +27,13 @@
                 <hr>
                 <label for="info">Текст:</label>
                 <textarea id="info" name="text" th:text="${textOfAppPage.text}"></textarea>
-                <input type="hidden" name="id" th:value="${textOfAppPage.id}">
+                <input type="hidden" name="id" th:value="${textOfAppPage.id}"><br>
                 <button type="submit">Зберегти</button>
             </form>
         </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
-    <!--    <footer th:replace="fragments/footer :: footer"></footer>-->
+    <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/tinyMce.js}"></script>
