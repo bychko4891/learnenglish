@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "statistics_id")
     private UserStatistics statistics;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserWordLessonProgress> wordLessonProgress;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<TranslationPair> translationPairs = new ArrayList<>();
 

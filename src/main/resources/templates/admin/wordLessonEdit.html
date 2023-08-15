@@ -10,15 +10,14 @@
   <main class="section">
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="container layout_page">
-
-
-
       <h1>Новий урок для слів</h1>
       <form id="editor">
         <label for="name">Назва:</label>
         <input type="text" id="name" name="name" th:value="${wordLesson.name}">
         <label for="name">Опис:</label>
         <input type="text" id="description" name="description" th:value="${wordLesson.description}"><br>
+        <label for="name">Порядковий номер:</label>
+        <input type="text" id="number" name="serialNumber" th:value="${wordLesson.serialNumber}" th:placeholder="${wordLesson.serialNumber}"><br>
 
 
         <label>Категорія:</label> <label th:text="${category}"></label><br>
@@ -191,6 +190,7 @@
     var wordLesson = {
       id: $('#editor input[name="wordLessonId"]').val(),
       name: $('#editor input[name="name"]').val(),
+      serialNumber: $('#editor input[name="serialNumber"]').val(),
       description: $('#editor input[name="description"]').val(),
       words: words
     };

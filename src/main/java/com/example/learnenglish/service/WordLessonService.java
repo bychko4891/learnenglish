@@ -59,6 +59,7 @@ public class WordLessonService {
             WordLesson wordLesson = wordLessonOptional.get();
             wordLesson.setName(dtoWordLesson.getWordLesson().getName());
             wordLesson.setDescription(dtoWordLesson.getWordLesson().getDescription());
+            wordLesson.setSerialNumber(dtoWordLesson.getWordLesson().getSerialNumber());
             List<Word> words = wordLesson.getWords();
             if (words.size() != 0 && words.size() != dtoWordLesson.getWordLesson().getWords().size()) {
                 List<Word> dtoWords = dtoWordLesson.getWordLesson().getWords();
@@ -112,6 +113,10 @@ public class WordLessonService {
         if (categoryId != 0) {
             Category category = categoryRepository.findById(categoryId).get();
             wordLesson.setCategory(category);
+        }
+        wordLesson.setSerialNumber(dtoWordLesson.getWordLesson().getSerialNumber());
+        if(dtoWordLesson.getWordLesson().getSerialNumber() == 0){
+            wordLesson.setSerialNumber(1000);
         }
         wordLessonRepository.save(wordLesson);
         return new ResponseMessage(Message.SUCCESSADDBASE);

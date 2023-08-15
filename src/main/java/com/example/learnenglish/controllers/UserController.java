@@ -88,7 +88,7 @@ public class UserController {
                            Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
+//            userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("user", user);
             return "userInfo";

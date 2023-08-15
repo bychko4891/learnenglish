@@ -1,12 +1,13 @@
 package com.example.learnenglish.model;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.users.UserWordLessonProgress;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class WordLesson implements Serializable {
     private String description;
 
     @Column
-    private int number;
+    private int serialNumber;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -41,6 +42,9 @@ public class WordLesson implements Serializable {
 
     @OneToMany(mappedBy = "wordLesson")
     private List<Word> words;
+
+    @OneToOne(mappedBy = "wordLesson")
+    private UserWordLessonProgress userWordLessonProgress;
 
 
     public WordLesson() {

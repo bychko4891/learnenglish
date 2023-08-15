@@ -19,6 +19,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Number</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Category</th>
@@ -28,6 +29,7 @@
                     <tbody>
                     <tr th:each="wordLesson : ${wordLessons}">
                         <td th:text="${wordLesson.id}"></td>
+                        <td th:text="${wordLesson.getSerialNumber}"></td>
                         <td th:text="${wordLesson.name}"></td>
                         <td th:text="${wordLesson.description}"></td>
 

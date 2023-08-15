@@ -8,6 +8,7 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.*;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -197,6 +198,7 @@ public class LearnEnglishController {
     @GetMapping("/word-lesson/{id}/lessons")
     public String wordLessons(@PathVariable("id")Long categoryId, Model model, Principal principal) {
         if(principal != null) {
+            User user = userService.findByEmail(principal.getName());
             Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
             List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(categoryId);
             int summWords = 0;
@@ -206,6 +208,7 @@ public class LearnEnglishController {
             model.addAttribute("wordLessonCategory", wordLessonCategory);
             model.addAttribute("wordLessons", wordLessons);
             model.addAttribute("words", summWords);
+            model.addAttribute("lessons", user.getWordLessonProgress());
         return "wordLessons";
         } return "redirect:/login";
     }
