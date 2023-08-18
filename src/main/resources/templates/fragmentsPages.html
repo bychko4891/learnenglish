@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"></head>
-<body>
-
 <div th:fragment="lessonFragment1" class="fragments_div">
     <h3>Перекладіть речення на англійську</h3>
     <!--    <p>1</p>-->
@@ -231,7 +225,8 @@
 <div th:fragment="endSlide">
     <!--        <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>-->
     <div class="end_success">
-        <h3>Гарна робота!</h3> <p>Ви завершили перший етап. Пропоную перейти до наступного завдання.</p>
+        <h3>Гарна робота!</h3>
+        <p>Ви завершили перший етап. Пропоную перейти до наступного завдання, щоб закріпити знання.</p>
         <div class="d-flex icon-box">
             <span class="success_ico"></span>
         </div>
@@ -278,5 +273,156 @@
     </script>
 </div>
 
-</body>
-</html>
+<div th:fragment="slide">
+    <img />
+    <div class="block_name">
+        <div class="name_and_audio">
+            <h3></h3>
+            <audio class="audio" preload="auto">
+                <source type="audio/mpeg"/>
+            </audio>
+            <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/audio-play.webp" width="20px"/>
+                        </span>
+        </div>
+        <h6></h6>
+        <div class="word_description">
+            <h5></h5>
+        </div>
+        <form class="formPlus">
+            <input type="hidden" name="id">
+            <button class="btn_plus_lesson pulse" type="submit">
+                <span class="lesson_plus_ico"></span>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<div th:fragment="wordLessonReview">
+    <div class="slider-container">
+        <div class="slider_word" id="slider">
+            <div class="slide bb">
+                <img/>
+                <div class="block_name">
+                    <div class="name_and_audio">
+                        <h3></h3>
+                        <audio class="audio" preload="auto">
+                            <source type="audio/mpeg"/>
+                        </audio>
+                        <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/audio-play.webp" width="20px"/>
+                        </span>
+                    </div>
+                    <h6></h6>
+                    <div class="word_description">
+                        <h5></h5>
+                    </div>
+                    <form class="formPlus">
+                        <input type="hidden" name="id">
+                        <button class="btn_plus_lesson pulse" type="submit">
+                            <span class="lesson_plus_ico"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="slide bb">
+                <img/>
+                <div class="block_name">
+                    <div class="name_and_audio">
+                        <h3></h3>
+                        <audio class="audio" preload="auto">
+                            <source type="audio/mpeg"/>
+                        </audio>
+                        <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/audio-play.webp" width="20px"/>
+                        </span>
+                    </div>
+                    <h6></h6>
+                    <div class="word_description">
+                        <h5></h5>
+                    </div>
+                    <form class="formPlus">
+                        <input type="hidden" name="id">
+                        <button class="btn_plus_lesson pulse" type="submit">
+                            <span class="lesson_plus_ico"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
+        <form id="next">
+            <button type="submit" class="next-button button_slide"><i
+                    class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+    </div>
+    <script type="text/javascript" th:src="@{/js/wordLessonSlider.js}"></script>
+</div>
+
+
+<div th:fragment="wordLessonSpelling">
+    <div class="slider-container">
+        <div class="slider_word">
+            <div class="slide bb">
+                <img/>
+                <div class="block_name">
+                    <div class="name_and_audio">
+                        <h3></h3>
+                        <audio class="audio" preload="auto">
+                            <source type="audio/mpeg"/>
+                        </audio>
+                        <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/audio-play.webp" width="20px"/>
+                        </span>
+                    </div>
+                    <h6></h6>
+                    <div class="word_description">
+                        <h5></h5>
+                    </div>
+                    <form class="formPlus">
+                        <input type="hidden" name="id">
+                        <button class="btn_plus_lesson pulse" type="submit">
+                            <span class="lesson_plus_ico"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="slide bb">
+                <img/>
+                <div class="block_name">
+                    <div class="name_and_audio">
+                        <h3></h3>
+                        <audio class="audio" preload="auto">
+                            <source type="audio/mpeg"/>
+                        </audio>
+                        <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/audio-play.webp" width="20px"/>
+                        </span>
+                    </div>
+                    <h6></h6>
+                    <div class="word_description">
+                        <h5></h5>
+                    </div>
+                    <form class="formPlus">
+                        <input type="hidden" name="id">
+                        <button class="btn_plus_lesson pulse" type="submit">
+                            <span class="lesson_plus_ico"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
+        <form id="next">
+            <button type="submit" class="next-button button_slide"><i
+                    class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+    </div>
+    <script type="text/javascript" th:src="@{/js/wordLessonSlider.js}"></script>
+</div>
+

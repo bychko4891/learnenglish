@@ -33,15 +33,37 @@ public class LearnEnglishRestController {
     }
     @GetMapping("/word-lesson/{id}/word-next")
     public ResponseEntity<DtoWordToUI> wordFromLessonNextWord(@PathVariable("id") Long wordLessonId,
+                             @RequestParam(name = "size", defaultValue = "1") int size,
                              @RequestParam(name = "page", defaultValue = "0") int page,
                              Principal principal) {
         if(principal != null) {
             if (page < 0) page = 0;
-            Page<Word> wordsFromLesson = wordService.wordsFromLesson(page, 1, wordLessonId);
+            Page<Word> wordsFromLesson = wordService.wordsFromLesson(page, size, wordLessonId);
             try {
                 DtoWordToUI word = DtoWordToUI.convertToDTO(wordsFromLesson.getContent().get(0));
                 word.setTotalPage(wordsFromLesson.getTotalPages());
                 return ResponseEntity.ok(word);
+            } catch (IndexOutOfBoundsException e){
+                return ResponseEntity.notFound().build();
+            }
+        } return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/word-lesson/{id}/word-start")
+    public ResponseEntity<List<DtoWordToUI>> wordFromLessonStartWord(@PathVariable("id") Long wordLessonId,
+                             @RequestParam(name = "size", defaultValue = "2") int size,
+                             @RequestParam(name = "page", defaultValue = "0") int page,
+                             Principal principal) {
+        if(principal != null) {
+            if (page < 0) page = 0;
+            Page<Word> wordsFromLesson = wordService.wordsFromLesson(page, size, wordLessonId);
+            List<DtoWordToUI> dtoWordToUIS = new ArrayList<>();
+            try {
+                for (Word arr: wordsFromLesson) {
+                    dtoWordToUIS.add(DtoWordToUI.convertToDTO(arr));
+                }
+//                DtoWordToUI word = DtoWordToUI.convertToDTO(wordsFromLesson.getContent().get());
+//                word.setTotalPage(wordsFromLesson.getTotalPages());
+                return ResponseEntity.ok(dtoWordToUIS );
             } catch (IndexOutOfBoundsException e){
                 return ResponseEntity.notFound().build();
             }

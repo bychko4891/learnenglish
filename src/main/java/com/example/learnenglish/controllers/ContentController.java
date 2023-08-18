@@ -32,12 +32,34 @@ public class ContentController {
     public String getContent4() {
         return "fragmentsPages :: lessonFragment4";
     }
+
     @RequestMapping("endSlide")
     public String getEndSlid() {
         return "fragmentsPages :: endSlide";
     }
+
     @RequestMapping("successRegistrationFragment")
     public String getContent5() {
         return "fragmentsPages :: successRegistrationFragment";
+    }
+
+    @RequestMapping("wordLessonReview")
+    public String wordLessonReview() {
+        return "fragmentsPages :: wordLessonReview";
+    }
+
+    @RequestMapping("wordLessonSpelling")
+    public String wordLessonSpelling() {
+        return "fragmentsPages :: wordLessonSpelling";
+    }
+
+
+    @RequestMapping("wordLessonAudit")
+    public String wordLessonAudit() {
+        return "fragmentsPages :: wordLessonAudit";
+    }
+    @RequestMapping("slide")
+    public String slide() {
+        return "fragmentsPages :: slide";
     }
 }

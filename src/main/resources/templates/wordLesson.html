@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
 <style>
-    .icon-box{
+    .icon-box {
         color: #fff;
         margin: 0 auto;
         width: 95px;
@@ -14,7 +14,7 @@
         box-shadow: 2px 5px 10px rgba(3, 3, 3, 0.5);
     }
 
-    .icon-box span{
+    .icon-box span {
         left: 20%;
         position: relative;
         align-content: center;
@@ -22,17 +22,19 @@
         font-size: 50px;
     }
 
-    .end_success{
+    .end_success {
         margin-top: 50px;
     }
-    .end_success h3{
+
+    .end_success h3 {
         color: #428BFF;
     }
-    .slide_end_button{
+
+    .slide_end_button {
         margin-top: 100px;
     }
 
-    .slide_end_button button{
+    .slide_end_button button {
         width: 90px;
         height: auto;
     }
@@ -170,7 +172,6 @@
     /*}*/
 
 
-
     /*.word_tabs input[name=tab-control]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {*/
     /*    cursor: default;*/
     /*    color: #428BFF;*/
@@ -229,13 +230,15 @@
     /*    transform: translateX(200%);*/
     /*}*/
 
-    .word_tabs #tab1-btn.active ~ .slider{
+    .word_tabs #tab1-btn.active ~ .slider {
         transform: translateX(0%);
     }
-    .word_tabs #tab2-btn.active ~ .slider{
+
+    .word_tabs #tab2-btn.active ~ .slider {
         transform: translateX(100%);
     }
-    .word_tabs #tab3-btn.active ~ .slider{
+
+    .word_tabs #tab3-btn.active ~ .slider {
         transform: translateX(200%);
     }
 
@@ -380,7 +383,7 @@
         z-index: 9999;
     }
 
-    #formPlus button {
+    .slide form {
         margin-top: 10px;
     }
 
@@ -487,13 +490,15 @@
             margin-top: 40px;
         }
     }
-    .word_tabs button{
+
+    .word_tabs button {
         border: none;
-        background: rgba(0,0,0,0);
+        background: rgba(0, 0, 0, 0);
         width: 100%;
         padding: 0;
     }
-    .button_bottom_panel.active{
+
+    .button_bottom_panel.active {
         color: #428BFF;;
     }
 </style>
@@ -506,46 +511,9 @@
 
 
             <div class="tab_content">
-                <section id="content-tab1" class="tab-panel">
-
-                    <div class="slider-container">
-                        <div class="slider_word">
-                            <!-- Слова тут -->
-                            <div class="slide bb" th:each="word : ${words}">
-                                <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>
-                                <div class="block_name">
-                                    <div class="name_and_audio">
-                                        <h3 th:text="${word.name}"></h3>
-                                        <audio th:if="${word.audio.brAudioName != null}" id="audio" preload="auto">
-                                            <source th:src="@{/audio/{name}(name=${word.audio.usaAudioName})}"
-                                                    type="audio/mpeg"/>
-                                        </audio>
-                                        <span th:if="${word.audio.usaAudioName != null}" class="sound_pic"
-                                              onclick="document.getElementById('audio').load();document.getElementById('audio').play();">
-                                        <img th:src="@{/images/audio-play.webp}" width="20px">
-                        </span>
-                                    </div>
-                                    <h6 th:text="${word.usaTranscription}"></h6>
-                                    <div class="word_description">
-                                        <h5 th:text="${word.description}"></h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
-                        <form id="next">
-                            <input type="hidden" name="categoryId" th:value="${categoryId}">
-                            <button type="submit" class="next-button button_slide"><i
-                                    class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                </section>
-                <section id="content-tab2" class="tab-panel">
-                    <h1>Hello</h1>
-                </section>
+                <input type="hidden" name="categoryId" th:value="${categoryId}">
+                <section id="content-tab1" class="tab-panel"></section>
+                <section id="content-tab2" class="tab-panel"></section>
                 <section id="content-tab3" class="tab-panel">
                     <h1>Hello 2</h1>
                 </section>
@@ -563,19 +531,22 @@
                         </div>
                         <ul>
                             <li title="Review">
-                                <button id="tab1-btn" onclick="switchTab('tab1')" class="button_bottom_panel active"> <!-- Додано onclick-подію -->
+                                <button id="tab1-btn" onclick="switchTab('tab1')" class="button_bottom_panel active">
+                                    <!-- Додано onclick-подію -->
                                     <i class="fa-brands fa-readme"></i><br>
                                     <span>Огляд</span>
                                 </button>
                             </li>
                             <li title="Spelling">
-                                <button id="tab2-btn" onclick="switchTab('tab2')" class="button_bottom_panel"> <!-- Додано onclick-подію -->
+                                <button id="tab2-btn" onclick="switchTab('tab2')" class="button_bottom_panel">
+                                    <!-- Додано onclick-подію -->
                                     <i class="fa-solid fa-spell-check"></i><br>
                                     <span>Правопис</span>
                                 </button>
                             </li>
                             <li title="Audit">
-                                <button id="tab3-btn" onclick="switchTab('tab3')" class="button_bottom_panel "> <!-- Додано onclick-подію -->
+                                <button id="tab3-btn" onclick="switchTab('tab3')" class="button_bottom_panel ">
+                                    <!-- Додано onclick-подію -->
                                     <i class="fa-solid fa-clipboard-question"></i><br>
                                     <span>Перевірка</span>
                                 </button>
@@ -595,205 +566,218 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>
-    const slider = document.querySelector('.slider_word');
-    const prevButton = document.querySelector('.prev-button');
-    var page = 1;
-    var pagePrev = 1;
-    var totalPage = 4;
-    let currentIndex = 0;
-    var wordLessonId;
+    // const slider = document.querySelector('.slider_word');
+    // const prevButton = document.querySelector('.prev-button');
+    var categoryId = $('input[name="categoryId"]').val();
+    // var page = 1;
+    // var pagePrev = 1;
+    // var totalPage = 4;
+    // let currentIndex = 0;
+    // var wordLessonId;
     // Очікуємо завантаження сторінки
-    document.addEventListener('DOMContentLoaded', function () {
-        const mainSlide = slider.children[0];
-        const secondSlide = slider.children[1];
-        if (mainSlide) {
-            mainSlide.classList.add('slide_active');
-        }
-        if (secondSlide) {
-            secondSlide.classList.add('slide_no_active');
-        }
-    });
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const mainSlide = slider.children[0];
+    //     const secondSlide = slider.children[1];
+    //     if (mainSlide) {
+    //         mainSlide.classList.add('slide_active');
+    //     }
+    //     if (secondSlide) {
+    //         secondSlide.classList.add('slide_no_active');
+    //     }
+    // });
 
 
-    $('#next').submit(function (event) {
-        event.preventDefault();
-        ++pagePrev;
-        var categoryId = $('input[name="categoryId"]').val();
-        var url = '/word-lesson/' + categoryId + '/word-next';
-        if (page + 1 === pagePrev) {
-            ++page;
-            if (page < totalPage) {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    data: {page: page},
-                    success: function (result) {
-                        totalPage = result.totalPage;
-                        wordLessonId = result.wordLessonId;
-                        addWordToSlider(result);
-                        currentIndex = slider.children.length - 2;
-                        updateSlider();
-                    },
-                    error: function () {
-                        let shel = {};
-                        alert(Boolean(shel))
-                    }
-                });
-            } else if (page === totalPage) {
-                addEndSlide()
-                currentIndex = slider.children.length - 2;
-                updateSlider();
-            } else if (page === totalPage + 1) {
-                currentIndex = slider.children.length - 1;
-                updateSlider();
-            }
-        } else {
-            currentIndex++;
-            if (currentIndex >= slider.children.length) {
-                currentIndex = slider.children.length - 1;
-            }
-            updateSlider();
-        }
-    });
-    prevButton.addEventListener('click', () => {
-        if (pagePrev > 1) {
-            pagePrev--;
-            currentIndex--;
-            if (currentIndex < 0) {
-                currentIndex = 0;
-            }
-            updateSlider();
-        }
-    });
+    // $('#next').submit(function (event) {
+    //     event.preventDefault();
+    //     nextSlide();
+    // });
 
-    function updateSlider() {
-        const slide = slider.firstElementChild;
-        const slideStyles = window.getComputedStyle(slide);
-        const slideWidth = slide.offsetWidth + parseInt(slideStyles.marginLeft) + parseInt(slideStyles.marginRight);
-        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    // $('#next').submit(function (event) {
+    //     event.preventDefault();
+    //     nextSlide();
+    // });
 
-
-        const mainSlide = slider.children[currentIndex];
-
-        if (mainSlide) {
-            mainSlide.classList.remove('slide_no_active');
-            mainSlide.classList.add('slide_active');
-        }
-
-        const currentSlide = slider.children[currentIndex - 1];
-        if (currentSlide) {
-            currentSlide.classList.remove('slide_active');
-            currentSlide.classList.add('slide_no_active');
-        }
-
-
-    }
-
-    function addEndSlide() {
-        const slide = document.createElement('div');
-        slide.className = 'slide bb slide_no_active';
-        slide.id = 'endSlide';
-        slider.appendChild(slide);
-        $('#endSlide').load("/fragmentsPages/endSlide", function () {
-        });
-        currentIndex++;
-        updateSlider();
-    }
-
-
-    function addWordToSlider(word) {
-
-        const slide = document.createElement('div');
-        slide.className = 'slide bb slide_no_active';
-
-        const imageElement = document.createElement('img');
-        imageElement.src = '/word-image/' + word.imageName;
-        slide.appendChild(imageElement);
-
-        const blockName = document.createElement('div');
-        blockName.className = 'block_name';
-
-        const nameAndAudio = document.createElement('div');
-        nameAndAudio.className = 'name_and_audio';
-
-        const nameElement = document.createElement('h3');
-        nameElement.textContent = word.name;
-        nameAndAudio.appendChild(nameElement);
-
-        const audioElement = document.createElement('audio');
-
-        audioElement.id = 'audio'; // Set the audio ID if needed
-        audioElement.preload = 'auto';
-
-        const audioSource = document.createElement('source');
-        audioSource.src = '/audio/' + word.audioName;
-        audioSource.type = 'audio/mpeg';
-        audioElement.appendChild(audioSource);
-
-        const soundSpan = document.createElement('span');
-        soundSpan.className = 'sound_pic';
-        soundSpan.onclick = function () {
-            document.getElementById('audio').load();
-            document.getElementById('audio').play();
-        }
-        const soundImage = document.createElement('img');
-        soundImage.src = '/images/audio-play.webp';
-        soundImage.width = '20px';
-        // soundImage.alt = 'Британська вимова слова ' + word.name;
-        // soundImage.title = 'Британська вимова слова ' + word.name;
-        soundSpan.appendChild(soundImage);
-
-        nameAndAudio.appendChild(audioElement);
-        nameAndAudio.appendChild(soundSpan);
-
-        blockName.appendChild(nameAndAudio)
-
-        const transcription = document.createElement('h6');
-        transcription.textContent = word.transcription;
-        blockName.appendChild(transcription);
-
-        const description = document.createElement('div');
-        description.className = 'word_description';
-
-        const descriptionInfo = document.createElement('h5');
-        descriptionInfo.textContent = word.description;
-        description.appendChild(descriptionInfo);
-        blockName.appendChild(description);
-
-        // Створення кнопки "Додати"
-
-        const formPlus = document.createElement('form');
-        formPlus.id = 'formPlus';
-
-        // Створення input з атрибутом name="id" та значенням value="${selectedId}"
-        const inputElement = document.createElement('input');
-        inputElement.type = 'hidden';
-        inputElement.name = 'id';
-        inputElement.value = word.id;
-        formPlus.appendChild(inputElement);
-
-        const addButton = document.createElement('button');
-        addButton.classList.add('btn_plus_lesson');
-        addButton.classList.add('pulse');
-        addButton.innerHTML = '<span class="lesson_plus_ico"></span>';
-        addButton.type = 'submit';
-
-        formPlus.appendChild(addButton);
-
-
-        blockName.appendChild(formPlus);
-
-        slide.appendChild(blockName);
-        slider.appendChild(slide);
-
-        // Збільшуємо індекс поточного слайда тільки після додавання нового слайда
-        currentIndex++;
-        // Оновлюємо слайдер з новим індексом
-        updateSlider();
-    }
+    // function nextSlide() {
+    //     ++pagePrev;
+    //     // var categoryId = $('input[name="categoryId"]').val();
+    //     var url = '/word-lesson/' + categoryId + '/word-next';
+    //     if (page + 1 === pagePrev) {
+    //         ++page;
+    //         if (page < totalPage) {
+    //             $.ajax({
+    //                 url: url,
+    //                 type: "GET",
+    //                 data: {page: page},
+    //                 success: function (result) {
+    //                     totalPage = result.totalPage;
+    //                     wordLessonId = result.wordLessonId;
+    //                     addWordToSlider(result);
+    //                     currentIndex = slider.children.length - 2;
+    //                     updateSlider();
+    //                 },
+    //                 error: function () {
+    //                     let shel = {};
+    //                     alert(Boolean(shel))
+    //                 }
+    //             });
+    //         } else if (page === totalPage) {
+    //             addEndSlide()
+    //             currentIndex = slider.children.length - 2;
+    //             updateSlider();
+    //         } else if (page === totalPage + 1) {
+    //             currentIndex = slider.children.length - 1;
+    //             updateSlider();
+    //         }
+    //     } else {
+    //         currentIndex++;
+    //         if (currentIndex >= slider.children.length) {
+    //             currentIndex = slider.children.length - 1;
+    //         }
+    //         updateSlider();
+    //     }
+    // }
+    //
+    //
+    // prevButton.addEventListener('click', () => {
+    //     if (pagePrev > 1) {
+    //         pagePrev--;
+    //         currentIndex--;
+    //         if (currentIndex < 0) {
+    //             currentIndex = 0;
+    //         }
+    //         updateSlider();
+    //     }
+    // });
+    //
+    // function updateSlider() {
+    //     const slide = slider.firstElementChild;
+    //     const slideStyles = window.getComputedStyle(slide);
+    //     const slideWidth = slide.offsetWidth + parseInt(slideStyles.marginLeft) + parseInt(slideStyles.marginRight);
+    //     slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    //
+    //
+    //     const mainSlide = slider.children[currentIndex];
+    //
+    //     if (mainSlide) {
+    //         mainSlide.classList.remove('slide_no_active');
+    //         mainSlide.classList.add('slide_active');
+    //     }
+    //
+    //     const currentSlide = slider.children[currentIndex - 1];
+    //     if (currentSlide) {
+    //         currentSlide.classList.remove('slide_active');
+    //         currentSlide.classList.add('slide_no_active');
+    //     }
+    //
+    //
+    // }
+    //
+    // function addEndSlide() {
+    //     const slide = document.createElement('div');
+    //     slide.className = 'slide bb slide_no_active';
+    //     slide.id = 'endSlide';
+    //     slider.appendChild(slide);
+    //     $('#endSlide').load("/fragmentsPages/endSlide", function () {
+    //     });
+    //     currentIndex++;
+    //     updateSlider();
+    // }
+    //
+    //
+    // function addWordToSlider(word) {
+    //
+    //     const slide = document.createElement('div');
+    //     slide.className = 'slide bb slide_no_active';
+    //
+    //     const imageElement = document.createElement('img');
+    //     imageElement.src = '/word-image/' + word.imageName;
+    //     slide.appendChild(imageElement);
+    //
+    //     const blockName = document.createElement('div');
+    //     blockName.className = 'block_name';
+    //
+    //     const nameAndAudio = document.createElement('div');
+    //     nameAndAudio.className = 'name_and_audio';
+    //
+    //     const nameElement = document.createElement('h3');
+    //     nameElement.textContent = word.name;
+    //     nameAndAudio.appendChild(nameElement);
+    //
+    //     const audioElement = document.createElement('audio');
+    //
+    //     audioElement.id = 'audio'; // Set the audio ID if needed
+    //     audioElement.preload = 'auto';
+    //
+    //     const audioSource = document.createElement('source');
+    //     audioSource.src = '/audio/' + word.audioName;
+    //     audioSource.type = 'audio/mpeg';
+    //     audioElement.appendChild(audioSource);
+    //
+    //     const soundSpan = document.createElement('span');
+    //     soundSpan.className = 'sound_pic';
+    //     soundSpan.onclick = function () {
+    //         document.getElementById('audio').load();
+    //         document.getElementById('audio').play();
+    //     }
+    //     const soundImage = document.createElement('img');
+    //     soundImage.src = '/images/audio-play.webp';
+    //     soundImage.width = '20px';
+    //     // soundImage.alt = 'Британська вимова слова ' + word.name;
+    //     // soundImage.title = 'Британська вимова слова ' + word.name;
+    //     soundSpan.appendChild(soundImage);
+    //
+    //     nameAndAudio.appendChild(audioElement);
+    //     nameAndAudio.appendChild(soundSpan);
+    //
+    //     blockName.appendChild(nameAndAudio)
+    //
+    //     const transcription = document.createElement('h6');
+    //     transcription.textContent = word.transcription;
+    //     blockName.appendChild(transcription);
+    //
+    //     const description = document.createElement('div');
+    //     description.className = 'word_description';
+    //
+    //     const descriptionInfo = document.createElement('h5');
+    //     descriptionInfo.textContent = word.description;
+    //     description.appendChild(descriptionInfo);
+    //     blockName.appendChild(description);
+    //
+    //     // Створення кнопки "Додати"
+    //
+    //     const formPlus = document.createElement('form');
+    //     formPlus.id = 'formPlus';
+    //
+    //     // Створення input з атрибутом name="id" та значенням value="${selectedId}"
+    //     const inputElement = document.createElement('input');
+    //     inputElement.type = 'hidden';
+    //     inputElement.name = 'id';
+    //     inputElement.value = word.id;
+    //     formPlus.appendChild(inputElement);
+    //
+    //     const addButton = document.createElement('button');
+    //     addButton.classList.add('btn_plus_lesson');
+    //     addButton.classList.add('pulse');
+    //     addButton.innerHTML = '<span class="lesson_plus_ico"></span>';
+    //     addButton.type = 'submit';
+    //
+    //     formPlus.appendChild(addButton);
+    //
+    //
+    //     blockName.appendChild(formPlus);
+    //
+    //     slide.appendChild(blockName);
+    //     slider.appendChild(slide);
+    //
+    //     // Збільшуємо індекс поточного слайда тільки після додавання нового слайда
+    //     currentIndex++;
+    //     // Оновлюємо слайдер з новим індексом
+    //     updateSlider();
+    // }
 
 
     function switchTab(tabId) {
+
         // Забираємо активний клас від усіх кнопок
         $('.word_tabs li button').removeClass('active');
 
@@ -825,6 +809,11 @@
         const firstTabContent = document.getElementById('content-' + firstTabId);
         if (firstTabContent) {
             firstTabContent.classList.add('active');
+            $('#content-tab1').load("/fragmentsPages/wordLessonReview", function () {
+                slider = document.querySelector('.slider_word');
+                wordsStart();
+
+            });
         }
 
         tabButtons.forEach((button) => {
@@ -833,16 +822,59 @@
                 tabContents.forEach((content) => {
                     content.classList.remove('active');
                 });
-
+                const tab1 = document.getElementById('content-tab1');
+                const tab2 = document.getElementById('content-tab2');
+                const tab3 = document.getElementById('content-tab3');
                 const activeTabContent = document.getElementById('content-' + tabId);
                 if (activeTabContent) {
                     activeTabContent.classList.add('active');
+                    if(tabId === 'tab2'){
+                        $('#content-tab2').load("/fragmentsPages/wordLessonSpelling", function () {
+                            wordsStart();
+                        });
+                        tab1.innerHTML = '';
+                        tab3.innerHTML = '';
+                    }else if(tabId === 'tab3'){
+                        tab1.innerHTML = '';
+                        tab2.innerHTML = '';
+                    }else {
+                        $('#content-tab1').load("/fragmentsPages/wordLessonReview", function () {
+                            wordsStart();
+                        });
+                        tab2.innerHTML = '';
+                        tab3.innerHTML = '';
+                    }
                 }
                 // Викликаємо функцію для перемикання табів, яка забезпечить оновлення слайдера
                 switchTab(tabId);
             });
         });
     });
+
+    // function wordsStart(){
+    //     var url = '/word-lesson/' + categoryId + '/word-start';
+    //     $.ajax({
+    //         url: url,
+    //         type: "GET",
+    //         data: {size: 2},
+    //         success: function (result) {
+    //             const objectDivs = document.querySelectorAll(".slide");
+    //
+    //             objectDivs.forEach((div, index) => {
+    //                 const nameHeading = div.querySelector("h3");
+    //                 nameHeading.textContent = result[index].wordName;
+    //
+    //                 const descriptionHeading = div.querySelector("h5");
+    //                 descriptionHeading.textContent = result[index].description;
+    //
+    //                 const image = div.querySelector("img");
+    //                 image.src = "/word-image/" + result[index].imageName;
+    //             });
+    //             startSlid();
+    //             console.log('start');
+    //         }
+    //     });
+    // }
 </script>
 
 <!--<script type="text/javascript" th:src="@{/js/userTranslationPairsPage.js}"></script>-->

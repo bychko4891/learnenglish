@@ -8,7 +8,7 @@
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="flex-grow-1">
             <div class="d-flex l_info">
-                <img th:src="@{/category-image/{name}(name=${wordLessonCategory.image.imageName})}"/>
+                <img th:src="@{/category-image/{name}(name=${wordLessonCategory.image.imageName})}" />
                 <div class="d-flex flex-grow-1" style="align-content: center; flex-wrap: wrap;">
                     <div class="d-flex flex-column">
                         <h3 th:text="${wordLessonCategory.name}"></h3>
@@ -23,10 +23,10 @@
                         <div class="d-flex justify-content-between w-100">
                             <div>
                                 <a th:href="@{/word-lesson/{id}(id=${lesson.id})}">
-                                    <h5 th:text="${lesson.name}"></h5>
+                                    <h5 th:text="${lesson.name}" style="color: #6c757d;"></h5>
                                 </a>
                                 <h3 th:text="${lesson.description}"></h3>
-                                <h6 th:text="${#arrays.length(lesson.words) + ' слів'}"></h6>
+                                <h6 th:text="${#arrays.length(lesson.words) + ' слів'}" style="color: #6c757d;"></h6>
                             </div>
 
                             <div th:if="${lesson.userWordLessonProgress != null}" style="position: relative; width: 45px; height: 45px; border-radius: 50%; text-align: center; padding: 5px; color: #f7f7f7; background-color: #7b61ff; border: 2px solid;">
