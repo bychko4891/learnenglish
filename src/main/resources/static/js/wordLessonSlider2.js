@@ -17,58 +17,47 @@ function startSlid() {
     }
 }
 
-$('#next').submit(function (event) {
-    const slides = document.querySelector('.slider_word');
-    event.preventDefault();
-    ++pagePrev;
-    var url = '/word-lesson/' + categoryId + '/word-next';
-    if (page + 1 === pagePrev) {
-        ++page;
-        if (page < totalPage) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                data: {page: page},
-                success: function (result) {
-                    totalPage = result.totalPage;
-                    wordLessonId = result.wordLessonId;
-                    addWordToSlider(result);
-                    currentIndex = slides.children.length - 2;
-                    updateSlider();
-                },
-                error: function () {
-                    let shel = {};
-                    alert(Boolean(shel))
-                }
-            });
-        } else if (page === totalPage) {
-            addEndSlide()
-            currentIndex = slides.children.length - 2;
-            updateSlider();
-        } else if (page === totalPage + 1) {
-            currentIndex = slides.children.length - 1;
-            updateSlider();
-        }
-    } else {
-        currentIndex++;
-        if (currentIndex >= slides.children.length) {
-            currentIndex = slides.children.length - 1;
-        }
-        updateSlider();
-    }
-});
+// $('#next').submit(function (event) {
+//     const slides = document.querySelector('.slider_word');
+//     event.preventDefault();
+//     ++pagePrev;
+//     var url = '/word-lesson/' + categoryId + '/word-next';
+//     if (page + 1 === pagePrev) {
+//         ++page;
+//         if (page < totalPage) {
+//             $.ajax({
+//                 url: url,
+//                 type: "GET",
+//                 data: {page: page},
+//                 success: function (result) {
+//                     totalPage = result.totalPage;
+//                     wordLessonId = result.wordLessonId;
+//                     addWordToSlider(result);
+//                     currentIndex = slides.children.length - 2;
+//                     updateSlider();
+//                 },
+//                 error: function () {
+//                     let shel = {};
+//                     alert(Boolean(shel))
+//                 }
+//             });
+//         } else if (page === totalPage) {
+//             addEndSlide()
+//             currentIndex = slides.children.length - 2;
+//             updateSlider();
+//         } else if (page === totalPage + 1) {
+//             currentIndex = slides.children.length - 1;
+//             updateSlider();
+//         }
+//     } else {
+//         currentIndex++;
+//         if (currentIndex >= slides.children.length) {
+//             currentIndex = slides.children.length - 1;
+//         }
+//         updateSlider();
+//     }
+// });
 
-
-prevButton.addEventListener('click', () => {
-    if (pagePrev > 1) {
-        pagePrev--;
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = 0;
-        }
-        updateSlider();
-    }
-});
 
 function updateSlider() {
     const slide = slider.firstElementChild;
@@ -155,14 +144,9 @@ function wordsStart() {
             const objectDivs = document.querySelectorAll(".slide");
 
             objectDivs.forEach((div, index) => {
-                const nameHeading = div.querySelector("h3");
-                nameHeading.textContent = result[index].name;
 
                 const descriptionHeading = div.querySelector("h5");
                 descriptionHeading.textContent = result[index].description;
-
-                const transcriptionHeading = div.querySelector("h6");
-                transcriptionHeading.textContent = result[index].transcription;
 
                 const audioName = div.querySelector("source");
                 audioName.src = "/audio/" + result[index].audioName;

@@ -253,15 +253,6 @@
                 },
                 success: function (result) {
                     switchTab('tab2');
-                    const activeTabContent = document.getElementById('content-tab1');
-                    if (activeTabContent) {
-                        activeTabContent.classList.remove('active');
-                    }
-                    const nextTabContent = document.getElementById('content-' + result);
-                    if (nextTabContent) {
-                        nextTabContent.classList.add('active');
-                    }
-
                 },
                 error: function () {
                     let shel = {};
@@ -274,7 +265,7 @@
 </div>
 
 <div th:fragment="slide">
-    <img />
+    <img/>
     <div class="block_name">
         <div class="name_and_audio">
             <h3></h3>
@@ -337,6 +328,7 @@
                         <span class="sound_pic" onclick="playAudio(this);">
                                         <img src="/images/audio-play.webp" width="20px"/>
                         </span>
+
                     </div>
                     <h6></h6>
                     <div class="word_description">
@@ -364,13 +356,140 @@
 
 
 <div th:fragment="wordLessonSpelling">
+    <style>
+        .img_description {
+            height: 11rem;
+            position: relative;
+            width: 100%;
+            /*height: 12.5rem;*/
+            /*overflow: hidden;*/
+            background-color: #0000;
+            z-index: 1;
+            /*height: 250px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*background: #606060;*/
+            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
+            /*transform: scaleX(1.5);*/
+            /*-moz-transform: scaleX(1.5);*/
+            /*-webkit-transform: scaleX(1.5);*/
+            /*-o-transform: scaleX(1.5);*/
+            align-items: center;
+        }
+
+        .img_description::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00bfa5;
+            border-radius: 0 0 50% 50%/0 0 100% 100%;
+            transform: scaleX(1.5);
+            -moz-transform: scaleX(1.5);
+            -webkit-transform: scaleX(1.5);
+            -o-transform: scaleX(1.5);
+            z-index: 1;
+        }
+
+        .img_description img {
+            height: 160px;
+            width: 160px;
+            border: 4px solid #00bfa5;
+            border-radius: 50%;
+            z-index: 2;
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*background: #00bfa5;*/
+            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
+            /*transform: scaleX(1.5);*/
+            /*-moz-transform: scaleX(1.5);*/
+            /*-webkit-transform: scaleX(1.5);*/
+            /*-o-transform: scaleX(1.5);*/
+
+        }
+
+        .img_description h5 {
+            padding: 10px;
+            z-index: 2;
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*background: #00bfa5;*/
+            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
+            /*transform: scaleX(1.5);*/
+            /*-moz-transform: scaleX(1.5);*/
+            /*-webkit-transform: scaleX(1.5);*/
+            /*-o-transform: scaleX(1.5);*/
+
+        }
+    </style>
     <div class="slider-container">
         <div class="slider_word">
+
             <div class="slide bb">
-                <img/>
-                <div class="block_name">
+
+                <div class="img_description d-flex flex-column">
+                    <h5></h5>
+                    <img/>
+                </div>
+
+                <div class="block_audio_confirm" style="width: 100%;">
+
+                    <div class="block_audio" style="margin-top: 80px;">
+                        <audio class="audio" preload="auto">
+                            <source type="audio/mpeg"/>
+                        </audio>
+                        <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/play_audio.png" style="width: 50px;"/>
+                        </span>
+                    </div>
+
+                    <div class="block_confirm">
+                        <div class="word_confirm">
+                            <input type="text">
+                        </div>
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <form class="child formPlus">
+                                <input type="hidden" name="id">
+                                <button class="btn_plus_lesson pulse" type="submit">
+                                    <span class="lesson_plus_ico"></span>
+                                </button>
+                            </form>
+                            <form class="child confirm">
+                                <input type="hidden" name="id">
+                                <button class="btn_main" type="submit">
+                                    Перевірити
+                                </button>
+                            </form>
+                            <form class="child next">
+                                <button type="submit" class=""><i
+                                        class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide bb">
+                <div class="img_description d-flex flex-column">
+                    <h5></h5>
+                    <img/>
+                </div>
+                <div class="block_">
                     <div class="name_and_audio">
-                        <h3></h3>
+
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -378,9 +497,8 @@
                                         <img src="/images/audio-play.webp" width="20px"/>
                         </span>
                     </div>
-                    <h6></h6>
                     <div class="word_description">
-                        <h5></h5>
+
                     </div>
                     <form class="formPlus">
                         <input type="hidden" name="id">
@@ -388,41 +506,17 @@
                             <span class="lesson_plus_ico"></span>
                         </button>
                     </form>
-                </div>
-            </div>
-            <div class="slide bb">
-                <img/>
-                <div class="block_name">
-                    <div class="name_and_audio">
-                        <h3></h3>
-                        <audio class="audio" preload="auto">
-                            <source type="audio/mpeg"/>
-                        </audio>
-                        <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/audio-play.webp" width="20px"/>
-                        </span>
-                    </div>
-                    <h6></h6>
-                    <div class="word_description">
-                        <h5></h5>
-                    </div>
-                    <form class="formPlus">
-                        <input type="hidden" name="id">
-                        <button class="btn_plus_lesson pulse" type="submit">
-                            <span class="lesson_plus_ico"></span>
+                    <form class="next">
+                        <button type="submit" class="button_slide"><i
+                                class="fa-solid fa-chevron-right"></i>
                         </button>
                     </form>
                 </div>
             </div>
 
         </div>
-        <button class="prev-button button_slide"><i class="fa-solid fa-chevron-left"></i></button>
-        <form id="next">
-            <button type="submit" class="next-button button_slide"><i
-                    class="fa-solid fa-chevron-right"></i>
-            </button>
-        </form>
+
     </div>
-    <script type="text/javascript" th:src="@{/js/wordLessonSlider.js}"></script>
+    <script type="text/javascript" th:src="@{/js/wordLessonSlider2.js}"></script>
 </div>
 
