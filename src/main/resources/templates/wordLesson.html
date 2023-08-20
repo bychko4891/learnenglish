@@ -315,15 +315,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 540px; /* Висота слайда */
+        height: 580px; /* Висота слайда */
         text-align: center;
+        position: relative;
         /*border: 1px solid #ccc;*/
         /*transition: all 0.6s ease-in;*/
         overflow: hidden;
     }
 
     .slide img {
-        margin: 20px;
         width: auto;
         height: auto;
     }
@@ -509,7 +509,8 @@
     <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div style="height: calc(100vh - 70px);">
-        <div class="d-flex flex-column overflow-hidden align-items-center container-fluid slider_block" style="height: 100vh;">
+<!--        <div class="d-flex flex-column overflow-hidden align-items-center container-fluid slider_block" style="height: 100vh;">-->
+        <div class="d-flex flex-column align-items-center container-fluid slider_block" style="height: 100vh;">
 
 
             <div class="tab_content">

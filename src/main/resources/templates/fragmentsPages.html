@@ -273,7 +273,7 @@
                 <source type="audio/mpeg"/>
             </audio>
             <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/audio-play.webp" width="20px"/>
+                                        <img src="/images/play_audio.png" style="width: 30px;"/>
                         </span>
         </div>
         <h6></h6>
@@ -302,7 +302,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/audio-play.webp" width="20px"/>
+                                        <img src="/images/play_audio.png" style="width: 30px;"/>
                         </span>
                     </div>
                     <h6></h6>
@@ -326,7 +326,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/audio-play.webp" width="20px"/>
+                                        <img src="/images/play_audio.png" style="width: 30px;" />
                         </span>
 
                     </div>
@@ -358,25 +358,11 @@
 <div th:fragment="wordLessonSpelling">
     <style>
         .img_description {
-            height: 11rem;
+            height: 12rem;
             position: relative;
             width: 100%;
-            /*height: 12.5rem;*/
-            /*overflow: hidden;*/
             background-color: #0000;
             z-index: 1;
-            /*height: 250px;*/
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*background: #606060;*/
-            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
-            /*transform: scaleX(1.5);*/
-            /*-moz-transform: scaleX(1.5);*/
-            /*-webkit-transform: scaleX(1.5);*/
-            /*-o-transform: scaleX(1.5);*/
             align-items: center;
         }
 
@@ -396,41 +382,24 @@
             z-index: 1;
         }
 
-        .img_description img {
+        .slide .img_description img {
             height: 160px;
             width: 160px;
             border: 4px solid #00bfa5;
             border-radius: 50%;
+            margin: 0;
             z-index: 2;
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*background: #00bfa5;*/
-            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
-            /*transform: scaleX(1.5);*/
-            /*-moz-transform: scaleX(1.5);*/
-            /*-webkit-transform: scaleX(1.5);*/
-            /*-o-transform: scaleX(1.5);*/
-
         }
 
         .img_description h5 {
-            padding: 10px;
+            padding: 0 10px;
             z-index: 2;
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*background: #00bfa5;*/
-            /*border-radius: 0 0 50% 50%/0 0 100% 100%;*/
-            /*transform: scaleX(1.5);*/
-            /*-moz-transform: scaleX(1.5);*/
-            /*-webkit-transform: scaleX(1.5);*/
-            /*-o-transform: scaleX(1.5);*/
-
+        }
+        .inputs-container input{
+            width: 28px;
+            height: 31px;
+            margin-right: 3px;
+            border-radius: 6px;
         }
     </style>
     <div class="slider-container">
@@ -439,13 +408,14 @@
             <div class="slide bb">
 
                 <div class="img_description d-flex flex-column">
+                    <span style="z-index: 2; font-size: 20px;">По буквах!</span>
                     <h5></h5>
                     <img/>
                 </div>
 
-                <div class="block_audio_confirm" style="width: 100%;">
+                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 282px;">
 
-                    <div class="block_audio" style="margin-top: 80px;">
+                    <div class="block_audio" style="">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -456,18 +426,19 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <input type="text">
+                            <div style="height: 50px; padding-top: 10px; margin-top: 10px;">
+                                <input type="text" name="word_confirm">
+                            </div>
+                            <div class="inputs-container" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
-
+                            <input type="hidden" name="id">
                             <form class="child formPlus">
-                                <input type="hidden" name="id">
-                                <button class="btn_plus_lesson pulse" type="submit">
-                                    <span class="lesson_plus_ico"></span>
+                                <button class="" type="button" onclick="hint()" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                                    <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
                             <form class="child confirm">
-                                <input type="hidden" name="id">
                                 <button class="btn_main" type="submit">
                                     Перевірити
                                 </button>
@@ -478,39 +449,57 @@
                                 </button>
                             </form>
                         </div>
+                        <div class="letters-container" style="margin: 20px 0;"></div>
                     </div>
                 </div>
             </div>
 
             <div class="slide bb">
+
                 <div class="img_description d-flex flex-column">
+                    <span style="z-index: 2; font-size: 20px;">По буквах!</span>
                     <h5></h5>
                     <img/>
                 </div>
-                <div class="block_">
-                    <div class="name_and_audio">
 
+                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 282px;">
+
+                    <div class="block_audio" style="">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/audio-play.webp" width="20px"/>
+                                        <img src="/images/play_audio.png" style="width: 50px;"/>
                         </span>
                     </div>
-                    <div class="word_description">
 
+                    <div class="block_confirm">
+                        <div class="word_confirm">
+                            <div style="height: 50px; padding-top: 10px; margin-top: 10px;">
+                                <input type="text" name="word_confirm">
+                            </div>
+                            <div class="inputs-container" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between">
+                            <input type="hidden" name="id">
+                            <form class="child formPlus">
+                                <button class="" type="button" onclick="hint()" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                                    <i class="fa-regular fa-lightbulb"></i>
+                                </button>
+                            </form>
+                            <form class="child confirm">
+                                <button class="btn_main" type="submit">
+                                    Перевірити
+                                </button>
+                            </form>
+                            <form class="child next">
+                                <button type="submit" class=""><i
+                                        class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="letters-container" style="margin: 20px 0;"></div>
                     </div>
-                    <form class="formPlus">
-                        <input type="hidden" name="id">
-                        <button class="btn_plus_lesson pulse" type="submit">
-                            <span class="lesson_plus_ico"></span>
-                        </button>
-                    </form>
-                    <form class="next">
-                        <button type="submit" class="button_slide"><i
-                                class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </form>
                 </div>
             </div>
 
