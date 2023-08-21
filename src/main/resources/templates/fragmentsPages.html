@@ -398,9 +398,21 @@
         .inputs-container input{
             width: 28px;
             height: 31px;
+            padding: 4px;
+            font-size: 27px;
+            font-weight: 600;
             margin-right: 3px;
             border-radius: 6px;
-
+        }
+        .inputs-container.no_active,
+        .letters-container.no_active,
+        .input-container.no_active,
+        .audio-container.no_active{
+            display: none;
+        }
+        /* Стиль для валідних input */
+        .inputs-container input:valid {
+            background-color: #87f7a7; /* Змініть на потрібний колір */
         }
     </style>
     <div class="slider-container">
@@ -414,9 +426,9 @@
                     <img/>
                 </div>
 
-                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 282px;">
+                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-                    <div class="block_audio" style="">
+                    <div class="audio-container no_active">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -427,20 +439,22 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <div style="height: 50px; padding-top: 10px; margin-top: 10px;">
-                                <input type="text" name="word_confirm">
+                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">
+                                <input type="text" name="wordConfirm">
                             </div>
-                            <div class="inputs-container" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
+                            <div class="word-result-success" style="color: #00bfa5;"> </div>
+                            <div class="word-result-error" style="color: #e03e2d;"></div>
+                            <div class="inputs-container no_active" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
                             <form class="child formPlus">
-                                <button class="" type="button" onclick="hint()" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                                <button class="hint_button" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                                     <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
                             <form class="child confirm">
-                                <button class="btn_main" type="submit">
+                                <button class="btn_main" type="button" onclick="confirm(this)">
                                     Перевірити
                                 </button>
                             </form>
@@ -450,7 +464,7 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="letters-container" style="margin: 20px 0;"></div>
+                        <div class="letters-container no_active" style="margin: 20px 0;"></div>
                     </div>
                 </div>
             </div>
@@ -465,7 +479,7 @@
 
                 <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 282px;">
 
-                    <div class="block_audio" style="">
+                    <div class="audio-container no_active" style="">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -479,7 +493,7 @@
                             <div style="height: 50px; padding-top: 10px; margin-top: 10px;">
                                 <input type="text" name="word_confirm">
                             </div>
-                            <div class="inputs-container" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
+                            <div class="inputs-container no_active" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
@@ -489,8 +503,8 @@
                                 </button>
                             </form>
                             <form class="child confirm">
-                                <button class="btn_main" type="submit">
-                                    Перевірити
+                                <button disabled class="btn_main" type="button" onclick="confirm(this)">
+                                Перевірити
                                 </button>
                             </form>
                             <form class="child next">
@@ -499,7 +513,7 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="letters-container" style="margin: 20px 0;"></div>
+                        <div class="letters-container no_active" style="margin: 20px 0;"></div>
                     </div>
                 </div>
             </div>

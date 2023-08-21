@@ -11,9 +11,15 @@ public class ResponseMessage {
     private String status;
     private String message;
 
+    private String info;
+
     public ResponseMessage(Message message) {
         this.status = message.getStatus();
         this.message = message.getMessage();
+    }
+    public ResponseMessage(Message message, String info) {
+        this.status = message.getStatus();
+        this.info = info;
     }
 
     public String getStatus() {
@@ -22,6 +28,14 @@ public class ResponseMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     @Override

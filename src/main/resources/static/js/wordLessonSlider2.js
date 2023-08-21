@@ -15,46 +15,46 @@ function startSlid() {
     }
 }
 
-// $('#next').submit(function (event) {
-//     const slides = document.querySelector('.slider_word');
-//     event.preventDefault();
-//     ++pagePrev;
-//     var url = '/word-lesson/' + categoryId + '/word-next';
-//     if (page + 1 === pagePrev) {
-//         ++page;
-//         if (page < totalPage) {
-//             $.ajax({
-//                 url: url,
-//                 type: "GET",
-//                 data: {page: page},
-//                 success: function (result) {
-//                     totalPage = result.totalPage;
-//                     wordLessonId = result.wordLessonId;
-//                     addWordToSlider(result);
-//                     currentIndex = slides.children.length - 2;
-//                     updateSlider();
-//                 },
-//                 error: function () {
-//                     let shel = {};
-//                     alert(Boolean(shel))
-//                 }
-//             });
-//         } else if (page === totalPage) {
-//             addEndSlide()
-//             currentIndex = slides.children.length - 2;
-//             updateSlider();
-//         } else if (page === totalPage + 1) {
-//             currentIndex = slides.children.length - 1;
-//             updateSlider();
-//         }
-//     } else {
-//         currentIndex++;
-//         if (currentIndex >= slides.children.length) {
-//             currentIndex = slides.children.length - 1;
-//         }
-//         updateSlider();
-//     }
-// });
+$('#next').submit(function (event) {
+    const slides = document.querySelector('.slider_word');
+    event.preventDefault();
+    ++pagePrev;
+    var url = '/word-lesson/' + categoryId + '/word-next';
+    if (page + 1 === pagePrev) {
+        ++page;
+        if (page < totalPage) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: {page: page},
+                success: function (result) {
+                    totalPage = result.totalPage;
+                    wordLessonId = result.wordLessonId;
+                    addWordToSlider(result);
+                    currentIndex = slides.children.length - 2;
+                    updateSlider();
+                },
+                error: function () {
+                    let shel = {};
+                    alert(Boolean(shel))
+                }
+            });
+        } else if (page === totalPage) {
+            addEndSlide()
+            currentIndex = slides.children.length - 2;
+            updateSlider();
+        } else if (page === totalPage + 1) {
+            currentIndex = slides.children.length - 1;
+            updateSlider();
+        }
+    } else {
+        currentIndex++;
+        if (currentIndex >= slides.children.length) {
+            currentIndex = slides.children.length - 1;
+        }
+        updateSlider();
+    }
+});
 
 
 function updateSlider() {
@@ -187,6 +187,7 @@ function wordsStart() {
                     const input = document.createElement("input");
                     input.type = "text";
                     input.required = true;
+                    input.maxLength = 1;
 
                     inputsContainer.appendChild(input);
                 });
@@ -211,15 +212,87 @@ function wordsStart() {
         }
     });
 }
-var hint = 2;
+var hintCount = 0;
+let currentIndexWord = 0;
 function deleteWord(){
-    const inputContainer = document.querySelector(".input-container");
-    const inputs = inputContainer.querySelectorAll("input");
-    if (currentIndex > 0) {
-        currentIndex--;
-        inputs[currentIndex].value = "";
+    const inputsContainer = document.querySelector(".inputs-container");
+    const inputs = inputsContainer.querySelectorAll("input");
+    if (currentIndexWord > 0) {
+        currentIndexWord--;
+        inputs[currentIndexWord].setAttribute('value', '');
     }
 }
-function hint(){
+// Обробник натискання кнопки з літерою
+//Переробити!!! Зараз орієнтир йде за індексом, але з цього випливають проблеми,
+// якщо користувач зненацька захоче поставити самостійно літеру, то тоді все ламається
+// потрібно орієнтуватися на останній не порожній, чи якось так
+function handleLetterClick(letter) {
+    const inputsContainer = document.querySelector(".inputs-container");
+    const inputs = inputsContainer.querySelectorAll("input");
+    if (currentIndexWord < inputs.length) {
+        inputs[currentIndexWord].setAttribute('value', letter);
+        currentIndexWord++;
+    }
+}
+function hint(element){
+    var hintButton = element; // element - це вже кнопка, яка була передана у функцію
+    var audioContainer = hintButton.closest('.block_audio_confirm').querySelector('.audio-container');
+    if(hintCount === 0) {
+        var inputContainer = hintButton.closest('.block_confirm').querySelector('.input-container');
+        var inputsContainer = hintButton.closest('.block_confirm').querySelector('.inputs-container');
+        var lettersContainer = hintButton.closest('.block_confirm').querySelector('.letters-container');
+
+        inputContainer.classList.add('no_active');
+        inputsContainer.classList.remove('no_active');
+        lettersContainer.classList.remove('no_active');
+        ++hintCount;
+    } else if (hintCount === 1){
+        hintCount = 0;
+        audioContainer.classList.remove('no_active');
+        hintButton.style.visibility = 'hidden';
+    }
+}
+function confirm(element){
+    const inputsContainer = element.closest('.block_confirm').querySelector('.inputs-container');
+    const wordResultSuccess = element.closest('.block_confirm').querySelector('.word-result-success');
+    const wordResultError = element.closest('.block_confirm').querySelector('.word-result-error');
+
+    var valuesArray = "";
+
+    inputsContainer.querySelectorAll("input").forEach(input => {
+        const value = input.value;
+
+        if (value !== "") {
+            valuesArray += value;
+        }
+    });
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
+    $.ajax({
+        url: '/' + wordId + '/word-confirm',
+        type: "POST",
+        data: {wordConfirm: valuesArray},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        },
+        success: function (result) {
+            var status = result.status;
+            if (status == "Success") {
+                wordResultSuccess.innerHTML = result.info;
+
+                // showSuccessToast(result.message);
+            } else {
+                wordResultError.innerHTML = result.info;
+                // showErrorToast(result.message);
+            }
+        },
+        error: function () {
+            let shel = {};
+            alert(Boolean(shel))
+        }
+    });
+
+
 
 }

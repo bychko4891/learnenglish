@@ -8,6 +8,9 @@ package com.example.learnenglish.responsemessage;
  */
 
 public enum Message {
+
+    ERROR("Error"),
+    SUCCESS("Success"),
     SUCCESSADDBASE("Success","Операція пройшла успішно"),
     ERRORBASE("Error","Щось трапилося з базою данних і операція збереження не може бути виконаною.\n" +
             " Напишіть будь ласка про цю помилку адміністратору застосунка"),
@@ -36,6 +39,9 @@ public enum Message {
     Message(String status, String message) {
         this.status = status;
         this.message = message;
+    }
+    Message(String status) {
+        this.status = status;
     }
 
     @Override

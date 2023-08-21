@@ -606,9 +606,7 @@
                 const tab2 = document.getElementById('content-tab2');
                 const tab3 = document.getElementById('content-tab3');
                 const activeTabContent = document.getElementById('content-' + tabId);
-                console.log(activeTabContent + ' * ' + tabId);
                 if (tabId.trim() !== "") {
-                    console.log('yes');
                     activeTabContent.classList.add('active');
                     if(tabId === 'tab2'){
                         $('#content-tab2').load("/fragmentsPages/wordLessonSpelling", function () {

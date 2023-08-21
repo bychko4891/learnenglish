@@ -178,4 +178,14 @@ public class WordService {
         Pageable pageable = PageRequest.of(page, size);
         return wordRepository.wordsFromLesson(pageable, wordLessonId);
     }
+
+    public ResponseMessage confirmWord(String wordConfirm, Long id){
+        Optional<Word> wordOptional = wordRepository.findById(id);
+        if (wordOptional.isPresent()){
+            Word word = wordOptional.get();
+            if(word.getName().equals(wordConfirm)){
+                return new ResponseMessage(Message.SUCCESS, word.getName());
+            } else return new ResponseMessage(Message.ERROR, word.getName());
+        } else return  new ResponseMessage(Message.ERRORBASE);
+     }
 }
