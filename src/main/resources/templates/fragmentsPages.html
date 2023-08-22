@@ -395,7 +395,8 @@
             padding: 0 10px;
             z-index: 2;
         }
-        .inputs-container input{
+
+        .inputs-container input {
             width: 28px;
             height: 31px;
             padding: 4px;
@@ -404,13 +405,36 @@
             margin-right: 3px;
             border-radius: 6px;
         }
-        .inputs-container.no_active,
-        .letters-container.no_active,
-        .input-container.no_active,
-        .audio-container.no_active{
-            display: none;
+
+        .inputs-container.active,
+        .letters-container.active,
+        .input-container.active,
+        .audio-container.active,
+        .hint_button.active,
+        .next-slide.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.6s ease-in, visibility 0.6s ease-in;
         }
-        /* Стиль для валідних input */
+
+        .input-container {
+            height: 0;
+        }
+        .hint_button,
+        .letters-container {
+            transition: opacity 0.6s ease-in, visibility 0.6s ease-in;
+        }
+
+        .inputs-container,
+        .letters-container,
+        .input-container,
+        .audio-container,
+        .hint_button,
+        .next-slide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
         .inputs-container input:valid {
             background-color: #87f7a7; /* Змініть на потрібний колір */
         }
@@ -428,7 +452,7 @@
 
                 <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-                    <div class="audio-container no_active">
+                    <div class="audio-container" >
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -439,32 +463,33 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">
-                                <input type="text" name="wordConfirm">
-                            </div>
                             <div class="word-result-success" style="color: #00bfa5;"> </div>
                             <div class="word-result-error" style="color: #e03e2d;"></div>
-                            <div class="inputs-container no_active" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
+<!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
+                            <div class="input-container active">
+                                <input type="text" name="wordConfirm">
+                            </div>
+                            <div class="inputs-container" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
-                            <form class="child formPlus">
-                                <button class="hint_button" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                            <form class="child">
+                                <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                                     <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
-                            <form class="child confirm">
-                                <button class="btn_main" type="button" onclick="confirm(this)">
+                            <form class="child">
+                                <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
                                     Перевірити
                                 </button>
                             </form>
-                            <form class="child next">
-                                <button type="submit" class=""><i
+                            <form class="child">
+                                <button type="submit" class="next-slide" onclick="nextSlide(this)"><i
                                         class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </form>
                         </div>
-                        <div class="letters-container no_active" style="margin: 20px 0;"></div>
+                        <div class="letters-container" style="margin: 20px 0;"></div>
                     </div>
                 </div>
             </div>
@@ -477,9 +502,9 @@
                     <img/>
                 </div>
 
-                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 282px;">
+                <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-                    <div class="audio-container no_active" style="">
+                    <div class="audio-container" >
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -490,30 +515,33 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <div style="height: 50px; padding-top: 10px; margin-top: 10px;">
-                                <input type="text" name="word_confirm">
+                            <div class="word-result-success" style="color: #00bfa5;"> </div>
+                            <div class="word-result-error" style="color: #e03e2d;"></div>
+                            <!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
+                            <div class="input-container active">
+                                <input type="text" name="wordConfirm">
                             </div>
-                            <div class="inputs-container no_active" style="height: 50px; padding-top: 10px; margin-top: 10px;"></div>
+                            <div class="inputs-container" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
-                            <form class="child formPlus">
-                                <button class="" type="button" onclick="hint()" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                            <form class="child">
+                                <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                                     <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
-                            <form class="child confirm">
-                                <button disabled class="btn_main" type="button" onclick="confirm(this)">
-                                Перевірити
+                            <form class="child">
+                                <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                                    Перевірити
                                 </button>
                             </form>
-                            <form class="child next">
-                                <button type="submit" class=""><i
+                            <form class="child">
+                                <button type="submit" class="next-slide" onclick="nextSlide(this)"><i
                                         class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </form>
                         </div>
-                        <div class="letters-container no_active" style="margin: 20px 0;"></div>
+                        <div class="letters-container" style="margin: 20px 0;"></div>
                     </div>
                 </div>
             </div>

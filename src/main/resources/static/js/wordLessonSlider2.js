@@ -15,9 +15,9 @@ function startSlid() {
     }
 }
 
-$('#next').submit(function (event) {
+function nextSlide(element) {
     const slides = document.querySelector('.slider_word');
-    event.preventDefault();
+    // event.preventDefault();
     ++pagePrev;
     var url = '/word-lesson/' + categoryId + '/word-next';
     if (page + 1 === pagePrev) {
@@ -54,7 +54,7 @@ $('#next').submit(function (event) {
         }
         updateSlider();
     }
-});
+}
 
 
 function updateSlider() {
@@ -221,6 +221,10 @@ function deleteWord(){
         currentIndexWord--;
         inputs[currentIndexWord].setAttribute('value', '');
     }
+    if(currentIndexWord === 0){
+        var confirmButton = document.querySelector('.confirm.btn_main');
+        confirmButton.disabled = true;
+    }
 }
 // Обробник натискання кнопки з літерою
 //Переробити!!! Зараз орієнтир йде за індексом, але з цього випливають проблеми,
@@ -233,6 +237,10 @@ function handleLetterClick(letter) {
         inputs[currentIndexWord].setAttribute('value', letter);
         currentIndexWord++;
     }
+    if(currentIndexWord > 0){
+        var confirmButton = document.querySelector('.confirm.btn_main');
+        confirmButton.disabled = false;
+    }
 }
 function hint(element){
     var hintButton = element; // element - це вже кнопка, яка була передана у функцію
@@ -242,49 +250,55 @@ function hint(element){
         var inputsContainer = hintButton.closest('.block_confirm').querySelector('.inputs-container');
         var lettersContainer = hintButton.closest('.block_confirm').querySelector('.letters-container');
 
-        inputContainer.classList.add('no_active');
-        inputsContainer.classList.remove('no_active');
-        lettersContainer.classList.remove('no_active');
+        inputContainer.classList.remove('active');
+        inputsContainer.classList.add('active');
+        lettersContainer.classList.add('active');
         ++hintCount;
     } else if (hintCount === 1){
         hintCount = 0;
-        audioContainer.classList.remove('no_active');
-        hintButton.style.visibility = 'hidden';
+        audioContainer.classList.add('active');
+        hintButton.classList.remove('active');
     }
 }
 function confirm(element){
     const inputsContainer = element.closest('.block_confirm').querySelector('.inputs-container');
     const wordResultSuccess = element.closest('.block_confirm').querySelector('.word-result-success');
     const wordResultError = element.closest('.block_confirm').querySelector('.word-result-error');
-
-    var valuesArray = "";
-
-    inputsContainer.querySelectorAll("input").forEach(input => {
-        const value = input.value;
-
-        if (value !== "") {
-            valuesArray += value;
-        }
-    });
+    var lettersContainer = element.closest('.block_confirm').querySelector('.letters-container');
+    var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
+    var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
+    hintButton.disabled = true;
+    element.disabled = true;
+
+    var wordConfirm = "";
+    if(hintCount === 0) {
+        wordConfirm = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
+    } else {
+        lettersContainer.classList.remove('active');
+        inputsContainer.querySelectorAll("input").forEach(input => {
+            const value = input.value;
+            if (value !== "") {
+                wordConfirm += value;
+            }
+        });
+    }
     $.ajax({
         url: '/' + wordId + '/word-confirm',
         type: "POST",
-        data: {wordConfirm: valuesArray},
+        data: {wordConfirm: wordConfirm},
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
         success: function (result) {
+            nextSlide.classList.add('active');
             var status = result.status;
             if (status == "Success") {
                 wordResultSuccess.innerHTML = result.info;
-
-                // showSuccessToast(result.message);
             } else {
                 wordResultError.innerHTML = result.info;
-                // showErrorToast(result.message);
             }
         },
         error: function () {
@@ -292,7 +306,26 @@ function confirm(element){
             alert(Boolean(shel))
         }
     });
-
-
-
 }
+
+$(document).ready(function () {
+    var wordConfirmInput = document.querySelector('input[name="wordConfirm"]');
+    var confirmButton = document.querySelector('.confirm.btn_main');
+    wordConfirmInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            confirmButton.disabled = false;
+        } else {
+            confirmButton.disabled = true;
+        }
+    });
+});
+/////////////////////////////////////////////////////////////// <input type="text" class="single-char-input" maxlength="1">
+const singleCharInputs = document.querySelectorAll(".single-char-input");
+
+singleCharInputs.forEach(input => {
+    input.addEventListener("input", function() {
+        if (this.value.length > 1) {
+            this.value = this.value[this.value.length - 1];
+        }
+    });
+});
