@@ -264,7 +264,26 @@
     </script>
 </div>
 
-<div th:fragment="slide">
+<div th:fragment="endSlideSpelling">
+    <!--        <img th:src="@{/word-image/{name}(name=${word.images.imageName})}"/>-->
+    <div class="end_success">
+        <h3>Гарна робота!</h3>
+        <p>Ви завершили наступний етап. Пропоную пройти тестування знань, щоб зрозуміти слабкі сторони.</p>
+        <div class="d-flex icon-box">
+            <span class="success_ico"></span>
+        </div>
+    </div>
+    <div class="slide_end_button">
+        <button type="button" class="btn_main" onclick="nextTraining()">Далі</button>
+    </div>
+    <script>
+        function nextTraining() {
+            switchTab('tab3');
+        }
+    </script>
+</div>
+
+<div th:fragment="slideReview">
     <img/>
     <div class="block_name">
         <div class="name_and_audio">
@@ -286,6 +305,57 @@
                 <span class="lesson_plus_ico"></span>
             </button>
         </form>
+    </div>
+</div>
+
+<div th:fragment="slideSpelling">
+    <div class="img_description d-flex flex-column">
+        <span style="z-index: 2; font-size: 20px;">По буквах!</span>
+        <h5></h5>
+        <img/>
+    </div>
+
+    <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
+
+        <div class="audio-container" >
+            <audio class="audio" preload="auto">
+                <source type="audio/mpeg"/>
+            </audio>
+            <span class="sound_pic" onclick="playAudio(this);">
+                                        <img src="/images/play_audio.png" style="width: 50px;"/>
+                        </span>
+        </div>
+
+        <div class="block_confirm">
+            <div class="word_confirm">
+                <div class="word-result-success" style="color: #00bfa5;"> </div>
+                <div class="word-result-error" style="color: #e03e2d;"></div>
+                <!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
+                <div class="input-container active">
+                    <input type="text" name="wordConfirm">
+                </div>
+                <div class="inputs-container" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
+            </div>
+            <div class="d-flex flex-row justify-content-between">
+                <input type="hidden" name="id">
+                <form class="child">
+                    <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                        <i class="fa-regular fa-lightbulb"></i>
+                    </button>
+                </form>
+                <form class="child">
+                    <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                        Перевірити
+                    </button>
+                </form>
+                <form class="child">
+                    <button type="submit" class="next-slide" onclick="nextSlide(event)"><i
+                            class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="letters-container" style="margin: 20px 0;"></div>
+        </div>
     </div>
 </div>
 
@@ -484,7 +554,7 @@
                                 </button>
                             </form>
                             <form class="child">
-                                <button type="submit" class="next-slide" onclick="nextSlide(this)"><i
+                                <button type="submit" class="next-slide" onclick="nextSlide(event)"><i
                                         class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </form>
@@ -536,7 +606,7 @@
                                 </button>
                             </form>
                             <form class="child">
-                                <button type="submit" class="next-slide" onclick="nextSlide(this)"><i
+                                <button type="submit" class="next-slide" onclick="nextSlide(event)"><i
                                         class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </form>

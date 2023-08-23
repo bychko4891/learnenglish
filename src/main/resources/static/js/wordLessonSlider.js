@@ -107,7 +107,7 @@ function addWordToSlider(word) {
     slide.id = 'slide-' + word.id;
     slider.appendChild(slide);
     $.ajax({
-        url: "/fragmentsPages/slide",
+        url: "/fragmentsPages/slideReview",
         method: "GET"
     }).done(function (data) {
         $('#slide-' + word.id).html(data);

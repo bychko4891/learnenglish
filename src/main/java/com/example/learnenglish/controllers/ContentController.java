@@ -37,6 +37,10 @@ public class ContentController {
     public String getEndSlid() {
         return "fragmentsPages :: endSlide";
     }
+    @RequestMapping("endSlideSpelling")
+    public String getEndSlideSpelling() {
+        return "fragmentsPages :: endSlideSpelling";
+    }
 
     @RequestMapping("successRegistrationFragment")
     public String getContent5() {
@@ -58,8 +62,13 @@ public class ContentController {
     public String wordLessonAudit() {
         return "fragmentsPages :: wordLessonAudit";
     }
-    @RequestMapping("slide")
+    @RequestMapping("slideReview")
+    public String slideReview() {
+        return "fragmentsPages :: slideReview";
+    }
+
+    @RequestMapping("slideSpelling")
     public String slide() {
-        return "fragmentsPages :: slide";
+        return "fragmentsPages :: slideSpelling";
     }
 }
