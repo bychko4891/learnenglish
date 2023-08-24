@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AudioRepository extends JpaRepository<Audio, Long> {
 
     @Query("SELECT a FROM Audio a ORDER BY a.name ASC")

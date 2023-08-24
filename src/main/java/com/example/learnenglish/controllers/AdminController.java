@@ -185,7 +185,7 @@ public class AdminController {
                              Model model,
                              Principal principal) {
         if (principal != null) {
-            Lesson lesson = lessonService.findById(id);
+            Lesson lesson = lessonService.getLesson(id);
             model.addAttribute("lesson", lesson);
             return "admin/adminLessonInEditor";
         }

@@ -115,14 +115,14 @@ public class TranslationPairValidationAndSaveService {
                 translationPair.getAudio().setName(dtoTranslationPair.getEngText());
             }
         }
-        translationPair.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
+        translationPair.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
         translationPair.setUser(userService.findById(dtoTranslationPair.getUserId()));
         if(roleUser.equals("[ROLE_USER]")){
             translationPair.setUserTranslationPair(true);
             TranslationPairUser translationPairUser = new TranslationPairUser();
             translationPairUser.setTranslationPair(translationPair);
             translationPairUser.setUser(userService.findById(dtoTranslationPair.getUserId()));
-            translationPairUser.setLesson(lessonService.findById(dtoTranslationPair.getLessonId()));
+            translationPairUser.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
             translationPairUser.setRepeatable(true);
             translationPairUserRepository.save(translationPairUser);
         }

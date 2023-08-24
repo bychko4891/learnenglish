@@ -3,6 +3,8 @@ var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
 var wordLessonId;
+var hintCount = 0;
+var currentIndexWord = 0;
 
 // var activeSlide;
 
@@ -16,7 +18,6 @@ function startSlid() {
     if (secondSlide) {
         secondSlide.classList.add('slide_no_active');
     }
-
 }
 
 
@@ -181,8 +182,7 @@ function wordsStart() {
     });
 }
 
-var hintCount = 0;
-let currentIndexWord = 0;
+
 
 function deleteWord() {
     const activeSlide = document.querySelector('.slide_active');
@@ -340,12 +340,12 @@ function playAudio(element) {
 }
 
 /////////////////////////////////////////////////////////////// <input type="text" class="single-char-input" maxlength="1">
-const singleCharInputs = document.querySelectorAll(".single-char-input");
-
-singleCharInputs.forEach(input => {
-    input.addEventListener("input", function () {
-        if (this.value.length > 1) {
-            this.value = this.value[this.value.length - 1];
-        }
-    });
-});
+// const singleCharInputs = document.querySelectorAll(".single-char-input");
+//
+// singleCharInputs.forEach(input => {
+//     input.addEventListener("input", function () {
+//         if (this.value.length > 1) {
+//             this.value = this.value[this.value.length - 1];
+//         }
+//     });
+// });

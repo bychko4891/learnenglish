@@ -91,7 +91,7 @@ public class LearnEnglishController {
             } else {
                 model.addAttribute("pageText", "No text in this page");
             }
-            lesson = lessonService.findById(lessonId);
+            lesson = lessonService.getLesson(lessonId);
             session.setAttribute("lessonId", lesson.getId());
             model.addAttribute("lessonId", lesson.getId());
             model.addAttribute("lesson", lesson);

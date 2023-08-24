@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "words")
@@ -71,5 +72,17 @@ public class Word implements Serializable {
     private Category wordCategory;
 
     public Word() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Word word)) return false;
+        return isRepeatable == word.isRepeatable && published == word.published && Objects.equals(id, word.id) && Objects.equals(name, word.name) && Objects.equals(translate, word.translate) && Objects.equals(description, word.description) && Objects.equals(brTranscription, word.brTranscription) && Objects.equals(usaTranscription, word.usaTranscription) && Objects.equals(irregularVerbPt, word.irregularVerbPt) && Objects.equals(irregularVerbPp, word.irregularVerbPp) && Objects.equals(text, word.text) && Objects.equals(images, word.images) && Objects.equals(wordLesson, word.wordLesson) && Objects.equals(audio, word.audio) && Objects.equals(translationPairs, word.translationPairs) && Objects.equals(wordCategory, word.wordCategory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, translate, description, brTranscription, usaTranscription, irregularVerbPt, irregularVerbPp, isRepeatable, text, published, images, wordLesson, audio, translationPairs, wordCategory);
     }
 }

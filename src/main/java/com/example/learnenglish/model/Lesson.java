@@ -10,6 +10,7 @@ package com.example.learnenglish.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "lesson")
@@ -50,5 +51,18 @@ public class Lesson implements Serializable {
     public void setLessonInfo(String lessonInfo) {
         this.lessonInfo = lessonInfo;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lesson lesson)) return false;
+        return id.equals(lesson.id) && name.equals(lesson.name) && lessonInfo.equals(lesson.lessonInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lessonInfo);
+    }
+
 
 }

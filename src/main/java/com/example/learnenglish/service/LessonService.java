@@ -8,7 +8,6 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.LessonRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
@@ -28,7 +27,7 @@ public class LessonService {
 
     }
 
-    public Lesson findById(long id) {
+    public Lesson getLesson(long id) {
         return lessonRepository.findById(id).get();
     }
 

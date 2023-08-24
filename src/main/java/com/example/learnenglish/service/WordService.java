@@ -37,6 +37,7 @@ public class WordService {
     private final WordRepository wordRepository;
     private final CategoryRepository wordCategoryRepository;
     private final TranslationPairRepository translationPairRepository;
+
     private final UserService userService;
 
 
