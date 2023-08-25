@@ -15,7 +15,7 @@
 	<name>learnenglish</name>
 	<description>Lern english code with Spring Boot</description>
 	<properties>
-		<java.version>18</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -48,12 +48,12 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<!--			<version>6.0.2</version>-->
+			<version>6.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<!--			<version>6.0.2</version>-->
+			<version>6.1.3</version>
 		</dependency>
 
 		<dependency>
@@ -125,20 +125,12 @@
 			<version>5.5.0</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<version>3.1.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--		<dependency>-->
-		<!--			<groupId>com.example</groupId>-->
-		<!--			<artifactId>learnenglish</artifactId>-->
-		<!--			<version>0.0.2-SNAPSHOT</version>-->
-		<!--			<scope>test</scope>-->
-		<!--		</dependency>-->
 
 	</dependencies>
 
@@ -150,4 +142,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

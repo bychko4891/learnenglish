@@ -15,28 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-//@SpringBootTest
-//@ExtendWith(MockitoExtension.class)
-//class LessonServiceTest {
-////    @Mock(lenient = true)
-////    private LessonRepository lessonRepository;
-//    private LessonRepository lessonRepository = Mockito.mock(LessonRepository.class);
-//    @Autowired
-//    private LessonService lessonService;
-//
-//    @Test
-//    void getLesson() {
-//        Lesson sampleLesson = new Lesson();
-//        sampleLesson.setId(1L);
-//        sampleLesson.setName("Заняття № 1");
-//        sampleLesson.setLessonInfo("<p>Опис заняття</p>");
-//        when(lessonRepository.findById(1L)).thenReturn(Optional.of(sampleLesson));
-//        Lesson result = lessonService.getLesson(1L);
-//        assertEquals(sampleLesson, result);
-//        System.out.println(sampleLesson.hashCode() + " | " + result.hashCode());
-//    }
-//
-//}
+
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class LessonServiceTest {
