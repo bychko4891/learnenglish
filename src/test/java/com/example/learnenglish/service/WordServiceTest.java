@@ -7,7 +7,9 @@ import com.example.learnenglish.repository.WordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +19,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
 class WordServiceTest {
-    @Autowired
+    @InjectMocks
     private WordService wordService;
     @Mock
     private WordRepository wordRepository;
@@ -33,6 +33,7 @@ class WordServiceTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         wordService = new WordService(wordRepository, categoryRepository, translationPairRepository, userService);
     }
     @Test

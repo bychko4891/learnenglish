@@ -3,9 +3,12 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.repository.LessonRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,11 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
 class LessonServiceTest {
-
-    @Autowired
+    @InjectMocks
     private LessonService lessonService;
 
     @Mock
@@ -28,6 +28,7 @@ class LessonServiceTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         lessonService = new LessonService(lessonRepository);
     }
 
@@ -43,5 +44,10 @@ class LessonServiceTest {
         Lesson result = lessonService.getLesson(1L);
 
         assertEquals(sampleLesson, result);
+    }
+
+    @Test
+    @Disabled
+    void name() {
     }
 }
