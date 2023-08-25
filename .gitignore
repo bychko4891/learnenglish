@@ -25,5 +25,4 @@ replay_pid*
 
 .idea
 /target
-/src/main/resources/application.properties
-*.properties
+src/main/resources/application.properties
