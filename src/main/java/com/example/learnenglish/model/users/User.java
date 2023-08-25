@@ -43,7 +43,7 @@ public class User implements UserDetails {
     private boolean active;
 
     @Column(name = "user_phrases_in_lesson")
-    private boolean UserPhrasesInLesson;
+    private boolean userPhrasesInLesson;
 
     @Column(name = "user_ip")
     private String userIp;

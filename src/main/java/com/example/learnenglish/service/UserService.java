@@ -122,7 +122,7 @@ public class UserService {
             String encodedPassword = user.getPassword();
             if (passwordEncoder.matches(userPassword, encodedPassword)) {
                 userRepository.delete(user);
-                logoutUser(request); // Виклик методу розлогінення
+                logoutUser(request);
                 return new ResponseMessage(Message.SUCCESS_UPDATEPASSWORD);
             } else return new ResponseMessage(Message.ERROR_UPDATEPASSWORD);
 
@@ -160,8 +160,6 @@ public class UserService {
             User user = optionalUser.get();
             user.setUserIp(ipAddress);
             userRepository.save(user);
-
-//            return userRepository.save(user);
         } else {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
