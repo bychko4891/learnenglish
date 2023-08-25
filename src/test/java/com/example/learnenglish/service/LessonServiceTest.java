@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 
 
 class LessonServiceTest {
-
     @InjectMocks
     private LessonService lessonService;
 
