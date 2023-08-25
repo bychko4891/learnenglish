@@ -1,6 +1,5 @@
 package com.example.learnenglish.config;
 
-import com.example.learnenglish.model.UserContextHolder;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
-import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
 @EnableWebSecurity
@@ -124,7 +122,7 @@ public class SecurityConfig {
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());
                                     session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());
-                                    session.setAttribute("userTextInLesson", user.isUserTextInLesson());
+                                    session.setAttribute("userTextInLesson", user.isUserPhrasesInLesson());
 
                                     response.sendRedirect(DEFAULT_SUCCESS_URL);
                                 })
