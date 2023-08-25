@@ -33,6 +33,5 @@ public class MailSenderInApp {
         message.setSubject(subject);
         message.setText(text);
         javaMailSender.send(message);
-
     }
 }
