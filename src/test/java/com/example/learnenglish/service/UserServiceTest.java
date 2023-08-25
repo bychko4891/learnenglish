@@ -13,14 +13,11 @@ import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -265,7 +262,7 @@ class UserServiceTest {
         var user = new User();
         var userId = 1L;
         var isCheck = true;
-        user.setUserTextInLesson(isCheck);
+        user.setUserPhrasesInLesson(isCheck);
         user.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -273,7 +270,7 @@ class UserServiceTest {
         var responceMessage = userService.setUserTextInLesson(userId, isCheck);
 
         assertEquals(Message.SUCCESS_CHECKBOX, responceMessage.getMessage());
-        assertTrue(user.isUserTextInLesson());
+        assertTrue(user.isUserPhrasesInLesson());
         verify(userRepository).save(user);
     }
 }

@@ -51,7 +51,7 @@ public class UserService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setActive(false);
         user.getGender().add(UserGender.MALE);
-        user.setUserTextInLesson(false);
+        user.setUserPhrasesInLesson(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getAuthority().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
@@ -207,7 +207,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            user.setUserTextInLesson(isChecked);
+            user.setUserPhrasesInLesson(isChecked);
             userRepository.save(user);
             return new ResponseMessage(Message.SUCCESS_CHECKBOX);
         }else throw new IllegalArgumentException("User with id " + userId + " not found");
