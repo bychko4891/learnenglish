@@ -4,6 +4,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserGender;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -12,8 +13,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -147,28 +153,85 @@ class UserServiceTest {
     }
 
     @Test
-    @Disabled
     void userProfileDelete() {
+        var userPassword = "userPassword";
+        var encodedPassword = "encodedPassword";
+
+        var user = new User();
+        user.setPassword(encodedPassword);
+
+        when(passwordEncoder.matches(userPassword, encodedPassword)).thenReturn(true);
+
+        var responseMessage = userService.userProfileDelete(user, encodedPassword);
+
+        verify(userRepository).delete(user);
+        verify(request).getSession(false);
+
+        assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
     }
 
     @Test
-    @Disabled
     void getUsersPage() {
+        var page = 10;
+        var size = 10;
+        var pageable = PageRequest.of(page, size);
+
+        List<User> userList = new ArrayList<>();
+
+        userList.add(new User());
+        userList.add(new User());
+
+        Page<User> expectedPage = new PageImpl<>(userList, pageable, userList.size());
+        when(userRepository.findAll(pageable)).thenReturn(expectedPage);
+
+        Page<User> resultPage = userService.getUsersPage(page, size);
+
+        assertEquals(expectedPage, resultPage);
     }
 
     @Test
-    @Disabled
     void userActiveEditAdminPage() {
+        var userId = 1L;
+        var userActive = true;
+        var user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        userService.userActiveEditAdminPage(userId, userActive);
+
+        assertTrue(user.isActive());
+        verify(userRepository.save(user));
     }
 
     @Test
-    @Disabled
     void saveUserIp() {
+        var userId = 1L;
+        var userIP = "192.168.1.1";
+        var user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        userService.saveUserIp(userId,userIP);
+
+        assertEquals(userIP,user.getUserIp());
+        verify(userRepository).save(user);
     }
 
     @Test
-    @Disabled
     void generatePassword() {
+        var email = "user@example.com";
+        var password = "password";
+        var user = new User();
+        user.setEmail(email);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(password)).thenReturn("encodedPassword");
+
+        ResponseMessage responseMessage = userService.generatePassword(email);
+
+        assertEquals(Message.SUCCESS_FORGOT_PASSWORD,responseMessage.getMessage());
     }
 
     @Test
