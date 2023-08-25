@@ -1,5 +1,11 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserGender;
 import com.example.learnenglish.repository.UserRepository;
@@ -13,6 +19,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -213,9 +221,9 @@ class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        userService.saveUserIp(userId,userIP);
+        userService.saveUserIp(userId, userIP);
 
-        assertEquals(userIP,user.getUserIp());
+        assertEquals(userIP, user.getUserIp());
         verify(userRepository).save(user);
     }
 
@@ -231,16 +239,41 @@ class UserServiceTest {
 
         ResponseMessage responseMessage = userService.generatePassword(email);
 
-        assertEquals(Message.SUCCESS_FORGOT_PASSWORD,responseMessage.getMessage());
+        assertEquals(Message.SUCCESS_FORGOT_PASSWORD, responseMessage.getMessage());
     }
 
     @Test
-    @Disabled
     void activateUser() {
+        var user = new User();
+        var code = "code";
+        user.setActive(true);
+        user.setActivationCode(code);
+
+        when(userRepository.findByActivationCode(code)).thenReturn(user);
+        var result = userService.activateUser(code);
+
+        assertTrue(result);
+        assertTrue(user.isActive());
+        assertNull(user.getActivationCode());
+        verify(userRepository).save(user);
+
+
     }
 
     @Test
-    @Disabled
     void setUserTextInLesson() {
+        var user = new User();
+        var userId = 1L;
+        var isCheck = true;
+        user.setUserTextInLesson(isCheck);
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        var responceMessage = userService.setUserTextInLesson(userId, isCheck);
+
+        assertEquals(Message.SUCCESS_CHECKBOX, responceMessage.getMessage());
+        assertTrue(user.isUserTextInLesson());
+        verify(userRepository).save(user);
     }
 }
