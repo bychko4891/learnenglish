@@ -47,7 +47,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
             admin.setLastName("Admin");
             admin.setEmail(adminEmail);
             admin.setActive(true);
-            admin.setUserTextInLesson(false);
+            admin.setUserPhrasesInLesson(false);
             admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.getAuthority().add(Role.ROLE_ADMIN);
             admin.getGender().add(UserGender.MALE);
@@ -68,7 +68,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
         demo.setLastName("Demo");
         demo.setEmail("demo@mail.com");
         demo.setActive(true);
-        demo.setUserTextInLesson(false);
+        demo.setUserPhrasesInLesson(false);
         demo.setPassword(passwordEncoder.encode("demo"));
         demo.getAuthority().add(Role.ROLE_DEMO);
         demo.getGender().add(UserGender.MALE);

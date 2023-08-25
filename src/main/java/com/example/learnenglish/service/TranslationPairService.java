@@ -11,8 +11,6 @@ import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.TranslationPairRepository;
-import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -49,7 +47,7 @@ public class TranslationPairService {
 
 
     public DtoTranslationPairToUI getDtoTranslationPair(User user, Long lessonId,  String userGender) {
-        if(!user.isUserTextInLesson()){
+        if(!user.isUserPhrasesInLesson()){
             Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPair(1l, lessonId);
             if(translationPairOptional.isPresent()){
                 return translationPairConvertToDtoApplicationText(translationPairOptional.get(), userGender);
