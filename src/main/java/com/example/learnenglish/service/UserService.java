@@ -210,4 +210,8 @@ public class UserService {
             return new ResponseMessage(Message.SUCCESS_CHECKBOX);
         }else throw new IllegalArgumentException("User with id " + userId + " not found");
     }
+
+    public void deletePreviousUserSession(String userEmail){
+
+    }
 }
