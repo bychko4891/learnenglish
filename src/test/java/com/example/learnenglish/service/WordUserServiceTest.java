@@ -8,7 +8,6 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.WordUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.WordUserRepository;
 import com.example.learnenglish.responsemessage.Message;

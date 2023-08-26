@@ -1,18 +1,18 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.dto.DtoWordLesson;
-import com.example.learnenglish.model.Category;
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
 import com.example.learnenglish.model.WordLesson;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.WordLessonRepository;
 import com.example.learnenglish.repository.WordRepository;
-import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

@@ -1,18 +1,20 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
