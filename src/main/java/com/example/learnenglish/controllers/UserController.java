@@ -49,6 +49,7 @@ public class UserController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
+                        @RequestParam(value = "expired", required = false) String expired,
                         Model model) throws CustomAuthenticationException {
         model.addAttribute("title", "About the app Learn English");
         PageApplication pageApplication = pageApplicationService.getPageApplication(1l);
@@ -63,7 +64,9 @@ public class UserController {
             model.addAttribute("error", "Верифікуйте будь ласка Email");
             }
         } else if (logout != null) {
-            model.addAttribute("logout", "Ви вийшли із системи.");
+            model.addAttribute("success", "Ви вийшли із системи.");
+        }else if (expired != null) {
+            model.addAttribute("success", "Ваша сесія закінчилася. Будь ласка, увійдіть знову.");
         }
         return "login";
     }

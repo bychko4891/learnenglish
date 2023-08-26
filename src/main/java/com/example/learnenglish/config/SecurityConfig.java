@@ -10,10 +10,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +40,16 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Bean
@@ -102,7 +115,20 @@ public class SecurityConfig {
                                         .authenticated()
                                         .and()
                                         .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
+
 //                                .antMatchers("/api/test/**").addFilterBefore(customRequestLoggingFilter.getFilter(), BasicAuthenticationFilter.class)
+                )
+
+                .sessionManagement(session -> session
+//                                .sessionFixation((sessionFixation) -> sessionFixation
+//                                        .newSession()
+//                                )
+                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
+                                .maximumSessions(1)
+                                .sessionRegistry(sessionRegistry()) // Додайте цей рядок
+                                .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
+//                                .maxSessionsPreventsLogin(true)
+//                              .maxSessionsPreventsLogin(true)
                 )
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)
