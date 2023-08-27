@@ -31,7 +31,7 @@
             <div class="page-table" style="flex-direction: column;">
                 <h3>Мої слова</h3>
 <!--                <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a>-->
-                </div>
+<!--                </div>-->
 
                 <div th:each="word : ${words}">
                     <input type="hidden" name="id" th:value="${word.id}"/>
@@ -74,8 +74,6 @@
                             </td>
                         </table>
                     </div>
-
-
                 </div>
             </div>
         </main>

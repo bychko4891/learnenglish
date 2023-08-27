@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table
+@Table(name = "user_word_lesson_progress")
 public class UserWordLessonProgress implements Serializable {
 
     @Id
