@@ -36,7 +36,7 @@
                                     <a th:href="@{'/admin-page/' + ${subcategory.id} + '/category-edit'}"
                                        style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                                     <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal" th:data-category-id="${subcategory.id}">
+                                            data-bs-target="#exampleModal" th:data-entity-id="${subcategory.id}">
                                         <i class="fa-solid fa-upload"></i>
                                     </button>
                                     <ul th:if="${subcategory.subcategories != null}" class="category">
@@ -75,9 +75,12 @@
     });
 
     $(document).ready(function () {
+        console.log('ready');
         $('.open-modal').click(function () {
+            console.log('ready 2');
             var entityId = $(this).data('entity-id');
             $('#entityId').val(entityId);
+            console.log('ready 3');
         });
 
 
