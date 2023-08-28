@@ -78,7 +78,6 @@ public class SecurityConfig {
             "/about-the-app",
             "/registration",
             "/registration-page",
-            "/drop",
             "/fragmentsPages/successRegistrationFragment",
             "/words-main-category",
             "/words-main-category/*",
@@ -95,8 +94,6 @@ public class SecurityConfig {
             "/word/training",
             "/category-image/**",
             "/lessons"
-
-
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";

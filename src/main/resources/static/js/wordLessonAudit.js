@@ -128,23 +128,15 @@ function wordsStart() {
     $.ajax({
         url: url,
         type: "GET",
-        // data: {size: 2},
         success: function (result) {
             const objectDivs = document.querySelectorAll(".slide");
 
             objectDivs.forEach((div, index) => {
-                const letters = result[index].name.split("");
-                const lettersShuffle = shuffleArray(letters);
 
-                const lettersContainer = div.querySelector(".letters-container");
-
-                const inputsContainer = div.querySelector(".inputs-container");
 
                 const descriptionHeading = div.querySelector("h5");
                 descriptionHeading.textContent = '"' + result[index].description + '"';
 
-                const audioName = div.querySelector("source");
-                audioName.src = "/audio/" + result[index].audioName;
 
                 const image = div.querySelector("img");
                 image.src = "/word-image/" + result[index].imageName;
@@ -152,30 +144,25 @@ function wordsStart() {
                 const wordId = div.querySelector("input[name='id']");
                 wordId.value = result[index].id;
 
-                letters.forEach(() => {
-                    const input = document.createElement("input");
-                    input.type = "text";
-                    input.required = true;
-                    input.maxLength = 1;
+                // letters.forEach(() => {
+                //     const input = document.createElement("input");
+                //     input.type = "text";
+                //     input.required = true;
+                //     input.maxLength = 1;
+                //
+                //     inputsContainer.appendChild(input);
+                // });
+                //
+                // lettersShuffle.forEach(letter => {
+                //     const button = document.createElement("button");
+                //     button.classList.add("btn", "btn-primary");
+                //     button.type = "button";
+                //     button.value = letter;
+                //     button.textContent = letter;
+                //     button.addEventListener("click", () => handleLetterClick(letter));
+                //     lettersContainer.appendChild(button);
+                // });
 
-                    inputsContainer.appendChild(input);
-                });
-
-                lettersShuffle.forEach(letter => {
-                    const button = document.createElement("button");
-                    button.classList.add("btn", "btn-primary");
-                    button.type = "button";
-                    button.value = letter;
-                    button.textContent = letter;
-                    button.addEventListener("click", () => handleLetterClick(letter));
-                    lettersContainer.appendChild(button);
-                });
-                const deleteButton = document.createElement("button");
-                deleteButton.classList.add("btn", "btn-primary");
-                deleteButton.type = "button";
-                deleteButton.innerHTML = '<i class="fa-solid fa-delete-left"></i>';
-                deleteButton.onclick = deleteWord;
-                lettersContainer.appendChild(deleteButton);
             });
             startSlid();
         }

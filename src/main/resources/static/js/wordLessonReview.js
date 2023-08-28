@@ -150,7 +150,7 @@ function wordsStart() {
     $.ajax({
         url: url,
         type: "GET",
-        data: {size: 2},
+        // data: {size: 2},
         success: function (result) {
             const objectDivs = document.querySelectorAll(".slide");
 

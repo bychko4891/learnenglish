@@ -42,11 +42,16 @@ function switchTab(tabId) {
                 $('#content-tab2').html(data); // Замінити вміст елемента з завантаженими даними
                 wordsStart(); // Виклик функції
             });
-
-
             tab1.innerHTML = '';
             tab3.innerHTML = '';
         }else if(tabId === 'tab3'){
+            $.ajax({
+                url: "/fragmentsPages/wordLessonAudit",
+                method: "GET"
+            }).done(function (data) {
+                $('#content-tab3').html(data); // Замінити вміст елемента з завантаженими даними
+                wordsStart(); // Виклик функції
+            });
             tab1.innerHTML = '';
             tab2.innerHTML = '';
         }else {

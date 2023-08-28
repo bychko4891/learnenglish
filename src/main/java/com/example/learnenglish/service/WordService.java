@@ -189,4 +189,15 @@ public class WordService {
             } else return new ResponseMessage(Message.ERROR, word.getName());
         } else return  new ResponseMessage(Message.ERRORBASE);
      }
+
+     public List<DtoWordToUI> wordsToAudit(List<Long> wordsId){
+        List<Word> words = wordRepository.findByIds(wordsId);
+        List<DtoWordToUI> wordToUIS = new ArrayList<>();
+         for (Word arr: words) {
+             wordToUIS.add(DtoWordToUI.convertToDTO(arr));
+         }
+         return wordToUIS;
+     }
+
+
 }

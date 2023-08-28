@@ -317,7 +317,7 @@
 
     <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-        <div class="audio-container" >
+        <div class="audio-container">
             <audio class="audio" preload="auto">
                 <source type="audio/mpeg"/>
             </audio>
@@ -328,7 +328,7 @@
 
         <div class="block_confirm">
             <div class="word_confirm">
-                <div class="word-result-success" style="color: #00bfa5;"> </div>
+                <div class="word-result-success" style="color: #00bfa5;"></div>
                 <div class="word-result-error" style="color: #e03e2d;"></div>
                 <!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
                 <div class="input-container active">
@@ -339,7 +339,8 @@
             <div class="d-flex flex-row justify-content-between">
                 <input type="hidden" name="id">
                 <form class="child">
-                    <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                    <button class="hint_button active" type="button" onclick="hint(this)"
+                            style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                         <i class="fa-regular fa-lightbulb"></i>
                     </button>
                 </form>
@@ -396,7 +397,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 30px;" />
+                                        <img src="/images/play_audio.png" style="width: 30px;"/>
                         </span>
 
                     </div>
@@ -426,89 +427,6 @@
 
 
 <div th:fragment="wordLessonSpelling">
-    <style>
-        .img_description {
-            height: 12rem;
-            position: relative;
-            width: 100%;
-            background-color: #0000;
-            z-index: 1;
-            align-items: center;
-        }
-
-        .img_description::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #00bfa5;
-            border-radius: 0 0 50% 50%/0 0 100% 100%;
-            transform: scaleX(1.5);
-            -moz-transform: scaleX(1.5);
-            -webkit-transform: scaleX(1.5);
-            -o-transform: scaleX(1.5);
-            z-index: 1;
-        }
-
-        .slide .img_description img {
-            height: 160px;
-            width: 160px;
-            border: 4px solid #00bfa5;
-            border-radius: 50%;
-            margin: 0;
-            z-index: 2;
-        }
-
-        .img_description h5 {
-            padding: 0 10px;
-            z-index: 2;
-        }
-
-        .inputs-container input {
-            width: 28px;
-            height: 31px;
-            padding: 4px;
-            font-size: 27px;
-            font-weight: 600;
-            margin-right: 3px;
-            border-radius: 6px;
-        }
-
-        .inputs-container.active,
-        .letters-container.active,
-        .input-container.active,
-        .audio-container.active,
-        .hint_button.active,
-        .next-slide.active {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.6s ease-in, visibility 0.6s ease-in;
-        }
-
-        .input-container {
-            height: 0;
-        }
-        .hint_button,
-        .letters-container {
-            transition: opacity 0.6s ease-in, visibility 0.6s ease-in;
-        }
-
-        .inputs-container,
-        .letters-container,
-        .input-container,
-        .audio-container,
-        .hint_button,
-        .next-slide {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .inputs-container input:valid {
-            background-color: #87f7a7; /* Змініть на потрібний колір */
-        }
-    </style>
     <div class="slider-container">
         <div class="slider_word">
 
@@ -522,7 +440,7 @@
 
                 <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-                    <div class="audio-container" >
+                    <div class="audio-container">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -533,18 +451,20 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <div class="word-result-success" style="color: #00bfa5;"> </div>
+                            <div class="word-result-success" style="color: #00bfa5;"></div>
                             <div class="word-result-error" style="color: #e03e2d;"></div>
-<!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
+                            <!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
                             <div class="input-container active">
                                 <input type="text" name="wordConfirm">
                             </div>
-                            <div class="inputs-container" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
+                            <div class="inputs-container"
+                                 style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
                             <form class="child">
-                                <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                                <button class="hint_button active" type="button" onclick="hint(this)"
+                                        style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                                     <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
@@ -574,7 +494,7 @@
 
                 <div class="block_audio_confirm" style="width: 100%; position: absolute; bottom: 0; height: 295px;">
 
-                    <div class="audio-container" >
+                    <div class="audio-container">
                         <audio class="audio" preload="auto">
                             <source type="audio/mpeg"/>
                         </audio>
@@ -585,18 +505,20 @@
 
                     <div class="block_confirm">
                         <div class="word_confirm">
-                            <div class="word-result-success" style="color: #00bfa5;"> </div>
+                            <div class="word-result-success" style="color: #00bfa5;"></div>
                             <div class="word-result-error" style="color: #e03e2d;"></div>
                             <!--                            <div class="input-container" style="height: 100px; padding-top: 10px; margin-top: 30px;">-->
                             <div class="input-container active">
                                 <input type="text" name="wordConfirm">
                             </div>
-                            <div class="inputs-container" style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
+                            <div class="inputs-container"
+                                 style="height: 62px; padding-top: 10px; margin-bottom: 15px;"></div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <input type="hidden" name="id">
                             <form class="child">
-                                <button class="hint_button active" type="button" onclick="hint(this)" style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
+                                <button class="hint_button active" type="button" onclick="hint(this)"
+                                        style="border: none; border-radius: 0 20px 20px 0; background: #7b61ff;">
                                     <i class="fa-regular fa-lightbulb"></i>
                                 </button>
                             </form>
@@ -622,3 +544,168 @@
     <script type="text/javascript" th:src="@{/js/wordLessonSpelling.js}"></script>
 </div>
 
+<div th:fragment="wordLessonAudit">
+    <style>
+        .container {
+            max-width: 640px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 13px;
+        }
+
+        ul.ks-cboxtags {
+            list-style: none;
+            /*padding: 20px;*/
+        }
+
+        ul.ks-cboxtags li {
+            display: inline;
+        }
+
+        ul.ks-cboxtags li label {
+            display: flex;
+            background-color: rgba(255, 255, 255, .9);
+            border: 2px solid rgba(139, 139, 139, .3);
+            color: #adadad;
+            border-radius: 25px;
+            white-space: nowrap;
+            margin: 3px 0px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: all .2s;
+        }
+
+        ul.ks-cboxtags li label {
+            width: 300px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        ul.ks-cboxtags li label::before {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            font-size: 12px;
+            padding: 2px 6px 2px 2px;
+            content: "\f067";
+            transition: transform .3s ease-in-out;
+        }
+
+        ul.ks-cboxtags li input[type="radio"]:checked + label::before {
+            content: "\f00c";
+            transform: rotate(-360deg);
+            transition: transform .3s ease-in-out;
+        }
+
+        ul.ks-cboxtags li input[type="radio"]:checked + label {
+            border: 2px solid #1bdbf8;
+            background-color: #12bbd4;
+            color: #fff;
+            transition: all .2s;
+        }
+
+        ul.ks-cboxtags li input[type="radio"] {
+            display: absolute;
+        }
+
+        ul.ks-cboxtags li input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        ul.ks-cboxtags li input[type="radio"]:focus + label {
+            border: 2px solid #e9a1ff;
+        }
+    </style>
+    <div class="slider-container">
+        <div class="slider_word">
+
+
+            <div class="slide bb radios">
+
+                <div class="img_description d-flex flex-column">
+                    <span style="z-index: 2; font-size: 20px;">По буквах!</span>
+                    <h5></h5>
+                    <img/>
+                </div>
+
+                <div class="block_audio_confirm" style="position: absolute; bottom: 0; height: 295px;">
+
+
+                    <div class="d-flex flex-column align-items-center">
+<!--                            <div class="container">-->
+                            <div>
+                                <ul class="ks-cboxtags d-flex flex-column">
+                                    <li>
+                                        <input name="one" type="radio" id="checkboxOne" value="Rainbow Dash">
+                                        <label for="checkboxOne">Rainbow Dash</label>
+                                    </li>
+                                    <li>
+                                        <input name="one" type="radio" id="checkboxTwo" value="Cotton Candy" checked>
+                                        <label for="checkboxTwo">Cotton Candy</label>
+                                    </li>
+                                    <li>
+                                        <input name="one" type="radio" id="checkboxThree" value="Rarity">
+                                        <label for="checkboxThree">Rarity</label>
+                                    </li>
+                                    <li>
+                                        <input name="one" type="radio" id="checkboxFour" value="Rarity2">
+                                        <label for="checkboxFour">Rarity2</label>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                            <!--                            </div>-->
+                        <div class="d-flex flex-row justify-content-between">
+                            <form class="child">
+                                <input type="hidden" name="id">
+                                <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                                    Готово
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="slide bb">
+                <div class="img_description d-flex flex-column">
+                    <span style="z-index: 2; font-size: 20px;">Яка з них правильна?</span>
+                    <h5></h5>
+                    <img/>
+                </div>
+
+                <div class="block_audio_confirm" style="position: absolute; bottom: 0; height: 295px;">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="word_confirm m-4" >
+                            <input type="text" name="wordConfirm" style="width: 300px;">
+                        </div>
+                        <div class="d-flex">
+                            <form class="child">
+                                <input type="hidden" name="id">
+                                <button class="confirm btn_main m-4" type="button" onclick="confirm(this)" disabled>
+                                    Готово
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/wordLessonAudit.js}"></script>
+</div>
