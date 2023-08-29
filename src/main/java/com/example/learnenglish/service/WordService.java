@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -20,6 +20,7 @@ import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -57,8 +58,8 @@ public class WordService {
                         dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
-            word.setName(dtoWord.getWord().getName());
-            word.getAudio().setName(dtoWord.getWord().getName());
+            word.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
+            word.getAudio().setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
             word.setTranslate(dtoWord.getWord().getTranslate());
             word.setBrTranscription(dtoWord.getWord().getBrTranscription());
             word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
@@ -110,7 +111,7 @@ public class WordService {
         Word word = new Word();
         Audio audio = new Audio();
         Image images = new Image();
-        word.setName(dtoWord.getWord().getName());
+        word.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
         word.setTranslate(dtoWord.getWord().getTranslate());
         word.setPublished(dtoWord.getWord().isPublished());
         word.setText(dtoWord.getWord().getText());
@@ -119,7 +120,7 @@ public class WordService {
         word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
         word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
         word.setDescription(dtoWord.getWord().getDescription());
-        audio.setName(dtoWord.getWord().getName());
+        audio.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
         word.setAudio(audio);
         word.setImages(images);
         if (dtoWord.getTranslationPairsId().size() != 0) {
@@ -184,7 +185,7 @@ public class WordService {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isPresent()){
             Word word = wordOptional.get();
-            if(word.getName().equals(wordConfirm)){
+            if(word.getName().equals(StringUtils.normalizeSpace(wordConfirm))){
                 return new ResponseMessage(Message.SUCCESS, word.getName());
             } else return new ResponseMessage(Message.ERROR, word.getName());
         } else return  new ResponseMessage(Message.ERRORBASE);
