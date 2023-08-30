@@ -97,17 +97,22 @@ public class LearnEnglishRestController {
     }
 
     @GetMapping("/word-lesson/{id}/word-audit-next")
-    public ResponseEntity<List<DtoWordToUI>> nextWordForLessonWordAudit(@PathVariable("id") Long wordLessonId,
+    public ResponseEntity<DtoWordToUI> nextWordForLessonWordAudit(@PathVariable("id") Long wordLessonId,
                                                                           Principal principal) {
         if (principal != null) {
-            List<Long> wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
-            int wordAuditCounter = wordsId.size() < 16 ? (int) Math.ceil(wordsId.size() * 0.8) : (int) Math.ceil(wordsId.size() * 0.6);
+            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
+            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter") - 1;
             Collections.shuffle(wordsId);
-            List<Long> wordsIdStart = new ArrayList<>(wordsId.subList(0, 2));
-            wordsId.subList(0, 2).clear();
-            session.setAttribute("wordsId", wordsId);
-            session.setAttribute("wordAuditCounter", wordAuditCounter - 2);
-            return ResponseEntity.ok(wordService.wordsToAudit(wordsIdStart));
+            Long wordId = wordsId.get(0);
+            wordsId.remove(0);
+            if(wordsId.size() != 0){
+                session.setAttribute("wordsId", wordsId);
+                session.setAttribute("wordAuditCounter", wordAuditCounter);
+            } else {
+                session.removeAttribute("wordsId");
+                session.removeAttribute("wordAuditCounter");
+            }
+            return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, wordAuditCounter, wordsId.size()));
         }
         return ResponseEntity.notFound().build();
     }
@@ -136,6 +141,18 @@ public class LearnEnglishRestController {
                 List<String> wordsResponse = new ArrayList<>(words.subList(0, 3));
                 return ResponseEntity.ok(wordsResponse);
             }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/word/{id}/word-audit-confirm")
+    public ResponseEntity<String> wordAuditConfirm(@PathVariable("id") Long wordId,
+                                                         @RequestParam(name = "wordConfirm") String wordConfirm,
+                                                         Principal principal) {
+        if (principal != null) {
+            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId");
+            System.out.println(wordConfirm);
+            return ResponseEntity.ok(wordConfirm);
         }
         return ResponseEntity.notFound().build();
     }

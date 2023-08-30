@@ -630,7 +630,7 @@
                     <img/>
                 </div>
 
-                <div class="block_audio_confirm" style="position: absolute; bottom: 0; height: 295px;">
+                <div class="block_confirm" style="position: absolute; bottom: 0; height: 295px;">
                     <div class="d-flex flex-column align-items-center">
                         <div class="word_confirm m-4" >
                             <input type="text" name="wordConfirm" style="width: 300px;">
@@ -638,7 +638,7 @@
                         <div class="d-flex">
                             <form class="child">
                                 <input type="hidden" name="id">
-                                <button class="confirm btn_main m-4" type="button" onclick="confirm(this)" disabled>
+                                <button class="confirm btn_main m-4" type="button" onclick="confirm(this, event)" disabled>
                                     Готово
                                 </button>
                             </form>
@@ -662,20 +662,20 @@
                             <div>
                                 <ul class="ks-cboxtags d-flex flex-column">
                                     <li>
-                                        <input name="one" type="radio" id="checkboxOne" value="Rainbow Dash">
-                                        <label for="checkboxOne">Rainbow Dash</label>
+                                        <input name="one" type="radio" id="checkboxOne" >
+                                        <label for="checkboxOne"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxTwo" value="Cotton Candy" checked>
-                                        <label for="checkboxTwo">Cotton Candy</label>
+                                        <input name="one" type="radio" id="checkboxTwo"  checked>
+                                        <label for="checkboxTwo"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxThree" value="Rarity">
-                                        <label for="checkboxThree">Rarity</label>
+                                        <input name="one" type="radio" id="checkboxThree" >
+                                        <label for="checkboxThree"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxFour" value="Rarity2">
-                                        <label for="checkboxFour">Rarity2</label>
+                                        <input name="one" type="radio" id="checkboxFour" >
+                                        <label for="checkboxFour"></label>
                                     </li>
 
                                 </ul>
@@ -700,4 +700,74 @@
         </div>
     </div>
     <script type="text/javascript" th:src="@{/js/wordLessonAudit.js}"></script>
+</div>
+
+<div th:fragment="slideAudit" class="d-flex flex-column align-items-center">
+    <div class="img_description d-flex flex-column">
+        <span style="z-index: 2; font-size: 20px;">Яка з них правильна?</span>
+        <h5></h5>
+        <img/>
+    </div>
+
+    <div class="block_confirm" style="position: absolute; bottom: 0; height: 295px;">
+        <div class="d-flex flex-column align-items-center">
+            <div class="word_confirm m-4" >
+                <input type="text" name="wordConfirm" style="width: 300px;">
+            </div>
+            <div class="d-flex">
+                <form class="child">
+                    <input type="hidden" name="id">
+                    <button class="confirm btn_main m-4" type="button" onclick="confirm(this, event)" disabled>
+                        Готово
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="slideAuditRadios" class="d-flex flex-column align-items-center">
+    <div class="img_description d-flex flex-column">
+        <span style="z-index: 2; font-size: 20px;">По буквах!</span>
+        <h5></h5>
+        <img/>
+    </div>
+
+    <div class="block_audio_confirm" style="position: absolute; bottom: 0; height: 295px;">
+
+        <div class="d-flex flex-column align-items-center">
+            <!--                            <div class="container">-->
+            <div>
+                <ul class="ks-cboxtags d-flex flex-column">
+                    <li>
+                        <input name="one" type="radio" id="checkboxOne" >
+                        <label for="checkboxOne"></label>
+                    </li>
+                    <li>
+                        <input name="one" type="radio" id="checkboxTwo"  checked>
+                        <label for="checkboxTwo"></label>
+                    </li>
+                    <li>
+                        <input name="one" type="radio" id="checkboxThree" >
+                        <label for="checkboxThree"></label>
+                    </li>
+                    <li>
+                        <input name="one" type="radio" id="checkboxFour" >
+                        <label for="checkboxFour"></label>
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="d-flex flex-row justify-content-between">
+                <form class="child">
+                    <input type="hidden" name="id">
+                    <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                        Готово
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

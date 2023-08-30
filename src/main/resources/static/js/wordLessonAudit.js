@@ -3,7 +3,6 @@ var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
 var wordLessonId;
-var hintCount = 0;
 var currentIndexWord = 0;
 
 // var activeSlide;
@@ -59,54 +58,22 @@ function addWordToSlider(word) {
     slider.append(slide);
     const slideDiv = $(slide);
     $.ajax({
-        url: "/fragmentsPages/slideSpelling",
+        url: "/fragmentsPages/slideAudit",
         method: "GET"
     }).done(function (data) {
         slideDiv.html(data);
-        const letters = word.name.split("");
-        const lettersShuffle = shuffleArray(letters);
-
-        const lettersContainer = slideDiv.find(".letters-container");
-        const inputsContainer = slideDiv.find(".inputs-container");
-
-        const nameHeading = slideDiv.find("h3");
-        nameHeading.text(word.name);
 
         const descriptionHeading = slideDiv.find("h5");
         descriptionHeading.text('"' + word.description + '"');
 
-        const audioName = slideDiv.find("source");
-        audioName.attr("src", "/audio/" + word.audioName);
-
-        const image = slideDiv.find("img:first");
+        const image = slideDiv.find("img");
         image.attr("src", "/word-image/" + word.imageName);
+
 
         const wordId = slideDiv.find("input[name='id']");
         wordId.val(word.id);
 
-        letters.forEach(() => {
-            const input = document.createElement("input");
-            input.type = "text";
-            input.required = true;
-            input.maxLength = 1;
-            inputsContainer.append(input);
-        });
 
-        lettersShuffle.forEach(letter => {
-            const button = document.createElement("button");
-            button.classList.add("btn", "btn-primary");
-            button.type = "button";
-            button.value = letter;
-            button.textContent = letter;
-            button.addEventListener("click", () => handleLetterClick(letter));
-            lettersContainer.append(button);
-        });
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add("btn", "btn-primary");
-        deleteButton.type = "button";
-        deleteButton.innerHTML = '<i class="fa-solid fa-delete-left"></i>';
-        deleteButton.onclick = deleteWord;
-        lettersContainer.append(deleteButton);
     });
     currentIndex++;
     updateSlider();
@@ -124,7 +91,7 @@ function shuffleArray(array) {
 
 function wordsStart() {
     slider = document.querySelector('.slider_word');
-    var url = '/word-lesson/' + categoryId + '/word-start';
+    var url = '/word-lesson/' + categoryId + '/word-audit-start';
     $.ajax({
         url: url,
         type: "GET",
@@ -133,36 +100,37 @@ function wordsStart() {
 
             objectDivs.forEach((div, index) => {
 
-
                 const descriptionHeading = div.querySelector("h5");
                 descriptionHeading.textContent = '"' + result[index].description + '"';
-
 
                 const image = div.querySelector("img");
                 image.src = "/word-image/" + result[index].imageName;
 
                 const wordId = div.querySelector("input[name='id']");
                 wordId.value = result[index].id;
+                if (index === 1) {
+                    $.ajax({
+                        url: '/word-lesson/' + categoryId + '/word-lesson-audit-add-words',
+                        type: "GET",
+                        success: function (words) {
+                            var wordsAudit = words;
+                            wordsAudit.push(result[index].name);
+                            const shuffledArray = shuffleArray(wordsAudit);
+                            const checkboxBlocks = document.querySelectorAll('.ks-cboxtags');
 
-                // letters.forEach(() => {
-                //     const input = document.createElement("input");
-                //     input.type = "text";
-                //     input.required = true;
-                //     input.maxLength = 1;
-                //
-                //     inputsContainer.appendChild(input);
-                // });
-                //
-                // lettersShuffle.forEach(letter => {
-                //     const button = document.createElement("button");
-                //     button.classList.add("btn", "btn-primary");
-                //     button.type = "button";
-                //     button.value = letter;
-                //     button.textContent = letter;
-                //     button.addEventListener("click", () => handleLetterClick(letter));
-                //     lettersContainer.appendChild(button);
-                // });
+                            checkboxBlocks.forEach(block => {
+                                const inputs = block.querySelectorAll('input');
+                                const labels = block.querySelectorAll('label');
 
+                                inputs.forEach((input, index) => {
+                                    const value = shuffledArray[index];
+                                    input.value = value;
+                                    labels[index].textContent = value;
+                                });
+                            });
+                        }
+                    });
+                }
             });
             startSlid();
         }
@@ -170,100 +138,28 @@ function wordsStart() {
 }
 
 
+function confirm(element, event) {
+    // var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
+    // var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
 
-function deleteWord() {
-    const activeSlide = document.querySelector('.slide_active');
-    const inputsContainer = activeSlide.querySelector(".inputs-container");
-    const inputs = inputsContainer.querySelectorAll("input");
-    if (currentIndexWord > 0) {
-        currentIndexWord--;
-        inputs[currentIndexWord].setAttribute('value', '');
-    }
-    if (currentIndexWord === 0) {
-        var confirmButton = activeSlide.querySelector('.confirm.btn_main');
-        confirmButton.disabled = true;
-    }
-}
-
-// Обробник натискання кнопки з літерою
-//Переробити!!! Зараз орієнтир йде за індексом, але з цього випливають проблеми,
-// якщо користувач зненацька захоче поставити самостійно літеру, то тоді все ламається
-// потрібно орієнтуватися на останній не порожній, чи якось так
-function handleLetterClick(letter) {
-    const activeSlide = document.querySelector('.slide_active');
-    const inputsContainer = activeSlide.querySelector(".inputs-container");
-    const inputs = inputsContainer.querySelectorAll("input");
-    // const inputsContainer = document.querySelector(".inputs-container");
-    // const inputs = inputsContainer.querySelectorAll("input");
-    if (currentIndexWord < inputs.length) {
-        inputs[currentIndexWord].setAttribute('value', letter);
-        currentIndexWord++;
-    }
-    if (currentIndexWord > 0) {
-        var confirmButton = activeSlide.querySelector('.confirm.btn_main');
-        confirmButton.disabled = false;
-    }
-}
-
-function hint(element) {
-    var hintButton = element; // element - це вже кнопка, яка була передана у функцію
-    var audioContainer = hintButton.closest('.block_audio_confirm').querySelector('.audio-container');
-    if (hintCount === 0) {
-        var inputContainer = hintButton.closest('.block_confirm').querySelector('.input-container');
-        var inputsContainer = hintButton.closest('.block_confirm').querySelector('.inputs-container');
-        var lettersContainer = hintButton.closest('.block_confirm').querySelector('.letters-container');
-
-        inputContainer.classList.remove('active');
-        inputsContainer.classList.add('active');
-        lettersContainer.classList.add('active');
-        ++hintCount;
-    } else if (hintCount === 1) {
-        hintCount = 0;
-        audioContainer.classList.add('active');
-        hintButton.classList.remove('active');
-    }
-}
-
-function confirm(element) {
-    const inputsContainer = element.closest('.block_confirm').querySelector('.inputs-container');
-    const wordResultSuccess = element.closest('.block_confirm').querySelector('.word-result-success');
-    const wordResultError = element.closest('.block_confirm').querySelector('.word-result-error');
-    var lettersContainer = element.closest('.block_confirm').querySelector('.letters-container');
-    var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
-    var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
-    hintButton.disabled = true;
-    element.disabled = true;
+    var word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
 
-    var wordConfirm = "";
-    if (hintCount === 0) {
-        wordConfirm = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
-    } else {
-        lettersContainer.classList.remove('active');
-        inputsContainer.querySelectorAll("input").forEach(input => {
-            const value = input.value;
-            if (value !== "") {
-                wordConfirm += value;
-            }
-        });
-    }
+    // hintButton.disabled = true;
+    // element.disabled = true;
+
+
     $.ajax({
-        url: '/' + wordId + '/word-confirm',
+        url: '/word/' + wordId + '/word-audit-confirm',
         type: "POST",
-        data: {wordConfirm: wordConfirm},
+        data: {wordConfirm: word},
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
         success: function (result) {
-            nextSlide.classList.add('active');
-            var status = result.status;
-            if (status == "Success") {
-                wordResultSuccess.innerHTML = result.info;
-            } else {
-                wordResultError.innerHTML = result.info;
-            }
+            nextSlide(event);
         },
         error: function () {
             let shel = {};
@@ -284,20 +180,19 @@ $(document).on('input', 'input[name="wordConfirm"]', function () {
 
 
 function nextSlide(event) {
-    hintCount = 0;
     const slides = document.querySelector('.slider_word');
     // activeSlide = document.querySelector('.slide_active');
     event.preventDefault();
     ++pagePrev;
-    var url = '/word-lesson/' + categoryId + '/word-next';
+    var url = '/word-lesson/' + categoryId + '/word-audit-next';
     ++page;
     if (page < totalPage) {
         $.ajax({
             url: url,
             type: "GET",
-            data: {page: page},
+            // data: {page: page},
             success: function (result) {
-                currentIndexWord = 0;
+                console.log(result);
                 totalPage = result.totalPage;
                 wordLessonId = result.wordLessonId;
                 addWordToSlider(result);
@@ -319,20 +214,3 @@ function nextSlide(event) {
         updateSlider();
     }
 }
-
-function playAudio(element) {
-    var audio = element.parentNode.querySelector('.audio');
-    audio.load();
-    audio.play();
-}
-
-/////////////////////////////////////////////////////////////// <input type="text" class="single-char-input" maxlength="1">
-// const singleCharInputs = document.querySelectorAll(".single-char-input");
-//
-// singleCharInputs.forEach(input => {
-//     input.addEventListener("input", function () {
-//         if (this.value.length > 1) {
-//             this.value = this.value[this.value.length - 1];
-//         }
-//     });
-// });

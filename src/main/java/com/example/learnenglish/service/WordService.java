@@ -93,7 +93,7 @@ public class WordService {
                 }
             }
             word.setTranslationPairs(translationPairs);
-            if(categoryId != 0 && word.getWordCategory() == null){
+            if (categoryId != 0 && word.getWordCategory() == null) {
                 Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
                 wordCategory.getWords().add(word);
@@ -107,7 +107,7 @@ public class WordService {
         } else return saveNewWord(dtoWord, categoryId);
     }
 
-    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId){
+    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
         Word word = new Word();
         Audio audio = new Audio();
         Image images = new Image();
@@ -127,7 +127,7 @@ public class WordService {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
             word.setTranslationPairs(list);
         }
-        if(categoryId != 0){
+        if (categoryId != 0) {
             Category wordCategory = wordCategoryRepository.findById(categoryId).get();
             word.setWordCategory(wordCategory);
             wordCategory.getWords().add(word);
@@ -138,7 +138,7 @@ public class WordService {
 
     public Word getWord(Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
-        if(wordOptional.isPresent()){
+        if (wordOptional.isPresent()) {
             return wordOptional.get();
         }
         throw new RuntimeException("Error in method 'getWordToEditor' class 'WordService'");
@@ -157,10 +157,11 @@ public class WordService {
         }
         return new PageImpl<>(words, pageable, resultPage.getTotalElements());
     }
+
     public List<DtoWordToUI> searchWord(String searchTerm) {
         List<Word> wordsResult = wordRepository.findWord(searchTerm);
         List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr: wordsResult) {
+        for (Word arr : wordsResult) {
             dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
 
         }
@@ -170,35 +171,46 @@ public class WordService {
     public List<DtoWordToUI> searchWordToAdminPage(String searchTerm) {
         List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
         List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr: wordsResult) {
+        for (Word arr : wordsResult) {
             dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
         }
         return dtoWordToUIList;
     }
 
-    public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId){
+    public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId) {
         Pageable pageable = PageRequest.of(page, size);
         return wordRepository.wordsFromLesson(pageable, wordLessonId);
     }
 
-    public ResponseMessage confirmWord(String wordConfirm, Long id){
+    public ResponseMessage confirmWord(String wordConfirm, Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
-        if (wordOptional.isPresent()){
+        if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
-            if(word.getName().equals(StringUtils.normalizeSpace(wordConfirm))){
+            if (word.getName().equals(StringUtils.normalizeSpace(wordConfirm))) {
                 return new ResponseMessage(Message.SUCCESS, word.getName());
             } else return new ResponseMessage(Message.ERROR, word.getName());
-        } else return  new ResponseMessage(Message.ERRORBASE);
-     }
+        } else return new ResponseMessage(Message.ERRORBASE);
+    }
 
-     public List<DtoWordToUI> wordsToAudit(List<Long> wordsId){
+    public List<DtoWordToUI> wordsToAudit(List<Long> wordsId) {
         List<Word> words = wordRepository.findByIds(wordsId);
         List<DtoWordToUI> wordToUIS = new ArrayList<>();
-         for (Word arr: words) {
-             wordToUIS.add(DtoWordToUI.convertToDTO(arr));
-         }
-         return wordToUIS;
-     }
+        for (Word arr : words) {
+            wordToUIS.add(DtoWordToUI.convertToDTO(arr));
+        }
+        return wordToUIS;
+    }
+
+    public DtoWordToUI getWordForWordLessonAudit(Long wordId, int wordAuditCounter, int wordsIdListLength) {
+        Word word = getWord(wordId);
+        DtoWordToUI dtoWordToUI = DtoWordToUI.convertToDTO(word);
+        dtoWordToUI.setTotalPage(wordAuditCounter - 1);
+        int count = (int) (Math.random() * 100);
+        if (count % 2 == 0 && wordsIdListLength > 2) {
+            dtoWordToUI.setWordAuditSlide("radios");
+        }
+        return dtoWordToUI;
+    }
 
 
 }

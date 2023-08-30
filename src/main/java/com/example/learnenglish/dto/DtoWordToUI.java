@@ -18,6 +18,7 @@ public class DtoWordToUI {
     private String audioName;
     private Long wordLessonId;
     private int totalPage;
+    private String wordAuditSlide;
 
     public DtoWordToUI() {
     }
