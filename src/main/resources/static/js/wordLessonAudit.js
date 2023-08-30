@@ -138,14 +138,30 @@ function wordsStart() {
 }
 
 
-function confirm(element, event) {
-    // var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
-    // var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
-
+function confirm(element) {
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
-    var word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
+
+    const currentSlide = $(element).closest('.slide.bb.radios');
+
+    var word = '';
+    if (currentSlide.length > 0) {
+        word = currentSlide.find('input[name="wordConfirm"]:checked').val();
+        // Наприклад, console.log('Тип слайдів: .slide.bb.radios');
+    } else {
+        word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
+        // Наприклад, console.log('Тип слайдів: .slide.bb');
+    }
+
+    // var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
+    // var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
+
+
+
+
+
+
 
     // hintButton.disabled = true;
     // element.disabled = true;
@@ -159,7 +175,7 @@ function confirm(element, event) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
         success: function (result) {
-            nextSlide(event);
+            nextSlide();
         },
         error: function () {
             let shel = {};
@@ -179,20 +195,15 @@ $(document).on('input', 'input[name="wordConfirm"]', function () {
 });
 
 
-function nextSlide(event) {
+function nextSlide() {
     const slides = document.querySelector('.slider_word');
-    // activeSlide = document.querySelector('.slide_active');
-    event.preventDefault();
-    ++pagePrev;
     var url = '/word-lesson/' + categoryId + '/word-audit-next';
     ++page;
     if (page < totalPage) {
         $.ajax({
             url: url,
             type: "GET",
-            // data: {page: page},
             success: function (result) {
-                console.log(result);
                 totalPage = result.totalPage;
                 wordLessonId = result.wordLessonId;
                 addWordToSlider(result);
@@ -204,12 +215,12 @@ function nextSlide(event) {
                 alert(Boolean(shel))
             }
         });
-    } else if (page === totalPage) {
+    } else if (page === totalPage + 1) {
         currentIndexWord = 0;
         addEndSlide()
         currentIndex = slides.children.length - 2;
         updateSlider();
-    } else if (page === totalPage + 1) {
+    } else if (page === totalPage + 2) {
         currentIndex = slides.children.length - 1;
         updateSlider();
     }

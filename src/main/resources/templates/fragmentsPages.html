@@ -638,7 +638,7 @@
                         <div class="d-flex">
                             <form class="child">
                                 <input type="hidden" name="id">
-                                <button class="confirm btn_main m-4" type="button" onclick="confirm(this, event)" disabled>
+                                <button class="confirm btn_main m-4" type="button" onclick="confirm(this)" disabled>
                                     Готово
                                 </button>
                             </form>
@@ -655,26 +655,26 @@
                     <img/>
                 </div>
 
-                <div class="block_audio_confirm" style="position: absolute; bottom: 0; height: 295px;">
+                <div class="block_confirm" style="position: absolute; bottom: 0; height: 295px;">
 
                     <div class="d-flex flex-column align-items-center">
 <!--                            <div class="container">-->
                             <div>
                                 <ul class="ks-cboxtags d-flex flex-column">
                                     <li>
-                                        <input name="one" type="radio" id="checkboxOne" >
+                                        <input name="wordConfirm" type="radio" id="checkboxOne" checked>
                                         <label for="checkboxOne"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxTwo"  checked>
+                                        <input name="wordConfirm" type="radio" id="checkboxTwo">
                                         <label for="checkboxTwo"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxThree" >
+                                        <input name="wordConfirm" type="radio" id="checkboxThree">
                                         <label for="checkboxThree"></label>
                                     </li>
                                     <li>
-                                        <input name="one" type="radio" id="checkboxFour" >
+                                        <input name="wordConfirm" type="radio" id="checkboxFour">
                                         <label for="checkboxFour"></label>
                                     </li>
 
@@ -685,7 +685,7 @@
                         <div class="d-flex flex-row justify-content-between">
                             <form class="child">
                                 <input type="hidden" name="id">
-                                <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                                <button class="confirm btn_main" type="button" onclick="confirm(this)">
                                     Готово
                                 </button>
                             </form>
@@ -741,19 +741,19 @@
             <div>
                 <ul class="ks-cboxtags d-flex flex-column">
                     <li>
-                        <input name="one" type="radio" id="checkboxOne" >
+                        <input name="wordConfirm" type="radio" id="checkboxOne" checked>
                         <label for="checkboxOne"></label>
                     </li>
                     <li>
-                        <input name="one" type="radio" id="checkboxTwo"  checked>
+                        <input name="wordConfirm" type="radio" id="checkboxTwo">
                         <label for="checkboxTwo"></label>
                     </li>
                     <li>
-                        <input name="one" type="radio" id="checkboxThree" >
+                        <input name="wordConfirm" type="radio" id="checkboxThree">
                         <label for="checkboxThree"></label>
                     </li>
                     <li>
-                        <input name="one" type="radio" id="checkboxFour" >
+                        <input name="wordConfirm" type="radio" id="checkboxFour">
                         <label for="checkboxFour"></label>
                     </li>
 
@@ -763,7 +763,7 @@
             <div class="d-flex flex-row justify-content-between">
                 <form class="child">
                     <input type="hidden" name="id">
-                    <button class="confirm btn_main" type="button" onclick="confirm(this)" disabled>
+                    <button class="confirm btn_main" type="button" onclick="confirm(this)">
                         Готово
                     </button>
                 </form>

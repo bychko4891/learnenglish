@@ -85,11 +85,12 @@ public class LearnEnglishRestController {
                                                                   Principal principal) {
         if (principal != null) {
             List<Long> wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
-            int wordAuditCounter = wordsId.size() < 16 ? (int) Math.ceil(wordsId.size() * 0.8) : (int) Math.ceil(wordsId.size() * 0.6);
+            int wordAuditCounter = (wordsId.size() > 9 && wordsId.size() < 16) ? (int) Math.ceil(wordsId.size() * 0.8) : wordsId.size() > 16 ? (int) Math.ceil(wordsId.size() * 0.6) : wordsId.size();
             Collections.shuffle(wordsId);
             List<Long> wordsIdStart = new ArrayList<>(wordsId.subList(0, 2));
             wordsId.subList(0, 2).clear();
             session.setAttribute("wordsId", wordsId);
+            session.setAttribute("totalPage", wordAuditCounter);
             session.setAttribute("wordAuditCounter", wordAuditCounter - 2);
             return ResponseEntity.ok(wordService.wordsToAudit(wordsIdStart));
         }
@@ -101,7 +102,10 @@ public class LearnEnglishRestController {
                                                                           Principal principal) {
         if (principal != null) {
             List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
-            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter") - 1;
+            int totalPage = (int) session.getAttribute("totalPage"); //Додати перевірку довжини масива та на null
+            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter");
+            if(wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
+            -- wordAuditCounter;
             Collections.shuffle(wordsId);
             Long wordId = wordsId.get(0);
             wordsId.remove(0);
@@ -112,7 +116,8 @@ public class LearnEnglishRestController {
                 session.removeAttribute("wordsId");
                 session.removeAttribute("wordAuditCounter");
             }
-            return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, wordAuditCounter, wordsId.size()));
+            return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
+            }
         }
         return ResponseEntity.notFound().build();
     }
