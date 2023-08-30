@@ -85,6 +85,7 @@ public class LearnEnglishRestController {
                                                                   Principal principal) {
         if (principal != null) {
             List<Long> wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
+            wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
             int wordAuditCounter = (wordsId.size() > 9 && wordsId.size() < 16) ? (int) Math.ceil(wordsId.size() * 0.8) : wordsId.size() > 16 ? (int) Math.ceil(wordsId.size() * 0.6) : wordsId.size();
             Collections.shuffle(wordsId);
             List<Long> wordsIdStart = new ArrayList<>(wordsId.subList(0, 2));
@@ -99,24 +100,24 @@ public class LearnEnglishRestController {
 
     @GetMapping("/word-lesson/{id}/word-audit-next")
     public ResponseEntity<DtoWordToUI> nextWordForLessonWordAudit(@PathVariable("id") Long wordLessonId,
-                                                                          Principal principal) {
+                                                                  Principal principal) {
         if (principal != null) {
             List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
             int totalPage = (int) session.getAttribute("totalPage"); //Додати перевірку довжини масива та на null
             int wordAuditCounter = (int) session.getAttribute("wordAuditCounter");
-            if(wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
-            -- wordAuditCounter;
-            Collections.shuffle(wordsId);
-            Long wordId = wordsId.get(0);
-            wordsId.remove(0);
-            if(wordsId.size() != 0){
-                session.setAttribute("wordsId", wordsId);
-                session.setAttribute("wordAuditCounter", wordAuditCounter);
-            } else {
-                session.removeAttribute("wordsId");
-                session.removeAttribute("wordAuditCounter");
-            }
-            return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
+            if (wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
+                --wordAuditCounter;
+                Collections.shuffle(wordsId);
+                Long wordId = wordsId.get(0);
+                wordsId.remove(0);
+                if (wordsId.size() != 0) {
+                    session.setAttribute("wordsId", wordsId);
+                    session.setAttribute("wordAuditCounter", wordAuditCounter);
+                } else {
+                    session.removeAttribute("wordsId");
+                    session.removeAttribute("wordAuditCounter");
+                }
+                return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
             }
         }
         return ResponseEntity.notFound().build();
@@ -125,14 +126,12 @@ public class LearnEnglishRestController {
 
     @GetMapping("/word-lesson/{id}/word-lesson-audit-add-words")
     public ResponseEntity<List<String>> addWordsForLessonWordAudit(@PathVariable("id") Long wordLessonId,
-                                                         Principal principal) {
+                                                                   Principal principal) {
         if (principal != null) {
             List<Long> wordsId = (List<Long>) session.getAttribute("wordsId");
             if (wordsId.size() > 2) {
                 Collections.shuffle(wordsId);
                 List<Long> wordsIdRadios = new ArrayList<>(wordsId.subList(0, 3));
-                wordsId.subList(0, 3).clear();
-                session.setAttribute("wordsId", wordsId);
                 List<DtoWordToUI> dtoWordToUIS = wordService.wordsToAudit(wordsIdRadios);
                 List<String> wordsRadios = new ArrayList<>();
                 for (DtoWordToUI arr : dtoWordToUIS) {
@@ -152,8 +151,8 @@ public class LearnEnglishRestController {
 
     @PostMapping("/word/{id}/word-audit-confirm")
     public ResponseEntity<String> wordAuditConfirm(@PathVariable("id") Long wordId,
-                                                         @RequestParam(name = "wordConfirm") String wordConfirm,
-                                                         Principal principal) {
+                                                   @RequestParam(name = "wordConfirm") String wordConfirm,
+                                                   Principal principal) {
         if (principal != null) {
             List<Long> wordsId = (List<Long>) session.getAttribute("wordsId");
             System.out.println(wordConfirm);

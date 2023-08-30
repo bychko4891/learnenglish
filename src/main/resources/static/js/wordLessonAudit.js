@@ -5,21 +5,6 @@ var currentIndex = 0;
 var wordLessonId;
 var currentIndexWord = 0;
 
-// var activeSlide;
-
-function startSlid() {
-    const mainSlide = slider.children[0];
-    const secondSlide = slider.children[1];
-    if (mainSlide) {
-        mainSlide.classList.add('slide_active');
-        // activeSlide = document.querySelector('.slide_active');
-    }
-    if (secondSlide) {
-        secondSlide.classList.add('slide_no_active');
-    }
-}
-
-
 function updateSlider() {
     const slide = slider.firstElementChild;
     const slideStyles = window.getComputedStyle(slide);
@@ -29,20 +14,17 @@ function updateSlider() {
     const mainSlide = slider.children[currentIndex];
 
     if (mainSlide) {
-        mainSlide.classList.remove('slide_no_active');
         mainSlide.classList.add('slide_active');
     }
-
     const currentSlide = slider.children[currentIndex - 1];
     if (currentSlide) {
         currentSlide.classList.remove('slide_active');
-        currentSlide.classList.add('slide_no_active');
     }
 }
 
 function addEndSlide() {
     const slide = document.createElement('div');
-    slide.className = 'slide bb slide_no_active';
+    slide.className = 'slide bb';
     slide.id = 'endSlide';
     slider.appendChild(slide);
     $('#endSlide').load("/fragmentsPages/endSlideSpelling", function () {
@@ -54,7 +36,7 @@ function addEndSlide() {
 
 function addWordToSlider(word) {
     const slide = document.createElement('div');
-    slide.className = 'slide bb slide_no_active';
+    slide.className = 'slide bb';
     slider.append(slide);
     const slideDiv = $(slide);
     $.ajax({
@@ -68,18 +50,17 @@ function addWordToSlider(word) {
 
         const image = slideDiv.find("img");
         image.attr("src", "/word-image/" + word.imageName);
-
-
+        if(word.wordAuditSlide === 'radios'){
+            //TODO
+        }
         const wordId = slideDiv.find("input[name='id']");
         wordId.val(word.id);
-
 
     });
     currentIndex++;
     updateSlider();
 }
 
-// Функція для перемішування масиву
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -132,7 +113,6 @@ function wordsStart() {
                     });
                 }
             });
-            startSlid();
         }
     });
 }
@@ -148,20 +128,9 @@ function confirm(element) {
     var word = '';
     if (currentSlide.length > 0) {
         word = currentSlide.find('input[name="wordConfirm"]:checked').val();
-        // Наприклад, console.log('Тип слайдів: .slide.bb.radios');
     } else {
         word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
-        // Наприклад, console.log('Тип слайдів: .slide.bb');
     }
-
-    // var nextSlide = element.closest('.block_confirm').querySelector('.next-slide');
-    // var hintButton = element.closest('.block_confirm').querySelector('.hint_button');
-
-
-
-
-
-
 
     // hintButton.disabled = true;
     // element.disabled = true;

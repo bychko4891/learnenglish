@@ -256,37 +256,41 @@
     .slide {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        height: 580px; /* Висота слайда */
+        /*align-items: center;*/
+        height: 580px;
         text-align: center;
         position: relative;
-        /*border: 1px solid #ccc;*/
-        /*transition: all 0.6s ease-in;*/
-        overflow: hidden;
-    }
 
-    .slide img {
-        width: auto;
-        height: auto;
-    }
-
-    .slide_active {
-        transform: scale(1);
-        transition: all 0.6s ease-in;
-    }
-
-    .slide_no_active {
         filter: blur(calc(0.4 * 1rem));
         transform: scale(0.8);
         transition: all 0.6s ease-in;
+
+        overflow: hidden;
     }
 
-    .slide_no_active img {
+    /*.slide.slide_active img {*/
+    /*    width: auto;*/
+    /*    height: auto;*/
+    /*}*/
+
+    .slide.slide_active {
+        transform: scale(1);
+        transition: all 0.6s ease-in;
+        filter: none;
+    }
+
+    /*.slide_no_active {*/
+    /*    filter: blur(calc(0.4 * 1rem));*/
+    /*    transform: scale(0.8);*/
+    /*    transition: all 0.6s ease-in;*/
+    /*}*/
+
+    .slide img {
         width: 0;
         height: 0;
     }
 
-    .slide_no_active .word_description {
+    .slide .word_description {
         background: #2c2c2c;
     }
 

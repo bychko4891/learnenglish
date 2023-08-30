@@ -284,7 +284,7 @@
 </div>
 
 <div th:fragment="slideReview">
-    <img class="m-4"/>
+    <img class="m-4" style="width: 270px; height: auto;"/>
     <div class="block_name">
         <div class="name_and_audio">
             <h3></h3>
@@ -292,7 +292,7 @@
                 <source type="audio/mpeg"/>
             </audio>
             <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 30px;"/>
+                                        <img src="/images/play_audio.png" style="width: 30px; height: auto;"/>
                         </span>
         </div>
         <h6></h6>
@@ -322,7 +322,7 @@
                 <source type="audio/mpeg"/>
             </audio>
             <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 50px;"/>
+                                        <img src="/images/play_audio.png" style="width: 50px; height: auto;"/>
                         </span>
         </div>
 
@@ -364,8 +364,8 @@
 <div th:fragment="wordLessonReview">
     <div class="slider-container">
         <div class="slider_word" id="slider">
-            <div class="slide bb">
-                <img class="m-4"/>
+            <div class="slide bb align-items-center slide_active">
+                <img class="m-4" style="width: 270px; height: auto;"/>
                 <div class="block_name">
                     <div class="name_and_audio">
                         <h3></h3>
@@ -373,7 +373,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 30px;"/>
+                                        <img src="/images/play_audio.png" style="width: 30px; height: auto;"/>
                         </span>
                     </div>
                     <h6></h6>
@@ -388,8 +388,9 @@
                     </form>
                 </div>
             </div>
-            <div class="slide bb">
-                <img class="m-4"/>
+
+            <div class="slide bb align-items-center">
+                <img class="m-4" style="width: 270px; height: auto;"/>
                 <div class="block_name">
                     <div class="name_and_audio">
                         <h3></h3>
@@ -397,7 +398,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 30px;"/>
+                                        <img src="/images/play_audio.png" style="width: 30px; height: auto;"/>
                         </span>
 
                     </div>
@@ -430,7 +431,7 @@
     <div class="slider-container">
         <div class="slider_word">
 
-            <div class="slide bb">
+            <div class="slide bb slide_active">
 
                 <div class="img_description d-flex flex-column">
                     <span style="z-index: 2; font-size: 20px;">По буквах!</span>
@@ -445,7 +446,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 50px;"/>
+                                        <img src="/images/play_audio.png" style="width: 50px; height: auto;"/>
                         </span>
                     </div>
 
@@ -499,7 +500,7 @@
                             <source type="audio/mpeg"/>
                         </audio>
                         <span class="sound_pic" onclick="playAudio(this);">
-                                        <img src="/images/play_audio.png" style="width: 50px;"/>
+                                        <img src="/images/play_audio.png" style="width: 50px; height: auto;"/>
                         </span>
                     </div>
 
@@ -623,7 +624,7 @@
         <div class="slider_word">
 
 
-            <div class="slide bb">
+            <div class="slide bb align-items-center slide_active">
                 <div class="img_description d-flex flex-column">
                     <span style="z-index: 2; font-size: 20px;">Яка з них правильна?</span>
                     <h5></h5>
@@ -648,7 +649,7 @@
             </div>
 
 
-            <div class="slide bb radios">
+            <div class="slide bb align-items-center radios">
                 <div class="img_description d-flex flex-column">
                     <span style="z-index: 2; font-size: 20px;">По буквах!</span>
                     <h5></h5>
@@ -717,7 +718,7 @@
             <div class="d-flex">
                 <form class="child">
                     <input type="hidden" name="id">
-                    <button class="confirm btn_main m-4" type="button" onclick="confirm(this, event)" disabled>
+                    <button class="confirm btn_main m-4" type="button" onclick="confirm(this)" disabled>
                         Готово
                     </button>
                 </form>

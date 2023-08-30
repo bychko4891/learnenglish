@@ -8,17 +8,6 @@ var currentIndexWord = 0;
 
 // var activeSlide;
 
-function startSlid() {
-    const mainSlide = slider.children[0];
-    const secondSlide = slider.children[1];
-    if (mainSlide) {
-        mainSlide.classList.add('slide_active');
-        // activeSlide = document.querySelector('.slide_active');
-    }
-    if (secondSlide) {
-        secondSlide.classList.add('slide_no_active');
-    }
-}
 
 
 function updateSlider() {
@@ -30,20 +19,18 @@ function updateSlider() {
     const mainSlide = slider.children[currentIndex];
 
     if (mainSlide) {
-        mainSlide.classList.remove('slide_no_active');
         mainSlide.classList.add('slide_active');
     }
 
     const currentSlide = slider.children[currentIndex - 1];
     if (currentSlide) {
         currentSlide.classList.remove('slide_active');
-        currentSlide.classList.add('slide_no_active');
     }
 }
 
 function addEndSlide() {
     const slide = document.createElement('div');
-    slide.className = 'slide bb slide_no_active';
+    slide.className = 'slide bb';
     slide.id = 'endSlide';
     slider.appendChild(slide);
     $('#endSlide').load("/fragmentsPages/endSlideSpelling", function () {
@@ -55,7 +42,7 @@ function addEndSlide() {
 
 function addWordToSlider(word) {
     const slide = document.createElement('div');
-    slide.className = 'slide bb slide_no_active';
+    slide.className = 'slide bb';
     slider.append(slide);
     const slideDiv = $(slide);
     $.ajax({
@@ -177,7 +164,6 @@ function wordsStart() {
                 deleteButton.onclick = deleteWord;
                 lettersContainer.appendChild(deleteButton);
             });
-            startSlid();
         }
     });
 }
