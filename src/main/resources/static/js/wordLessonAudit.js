@@ -160,11 +160,9 @@ function confirm(element) {
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
 
     const currentSlide = $(element).closest('.slide.bb.radios');
-    console.log('YES');
     var word = '';
     if (currentSlide.length > 0) {
         word = currentSlide.find('input[name="group-wordSelect-' + wordId + '"]:checked').val();
-        console.log(word + ' word');
     } else {
         word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
     }
