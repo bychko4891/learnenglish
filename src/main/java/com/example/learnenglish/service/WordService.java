@@ -205,9 +205,10 @@ public class WordService {
         Word word = getWord(wordId);
         DtoWordToUI dtoWordToUI = DtoWordToUI.convertToDTO(word);
         dtoWordToUI.setTotalPage(wordAuditCounter - 1);
-        int count = (int) (Math.random() * 100);
-        if (count % 2 == 0 && wordsIdListLength > 2) {
-            dtoWordToUI.setWordAuditSlide("radios");
+        int count = (int) (Math.random() * 10);
+        System.out.println(count);
+        if (count % 2 != 0 && wordsIdListLength > 2) {
+            dtoWordToUI.setWordAuditSlide("slideAuditRadios");
         }
         return dtoWordToUI;
     }

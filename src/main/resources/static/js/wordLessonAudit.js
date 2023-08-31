@@ -35,12 +35,14 @@ function addEndSlide() {
 
 
 function addWordToSlider(word) {
+    const slideFragment = word.wordAuditSlide;
     const slide = document.createElement('div');
     slide.className = 'slide bb';
+    if(slideFragment === 'slideAuditRadios') slide.className = 'slide bb radios';
     slider.append(slide);
     const slideDiv = $(slide);
     $.ajax({
-        url: "/fragmentsPages/slideAudit",
+        url: '/fragmentsPages/' + slideFragment,
         method: "GET"
     }).done(function (data) {
         slideDiv.html(data);
@@ -50,11 +52,39 @@ function addWordToSlider(word) {
 
         const image = slideDiv.find("img");
         image.attr("src", "/word-image/" + word.imageName);
-        if(word.wordAuditSlide === 'radios'){
-            //TODO
-        }
+
         const wordId = slideDiv.find("input[name='id']");
         wordId.val(word.id);
+
+        const id = 'wordSelect-' + word.id;
+
+        if(slideFragment === 'slideAuditRadios'){
+            $.ajax({
+                url: '/word-lesson/' + categoryId + '/word-lesson-audit-add-words',
+                type: "GET",
+                success: function (words) {
+                    var wordsAudit = words;
+                    wordsAudit.push(word.name);
+                    const shuffledArray = shuffleArray(wordsAudit);
+                    const checkboxBlocks = slide.querySelectorAll('.ks-cboxtags');
+
+                    checkboxBlocks.forEach(block => {
+                        const inputs = block.querySelectorAll('input');
+                        const labels = block.querySelectorAll('label');
+
+                        inputs.forEach((input, index) => {
+                            const value = shuffledArray[index];
+                            input.name = 'group-' + id;
+                            input.id = id + '-' + index;
+                            input.value = value;
+                            labels[index].textContent = value;
+                            labels[index].setAttribute('for', id + '-' + index);
+                        });
+                    });
+                }
+            });
+        }
+
 
     });
     currentIndex++;
@@ -89,6 +119,9 @@ function wordsStart() {
 
                 const wordId = div.querySelector("input[name='id']");
                 wordId.value = result[index].id;
+
+                const id = 'wordSelect-' + result[index].id;
+
                 if (index === 1) {
                     $.ajax({
                         url: '/word-lesson/' + categoryId + '/word-lesson-audit-add-words',
@@ -97,7 +130,7 @@ function wordsStart() {
                             var wordsAudit = words;
                             wordsAudit.push(result[index].name);
                             const shuffledArray = shuffleArray(wordsAudit);
-                            const checkboxBlocks = document.querySelectorAll('.ks-cboxtags');
+                            const checkboxBlocks = div.querySelectorAll('.ks-cboxtags');
 
                             checkboxBlocks.forEach(block => {
                                 const inputs = block.querySelectorAll('input');
@@ -105,8 +138,11 @@ function wordsStart() {
 
                                 inputs.forEach((input, index) => {
                                     const value = shuffledArray[index];
+                                    input.name = 'group-' + id;
+                                    input.id = id + '-' + index;
                                     input.value = value;
                                     labels[index].textContent = value;
+                                    labels[index].setAttribute('for', id + '-' + index);
                                 });
                             });
                         }
@@ -124,10 +160,11 @@ function confirm(element) {
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
 
     const currentSlide = $(element).closest('.slide.bb.radios');
-
+    console.log('YES');
     var word = '';
     if (currentSlide.length > 0) {
-        word = currentSlide.find('input[name="wordConfirm"]:checked').val();
+        word = currentSlide.find('input[name="group-wordSelect-' + wordId + '"]:checked').val();
+        console.log(word + ' word');
     } else {
         word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
     }
