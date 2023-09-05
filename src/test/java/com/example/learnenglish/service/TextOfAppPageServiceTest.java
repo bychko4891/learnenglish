@@ -1,5 +1,12 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.TextOfAppPageRepository;
 import org.junit.jupiter.api.BeforeEach;
