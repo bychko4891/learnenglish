@@ -2,7 +2,7 @@ var slider = document.querySelector('.slider_word');
 var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
-var wordLessonId;
+// var wordLessonId;
 var hintCount = 0;
 var currentIndexWord = 0;
 
@@ -111,7 +111,7 @@ function shuffleArray(array) {
 
 function wordsStart() {
     slider = document.querySelector('.slider_word');
-    var url = '/word-lesson/' + categoryId + '/word-start';
+    var url = '/word-lesson/' + wordLessonId + '/word-start';
     $.ajax({
         url: url,
         type: "GET",
@@ -288,7 +288,7 @@ function nextSlide(event) {
     // activeSlide = document.querySelector('.slide_active');
     event.preventDefault();
     ++pagePrev;
-    var url = '/word-lesson/' + categoryId + '/word-next';
+    var url = '/word-lesson/' + wordLessonId + '/word-next';
     ++page;
     if (page < totalPage) {
         $.ajax({

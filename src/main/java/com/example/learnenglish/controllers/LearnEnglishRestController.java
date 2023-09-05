@@ -1,8 +1,12 @@
 package com.example.learnenglish.controllers;
 
+import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
 import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.Word;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.service.UserService;
+import com.example.learnenglish.service.UserWordLessonStatisticService;
 import com.example.learnenglish.service.WordLessonService;
 import com.example.learnenglish.service.WordService;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +24,12 @@ public class LearnEnglishRestController {
     private final WordService wordService;
     private final WordLessonService wordLessonService;
     private final HttpSession session;
+
+    private final UserService userService;
+
+    private final UserWordLessonStatisticService userWordLessonStatisticService;
+
+
 
     @GetMapping("/search-word")
     public ResponseEntity<List<DtoWordToUI>> searchWord(@RequestParam("searchTerm") String searchTerm) {
@@ -93,7 +103,8 @@ public class LearnEnglishRestController {
             session.setAttribute("wordsId", wordsId);
             session.setAttribute("totalPage", wordAuditCounter);
             session.setAttribute("wordAuditCounter", wordAuditCounter - 2);
-            return ResponseEntity.ok(wordService.wordsToAudit(wordsIdStart));
+            session.setAttribute("wordLessonId", wordLessonId);
+            return ResponseEntity.ok(wordService.wordsToAudit(wordsIdStart, wordAuditCounter));
         }
         return ResponseEntity.notFound().build();
     }
@@ -132,7 +143,7 @@ public class LearnEnglishRestController {
             if (wordsId.size() > 2) {
                 Collections.shuffle(wordsId);
                 List<Long> wordsIdRadios = new ArrayList<>(wordsId.subList(0, 3));
-                List<DtoWordToUI> dtoWordToUIS = wordService.wordsToAudit(wordsIdRadios);
+                List<DtoWordToUI> dtoWordToUIS = wordService.wordsToAudit(wordsIdRadios, 0);
                 List<String> wordsRadios = new ArrayList<>();
                 for (DtoWordToUI arr : dtoWordToUIS) {
                     wordsRadios.add(arr.getName());
@@ -151,12 +162,13 @@ public class LearnEnglishRestController {
 
     @PostMapping("/word/{id}/word-audit-confirm")
     public ResponseEntity<String> wordAuditConfirm(@PathVariable("id") Long wordId,
-                                                   @RequestParam(name = "wordConfirm") String wordConfirm,
+                                                   @RequestBody DtoUserWordLessonStatistic userWordLessonStatistic,
                                                    Principal principal) {
         if (principal != null) {
-            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId");
-            System.out.println(wordConfirm);
-            return ResponseEntity.ok(wordConfirm);
+            User user = userService.findByEmail(principal.getName());
+            userWordLessonStatistic.setUser(user);
+            userWordLessonStatisticService.saveUserWordLessonStatistic(userWordLessonStatistic);
+            return ResponseEntity.ok("wordConfirm");
         }
         return ResponseEntity.notFound().build();
     }

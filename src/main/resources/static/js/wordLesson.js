@@ -1,4 +1,4 @@
-var categoryId = $('input[name="categoryId"]').val();
+var wordLessonId = $('input[name="wordLessonId"]').val();
 $(document).ready(function () {
     switchTab('tab1')
 });

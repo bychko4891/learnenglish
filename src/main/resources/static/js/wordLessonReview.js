@@ -4,14 +4,14 @@ var page = 1;
 var pagePrev = 1;
 var totalPage = 4;
 var currentIndex = 0;
-var wordLessonId;
+// var wordLessonId;
 
 
 $('#next').submit(function (event) {
     const slides = document.querySelector('.slider_word');
     event.preventDefault();
     ++pagePrev;
-    var url = '/word-lesson/' + categoryId + '/word-next';
+    var url = '/word-lesson/' + wordLessonId + '/word-next';
     if (page + 1 === pagePrev) {
         ++page;
         if (page < totalPage) {
@@ -134,7 +134,7 @@ function playAudio(element) {
 function wordsStart() {
     slider = document.querySelector('.slider_word');
 
-    var url = '/word-lesson/' + categoryId + '/word-start';
+    var url = '/word-lesson/' + wordLessonId + '/word-start';
     $.ajax({
         url: url,
         type: "GET",

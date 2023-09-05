@@ -1,15 +1,21 @@
 package com.example.learnenglish.config;
 
+/*
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.service.UserStatisticsService;
 import com.example.learnenglish.service.UserService;
+import com.example.learnenglish.service.UserStatisticsService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
-import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 public class CustomRequestLoggingFilter extends AbstractRequestLoggingFilter {

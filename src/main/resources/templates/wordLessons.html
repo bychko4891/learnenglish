@@ -65,7 +65,36 @@
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        const pageHeight = Math.max(-->
+<!--            document.body.scrollHeight,-->
+<!--            document.documentElement.scrollHeight,-->
+<!--            document.body.offsetHeight,-->
+<!--            document.documentElement.offsetHeight,-->
+<!--            document.body.clientHeight,-->
+<!--            document.documentElement.clientHeight-->
+<!--        );-->
+
+<!--// Отримати висоту вікна браузера-->
+<!--        const windowHeight = window.innerHeight;-->
+
+<!--// Перевірити, чи є полоса прокрутки-->
+<!--        const hasScrollbar = pageHeight > windowHeight;-->
+
+<!--        if (hasScrollbar) {-->
+<!--            console.log("Є полоса прокрутки.");-->
+<!--        } else {-->
+<!--            console.log("Немає полоси прокрутки.");-->
+<!--        }-->
+<!--    };-->
+
+<!--</script>-->
 <script>
+
+
+
+
     function isBodyOverflowed() {
         return document.body.scrollHeight > document.body.clientHeight;
     }

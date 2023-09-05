@@ -192,11 +192,12 @@ public class WordService {
         } else return new ResponseMessage(Message.ERRORBASE);
     }
 
-    public List<DtoWordToUI> wordsToAudit(List<Long> wordsId) {
+    public List<DtoWordToUI> wordsToAudit(List<Long> wordsId, int wordAuditCounter) {
         List<Word> words = wordRepository.findByIds(wordsId);
         List<DtoWordToUI> wordToUIS = new ArrayList<>();
         for (Word arr : words) {
             wordToUIS.add(DtoWordToUI.convertToDTO(arr));
+            wordToUIS.get(wordToUIS.size() - 1).setTotalPage(wordAuditCounter);
         }
         return wordToUIS;
     }

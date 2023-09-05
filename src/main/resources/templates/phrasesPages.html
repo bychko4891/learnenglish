@@ -54,12 +54,12 @@ border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 3
 
             <!--            &lt;!&ndash; відображення пагінації &ndash;&gt;-->
             <!--            <div style=" margin-left: 80px; width: 70%;">-->
-            <!--                <a th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} - 1), id=${categoryId})}">Previous</a>-->
+            <!--                <a th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} - 1), id=${wordLessonId})}">Previous</a>-->
             <!--                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">-->
-            <!--                    <a th:href="@{/phrases-category/{id}/phrases(page=${pageNumber}, id=${categoryId})}"-->
+            <!--                    <a th:href="@{/phrases-category/{id}/phrases(page=${pageNumber}, id=${wordLessonId})}"-->
             <!--                       th:text="${pageNumber + 1}"></a>-->
             <!--                </span>-->
-            <!--                <a th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} + 1), id=${categoryId})}">Next</a>-->
+            <!--                <a th:href="@{/phrases-category/{id}/phrases(page=(${currentPage} + 1), id=${wordLessonId})}">Next</a>-->
             <!--            </div>-->
 
 

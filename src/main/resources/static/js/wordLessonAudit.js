@@ -2,7 +2,6 @@ var slider = document.querySelector('.slider_word');
 var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
-var wordLessonId;
 var currentIndexWord = 0;
 
 function updateSlider() {
@@ -38,7 +37,7 @@ function addWordToSlider(word) {
     const slideFragment = word.wordAuditSlide;
     const slide = document.createElement('div');
     slide.className = 'slide bb';
-    if(slideFragment === 'slideAuditRadios') slide.className = 'slide bb radios';
+    if (slideFragment === 'slideAuditRadios') slide.className = 'slide bb radios';
     slider.append(slide);
     const slideDiv = $(slide);
     $.ajax({
@@ -58,9 +57,9 @@ function addWordToSlider(word) {
 
         const id = 'wordSelect-' + word.id;
 
-        if(slideFragment === 'slideAuditRadios'){
+        if (slideFragment === 'slideAuditRadios') {
             $.ajax({
-                url: '/word-lesson/' + categoryId + '/word-lesson-audit-add-words',
+                url: '/word-lesson/' + wordLessonId + '/word-lesson-audit-add-words',
                 type: "GET",
                 success: function (words) {
                     var wordsAudit = words;
@@ -102,11 +101,12 @@ function shuffleArray(array) {
 
 function wordsStart() {
     slider = document.querySelector('.slider_word');
-    var url = '/word-lesson/' + categoryId + '/word-audit-start';
+    var url = '/word-lesson/' + wordLessonId + '/word-audit-start';
     $.ajax({
         url: url,
         type: "GET",
         success: function (result) {
+            totalPage = result[0].totalPage;
             const objectDivs = document.querySelectorAll(".slide");
 
             objectDivs.forEach((div, index) => {
@@ -124,7 +124,7 @@ function wordsStart() {
 
                 if (index === 1) {
                     $.ajax({
-                        url: '/word-lesson/' + categoryId + '/word-lesson-audit-add-words',
+                        url: '/word-lesson/' + wordLessonId + '/word-lesson-audit-add-words',
                         type: "GET",
                         success: function (words) {
                             var wordsAudit = words;
@@ -155,6 +155,7 @@ function wordsStart() {
 
 
 function confirm(element) {
+    // nextSlide();
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var wordId = $(element).closest('.block_confirm').find('input[name="id"]').val();
@@ -166,15 +167,17 @@ function confirm(element) {
     } else {
         word = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
     }
-
-    // hintButton.disabled = true;
-    // element.disabled = true;
-
+    var userWordLessonStatistic = {
+        wordLessonId: wordLessonId,
+        wordId: wordId,
+        userAnswer: word
+    }
 
     $.ajax({
         url: '/word/' + wordId + '/word-audit-confirm',
         type: "POST",
-        data: {wordConfirm: word},
+        contentType: "application/json",
+        data: JSON.stringify(userWordLessonStatistic),
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
@@ -201,7 +204,7 @@ $(document).on('input', 'input[name="wordConfirm"]', function () {
 
 function nextSlide() {
     const slides = document.querySelector('.slider_word');
-    var url = '/word-lesson/' + categoryId + '/word-audit-next';
+    var url = '/word-lesson/' + wordLessonId + '/word-audit-next';
     ++page;
     if (page < totalPage) {
         $.ajax({
@@ -209,12 +212,13 @@ function nextSlide() {
             type: "GET",
             success: function (result) {
                 totalPage = result.totalPage;
-                wordLessonId = result.wordLessonId;
+                // wordLessonId = result.wordLessonId;
                 addWordToSlider(result);
                 currentIndex = slides.children.length - 2;
                 updateSlider();
             },
             error: function () {
+                console.log("Next error");
                 let shel = {};
                 alert(Boolean(shel))
             }
