@@ -1,28 +1,23 @@
-var categoryId = $('input[name="categoryId"]').val();
+var wordLessonId = $('input[name="wordLessonId"]').val();
 $(document).ready(function () {
     switchTab('tab1')
 });
 
 function switchButton(tabId) {
 
-    // Забираємо активний клас від усіх кнопок
     $('.word_tabs li button').removeClass('active');
 
-    // Вмикаємо вибрану кнопку
     $('#' + tabId + '-btn').addClass('active');
 
-    // Вимикаємо всі radio-кнопки
     $('input[name="tab-control"]').prop('checked', false);
 
-    // Вмикаємо потрібний radio-кнопку, яка відповідає вибраній вкладці
     $('#' + tabId).prop('checked', true);
 
-    // Оновлення стилів слайдера при активній вкладці
     var slider = $('.slider');
     var activeTab = $('.word_tabs li button.active');
     var index = activeTab.parent().index();
 
-    var translationValue = index * 100; // Вираховуємо значення трансформації для слайдера
+    var translationValue = index * 100;
 
     slider.css('transform', 'translateX(' + translationValue + '%)');
 }
@@ -39,14 +34,19 @@ function switchTab(tabId) {
                 url: "/fragmentsPages/wordLessonSpelling",
                 method: "GET"
             }).done(function (data) {
-                $('#content-tab2').html(data); // Замінити вміст елемента з завантаженими даними
-                wordsStart(); // Виклик функції
+                $('#content-tab2').html(data);
+                wordsStart();
             });
-
-
             tab1.innerHTML = '';
             tab3.innerHTML = '';
         }else if(tabId === 'tab3'){
+            $.ajax({
+                url: "/fragmentsPages/wordLessonAudit",
+                method: "GET"
+            }).done(function (data) {
+                $('#content-tab3').html(data);
+                wordsStart();
+            });
             tab1.innerHTML = '';
             tab2.innerHTML = '';
         }else {
@@ -57,7 +57,6 @@ function switchTab(tabId) {
             tab3.innerHTML = '';
         }
     }
-    // Викликаємо функцію для перемикання табів, яка забезпечить оновлення слайдера
     switchButton(tabId);
 
 }

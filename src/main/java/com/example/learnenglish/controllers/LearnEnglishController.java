@@ -226,7 +226,7 @@ public class LearnEnglishController {
                 model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
             }
             model.addAttribute("words", wordsFromLesson.getContent());
-            model.addAttribute("categoryId", wordLessonId);
+            model.addAttribute("wordLessonId", wordLessonId);
 
         return "wordLesson";
         } return "redirect:/login";

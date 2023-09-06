@@ -1,6 +1,12 @@
 package com.example.learnenglish.model.users;
 
-import com.example.learnenglish.model.Word;
+/*
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.WordLesson;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,9 +26,14 @@ public class UserWordLessonStatistic {
     @JoinColumn(name = "word_lesson_id")
     private WordLesson wordLesson;
 
-    @OneToOne
-    @JoinColumn(name = "word_id")
-    private Word word;
+    @Column
+    private String word;
+
+    @Column
+    private String wordInfo;
+
+    @Column
+    private String userAnswer;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,5 +1,12 @@
 package com.example.learnenglish.config;
 
+/*
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpSession;
@@ -78,7 +85,6 @@ public class SecurityConfig {
             "/about-the-app",
             "/registration",
             "/registration-page",
-            "/drop",
             "/fragmentsPages/successRegistrationFragment",
             "/words-main-category",
             "/words-main-category/*",
@@ -94,9 +100,8 @@ public class SecurityConfig {
             "/login-page*",
             "/word/training",
             "/category-image/**",
-            "/lessons"
-
-
+            "/lessons",
+            "/start-timer"
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
@@ -123,7 +128,7 @@ public class SecurityConfig {
 //                                .sessionFixation((sessionFixation) -> sessionFixation
 //                                        .newSession()
 //                                )
-                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
+//                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
                                 .maximumSessions(1)
                                 .sessionRegistry(sessionRegistry()) // Додайте цей рядок
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())

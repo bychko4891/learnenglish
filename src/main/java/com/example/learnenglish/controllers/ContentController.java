@@ -71,4 +71,14 @@ public class ContentController {
     public String slide() {
         return "fragmentsPages :: slideSpelling";
     }
+
+    @RequestMapping("slideAudit")
+    public String slideAudit() {
+        return "fragmentsPages :: slideAudit";
+    }
+
+    @RequestMapping("slideAuditRadios")
+    public String slideAuditRadios() {
+        return "fragmentsPages :: slideAuditRadios";
+    }
 }
