@@ -91,7 +91,7 @@
                 <i>Варіанти перекладу: </i>
                 <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
 
-                <div th:utext="${word.text}"></div>
+                <div th:utext="${word.getInfo}"></div>
                 <div th:each="translationPair : ${word.translationPairs}">
                     <div style="display: flex; width: auto; height: auto; position: relative;" >
                         <span th:text="${translationPair.engText + ' -'}"></span>

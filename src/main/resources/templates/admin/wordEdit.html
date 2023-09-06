@@ -76,7 +76,7 @@
 
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="text" th:text="${word.text}"></textarea>
+                <textarea id="info" name="text" th:text="${word.getInfo}"></textarea>
                 <input type="hidden" name="wordId" th:value="${word.id}">
                 <button type="submit">Зберегти</button>
             </form>

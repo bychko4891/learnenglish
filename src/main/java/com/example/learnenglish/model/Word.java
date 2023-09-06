@@ -43,8 +43,8 @@ public class Word implements Serializable {
     @Transient
     private boolean isRepeatable = true;
 
-    @Column(name = "text", columnDefinition = "text")
-    private String text;
+    @Column(name = "info", columnDefinition = "text")
+    private String info;
 
     @Column
     private boolean published = false;
@@ -78,11 +78,11 @@ public class Word implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Word word)) return false;
-        return isRepeatable == word.isRepeatable && published == word.published && Objects.equals(id, word.id) && Objects.equals(name, word.name) && Objects.equals(translate, word.translate) && Objects.equals(description, word.description) && Objects.equals(brTranscription, word.brTranscription) && Objects.equals(usaTranscription, word.usaTranscription) && Objects.equals(irregularVerbPt, word.irregularVerbPt) && Objects.equals(irregularVerbPp, word.irregularVerbPp) && Objects.equals(text, word.text) && Objects.equals(images, word.images) && Objects.equals(wordLesson, word.wordLesson) && Objects.equals(audio, word.audio) && Objects.equals(translationPairs, word.translationPairs) && Objects.equals(wordCategory, word.wordCategory);
+        return isRepeatable == word.isRepeatable && published == word.published && Objects.equals(id, word.id) && Objects.equals(name, word.name) && Objects.equals(translate, word.translate) && Objects.equals(description, word.description) && Objects.equals(brTranscription, word.brTranscription) && Objects.equals(usaTranscription, word.usaTranscription) && Objects.equals(irregularVerbPt, word.irregularVerbPt) && Objects.equals(irregularVerbPp, word.irregularVerbPp) && Objects.equals(info, word.info) && Objects.equals(images, word.images) && Objects.equals(wordLesson, word.wordLesson) && Objects.equals(audio, word.audio) && Objects.equals(translationPairs, word.translationPairs) && Objects.equals(wordCategory, word.wordCategory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, translate, description, brTranscription, usaTranscription, irregularVerbPt, irregularVerbPp, isRepeatable, text, published, images, wordLesson, audio, translationPairs, wordCategory);
+        return Objects.hash(id, name, translate, description, brTranscription, usaTranscription, irregularVerbPt, irregularVerbPp, isRepeatable, info, published, images, wordLesson, audio, translationPairs, wordCategory);
     }
 }

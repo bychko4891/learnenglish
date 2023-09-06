@@ -66,7 +66,7 @@ public class WordService {
             word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
             word.setDescription(dtoWord.getWord().getDescription());
             word.setPublished(dtoWord.getWord().isPublished());
-            word.setText(dtoWord.getWord().getText());
+            word.setInfo(dtoWord.getWord().getInfo());
             List<TranslationPair> translationPairs = word.getTranslationPairs();
             if (translationPairs.size() != 0 && translationPairs.size() != dtoWord.getWord().getTranslationPairs().size()) {
                 List<TranslationPair> dtoTranslationPairs = dtoWord.getWord().getTranslationPairs();
@@ -113,7 +113,7 @@ public class WordService {
         word.setName(dtoWord.getWord().getName());
         word.setTranslate(dtoWord.getWord().getTranslate());
         word.setPublished(dtoWord.getWord().isPublished());
-        word.setText(dtoWord.getWord().getText());
+        word.setInfo(dtoWord.getWord().getInfo());
         word.setBrTranscription(dtoWord.getWord().getBrTranscription());
         word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
         word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());

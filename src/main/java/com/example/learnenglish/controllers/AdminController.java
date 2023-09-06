@@ -322,7 +322,7 @@ public class AdminController {
             Word word = new Word();
             word.setId(id);
             word.setName("Enter name");
-            word.setText("Enter text");
+            word.setInfo("Enter text");
             model.addAttribute("word", word);
             model.addAttribute("category", "Відсутня");
 
