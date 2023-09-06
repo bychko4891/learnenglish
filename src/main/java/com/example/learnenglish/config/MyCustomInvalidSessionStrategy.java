@@ -1,5 +1,12 @@
 package com.example.learnenglish.config;
 
+/*
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

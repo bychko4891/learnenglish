@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +88,7 @@ public class WordLessonService {
                 }
             }
             wordLesson.setWords(words);
-            if(categoryId != 0 && wordLesson.getCategory() == null){
+            if (categoryId != 0 && wordLesson.getCategory() == null) {
                 Category category = categoryRepository.findById(categoryId).get();
                 wordLesson.setCategory(category);
             } else if (categoryId != 0 && wordLesson.getCategory().getId() != categoryId) {
@@ -105,7 +106,7 @@ public class WordLessonService {
         wordLesson.setDescription(dtoWordLesson.getWordLesson().getDescription());
         if (dtoWordLesson.getWordsId().size() != 0) {
             List<Word> list = wordRepository.findByIds(dtoWordLesson.getWordsId());
-            for (Word arr: list) {
+            for (Word arr : list) {
                 arr.setWordLesson(wordLesson);
             }
             wordLesson.setWords(list);
@@ -115,7 +116,7 @@ public class WordLessonService {
             wordLesson.setCategory(category);
         }
         wordLesson.setSerialNumber(dtoWordLesson.getWordLesson().getSerialNumber());
-        if(dtoWordLesson.getWordLesson().getSerialNumber() == 0){
+        if (dtoWordLesson.getWordLesson().getSerialNumber() == 0) {
             wordLesson.setSerialNumber(1000);
         }
         wordLessonRepository.save(wordLesson);
@@ -125,4 +126,15 @@ public class WordLessonService {
     public List<WordLesson> getWordLessonsCategory(Long categoryId) {
         return wordLessonRepository.wordLessonsCategory(categoryId);
     }
+
+    public List<Long> wordsIdInWordLesson(Long wordLessonId) {
+        WordLesson wordLesson = wordLessonRepository.findById(wordLessonId).get();
+        List<Long> wordsId = new ArrayList<>();
+        for (Word arr : wordLesson.getWords()) {
+            wordsId.add(arr.getId());
+        }
+        return wordsId;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/wordLesson.css}">
 <style>
     .icon-box {
         color: #fff;
@@ -255,37 +256,41 @@
     .slide {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        height: 580px; /* Висота слайда */
+        /*align-items: center;*/
+        height: 580px;
         text-align: center;
         position: relative;
-        /*border: 1px solid #ccc;*/
-        /*transition: all 0.6s ease-in;*/
-        overflow: hidden;
-    }
 
-    .slide img {
-        width: auto;
-        height: auto;
-    }
-
-    .slide_active {
-        transform: scale(1);
-        transition: all 0.6s ease-in;
-    }
-
-    .slide_no_active {
         filter: blur(calc(0.4 * 1rem));
         transform: scale(0.8);
         transition: all 0.6s ease-in;
+
+        overflow: hidden;
     }
 
-    .slide_no_active img {
+    /*.slide.slide_active img {*/
+    /*    width: auto;*/
+    /*    height: auto;*/
+    /*}*/
+
+    .slide.slide_active {
+        transform: scale(1);
+        transition: all 0.6s ease-in;
+        filter: none;
+    }
+
+    /*.slide_no_active {*/
+    /*    filter: blur(calc(0.4 * 1rem));*/
+    /*    transform: scale(0.8);*/
+    /*    transition: all 0.6s ease-in;*/
+    /*}*/
+
+    .slide img {
         width: 0;
         height: 0;
     }
 
-    .slide_no_active .word_description {
+    .slide .word_description {
         background: #2c2c2c;
     }
 
@@ -455,7 +460,7 @@
 
 
             <div class="tab_content">
-                <input type="hidden" name="categoryId" th:value="${categoryId}">
+                <input type="hidden" name="wordLessonId" th:value="${wordLessonId}">
                 <section id="content-tab1" class="tab-panel"></section>
                 <section id="content-tab2" class="tab-panel"></section>
                 <section id="content-tab3" class="tab-panel">
@@ -489,7 +494,7 @@
                                 </button>
                             </li>
                             <li title="Audit">
-                                <button id="tab3-btn" onclick="switchTab('tab3')" class="button_bottom_panel ">
+                                <button id="tab3-btn" onclick="switchTab('tab3')" class="button_bottom_panel " data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     <!-- Додано onclick-подію -->
                                     <i class="fa-solid fa-clipboard-question"></i><br>
                                     <span>Перевірка</span>
@@ -508,6 +513,50 @@
     </div>
 
 </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" th:fragment="popup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Перейти до перевірки пройденого матеріала?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+<!--            <div class="modal-body">-->
+            <div class="" style="margin: auto; padding: 20px;">
+                    <button type="submit" class="btn btn-primary mt-3" onclick="switchTab('tab1')" data-bs-dismiss="modal">Ні</button>
+                    <button type="submit" class="btn btn-primary mt-3" onclick="startAudit()" data-bs-dismiss="modal">Так</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        const pageHeight = Math.max(-->
+<!--            document.body.scrollHeight,-->
+<!--            document.documentElement.scrollHeight,-->
+<!--            document.body.offsetHeight,-->
+<!--            document.documentElement.offsetHeight,-->
+<!--            document.body.clientHeight,-->
+<!--            document.documentElement.clientHeight-->
+<!--        );-->
+
+<!--// Отримати висоту вікна браузера-->
+<!--        const windowHeight = window.innerHeight;-->
+
+<!--// Перевірити, чи є полоса прокрутки-->
+<!--        const hasScrollbar = pageHeight > windowHeight;-->
+
+<!--        if (hasScrollbar) {-->
+<!--            console.log("Є полоса прокрутки.");-->
+<!--        } else {-->
+<!--            console.log("Немає полоси прокрутки.");-->
+<!--        }-->
+<!--    };-->
+
+<!--</script>-->
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/wordLesson.js}"></script>
 </body>

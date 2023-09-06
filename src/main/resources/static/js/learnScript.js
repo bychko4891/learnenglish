@@ -18,10 +18,10 @@ $(window).on('scroll', function () {
 
 // скрипт який підмінює img на iframe на сторінці lesson
 $(document).ready(function () {
-    $('.about-radio').change(function () {
+    $('.lesson_info').change(function () {
         var tabId = $(this).attr('id');
 
-        if (tabId === 'learnInfo') {
+        if (tabId === 'tab2') {
             var videoContainer = $('#video-container');
             var img = videoContainer.find('img');
             var videoSrc = img.data('src');
