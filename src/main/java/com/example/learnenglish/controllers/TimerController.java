@@ -27,20 +27,21 @@ public class TimerController {
     public void startTimer() {
         Long userId = (Long) session.getAttribute("userId");
         Long wordLessonId = (Long) session.getAttribute("wordLessonId");
-        int totalPage = (int) session.getAttribute("totalPage");
+        double totalPage = (int) session.getAttribute("totalPage") + 1.0;
 
         Timer timer = new Timer();
         String timerId = UUID.randomUUID().toString();
-        int intervalInSeconds = (totalPage / 3 + 1) * 60;
+        double intervalInSecondsDouble = (totalPage / 3.0) * 60;
+        int intervalInSeconds = (int) intervalInSecondsDouble * 1000;
+        System.out.println(totalPage + " | " + intervalInSeconds);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
                 TimerStorage.removeTimer(timerId);
-                session.removeAttribute("timerId");
-                System.out.println("Таймер завершено!");
+                timer.cancel();
             }
-        }, intervalInSeconds * 1000);
+        }, intervalInSeconds);
 
         TimerStorage.addTimer(timerId, timer);
         session.setAttribute("timerId", timerId);
@@ -51,12 +52,15 @@ public class TimerController {
         Long userId = (Long) session.getAttribute("userId");
         Long wordLessonId = (Long) session.getAttribute("wordLessonId");
         String timerId = (String) session.getAttribute("timerId");
-
-        if (timerId != null) {
-            Timer timer = TimerStorage.getTimer(timerId);
-            timer.cancel();
-            userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
-            TimerStorage.removeTimer(timerId);
+        try {
+            if (timerId != null) {
+                userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
+                TimerStorage.removeTimer(timerId);
+                Timer timer = TimerStorage.getTimer(timerId);
+                timer.cancel();
+                session.removeAttribute("timerId");
+            }
+        } catch (NullPointerException e) {
             session.removeAttribute("timerId");
         }
     }
