@@ -4,7 +4,7 @@ package com.example.learnenglish.service;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.model.users.User;
@@ -19,23 +19,41 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserWordLessonProgressService {
 
-  private final UserWordLessonProgressRepository userWordLessonProgressRepository;
-  private final WordLessonService wordLessonService;
+    private final UserWordLessonProgressRepository userWordLessonProgressRepository;
+    private final WordLessonService wordLessonService;
+    private final UserService userService;
 
-  public void startWordLesson(User user, Long wordLessonId, boolean start){
-    Optional<UserWordLessonProgress> userWordLessonProgressOptional = userWordLessonProgressRepository.findUserWordLessonProgressesByUserIdAndWordLessonId(user.getId(), wordLessonId);
-    if(userWordLessonProgressOptional.isPresent()){
-      UserWordLessonProgress userWordLessonProgress = userWordLessonProgressOptional.get();
-      userWordLessonProgress.setStartLesson(start);
-      userWordLessonProgressRepository.save(userWordLessonProgress);
+    public void startWordLesson(User user, Long wordLessonId, boolean start) {
+        Optional<UserWordLessonProgress> userWordLessonProgressOptional = userWordLessonProgressRepository.findUserWordLessonProgressesByUserIdAndWordLessonId(user.getId(), wordLessonId);
+        if (userWordLessonProgressOptional.isPresent()) {
+            UserWordLessonProgress userWordLessonProgress = userWordLessonProgressOptional.get();
+            userWordLessonProgress.setStartLesson(start);
+            userWordLessonProgressRepository.save(userWordLessonProgress);
 
-    } else {
-      UserWordLessonProgress userWordLessonProgress = new UserWordLessonProgress();
-      userWordLessonProgress.setStartLesson(true);
-      userWordLessonProgress.setUser(user);
-      userWordLessonProgress.setWordLesson(wordLessonService.getWordLesson(wordLessonId));
-      userWordLessonProgressRepository.save(userWordLessonProgress);
+        } else {
+            UserWordLessonProgress userWordLessonProgress = new UserWordLessonProgress();
+            userWordLessonProgress.setStartLesson(true);
+            userWordLessonProgress.setUser(user);
+            userWordLessonProgress.setWordLesson(wordLessonService.getWordLesson(wordLessonId));
+            userWordLessonProgressRepository.save(userWordLessonProgress);
+        }
     }
-  }
+
+    public void saveRatingWordLessonAudit(User user, Long wordLessonId, double wordLessonRating) {
+        Optional<UserWordLessonProgress> userWordLessonProgressOptional = userWordLessonProgressRepository.findUserWordLessonProgressesByUserIdAndWordLessonId(user.getId(), wordLessonId);
+        if (userWordLessonProgressOptional.isPresent()) {
+            UserWordLessonProgress userWordLessonProgress = userWordLessonProgressOptional.get();
+            userWordLessonProgress.setRating(wordLessonRating);
+            userWordLessonProgress.setStartLesson(true);
+            userWordLessonProgressRepository.save(userWordLessonProgress);
+        } else {
+            UserWordLessonProgress userWordLessonProgress = new UserWordLessonProgress();
+            userWordLessonProgress.setUser(user);
+            userWordLessonProgress.setStartLesson(true);
+            userWordLessonProgress.setWordLesson(wordLessonService.getWordLesson(wordLessonId));
+            userWordLessonProgress.setRating(wordLessonRating);
+            userWordLessonProgressRepository.save(userWordLessonProgress);
+        }
+    }
 
 }

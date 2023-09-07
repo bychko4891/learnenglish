@@ -21,16 +21,7 @@ function updateSlider() {
     }
 }
 
-function addEndSlide() {
-    const slide = document.createElement('div');
-    slide.className = 'slide bb';
-    slide.id = 'endSlide';
-    slider.appendChild(slide);
-    $('#endSlide').load("/fragmentsPages/endSlideSpelling", function () {
-    });
-    currentIndex++;
-    updateSlider();
-}
+
 
 
 function addWordToSlider(word) {
@@ -174,7 +165,7 @@ function confirm(element) {
     }
 
     $.ajax({
-        url: '/word/' + wordId + '/word-audit-confirm',
+        url: '/word-lesson/audit/' + wordId + '/word-confirm',
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(userWordLessonStatistic),
@@ -206,7 +197,7 @@ function nextSlide() {
     const slides = document.querySelector('.slider_word');
     var url = '/word-lesson/' + wordLessonId + '/word-audit-next';
     ++page;
-    if (page < totalPage) {
+    if (page <= totalPage) {
         $.ajax({
             url: url,
             type: "GET",
@@ -225,11 +216,25 @@ function nextSlide() {
         });
     } else if (page === totalPage + 1) {
         currentIndexWord = 0;
-        addEndSlide()
-        currentIndex = slides.children.length - 2;
-        updateSlider();
-    } else if (page === totalPage + 2) {
         currentIndex = slides.children.length - 1;
         updateSlider();
+    } else if (page === totalPage + 2) {
+        // currentIndex = slides.children.length - 1;
+        // updateSlider();
+        addEndSlide();
     }
+}
+
+function addEndSlide() {
+    slider.innerHTML = '';
+    const slide = document.createElement('div');
+    slide.className = 'audit_result';
+    slide.id = 'endSlide';
+    slider.appendChild(slide);
+    slider.style.transform = `translateX(0px)`;
+    slider.style.margin = `0px`;
+    $('#endSlide').load("/fragmentsPages/wordLessonAuditResult", function () {
+    });
+    // currentIndex++;
+    // updateSlider();
 }

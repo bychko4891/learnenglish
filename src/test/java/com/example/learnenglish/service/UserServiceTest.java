@@ -82,7 +82,7 @@ class UserServiceTest {
         user.setId(userId);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        var actualUser = userService.findById(userId);
+        var actualUser = userService.getUserById(userId);
 
         assertNotNull(actualUser);
         assertEquals(userId, actualUser.getId());
@@ -92,7 +92,7 @@ class UserServiceTest {
     void findByIdIfUserNotExist() {
         var userId = 1L;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> userService.findById(userId));
+        assertThrows(NoSuchElementException.class, () -> userService.getUserById(userId));
     }
 
     @Test

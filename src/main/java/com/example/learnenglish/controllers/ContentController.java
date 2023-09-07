@@ -81,4 +81,8 @@ public class ContentController {
     public String slideAuditRadios() {
         return "fragmentsPages :: slideAuditRadios";
     }
+    @RequestMapping("wordLessonAuditResult")
+    public String wordLessonAuditResult() {
+        return "fragmentsPages :: wordLessonAuditResult";
+    }
 }

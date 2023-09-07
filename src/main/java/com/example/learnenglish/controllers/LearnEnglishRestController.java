@@ -1,6 +1,7 @@
 package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
+import com.example.learnenglish.dto.DtoUserWordLessonStatisticToUi;
 import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
@@ -160,7 +161,7 @@ public class LearnEnglishRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/word/{id}/word-audit-confirm")
+    @PostMapping("/word-lesson/audit/{id}/word-confirm")
     public ResponseEntity<String> wordAuditConfirm(@PathVariable("id") Long wordId,
                                                    @RequestBody DtoUserWordLessonStatistic userWordLessonStatistic,
                                                    Principal principal) {
@@ -169,6 +170,17 @@ public class LearnEnglishRestController {
             userWordLessonStatistic.setUser(user);
             userWordLessonStatisticService.saveUserWordLessonStatistic(userWordLessonStatistic);
             return ResponseEntity.ok("wordConfirm");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/word-lesson/{id}/audit-result")
+    public ResponseEntity<DtoUserWordLessonStatisticToUi> wordAuditResult(@PathVariable("id") Long wordLessonId,
+
+                                                                          Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(userWordLessonStatisticService.resultWordLessonAudit(user, wordLessonId));
         }
         return ResponseEntity.notFound().build();
     }

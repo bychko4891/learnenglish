@@ -78,7 +78,7 @@ public class UserService {
         return userRepository.findByEmail(email).get();
     }
 
-    public User findById(long id) {
+    public User getUserById(long id) {
         return userRepository.findById(id).get();
     }
 
