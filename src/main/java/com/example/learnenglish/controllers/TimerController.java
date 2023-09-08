@@ -33,7 +33,6 @@ public class TimerController {
         String timerId = UUID.randomUUID().toString();
         double intervalInSecondsDouble = (totalPage / 3.0) * 60;
         int intervalInSeconds = (int) intervalInSecondsDouble * 1000;
-        System.out.println(totalPage + " | " + intervalInSeconds);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

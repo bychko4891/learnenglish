@@ -174,7 +174,7 @@ public class LearnEnglishRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/word-lesson/{id}/audit-result")
+    @GetMapping("/word-lesson/{id}/audit-result")
     public ResponseEntity<DtoUserWordLessonStatisticToUi> wordAuditResult(@PathVariable("id") Long wordLessonId,
 
                                                                           Principal principal) {

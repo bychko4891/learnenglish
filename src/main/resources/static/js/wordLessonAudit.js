@@ -2,7 +2,6 @@ var slider = document.querySelector('.slider_word');
 var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
-var currentIndexWord = 0;
 
 function updateSlider() {
     const slide = slider.firstElementChild;
@@ -20,8 +19,6 @@ function updateSlider() {
         currentSlide.classList.remove('slide_active');
     }
 }
-
-
 
 
 function addWordToSlider(word) {
@@ -215,17 +212,16 @@ function nextSlide() {
             }
         });
     } else if (page === totalPage + 1) {
-        currentIndexWord = 0;
         currentIndex = slides.children.length - 1;
         updateSlider();
     } else if (page === totalPage + 2) {
-        // currentIndex = slides.children.length - 1;
-        // updateSlider();
+        stopTimer();
         addEndSlide();
     }
 }
 
 function addEndSlide() {
+
     const clock = document.getElementById('timerDiv');
     clock.style.visibility = 'hidden';
     slider.innerHTML = '';
@@ -234,27 +230,145 @@ function addEndSlide() {
     slider.appendChild(slide);
     slider.style.transform = `translateX(0px)`;
     slider.style.margin = `0px`;
-    $('.audit_result').load("/fragmentsPages/wordLessonAuditResult", function () {
-        var progressBar = document.querySelector('.progress-bar');
-        var progressText = document.querySelector('.progress-text');
+    $.ajax({
+        url: '/word-lesson/' + wordLessonId + '/audit-result',
+        type: 'GET',
+        success: function (result) {
+            $('.audit_result').load("/fragmentsPages/wordLessonAuditResult", function () {
+                console.log(result);
+                $('#audit-message').html(result.message);
+                $('#total-count').html(result.totalWords);
+                $('#error-count').html(result.dtoUserWordLessonStatisticErrorList.length);
 
-        var percent = 57.6;
-        progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999';
+                var progressBar = document.querySelector('.progress-bar');
+                var progressText = document.querySelector('.progress-text');
+                var percent = result.rating;
+                progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999';
+                progressText.textContent = percent + '%';
+            });
 
-        progressText.textContent = percent + '%';
+        },
+        error: function () {
+            let shel = {};
+            alert(Boolean(shel))
+        }
     });
-    // currentIndex++;
-    // progressBar();
+
 }
 
-// function progressBar() {
-//     console.log('bar');
-//     var progressBar = document.querySelector('.progress-bar');
-//     var progressText = document.querySelector('.progress-text');
-//
-//     var percent = 97;
-//     progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999'; // Встановіть правильну довжину
-//
-//     // Змініть текст в середині прогрес-бару
-//     progressText.textContent = percent + '%';
-// }
+
+window.addEventListener('beforeunload', function (event) {
+    console.log('Stop timer!');
+    $.ajax({
+        url: '/stop-timer',
+        type: "GET"
+    });
+});
+
+function timerPosition() {
+    const pageHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+    );
+    const windowHeight = window.innerHeight;
+    const hasScrollbar = pageHeight > windowHeight;
+    const timerDiv = document.querySelector('#timerDiv');
+
+    const userAgent = navigator.userAgent;
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) && windowHeight > 776) {
+        if (hasScrollbar) {
+            timerDiv.style.paddingRight = '15px';
+            // console.log("YES!");
+        }
+        // else {
+        //     console.log("NO!");
+        // }
+    }
+}
+
+function startAudit() {
+    var minutes = parseFloat((totalPage / 3).toFixed(2));
+    console.log(minutes);
+    startTimer(minutes);
+}
+
+let timeinterval; // Глобальна змінна для ідентифікатора таймера
+let remainingTime = 0; // Глобальна змінна для залишкового часу таймера
+let isTimerStopped = false; // Змінна, яка вказує, чи був таймер вручну зупинений
+
+function startTimer(minutes) {
+    timerPosition();
+    $.ajax({
+        url: '/start-timer',
+        type: "GET"
+    });
+
+    // Зупинити попередній таймер, якщо він був запущений
+    stopTimer();
+
+    // Обчислити кінцевий час для таймера
+    const deadline = new Date(Date.parse(new Date()) + minutes * 60 * 1000);
+
+    // Запустити таймер з обчисленим часом
+    initializeClock(deadline);
+
+    // Встановити таймаут, який викличе функцію onTimerEnd після закінчення таймера
+    setTimeout(function () {
+        if (!isTimerStopped) {
+            onTimerEnd();
+        }
+    }, minutes * 60 * 1000);
+}
+
+// Ваша функція initializeClock (залиште її без змін)
+function initializeClock(endtime) {
+    const clock = document.getElementById('timerDiv');
+    const minutesSpan = clock.querySelector('.minutes');
+    const secondsSpan = clock.querySelector('.seconds');
+
+    function updateClock() {
+        const t = getTimeRemaining(endtime);
+
+        minutesSpan.textContent = ('0' + t.minutes).slice(-2);
+        secondsSpan.textContent = ('0' + t.seconds).slice(-2);
+
+        remainingTime = t.total; // Оновлюємо залишковий час тут
+
+        if (t.total <= 0) {
+            clearInterval(timeinterval);
+        }
+    }
+
+    updateClock();
+    timeinterval = setInterval(updateClock, 1000);
+}
+
+// Ваша функція getTimeRemaining (залиште її без змін)
+function getTimeRemaining(endtime) {
+    const total = Date.parse(endtime) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+
+    return {
+        total,
+        minutes,
+        seconds
+    };
+}
+
+function stopTimer() {
+    clearInterval(timeinterval);
+    const clock = document.getElementById('timerDiv');
+    clock.querySelector('.minutes').textContent = '00';
+    clock.querySelector('.seconds').textContent = '00';
+    remainingTime = 0;
+    isTimerStopped = true;
+}
+
+function onTimerEnd() {
+    addEndSlide();
+}

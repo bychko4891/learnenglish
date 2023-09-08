@@ -19,6 +19,10 @@ public class DtoUserWordLessonStatisticToUi {
 
     private List<DtoUserWordLessonStatistic> dtoUserWordLessonStatisticErrorList;
 
+    private int totalWords;
+
+    private String message;
+
     private double rating;
 
     public DtoUserWordLessonStatisticToUi() {

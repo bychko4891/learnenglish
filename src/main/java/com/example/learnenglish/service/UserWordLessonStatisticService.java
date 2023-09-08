@@ -74,6 +74,10 @@ public class UserWordLessonStatisticService {
         if (userAnswerCorrectFalse > 0) {
             ratingWordLessonAudit = Math.round((100 - ((100.0 / userWordLessonStatisticList.size()) * userAnswerCorrectFalse)) * 10.0) / 10.0;
         }
+        String message = ratingWordLessonAudit == 100 ? "Гарна робота!" : ratingWordLessonAudit >= 80.0 ? "Рекомендуємо ще разок повторити слова" :
+                ratingWordLessonAudit >= 60.0 ? "Рекомендуємо повернутися до вивчення матеріалів." : "Вам потрібно більше практики!";
+        wordLessonStatisticToUi.setMessage(message);
+        wordLessonStatisticToUi.setTotalWords(userWordLessonStatisticList.size());
         wordLessonStatisticToUi.setRating(ratingWordLessonAudit);
 
         userWordLessonProgressService.saveRatingWordLessonAudit(user, wordLessonId, ratingWordLessonAudit);

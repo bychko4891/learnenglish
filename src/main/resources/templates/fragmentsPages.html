@@ -547,109 +547,12 @@
 
 <div th:fragment="wordLessonAudit">
     <style>
-
-        ul.ks-cboxtags {
-            list-style: none;
-            /*padding: 20px;*/
-        }
-
-        ul.ks-cboxtags li {
-            display: inline;
-        }
-
-        ul.ks-cboxtags li label {
-            display: flex;
-            background-color: rgba(255, 255, 255, .9);
-            border: 2px solid rgba(139, 139, 139, .3);
-            color: #adadad;
-            border-radius: 25px;
-            white-space: nowrap;
-            margin: 3px 0px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            transition: all .2s;
-        }
-
-        ul.ks-cboxtags li label {
-            width: 300px;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
-        ul.ks-cboxtags li label::before {
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            font-size: 12px;
-            padding: 2px 6px 2px 2px;
-            content: "\f067";
-            transition: transform .3s ease-in-out;
-        }
-
-        ul.ks-cboxtags li input[type="radio"]:checked + label::before {
-            content: "\f00c";
-            transform: rotate(-360deg);
-            transition: transform .3s ease-in-out;
-        }
-
-        ul.ks-cboxtags li input[type="radio"]:checked + label {
-            border: 2px solid #1bdbf8;
-            background-color: #12bbd4;
-            color: #fff;
-            transition: all .2s;
-        }
-
-        ul.ks-cboxtags li input[type="radio"] {
-            display: absolute;
-        }
-
-        ul.ks-cboxtags li input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-        }
-
-        ul.ks-cboxtags li input[type="radio"]:focus + label {
-            border: 2px solid #e9a1ff;
-        }
-
-
-        #timerDiv {
-            position: fixed;
-            right: 0;
-            top: 200px;
-            color: #fff;
-            font-weight: 100;
-            text-align: center;
-        }
-
-        #timerDiv > div {
-
-            padding: 5px;
-            border-radius: 3px;
-            background: #00BF96;
-            margin-bottom: 5px;
-            /*display: inline-block;*/
-        }
-
-        #timerDiv div > span {
-            padding: 10px;
-            border-radius: 3px;
-            background: #00816A;
-            display: inline-block;
-        }
-
         .audit_result {
             width: 100%;
             padding: 15px;
+            margin-bottom: 70px;
         }
+
     </style>
     <div class="slider-container">
         <div class="slider_word">
@@ -736,107 +639,6 @@
             </div>
         </div>
     </div>
-    <script>
-
-        // // Зупинити таймер перед виходом зі сторінки
-        window.addEventListener('beforeunload', function (event) {
-            console.log('Stop timer!');
-            $.ajax({
-                url: '/stop-timer',
-                type: "GET"
-            });
-        });
-
-        function timerPosition() {
-            const pageHeight = Math.max(
-                document.body.scrollHeight,
-                document.documentElement.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.offsetHeight,
-                document.body.clientHeight,
-                document.documentElement.clientHeight
-            );
-            const windowHeight = window.innerHeight;
-            const hasScrollbar = pageHeight > windowHeight;
-            const timerDiv = document.querySelector('#timerDiv');
-            // console.log(pageHeight + ' pageHeight');
-            // console.log(windowHeight + ' windowHeight');
-            // console.log(hasScrollbar + ' hasScrollbar');
-
-            const userAgent = navigator.userAgent;
-            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) && windowHeight > 776) {
-                if (hasScrollbar) {
-                    timerDiv.style.paddingRight = '15px';
-                    // console.log("YES!");
-                }
-                // else {
-                //     console.log("NO!");
-                // }
-            }
-        }
-
-        function startAudit() {
-            var minutes = parseFloat((totalPage / 3).toFixed(2));
-            console.log(minutes);
-            startTimer(minutes);
-        }
-
-        function startTimer(minutes) {
-            timerPosition();
-            $.ajax({
-                url: '/start-timer',
-                type: "GET"
-            });
-
-            // Обчислити кінцевий час для таймера
-            const deadline = new Date(Date.parse(new Date()) + minutes * 60 * 1000);
-
-            // Запустити таймер з обчисленим часом
-            initializeClock(deadline);
-            // Встановити таймаут, який викличе функцію onTimerEnd після закінчення таймера
-            setTimeout(onTimerEnd, minutes * 60 * 1000);
-        }
-
-        // Ваша функція initializeClock (залиште її без змін)
-        function initializeClock(endtime) {
-            const clock = document.getElementById('timerDiv');
-
-            const minutesSpan = clock.querySelector('.minutes');
-            const secondsSpan = clock.querySelector('.seconds');
-
-            function updateClock() {
-                const t = getTimeRemaining(endtime);
-
-                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-                if (t.total <= 0) {
-                    clearInterval(timeinterval);
-                }
-            }
-
-            updateClock();
-            const timeinterval = setInterval(updateClock, 1000);
-        }
-
-        // Ваша функція getTimeRemaining (залиште її без змін)
-        function getTimeRemaining(endtime) {
-            const total = Date.parse(endtime) - Date.parse(new Date());
-            const seconds = Math.floor((total / 1000) % 60);
-            const minutes = Math.floor((total / 1000 / 60) % 60);
-
-            return {
-                total,
-                minutes,
-                seconds
-            };
-        }
-
-        function onTimerEnd() {
-            addEndSlide();
-            console.log("End timer!!!")
-        }
-    </script>
     <script type="text/javascript" th:src="@{/js/wordLessonAudit.js}"></script>
 </div>
 
@@ -912,56 +714,79 @@
 
 
 <div th:fragment="wordLessonAuditResult">
-    <div><h5>Result top top top top top top top top top top top top top top top top</h5></div>
+    <div>
+        <h6 class="p10">Результат тестування по уроку.</h6>
+    </div>
     <div class="d-flex flex-column-reverse flex-md-row">
 
         <div class="col-md-9 order-1 order-md-1"> <!-- Другий блок на більших екранах (3/12) -->
             <div>
-                <h1>Result 1</h1>
+                <h3 id="audit-message" class="p10">Результат тестування по уроку.</h3>
+                <div class="d-flex flex-column flex-md-row">
+                    <div class="d-flex row p10">
+                        <div class="d-flex align-items-center icon-box-result">
+                            <i class="fa-regular fa-square-check" style="font-size: 28px; color: #48FFAC;"></i>
+                        </div>
+                        <div class="tw-ml-3">
+                            <h4 style="margin-bottom: 0;" id="total-count">0</h4>
+                            <p>Усього слів в тесті</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex row p10">
+                        <div class="d-flex align-items-center icon-box-result">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; color: coral;"></i>
+                        </div>
+                        <div class="tw-ml-3">
+                            <h4 style="margin-bottom: 0;" id="error-count">0</h4>
+                            <p>Помилок в тесті</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div><h1>Result 1</h1></div>
+            <div class="row">
+                <div class="spoiler_wrap col-md-12">
+                    <input type="checkbox" class="toggle">
+                    <div class="spoiler_title">Мої помилки</div>
+                    <div class="icon-error"></div>
+                    <div class="border-title"></div>
+                    <div class="spoiler_content">
+                        <p>digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                        </p>
+                        <p>digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                        </p>
+                        <p>digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                            digital art,  representation of "Hello" on the street that
+                            determines the action. The girl greets the boy.
+                        </p>
+                    </div>
+                </div>
+                <form style="margin-left: auto; margin-right: auto;">
+                    <button type="button">Продовжити</button>
+                </form>
+            </div>
         </div>
 
-        <div class="col-md-3 order-2 order-md-2 d-flex align-items-center"> <!-- Перший блок на більших екранах (9/12) -->
-            <style>
-                .progress-container {
-                    width: 200px; /* Розміри контейнера */
-                    height: 200px;
-                    position: relative;
-                }
-
-                .progress-circle {
-                    width: 100%;
-                    height: 100%;
-                    transform: rotate(-90deg);
-                    background: transparent;
-                }
-                .progress-circle svg{
-                    width: 100%;
-                    height: 100%;
-                }
-
-                .progress-bar {
-                    fill: none;
-                    stroke: #8027e1; /* Колір прогрес-бару */
-                    stroke-width: 14; /* Товщина лінії прогрес-бару */
-                    stroke-linecap: round;
-                }
-                .progress-bar-bottom {
-                    fill: none;
-                    stroke: rgb(68 68 68 / 50%);
-                    stroke-width: 14; /* Товщина лінії прогрес-бару */
-                    stroke-linecap: round;
-                }
-
-                .progress-text {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%) rotate(90deg); /* Обернути текст на 90 градусів */
-                    font-size: 20px; /* Розмір тексту */
-                }
-            </style>
+        <div class="col-md-3 order-2 order-md-2 d-flex flex-column align-items-center">
             <div class="progress-container">
                 <div class="progress-circle">
                     <svg>
