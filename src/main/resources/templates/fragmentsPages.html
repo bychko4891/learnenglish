@@ -947,6 +947,12 @@
                     stroke-width: 14; /* Товщина лінії прогрес-бару */
                     stroke-linecap: round;
                 }
+                .progress-bar-bottom {
+                    fill: none;
+                    stroke: rgb(68 68 68 / 50%);
+                    stroke-width: 14; /* Товщина лінії прогрес-бару */
+                    stroke-linecap: round;
+                }
 
                 .progress-text {
                     position: absolute;
@@ -960,24 +966,11 @@
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bar" cx="100" cy="100" r="87"></circle>
+                        <circle class="progress-bar-bottom" cx="100" cy="100" r="87"></circle>
                     </svg>
                     <div class="progress-text">0%</div>
                 </div>
             </div>
-            <script>
-                // document.addEventListener('DOMContentLoaded', function () {
-                //  function progressBar() {
-                //     var progressBar = document.querySelector('.progress-bar');
-                //     var progressText = document.querySelector('.progress-text');
-                //
-                //     // Задайте відсоток завершення прогрес-бару (наприклад, 75%)
-                //     var percent = 97;
-                //     progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999'; // Встановіть правильну довжину
-                //
-                //     // Змініть текст в середині прогрес-бару
-                //     progressText.textContent = percent + '%';
-                // }
-            </script>
         </div>
 
     </div>
