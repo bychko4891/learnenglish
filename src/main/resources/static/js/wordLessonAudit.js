@@ -226,15 +226,35 @@ function nextSlide() {
 }
 
 function addEndSlide() {
+    const clock = document.getElementById('timerDiv');
+    clock.style.visibility = 'hidden';
     slider.innerHTML = '';
     const slide = document.createElement('div');
-    slide.className = 'audit_result';
-    slide.id = 'endSlide';
+    slide.className = 'audit_result bb';
     slider.appendChild(slide);
     slider.style.transform = `translateX(0px)`;
     slider.style.margin = `0px`;
-    $('#endSlide').load("/fragmentsPages/wordLessonAuditResult", function () {
+    $('.audit_result').load("/fragmentsPages/wordLessonAuditResult", function () {
+        var progressBar = document.querySelector('.progress-bar');
+        var progressText = document.querySelector('.progress-text');
+
+        var percent = 57.6;
+        progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999';
+
+        progressText.textContent = percent + '%';
     });
     // currentIndex++;
-    // updateSlider();
+    // progressBar();
 }
+
+// function progressBar() {
+//     console.log('bar');
+//     var progressBar = document.querySelector('.progress-bar');
+//     var progressText = document.querySelector('.progress-text');
+//
+//     var percent = 97;
+//     progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999'; // Встановіть правильну довжину
+//
+//     // Змініть текст в середині прогрес-бару
+//     progressText.textContent = percent + '%';
+// }

@@ -360,11 +360,6 @@
     </div>
 </div>
 
-<div th:fragment="wordLessonAuditResult">
-    <h1>Result</h1>
-
-</div>
-
 
 <div th:fragment="wordLessonReview">
     <div class="slider-container">
@@ -652,8 +647,8 @@
         }
 
         .audit_result {
-            width: 70%;
-            transform: translateX(0px);
+            width: 100%;
+            padding: 15px;
         }
     </style>
     <div class="slider-container">
@@ -780,7 +775,7 @@
             }
         }
 
-        function startAudit(){
+        function startAudit() {
             var minutes = parseFloat((totalPage / 3).toFixed(2));
             console.log(minutes);
             startTimer(minutes);
@@ -797,14 +792,14 @@
             const deadline = new Date(Date.parse(new Date()) + minutes * 60 * 1000);
 
             // Запустити таймер з обчисленим часом
-            initializeClock('timerDiv', deadline);
+            initializeClock(deadline);
             // Встановити таймаут, який викличе функцію onTimerEnd після закінчення таймера
             setTimeout(onTimerEnd, minutes * 60 * 1000);
         }
 
         // Ваша функція initializeClock (залиште її без змін)
-        function initializeClock(id, endtime) {
-            const clock = document.getElementById(id);
+        function initializeClock(endtime) {
+            const clock = document.getElementById('timerDiv');
 
             const minutesSpan = clock.querySelector('.minutes');
             const secondsSpan = clock.querySelector('.seconds');
@@ -837,7 +832,10 @@
             };
         }
 
-        function onTimerEnd(){console.log("End timer!!!") }
+        function onTimerEnd() {
+            addEndSlide();
+            console.log("End timer!!!")
+        }
     </script>
     <script type="text/javascript" th:src="@{/js/wordLessonAudit.js}"></script>
 </div>
@@ -910,4 +908,79 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div th:fragment="wordLessonAuditResult">
+    <div><h5>Result top top top top top top top top top top top top top top top top</h5></div>
+    <div class="d-flex flex-column-reverse flex-md-row">
+
+        <div class="col-md-9 order-1 order-md-1"> <!-- Другий блок на більших екранах (3/12) -->
+            <div>
+                <h1>Result 1</h1>
+            </div>
+            <div><h1>Result 1</h1></div>
+        </div>
+
+        <div class="col-md-3 order-2 order-md-2 d-flex align-items-center"> <!-- Перший блок на більших екранах (9/12) -->
+            <style>
+                .progress-container {
+                    width: 200px; /* Розміри контейнера */
+                    height: 200px;
+                    position: relative;
+                }
+
+                .progress-circle {
+                    width: 100%;
+                    height: 100%;
+                    transform: rotate(-90deg);
+                    background: transparent;
+                }
+                .progress-circle svg{
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .progress-bar {
+                    fill: none;
+                    stroke: #8027e1; /* Колір прогрес-бару */
+                    stroke-width: 14; /* Товщина лінії прогрес-бару */
+                    stroke-linecap: round;
+                }
+
+                .progress-text {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(90deg); /* Обернути текст на 90 градусів */
+                    font-size: 20px; /* Розмір тексту */
+                }
+            </style>
+            <div class="progress-container">
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bar" cx="100" cy="100" r="87"></circle>
+                    </svg>
+                    <div class="progress-text">0%</div>
+                </div>
+            </div>
+            <script>
+                // document.addEventListener('DOMContentLoaded', function () {
+                //  function progressBar() {
+                //     var progressBar = document.querySelector('.progress-bar');
+                //     var progressText = document.querySelector('.progress-text');
+                //
+                //     // Задайте відсоток завершення прогрес-бару (наприклад, 75%)
+                //     var percent = 97;
+                //     progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999'; // Встановіть правильну довжину
+                //
+                //     // Змініть текст в середині прогрес-бару
+                //     progressText.textContent = percent + '%';
+                // }
+            </script>
+        </div>
+
+    </div>
+
+
 </div>
