@@ -25,7 +25,7 @@ public class DtoUserWordLessonStatisticToUi {
 
     private double rating;
 
-    private Long wordLessonId;
+    private Long wordLessonCategoryId;
 
     public DtoUserWordLessonStatisticToUi() {
     }

@@ -44,6 +44,7 @@ public class UserWordLessonStatisticService {
         userWordLessonStatistic.setWordLesson(wordLesson);
         userWordLessonStatistic.setWord(word.getName());
         userWordLessonStatistic.setWordInfo(word.getInfo());
+        userWordLessonStatistic.setWordLessonCategoryId(wordLesson.getCategory().getId());
         String wordUserAnswer = StringUtils.normalizeSpace(dtoUserWordLessonStatistics.getUserAnswer());
         userWordLessonStatistic.setUserAnswer(wordUserAnswer);
         if (wordUserAnswer.equalsIgnoreCase(word.getName())) userWordLessonStatistic.setAnswerCorrect(true);
@@ -80,7 +81,7 @@ public class UserWordLessonStatisticService {
         wordLessonStatisticToUi.setMessage(message);
         wordLessonStatisticToUi.setTotalWords(userWordLessonStatisticList.size());
         wordLessonStatisticToUi.setRating(ratingWordLessonAudit);
-        wordLessonStatisticToUi.setWordLessonId(userWordLessonStatisticList.get(0).getId());
+        wordLessonStatisticToUi.setWordLessonCategoryId(userWordLessonStatisticList.get(0).getWordLessonCategoryId());
 
         userWordLessonProgressService.saveRatingWordLessonAudit(user, wordLessonId, ratingWordLessonAudit);
 
