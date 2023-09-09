@@ -80,6 +80,7 @@ public class UserWordLessonStatisticService {
         wordLessonStatisticToUi.setMessage(message);
         wordLessonStatisticToUi.setTotalWords(userWordLessonStatisticList.size());
         wordLessonStatisticToUi.setRating(ratingWordLessonAudit);
+        wordLessonStatisticToUi.setWordLessonId(userWordLessonStatisticList.get(0).getId());
 
         userWordLessonProgressService.saveRatingWordLessonAudit(user, wordLessonId, ratingWordLessonAudit);
 
