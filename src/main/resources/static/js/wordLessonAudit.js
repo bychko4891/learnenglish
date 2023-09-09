@@ -245,6 +245,21 @@ function addEndSlide() {
                 var percent = result.rating;
                 progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999';
                 progressText.textContent = percent + '%';
+                const container = document.getElementById('error-content');
+                const template = document.querySelector('.object-container');
+                result.dtoUserWordLessonStatisticErrorList.forEach(item => {
+                    const clone = template.cloneNode(true); // Клонуємо блок-шаблон
+
+                    // Заповнюємо дані з об'єкта в клонований блок
+                    clone.querySelector('.right-word').textContent = item.word;
+                    clone.querySelector('.user-answer').textContent = item.userAnswer;
+                    clone.querySelector('.word-info').innerHTML = item.wordInfo;
+
+                    // Додаємо клонований блок до контейнера
+                    container.appendChild(clone);
+                });
+                document.querySelector('.object-container:first-child').style.display = 'none';
+
             });
 
         },
