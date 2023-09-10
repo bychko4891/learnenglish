@@ -21,7 +21,6 @@ public class UserWordLessonProgressService {
 
     private final UserWordLessonProgressRepository userWordLessonProgressRepository;
     private final WordLessonService wordLessonService;
-    private final UserService userService;
 
     public void startWordLesson(User user, Long wordLessonId, boolean start) {
         Optional<UserWordLessonProgress> userWordLessonProgressOptional = userWordLessonProgressRepository.findUserWordLessonProgressesByUserIdAndWordLessonId(user.getId(), wordLessonId);
@@ -43,7 +42,7 @@ public class UserWordLessonProgressService {
         Optional<UserWordLessonProgress> userWordLessonProgressOptional = userWordLessonProgressRepository.findUserWordLessonProgressesByUserIdAndWordLessonId(user.getId(), wordLessonId);
         if (userWordLessonProgressOptional.isPresent()) {
             UserWordLessonProgress userWordLessonProgress = userWordLessonProgressOptional.get();
-            userWordLessonProgress.setRating(wordLessonRating);
+            userWordLessonProgress.setRating((int)wordLessonRating);
             userWordLessonProgress.setStartLesson(true);
             userWordLessonProgressRepository.save(userWordLessonProgress);
         } else {
@@ -51,7 +50,7 @@ public class UserWordLessonProgressService {
             userWordLessonProgress.setUser(user);
             userWordLessonProgress.setStartLesson(true);
             userWordLessonProgress.setWordLesson(wordLessonService.getWordLesson(wordLessonId));
-            userWordLessonProgress.setRating(wordLessonRating);
+            userWordLessonProgress.setRating((int)wordLessonRating);
             userWordLessonProgressRepository.save(userWordLessonProgress);
         }
     }

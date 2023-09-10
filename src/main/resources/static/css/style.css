@@ -1531,8 +1531,44 @@ td {
     margin: 20px;
 }
 
-/*.slider_block {*/
-/*    max-width: 100%;*/
-/*    height: fit-content;*/
-/*    margin-top: 20px;*/
-/*}*/
+.numerations-active {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 5px;
+    color: #f7f7f7;
+    background-color: #7b61ff;
+}
+
+.numerations {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 5px;
+    color: #f7f7f7;
+    background-color: #545454;
+}
+
+.rating-lesson {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+
+}
+.rating-lesson img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+}
+.rating-lesson span{
+
+    z-index: 2;
+}

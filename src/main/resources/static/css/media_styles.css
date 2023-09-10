@@ -44,6 +44,15 @@
     .slider_block {
         padding: 0;
     }
+
+    .numerations {
+        margin-left: 50%;
+        margin-top: -40px;
+    }
+    .numerations-active {
+        margin-left: 50%;
+        margin-top: -40px;
+    }
 }
 @media (min-width: 768px) {
     .lessons {
@@ -85,6 +94,11 @@
         padding: 0 20px;
     }
 
+    /*.numerations {*/
+    /*    margin-left: -55px;*/
+    /*    margin-top: 70px;*/
+    /*}*/
+
 }
 /*@media (min-width: 992px){*/
 /*    .col-md-6 {*/
@@ -119,8 +133,8 @@
         gap: 25px;
     }
     .col-md-6{
-        width: calc(50% - 40px);
-        margin: 20px 20px;
+        width: calc(50% - 50px);
+        margin: 20px 25px;
     }
 
     .mb-md-12 {
@@ -139,4 +153,13 @@
     /*    width: calc(100vw - 40px);*/
     /*    margin: 20px 0;*/
     /*}*/
+
+    .numerations {
+        margin-left: -53px;
+        margin-top: 70px;
+    }
+    .numerations-active {
+        margin-left: -53px;
+        margin-top: 70px;
+    }
 }

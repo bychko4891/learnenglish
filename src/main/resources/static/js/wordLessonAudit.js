@@ -248,18 +248,16 @@ function addEndSlide() {
                 const container = document.getElementById('error-content');
                 const template = document.querySelector('.object-container');
                 result.dtoUserWordLessonStatisticErrorList.forEach(item => {
-                    const clone = template.cloneNode(true); // Клонуємо блок-шаблон
-
-                    // Заповнюємо дані з об'єкта в клонований блок
+                    const clone = template.cloneNode(true);
                     clone.querySelector('.right-word').textContent = item.word;
                     clone.querySelector('.user-answer').textContent = item.userAnswer;
                     clone.querySelector('.word-info').innerHTML = item.wordInfo;
 
-                    // Додаємо клонований блок до контейнера
                     container.appendChild(clone);
                 });
-                document.querySelector('.object-container:first-child').style.display = 'none';
-
+                document.querySelector('.object-container:first-child').innerHTML = '';
+                const form = slide.querySelector("form");
+                form.action = '/word-lesson/' + result.wordLessonCategoryId + '/lessons';
             });
 
         },

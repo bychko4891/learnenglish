@@ -30,7 +30,7 @@ public class UserWordLessonProgress implements Serializable {
     private WordLesson wordLesson;
 
     @Column
-    private double rating;
+    private int rating;
 
     @Column
     private boolean startLesson = false;
