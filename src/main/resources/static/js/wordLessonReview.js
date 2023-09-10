@@ -119,6 +119,7 @@ function addWordToSlider(word) {
 
         const wordId = slideDiv.find("input");
         wordId.val(word.id);
+
     });
     currentIndex++;
     updateSlider();
@@ -159,7 +160,35 @@ function wordsStart() {
 
                 const wordId = div.querySelector("input");
                 wordId.value = result[index].id;
+
             });
         }
     });
+}
+function wordPlus(event, element) {
+    event.preventDefault();
+    var wordId = element.closest('.formWordPlus').querySelector('input[name="wordId"]').value;
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        url: '/user/word-plus',
+        type: "POST",
+        data: {wordId: wordId},
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        },
+        success: function (result) {
+            var status = result.status;
+            if (status == "Success") {
+                showSuccessToast(result.message);
+            } else {
+                showErrorToast(result.message);
+            }
+        },
+        error: function () {
+            showErrorToast("Помилка сервера");
+        }
+    });
+// });
 }

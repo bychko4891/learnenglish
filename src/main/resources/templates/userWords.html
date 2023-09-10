@@ -33,8 +33,8 @@
 <!--                <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a>-->
 <!--                </div>-->
 
-                <div th:each="word : ${words}">
-                    <input type="hidden" name="id" th:value="${word.id}"/>
+                <div th:each="word : ${words}" class="user-word">
+                    <input type="hidden" name="wordId" th:value="${word.id}"/>
                     <div style="display: flex; flex-direction: row;">
                         <table>
                             <td style="height: 25px;">
@@ -72,6 +72,11 @@
                                     <label th:for="${'toggleSwitch-' + word.id}" class="toggle-switch-label"></label>
                                 </form>
                             </td>
+                            <td>
+                                <form>
+                                    <button type="button" onclick="confirmRemove(this)"><i class="fa-regular fa-trash-can"></i></button>
+                                </form>
+                            </td>
                         </table>
                     </div>
                 </div>
@@ -104,6 +109,47 @@
             $(this).siblings('.category').slideToggle().toggleClass('visible');
         });
     });
+
+
+    function confirmRemove(element) {
+        var confirmation = confirm("Ви впевнені, що хочете видалити цю фразу?");
+        if (confirmation) {
+            deleteChanges(element);
+        }
+    }
+
+    function deleteChanges(element) {
+        var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+        var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+        var wordId = element.closest('.user-word').querySelector('input[name="wordId"]').value;
+
+        // var row = button.parentNode.parentNode;
+        // var inputs = row.getElementsByTagName('input');
+        // var wordId = inputs[0].value;
+        console.log(wordId + ' wordId')
+        $.ajax({
+            url: '/user-word/remove',
+            type: 'POST',
+            data: {wordId: wordId},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    showErrorToast(result.message);
+                }
+
+            }
+        });
+
+    }
 </script>
 </body>
 </html>

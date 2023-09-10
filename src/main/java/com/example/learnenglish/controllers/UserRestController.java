@@ -128,6 +128,15 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PostMapping("/user-word/remove")
+    public ResponseEntity<ResponseMessage> userWordRemove(@RequestParam("wordId") Long wordId,
+                                                            Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(wordUserService.userWordRemove(wordId, user));
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/user/phrase-plus")
     public ResponseEntity<ResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,

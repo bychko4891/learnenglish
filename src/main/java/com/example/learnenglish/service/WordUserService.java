@@ -27,7 +27,7 @@ public class WordUserService {
 
 
     public ResponseMessage userWordPlus(User user, Long wordId) {
-        Optional<WordUser> wordUserOptional = wordUserRepository.findWordUsersByUser_IdAndAndWordId(user.getId(), wordId);
+        Optional<WordUser> wordUserOptional = wordUserRepository.findWordUserByUserIdAndWordId(user.getId(), wordId);
         if(wordUserOptional.isEmpty()) {
             WordUser wordUser = new WordUser();
             Word word = wordService.getWord(wordId);
@@ -37,5 +37,12 @@ public class WordUserService {
             wordUserRepository.save(wordUser);
             return new ResponseMessage(Message.SUCCESSADDBASE);
         } else return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+    }
+
+    public ResponseMessage userWordRemove(Long wordId, User user) {
+        Optional<WordUser> wordUserOptional = wordUserRepository.findWordUserByUserIdAndWordId(user.getId(), wordId);
+        WordUser wordUser = wordUserOptional.orElseThrow();
+        wordUserRepository.delete(wordUser);
+        return new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
     }
 }

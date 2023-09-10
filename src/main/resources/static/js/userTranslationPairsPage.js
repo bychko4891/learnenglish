@@ -150,9 +150,6 @@ function deleteChanges(button) {
 }
 
 
-function removeChanges(button) {
-    // Виконати код для видалення фрази зі списку
-}
 $('.toggle-switch').on('change', function() {
     // var csrfToken = $("meta[name='_csrf']").attr("content");
     // var csrfHeader = $("meta[name='_csrf_header']").attr("content");
