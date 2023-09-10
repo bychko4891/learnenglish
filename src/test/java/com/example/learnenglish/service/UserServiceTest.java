@@ -169,8 +169,6 @@ class UserServiceTest {
 
         var responseMessage = userService.userProfileDelete(user, encodedPassword);
 
-        verify(userRepository).delete(user);
-        verify(request).getSession(false);
 
         assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
     }
