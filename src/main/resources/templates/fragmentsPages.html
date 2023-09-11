@@ -274,13 +274,8 @@
         </div>
     </div>
     <div class="slide_end_button">
-        <button type="button" class="btn_main" onclick="nextTraining()">Далі</button>
+        <button  onclick="switchTab('tab3')" class="btn_main" data-bs-toggle="modal" data-bs-target="#exampleModal">Далі</button>
     </div>
-    <script>
-        function nextTraining() {
-            switchTab('tab3');
-        }
-    </script>
 </div>
 
 <div th:fragment="slideReview">

@@ -305,7 +305,6 @@ function timerPosition() {
 
 function startAudit() {
     var minutes = parseFloat((totalPage / 3).toFixed(2));
-    console.log(minutes);
     startTimer(minutes);
 }
 

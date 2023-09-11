@@ -217,13 +217,13 @@ public class LearnEnglishController {
                              Model model,
                              Principal principal) {
         if(principal != null) {
-            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
-            if (wordsFromLesson.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
-            }
-            model.addAttribute("words", wordsFromLesson.getContent());
+//            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
+//            if (wordsFromLesson.getTotalPages() == 0) {
+//                model.addAttribute("totalPages", 1);
+//            } else {
+//                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
+//            }
+//            model.addAttribute("words", wordsFromLesson.getContent());
             model.addAttribute("wordLessonId", wordLessonId);
         return "wordLesson";
         } return "redirect:/login";
