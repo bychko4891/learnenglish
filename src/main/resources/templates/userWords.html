@@ -68,7 +68,7 @@
                                     <input th:id="${'toggleSwitch-' + word.id}" type="checkbox"
                                            th:checked="${word.repeatable}"
                                            class="toggle-switch"
-                                           name="isRepeatable" th:data-phrase-id="${word.id}"/>
+                                           name="isRepeatable" th:data-word-id="${word.id}"/>
                                     <label th:for="${'toggleSwitch-' + word.id}" class="toggle-switch-label"></label>
                                 </form>
                             </td>
@@ -103,6 +103,7 @@
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
     $(document).ready(function () {
         $('.toggle').click(function () {
@@ -136,8 +137,10 @@
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
+                console.log(result);
                 var status = result.status;
-                if (status == "Success") {
+                if (status === 'Success') {
+                    console.log('Yes remove');
                     showSuccessToast(result.message);
                     setTimeout(function () {
                         location.reload();
@@ -150,6 +153,39 @@
         });
 
     }
+
+    $('.toggle-switch').on('change', function() {
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var isRepeatable = $(this).prop('checked');
+        var wordId = $(this).data('word-id');
+        $.ajax({
+            url: '/word/repetition-word-check',
+            type: 'POST',
+            data: {isRepeatable: isRepeatable,
+                wordId: wordId},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+
+                console.log(result);
+
+                var status = result.status;
+                if (status === "Success") {
+                    console.log("Yes");
+
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message);
+                }
+            },
+            error: function () {
+                // Виникла помилка при відправленні запиту
+                console.log('Помилка при відправленні запиту');
+            }
+        });
+    });
 </script>
 </body>
 </html>

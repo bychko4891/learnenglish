@@ -9,10 +9,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoWord;
 import com.example.learnenglish.dto.DtoWordToUI;
-import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.TranslationPair;
-import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.Audio;
+import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
@@ -76,7 +73,7 @@ public class WordService {
                     TranslationPair pair = iterator.next();
                     boolean containsId = false;
                     for (TranslationPair arr : dtoTranslationPairs) {
-                        if (pair.getId() == arr.getId()) {
+                        if (pair.getId().equals(arr.getId())) {
                             containsId = true;
                             break;
                         }
@@ -97,7 +94,7 @@ public class WordService {
                 Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
                 wordCategory.getWords().add(word);
-            } else if (categoryId != 0 && word.getWordCategory().getId() != categoryId) {
+            } else if (categoryId != 0 && !word.getWordCategory().getId().equals(categoryId)) {
                 Category wordCategoryRemove = word.getWordCategory();
                 wordCategoryRemove.getWords().removeIf(obj -> obj.getId().equals(word.getId()));
                 word.setWordCategory(wordCategoryRepository.findById(categoryId).get());
@@ -212,6 +209,7 @@ public class WordService {
         }
         return dtoWordToUI;
     }
+
 
 
 }

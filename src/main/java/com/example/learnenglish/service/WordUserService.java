@@ -1,12 +1,14 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+
+import com.example.learnenglish.model.TranslationPairUser;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.WordUser;
 import com.example.learnenglish.model.users.User;
@@ -21,7 +23,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class WordUserService {
-    private final UserService userService;
     private final WordService wordService;
     private final WordUserRepository wordUserRepository;
 
@@ -44,5 +45,15 @@ public class WordUserService {
         WordUser wordUser = wordUserOptional.orElseThrow();
         wordUserRepository.delete(wordUser);
         return new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
+    }
+
+    public ResponseMessage setRepetitionWord(Long wordId, Long userId, boolean isChecked) {
+        Optional<WordUser> wordPairUserOptional = wordUserRepository.findWordUserByUserIdAndWordId(userId, wordId);
+        if (wordPairUserOptional.isPresent()) {
+            WordUser wordUser = wordPairUserOptional.get();
+            wordUser.setRepeatable(isChecked);
+            wordUserRepository.save(wordUser);
+            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
+        } else return new ResponseMessage(Message.ERROR_SERVER);
     }
 }

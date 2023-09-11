@@ -61,7 +61,7 @@ public class TranslationPairUserService {
     public ResponseMessage userPhraseRemove(Long translationPairId, User user) {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, user.getId());
         TranslationPairUser translationPairUser = translationPairUserOptional.orElseThrow();
-        if (translationPairUser.getTranslationPair().getUser().getId() == user.getId()) {
+        if (translationPairUser.getTranslationPair().getUser().getId().equals(user.getId())) {
             List<TranslationPair> translationPairList = user.getTranslationPairs();
             translationPairList.removeIf(obj -> obj.getId().equals(translationPairId));
             user.setTranslationPairs(translationPairList);

@@ -160,6 +160,17 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/word/repetition-word-check")
+    public ResponseEntity<ResponseMessage> isRepetitionWord(@RequestParam("isRepeatable") boolean isChecked,
+                                                              @RequestParam("wordId") Long id,
+                                                              Principal principal) {
+        if (principal != null) {
+            Long userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(wordUserService.setRepetitionWord(id, userId, isChecked));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/user-phrase/remove")
     public ResponseEntity<ResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
                                                             Principal principal) {

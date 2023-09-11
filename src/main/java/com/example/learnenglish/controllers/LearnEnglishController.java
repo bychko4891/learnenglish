@@ -200,15 +200,14 @@ public class LearnEnglishController {
         if(principal != null) {
             User user = userService.findByEmail(principal.getName());
             Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
-            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(categoryId);
-            int summWords = 0;
+            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(user, categoryId);
+            int sumWords = 0;
             for (WordLesson arr: wordLessonCategory.getWordLessons()) {
-                summWords += arr.getWords().size();
+                sumWords += arr.getWords().size();
             }
             model.addAttribute("wordLessonCategory", wordLessonCategory);
             model.addAttribute("wordLessons", wordLessons);
-            model.addAttribute("words", summWords);
-            model.addAttribute("lessons", user.getWordLessonProgress());
+            model.addAttribute("words", sumWords);
         return "wordLessons";
         } return "redirect:/login";
     }
@@ -219,7 +218,6 @@ public class LearnEnglishController {
                              Principal principal) {
         if(principal != null) {
             Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
-
             if (wordsFromLesson.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -227,7 +225,6 @@ public class LearnEnglishController {
             }
             model.addAttribute("words", wordsFromLesson.getContent());
             model.addAttribute("wordLessonId", wordLessonId);
-
         return "wordLesson";
         } return "redirect:/login";
     }

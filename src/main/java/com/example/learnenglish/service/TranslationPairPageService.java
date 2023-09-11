@@ -77,7 +77,7 @@ public class TranslationPairPageService {
                     TranslationPair pair = iterator.next();
                     boolean containsId = false;
                     for (TranslationPair arr : dtoTranslationPairs) {
-                        if (pair.getId() == arr.getId()) {
+                        if (pair.getId().equals(arr.getId())) {
                             containsId = true;
                             break;
                         }
@@ -99,7 +99,7 @@ public class TranslationPairPageService {
             translationPairsPage.setTranslationPairsPageCategory(category);
             category.getTranslationPairsPages().add(translationPairsPage);
 
-        } else if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory().getId() != categoryId) {
+        } else if (categoryId != 0 && !translationPairsPage.getTranslationPairsPageCategory().getId().equals(categoryId)) {
             Category categoryRemove = translationPairsPage.getTranslationPairsPageCategory();
             categoryRemove.getWords().removeIf(obj -> obj.getId().equals(translationPairsPage.getId()));
             translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
