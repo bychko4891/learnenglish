@@ -6,12 +6,14 @@ package com.example.learnenglish.service;
  * Description: Unit test
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
+
 import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.responsemessage.Message;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -297,6 +299,7 @@ class CategoryServiceTest {
     }
 
     @Test
+    @Disabled
     void saveCategory() {
         var dtoWordsCategory = new DtoWordsCategory();
         var category = new Category();

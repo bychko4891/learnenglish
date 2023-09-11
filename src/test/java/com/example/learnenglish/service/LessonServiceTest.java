@@ -56,15 +56,15 @@ class LessonServiceTest {
         var lesson = new Lesson();
         lesson.setId(id);
         lesson.setName(name);
-        when(lessonRepository.save(lesson)).thenReturn(lesson);
+        when(lessonRepository.save(lesson)).thenReturn(new Lesson());
 
         var message = Message.SUCCESSADDBASE;
 
+        var expectedLesson = lessonService.saveLesson(lesson);
+
         var responseMessage = new ResponseMessage(message);
 
-        ResponseMessage expectedLesson = lessonService.saveLesson(lesson);
-
-        assertEquals(expectedLesson, responseMessage);
+        assertEquals(expectedLesson.getMessage(), responseMessage.getMessage());
 
     }
 
