@@ -10,7 +10,6 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.WordUserRepository;
-import com.example.learnenglish.responsemessage.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -54,7 +53,7 @@ class WordUserServiceTest {
         when(wordService.getWord(wordId)).thenReturn(word);
 
         var responseMessage = wordUserService.userWordPlus(user, wordId);
-        assertEquals(Message.SUCCESSADDBASE, responseMessage.getMessage());
+        assertEquals("Success", responseMessage.getStatus());
         verify(wordUserRepository).save(any());
     }
 }
