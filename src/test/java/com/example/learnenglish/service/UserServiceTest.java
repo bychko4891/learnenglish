@@ -8,14 +8,11 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.model.users.UserGender;
 import com.example.learnenglish.repository.UserRepository;
-import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

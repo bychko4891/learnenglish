@@ -11,9 +11,7 @@ import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.repository.CategoryRepository;
-import com.example.learnenglish.responsemessage.Message;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class CategoryServiceTest {

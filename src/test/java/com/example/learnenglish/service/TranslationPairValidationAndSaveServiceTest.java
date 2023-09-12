@@ -1,7 +1,12 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.dto.DtoTranslationPair;
-import com.example.learnenglish.model.TranslationPair;
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,12 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class TranslationPairValidationAndSaveServiceTest {
     @Mock
