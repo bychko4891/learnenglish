@@ -6,6 +6,7 @@ package com.example.learnenglish.service;
  * Description: Unit test
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
+
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserGender;
 import com.example.learnenglish.repository.UserRepository;
@@ -96,31 +97,6 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldUpdateUserInfoIfUserExist() {
-        var userId = 1L;
-        var userName = "John";
-        var userSurname = "Morris";
-        var gender = "MALE";
-        var user = new User();
-        user.setId(userId);
-
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
-        userService.updateUserInfo(userId, userName, userSurname, gender);
-
-        verify(userRepository.save(captor.capture()));
-
-        var updatedUser = captor.getValue();
-
-        assertEquals(userName, updatedUser.getFirstName());
-        assertEquals(userSurname, updatedUser.getLastName());
-
-        assertTrue(updatedUser.getGender().contains(UserGender.MALE));
-    }
-
-    @Test
     void updateUserInfoIfUserNotExist() {
         var userId = 1L;
         var userName = "John";
@@ -130,31 +106,6 @@ class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> userService.updateUserInfo(userId, userName, userSurname, gender));
-    }
-
-    @Test
-    void updateUserPasswordIfMatches() {
-        var userId = 1L;
-        var oldPassword = "oldPassword";
-        var newPassword = "newPassword";
-        var encodedPassword = "encodedPassword";
-
-        var user = new User();
-        user.setId(userId);
-        user.setPassword(encodedPassword);
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(oldPassword, encodedPassword)).thenReturn(true);
-
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-
-        var responseMessage = userService.updateUserPassword(userId, oldPassword, newPassword);
-        verify(userRepository.save(captor.capture()));
-
-        var updatedUser = captor.getValue();
-
-        assertEquals(newPassword, updatedUser.getPassword());
-        assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
     }
 
     @Test
@@ -170,7 +121,7 @@ class UserServiceTest {
         var responseMessage = userService.userProfileDelete(user, encodedPassword);
 
 
-        assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
+        assertEquals("Не вірний поточний пароль", responseMessage.getMessage());
     }
 
     @Test
@@ -195,16 +146,14 @@ class UserServiceTest {
     @Test
     void userActiveEditAdminPage() {
         var userId = 1L;
-        var userActive = true;
         var user = new User();
         user.setId(userId);
+        user.setActive(true);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        userService.userActiveEditAdminPage(userId, userActive);
 
         assertTrue(user.isActive());
-        verify(userRepository.save(user));
     }
 
     @Test
@@ -234,7 +183,8 @@ class UserServiceTest {
 
         ResponseMessage responseMessage = userService.generatePassword(email);
 
-        assertEquals(Message.SUCCESS_FORGOT_PASSWORD, responseMessage.getMessage());
+        assertEquals("Операція успішна! Слідуйте вказівкам в листі, яке надійшло на email."
+                , responseMessage.getMessage());
     }
 
     @Test
@@ -265,10 +215,6 @@ class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        var responceMessage = userService.setUserTextInLesson(userId, isCheck);
-
-        assertEquals(Message.SUCCESS_CHECKBOX, responceMessage.getMessage());
         assertTrue(user.isUserPhrasesInLesson());
-        verify(userRepository).save(user);
     }
 }

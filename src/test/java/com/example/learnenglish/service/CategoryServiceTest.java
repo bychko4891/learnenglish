@@ -299,23 +299,25 @@ class CategoryServiceTest {
     }
 
     @Test
-    @Disabled
-    void saveCategory() {
+    void shouldGetErrorToSaveCategory() {
         var dtoWordsCategory = new DtoWordsCategory();
         var category = new Category();
         category.setId(1L);
         category.setName("Category 1");
         category.setMainCategory(true);
 
+        dtoWordsCategory.setMainCategorySelect(category);
+        dtoWordsCategory.setWordsCategory(category);
+
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
 
         var result = categoryService.saveCategory(dtoWordsCategory);
 
-        assertEquals(Message.SUCCESSADDBASE, result.getMessage());
+        assertEquals("Не можно додати поточну категорію в вибрану"
+                , result.getMessage());
 
         verify(categoryRepository, times(1)).findById(1L);
-        verify(categoryRepository, times(1)).save(any(Category.class));
         verifyNoMoreInteractions(categoryRepository);
     }
 }
