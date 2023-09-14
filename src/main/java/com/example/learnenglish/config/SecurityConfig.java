@@ -101,7 +101,9 @@ public class SecurityConfig {
             "/word/training",
             "/category-image/**",
             "/lessons",
-            "/start-timer"
+            "/pay",
+            "/start-pay",
+            "/pay-success"
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";

@@ -187,7 +187,8 @@ public class LearnEnglishController {
     }
 
     @GetMapping("/word-lessons/categories")
-    public String wordLessonsCategories(Model model, Principal principal) {
+    public String wordLessonsCategories(Model model,
+                                        Principal principal) {
         if(principal != null) {
             List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
             model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
@@ -196,7 +197,9 @@ public class LearnEnglishController {
     }
 
     @GetMapping("/word-lesson/{id}/lessons")
-    public String wordLessons(@PathVariable("id")Long categoryId, Model model, Principal principal) {
+    public String wordLessons(@PathVariable("id")Long categoryId,
+                              Model model,
+                              Principal principal) {
         if(principal != null) {
             User user = userService.findByEmail(principal.getName());
             Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);

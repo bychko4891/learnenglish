@@ -3,13 +3,11 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
 import com.example.learnenglish.dto.DtoUserWordLessonStatisticToUi;
 import com.example.learnenglish.dto.DtoWordToUI;
+import com.example.learnenglish.model.PaymentByWayForPay;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.ResponseMessage;
-import com.example.learnenglish.service.UserService;
-import com.example.learnenglish.service.UserWordLessonStatisticService;
-import com.example.learnenglish.service.WordLessonService;
-import com.example.learnenglish.service.WordService;
+import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +28,19 @@ public class LearnEnglishRestController {
 
     private final UserWordLessonStatisticService userWordLessonStatisticService;
 
+    private final PaymentWayForPayService paymentWayForPayService;
 
+    @PostMapping("/start-pay")
+    public ResponseEntity<PaymentByWayForPay> startPay(@RequestBody PaymentByWayForPay payment){
+        PaymentByWayForPay paymentByWayForPay = new PaymentByWayForPay();
+//
+//        String url = paymentWayForPayService.buildUrl(paymentByWayForPay);
+//        System.out.println(url);
+
+
+        return  ResponseEntity.ok(paymentWayForPayService.buildUrl(payment));
+
+    }
 
     @GetMapping("/search-word")
     public ResponseEntity<List<DtoWordToUI>> searchWord(@RequestParam("searchTerm") String searchTerm) {
