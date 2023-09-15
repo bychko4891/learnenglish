@@ -1,41 +1,70 @@
 package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.PaymentByWayForPay;
+import com.example.learnenglish.model.WayForPayModule;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.HmacUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentWayForPayService {
+    @Value(("${application.host}"))
+    private String host;
+    private final WayForPayModuleService wayForPayModuleService;
 
-    public String generateMerchantSignatureMD5(PaymentByWayForPay paymentWayForPay) {
-        String data = paymentWayForPay.getMerchantAccount() + ";" + paymentWayForPay.getMerchantDomainName() + ";" + paymentWayForPay.getOrderReference() + ";" +
-                 paymentWayForPay.getOrderDate() + ";" + paymentWayForPay.getAmount() + ";" + paymentWayForPay.getCurrency() + ";" +
-                 paymentWayForPay.getProductName().get(0) + ";" + paymentWayForPay.getProductCount().get(0) + ";" + paymentWayForPay.getProductPrice().get(0);
+    private WayForPayModule wayForPayModule;
+
+    private String generateMerchantSignatureMD5(String data) {
         System.out.println(data);
         String algorithm = "HmacMD5";
-        String key = "3bafd97458e4e54cf71d09fb22c3094e3f3a192b";
+        String key = wayForPayModule.getMerchantSecretKEY();
         String merchantSignature = new HmacUtils(algorithm, key).hmacHex(data);
+        System.out.println("merchantSignature: " + merchantSignature);
         return merchantSignature;
     }
 
 
-//    public String buildUrl(PaymentByWayForPay paymentWayForPay) {
-    public PaymentByWayForPay buildUrl(PaymentByWayForPay paymentWayForPay) {
-        String orderReference = UUID.randomUUID().toString().replaceAll("-", "");
+    //    public String buildUrl(PaymentByWayForPay paymentWayForPay) {
+    public PaymentByWayForPay startPayment(PaymentByWayForPay paymentWayForPay) {
+        wayForPayModule = wayForPayModuleService.getWayForPayModule();
+        if (wayForPayModule.isActive()) {
+            String orderReference = UUID.randomUUID().toString().replaceAll("-", "");
+            paymentWayForPay.setMerchantAccount(wayForPayModule.getMerchantAccount());
+            paymentWayForPay.setOrderDate(new Date().getTime());
+            paymentWayForPay.setOrderReference(orderReference);
+            paymentWayForPay.setMerchantDomainName(host);
+            paymentWayForPay.setReturnUrl(host + "/api/pay-success/" + orderReference);
+            paymentWayForPay.setAmount(paymentWayForPay.getProductPrice());
+            paymentWayForPay.setProductCount(1);
+            String data = paymentWayForPay.getMerchantAccount() + ";" + paymentWayForPay.getMerchantDomainName() + ";" + paymentWayForPay.getOrderReference() + ";"
+                    + paymentWayForPay.getOrderDate() + ";" + paymentWayForPay.getAmount() + ";" + paymentWayForPay.getCurrency() + ";"
+                    + paymentWayForPay.getProductName() + ";" + paymentWayForPay.getProductCount() + ";" + paymentWayForPay.getProductPrice();
 
-        paymentWayForPay.setOrderDate(new Date().getTime());
-        paymentWayForPay.setOrderReference(orderReference);
-        paymentWayForPay.setAmount(paymentWayForPay.getProductPrice().get(0));
-        String merchantSignature = generateMerchantSignatureMD5(paymentWayForPay);
-        paymentWayForPay.setMerchantSignature(merchantSignature);
-        System.out.println(merchantSignature);
+            String merchantSignature = generateMerchantSignatureMD5(data);
+            paymentWayForPay.setMerchantSignature(merchantSignature);
+            System.out.println(merchantSignature);
+
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+//                    userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
+                    TimerStorage.removeTimer(orderReference);
+                    timer.cancel();
+                }
+            }, 10000);
+            TimerStorage.addTimer(orderReference, timer);
+        }
 
         // Створюємо UriComponentsBuilder
 //        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://secure.wayforpay.com/pay")
@@ -55,6 +84,11 @@ public class PaymentWayForPayService {
         // Повертаємо URL-рядок
 //        return builder.toUriString();
         return paymentWayForPay;
+    }
+
+    public PaymentByWayForPay endPayment(){
+
+        return null;
     }
 
     private String encodeValue(String value) {

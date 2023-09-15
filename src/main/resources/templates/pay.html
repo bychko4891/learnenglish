@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/head :: head}"></head>
+<style>
+  .load {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*change these sizes to fit into your project*/
+    width: 100px;
+    height: 100px;
+  }
+  .load hr {
+    border: 0;
+    margin: 0;
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 1;
+    animation: spin 2s ease infinite;
+  }
 
+  .load :first-child {
+    background: #19a68c;
+    animation-delay: -1.5s;
+  }
+  .load :nth-child(2) {
+    background: #f63d3a;
+    animation-delay: -1s;
+  }
+  .load :nth-child(3) {
+    background: #fda543;
+    animation-delay: -0.5s;
+  }
+  .load :last-child {
+    background: #193b48;
+  }
+
+  @keyframes spin {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+    25% {
+      transform: translate(160%);
+    }
+    50% {
+      transform: translate(160%, 160%);
+    }
+    75% {
+      transform: translate(0, 160%);
+    }
+  }
+</style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
-<div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
-  <span class="sr-only">Loading...</span>
+<div id="preloader" class="load" role="status" style="display:none;">
+  <hr/><hr/><hr/><hr/>
 </div>
 <div class="wrapper">
   <main class="section">
@@ -27,8 +79,9 @@
           <form id="wayforpayForm" method="post" action="https://secure.wayforpay.com/pay" accept-charset="utf-8">
             <input type="hidden" name="merchantAccount" id="merchantAccount">
 <!--            <input type="hidden" name="merchantAuthType" value="SimpleSignature">-->
-            <input type="hidden" name="merchantDomainName" value="www.e-learn.top">
-            <input type="hidden" name="returnUrl" value="https://e-learn.top/pay-success">
+<!--            <input type="hidden" name="merchantDomainName" id="merchantDomainName" value="www.e-learn.top">-->
+            <input type="hidden" name="merchantDomainName" id="merchantDomainName">
+            <input type="hidden" name="returnUrl" id="returnUrl">
             <input type="hidden" name="orderReference" id="orderReference">
             <input type="hidden" name="orderDate" id="orderDate">
             <input type="hidden" name="amount" id="amount">
@@ -36,7 +89,7 @@
 <!--            <input type="hidden" name="orderTimeout" value="49000">-->
             <input type="hidden" name="productName[]" id="productName">
             <input type="text" name="productPrice[]">
-            <input type="hidden" name="productCount[]" value="1">
+            <input type="hidden" name="productCount[]" id="productCount">
 <!--            <input type="hidden" name="clientFirstName" value="Вася">-->
 <!--            <input type="hidden" name="clientLastName" value="Пупкин">-->
 <!--            <input type="hidden" name="clientAddress" value="пр. Гагарина, 12">-->
@@ -62,52 +115,42 @@
 <script>
   $("#payment-button").click(function (event) {
     event.preventDefault();
+    $("#preloader").show();
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
-    var productPrice = [$('#wayforpayForm input[name="productPrice[]"]').val()];
-    var productCount = [$('#wayforpayForm input[name="productCount[]"]').val()];
+    var productPrice = $('#wayforpayForm input[name="productPrice[]"]').val();
 
-
-    // Показати Spinner перед відправкою запиту
-    $("#loader").show();
     var payment = {
-      productPrice: productPrice,
-      productCount: productCount
+      productPrice: productPrice
     };
-      console.log(payment);
-    // Відправка даних на ваш сервер
     $.ajax({
       type: "POST",
-      url: "/start-pay",
+      url: "/start-payment",
       contentType: "application/json",
       data: JSON.stringify(payment),
       beforeSend: function (xhr) {
         xhr.setRequestHeader(csrfHeader, csrfToken);
       },
       encode: true,
-      success: function (response) {
-        console.log(response);
-        // Отримали відповідь з сервера
-        // Заповнюємо форму з отриманими даними
-        $("#merchantAccount").val(response.merchantAccount);
-        $("#orderReference").val(response.orderReference);
-        $("#orderDate").val(response.orderDate);
-        $("#amount").val(response.amount);
-        $("#productName").val(response.productName[0]);
-        $("#merchantSignature").val(response.merchantSignature);
+      success: function (result) {
+        console.log(result);
+        $("#merchantAccount").val(result.merchantAccount);
+        $("#merchantDomainName").val(result.merchantDomainName);
+        $("#returnUrl").val(result.returnUrl);
+        $("#orderReference").val(result.orderReference);
+        $("#orderDate").val(result.orderDate);
+        $("#amount").val(result.amount);
+        $("#productName").val(result.productName);
+        $("#productCount").val(result.productCount);
+        $("#merchantSignature").val(result.merchantSignature);
 
+        // $("#preloader").hide();
 
-        // Приховуємо Spinner після отримання відповіді
-        $("#loader").hide();
-
-        // Відправляємо форму на Wayforpay
         $("#wayforpayForm").submit();
       },
       error: function () {
-        // Обробка помилок
-        // Приховуємо Spinner у випадку помилки
-        $("#loader").hide();
+        $("#preloader").hide();
       },
     });
   });

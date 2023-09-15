@@ -30,15 +30,13 @@ public class LearnEnglishRestController {
 
     private final PaymentWayForPayService paymentWayForPayService;
 
-    @PostMapping("/start-pay")
+    @PostMapping("/start-payment")
     public ResponseEntity<PaymentByWayForPay> startPay(@RequestBody PaymentByWayForPay payment){
-        PaymentByWayForPay paymentByWayForPay = new PaymentByWayForPay();
-//
-//        String url = paymentWayForPayService.buildUrl(paymentByWayForPay);
-//        System.out.println(url);
+        PaymentByWayForPay paymentByWayForPay = paymentWayForPayService.startPayment(payment);
+        session.setAttribute("orderReference", paymentByWayForPay.getOrderReference());
 
 
-        return  ResponseEntity.ok(paymentWayForPayService.buildUrl(payment));
+        return  ResponseEntity.ok(paymentWayForPayService.startPayment(paymentByWayForPay));
 
     }
 

@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
@@ -102,8 +103,8 @@ public class SecurityConfig {
             "/category-image/**",
             "/lessons",
             "/pay",
-            "/start-pay",
-            "/pay-success"
+            "/start-pay*",
+            "/api/pay-success/*"
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
@@ -114,17 +115,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse
-        //        http.csrf().disable();
-        http.authorizeRequests(request ->
-                                request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                                        .anyRequest()
-                                        .authenticated()
-                                        .and()
-                                        .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
-
-//                                .antMatchers("/api/test/**").addFilterBefore(customRequestLoggingFilter.getFilter(), BasicAuthenticationFilter.class)
+        http.csrf((csrf) -> csrf
+                        .ignoringRequestMatchers("/api/pay-success/*")
                 )
+
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                                .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+                                .anyRequest().authenticated()
+                )
+
+                .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement(session -> session
 //                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
@@ -133,6 +133,7 @@ public class SecurityConfig {
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
                 )
+
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)
                                 .loginProcessingUrl(LOGIN_URL)
@@ -156,6 +157,7 @@ public class SecurityConfig {
                                     response.sendRedirect(DEFAULT_SUCCESS_URL);
                                 })
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)

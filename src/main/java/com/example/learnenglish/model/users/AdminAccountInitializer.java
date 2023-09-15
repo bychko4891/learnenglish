@@ -8,8 +8,12 @@ package com.example.learnenglish.model.users;
  */
 
 import com.example.learnenglish.model.PageApplication;
+import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.repository.UserRepository;
+import com.example.learnenglish.repository.WayForPayModuleRepository;
 import com.example.learnenglish.service.PageApplicationService;
+import com.example.learnenglish.service.WayForPayModuleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component
+@RequiredArgsConstructor
 public class AdminAccountInitializer implements ApplicationRunner {
     @Value(("${user.admin.email}"))
     private String adminEmail;
@@ -33,11 +38,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
     private final PasswordEncoder passwordEncoder;
     private final PageApplicationService pageApplicationService;
 
-    public AdminAccountInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder, PageApplicationService pageApplicationService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.pageApplicationService = pageApplicationService;
-    }
+    private final WayForPayModuleService wayForPayModuleService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -59,6 +60,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
             userRepository.save(admin);
             createUserDemo();
             createPageApplication();
+            createWayForPayModule();
         }
     }
 
@@ -95,5 +97,9 @@ public class AdminAccountInitializer implements ApplicationRunner {
         PageApplication pageApplicationMainBottom = new PageApplication("Main page Bottom");
         pageApplicationService.savePageApplication(pageApplicationMainBottom);
 
+    }
+    private void createWayForPayModule() {
+        WayForPayModule wayForPayModule = new WayForPayModule();
+        wayForPayModuleService.saveWayForPayModule(wayForPayModule);
     }
 }
