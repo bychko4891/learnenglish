@@ -26,11 +26,13 @@ import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
         // securedEnabled = true,
-        // jsr250Enabled = true,
+//         jsr250Enabled = true,
         prePostEnabled = true)
 @ComponentScan(basePackages = "com.example.learnenglish")
 public class SecurityConfig {
@@ -104,6 +106,7 @@ public class SecurityConfig {
             "/lessons",
             "/pay",
             "/start-pay*",
+            "/payment-success*",
             "/api/pay-success/*"
     };
     public static final String LOGIN_URL = "/login";
@@ -133,6 +136,8 @@ public class SecurityConfig {
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
                 )
+
+
 
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)

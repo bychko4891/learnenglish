@@ -2,6 +2,8 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.PaymentByWayForPay;
 import com.example.learnenglish.model.WayForPayModule;
+import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.responsemessage.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 @Service
@@ -35,7 +35,7 @@ public class PaymentWayForPayService {
 
 
     //    public String buildUrl(PaymentByWayForPay paymentWayForPay) {
-    public PaymentByWayForPay startPayment(PaymentByWayForPay paymentWayForPay) {
+    public PaymentByWayForPay startOfPayment(PaymentByWayForPay paymentWayForPay) {
         wayForPayModule = wayForPayModuleService.getWayForPayModule();
         if (wayForPayModule.isActive()) {
             String orderReference = UUID.randomUUID().toString().replaceAll("-", "");
@@ -54,16 +54,16 @@ public class PaymentWayForPayService {
             paymentWayForPay.setMerchantSignature(merchantSignature);
             System.out.println(merchantSignature);
 
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-//                    userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
-                    TimerStorage.removeTimer(orderReference);
-                    timer.cancel();
-                }
-            }, 10000);
-            TimerStorage.addTimer(orderReference, timer);
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+////                    userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
+//                    TimerStorage.removeTimer(orderReference);
+//                    timer.cancel();
+//                }
+//            }, 10000);
+//            TimerStorage.addTimer(orderReference, timer);
         }
 
         // Створюємо UriComponentsBuilder
@@ -86,7 +86,17 @@ public class PaymentWayForPayService {
         return paymentWayForPay;
     }
 
-    public PaymentByWayForPay endPayment(){
+    public ResponseMessage endOfPayment(PaymentByWayForPay paymentWayForPay){
+        String data = paymentWayForPay.getMerchantAccount() + ";" + paymentWayForPay.getOrderReference() + ";"
+                + paymentWayForPay.getAmount() + ";" + paymentWayForPay.getCurrency() + ";" + paymentWayForPay.getAuthCode() + ";"
+                + paymentWayForPay.getCardPan() + ";" + paymentWayForPay.getTransactionStatus() + ";" + paymentWayForPay.getReasonCode();
+        String merchantSignature = generateMerchantSignatureMD5(data);
+        if(merchantSignature.equals(paymentWayForPay.getMerchantSignature())){
+            System.out.println("yes ***************************");
+            return new ResponseMessage(Message.SUCCESS);
+
+        }
+
 
         return null;
     }
