@@ -1,5 +1,5 @@
 package com.example.learnenglish.controllers;
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -8,10 +8,12 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.*;
 import com.example.learnenglish.exception.FileFormatException;
+import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.*;
+import com.example.learnenglish.validate.CategoryValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,11 +38,12 @@ public class AdminRestController {
     private final ImagesService imagesService;
     private final TranslationPairPageService translationPairPageService;
     private final WordLessonService wordLessonService;
+    private final CategoryValidator categoryValidator;
 
 
     @PostMapping("/text-of-app-page/{id}/edit")
-    public ResponseEntity<ResponseMessage> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
-                                                             Principal principal) {
+    public ResponseEntity<CustomResponseMessage> createAppTextPage(@RequestBody DtoTextOfAppPage dtoTextOfAppPage,
+                                                                   Principal principal) {
         if (principal != null) {
 //            textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage);
             return ResponseEntity.ok(textOfAppPageService.textOfAppPageEdit(dtoTextOfAppPage));
@@ -49,8 +52,8 @@ public class AdminRestController {
     }
 
     @PostMapping("/lesson-save")
-    public ResponseEntity<ResponseMessage> lessonsSave(@RequestBody Lesson lesson,
-                                              Principal principal) {
+    public ResponseEntity<CustomResponseMessage> lessonsSave(@RequestBody Lesson lesson,
+                                                             Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(lessonService.saveLesson(lesson));
         }
@@ -80,25 +83,35 @@ public class AdminRestController {
     }
 
     @PostMapping("/category-save")
-    public ResponseEntity<ResponseMessage> SaveWordsCategory(@RequestBody DtoWordsCategory dtoWordsCategory,
-                                                             Principal principal) {
+    public ResponseEntity<CustomResponseMessage> SaveWordsCategory(@RequestBody DtoCategory dtoCategory,
+                                                                   Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(wordCategoryService.saveCategory(dtoWordsCategory));
+            Object obj = categoryValidator.categoryIsPresentInBase(dtoCategory);
+            if(obj instanceof Category){
+                Category category = (Category) obj;
+                if (category.getId().equals(dtoCategory.getSubcategorySelect().getId()) ||
+                        category.getId().equals(dtoCategory.getSubSubcategorySelect().getId())) {
+                    return ResponseEntity.ok(new CustomResponseMessage(Message.SELF_ASSIGNMENT_CATEGORY_ERROR));
+                }
+                return ResponseEntity.ok(wordCategoryService.saveCategory(dtoCategory, category));
+            } else {
+                return ResponseEntity.ok(wordCategoryService.saveNewCategory(dtoCategory));
+            }
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/word-save")
-    public ResponseEntity<ResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
-                                                    Principal principal) {
+    public ResponseEntity<CustomResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
+                                                          Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.saveWord(dtoWord));
         }
         return ResponseEntity.notFound().build();
     }
     @PostMapping("/word-lesson-save")
-    public ResponseEntity<ResponseMessage> saveWordLesson(@RequestBody DtoWordLesson dtoWordLesson,
-                                                    Principal principal) {
+    public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody DtoWordLesson dtoWordLesson,
+                                                                Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
         }
@@ -106,13 +119,13 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-audio/{id}/upload")
-    public ResponseEntity<ResponseMessage> saveWord(@PathVariable("id") Long wordId,
-                                                    @RequestParam("brAudio") MultipartFile brAudio,
-                                                    @RequestParam("usaAudio") MultipartFile usaAudio,
-                                                    Principal principal) {
+    public ResponseEntity<CustomResponseMessage> saveWord(@PathVariable("id") Long wordId,
+                                                          @RequestParam("brAudio") MultipartFile brAudio,
+                                                          @RequestParam("usaAudio") MultipartFile usaAudio,
+                                                          Principal principal) {
         if (principal != null) {
             wordAudioService.saveAudioFile(brAudio, usaAudio, wordId);
-            return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
+            return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
         }
         return ResponseEntity.notFound().build();
     }
@@ -138,12 +151,12 @@ public class AdminRestController {
     }
 
     @PostMapping("/page-phrases-save")
-    public ResponseEntity<ResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
-                                                   Principal principal) {
+    public ResponseEntity<CustomResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
+                                                                         Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(translationPairPageService.saveTranslationPairsPage(dtoTranslationPairsPage));
         }
-        return ResponseEntity.ok(new ResponseMessage(Message.SUCCESSADDBASE));
+        return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
     }
 
     @PostMapping("/image/upload")
@@ -161,8 +174,8 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping("/word-image/{id}/upload")
-    public ResponseEntity<ResponseMessage> uploadWordImage(@PathVariable("id")Long wordId, @RequestParam("wordImage") MultipartFile file,
-                                                 Principal principal) {
+    public ResponseEntity<CustomResponseMessage> uploadWordImage(@PathVariable("id")Long wordId, @RequestParam("wordImage") MultipartFile file,
+                                                                 Principal principal) {
         if (principal != null) {
             String contentType = file.getContentType();
             if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
@@ -174,8 +187,8 @@ public class AdminRestController {
     }
 
     @PostMapping("/category-image/{id}/upload")
-    public ResponseEntity<ResponseMessage> uploadCategoryImage(@PathVariable("id")Long categoryId, @RequestParam("categoryImage") MultipartFile file,
-                                                 Principal principal) {
+    public ResponseEntity<CustomResponseMessage> uploadCategoryImage(@PathVariable("id")Long categoryId, @RequestParam("categoryImage") MultipartFile file,
+                                                                     Principal principal) {
         if (principal != null) {
             String contentType = file.getContentType();
             if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {

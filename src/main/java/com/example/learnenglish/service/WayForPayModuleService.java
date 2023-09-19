@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class WayForPayModuleService {

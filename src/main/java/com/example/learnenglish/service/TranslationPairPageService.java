@@ -15,18 +15,17 @@ import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairPageRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class TranslationPairPageService {
@@ -58,11 +57,11 @@ public class TranslationPairPageService {
     }
 
 
-    public ResponseMessage saveTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage) {
+    public CustomResponseMessage saveTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage) {
         Optional<TranslationPairsPage> dtoTranslationPairsPageOptional = translationPairPageRepository.findById(dtoTranslationPairsPage.getTranslationPairsPage().getId());
         Long categoryId = dtoTranslationPairsPage.getSubSubcategorySelect().getId() != 0 ? dtoTranslationPairsPage.getSubSubcategorySelect().getId() :
-                dtoTranslationPairsPage.getSubcategorySelect().getId() != 0 ? dtoTranslationPairsPage.getSubcategorySelect().getId() :
-                        dtoTranslationPairsPage.getMainCategorySelect().getId() != 0 ? dtoTranslationPairsPage.getMainCategorySelect().getId() : 0;
+                            dtoTranslationPairsPage.getSubcategorySelect().getId() != 0 ? dtoTranslationPairsPage.getSubcategorySelect().getId() :
+                            dtoTranslationPairsPage.getMainCategorySelect().getId() != 0 ? dtoTranslationPairsPage.getMainCategorySelect().getId() : 0;
         if (dtoTranslationPairsPageOptional.isPresent()) {
             TranslationPairsPage translationPairsPage = dtoTranslationPairsPageOptional.get();
             translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
@@ -105,11 +104,11 @@ public class TranslationPairPageService {
             translationPairsPage.setTranslationPairsPageCategory(categoryRepository.findById(categoryId).get());
         }
             translationPairPageRepository.save(translationPairsPage);
-        return new ResponseMessage(Message.SUCCESSADDBASE);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     } else return saveNewTranslationPairsPage(dtoTranslationPairsPage, categoryId);
 }
 
-    private ResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, Long categoryId) {
+    private CustomResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, Long categoryId) {
         TranslationPairsPage translationPairsPage = new TranslationPairsPage();
         translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
         translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
@@ -124,7 +123,7 @@ public class TranslationPairPageService {
             category.getTranslationPairsPages().add(translationPairsPage);
         }
         translationPairPageRepository.save(translationPairsPage);
-        return new ResponseMessage(Message.SUCCESSADDBASE);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+// Не Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class UserWordLessonProgressService {
@@ -28,7 +28,6 @@ public class UserWordLessonProgressService {
             UserWordLessonProgress userWordLessonProgress = userWordLessonProgressOptional.get();
             userWordLessonProgress.setStartLesson(start);
             userWordLessonProgressRepository.save(userWordLessonProgress);
-
         } else {
             UserWordLessonProgress userWordLessonProgress = new UserWordLessonProgress();
             userWordLessonProgress.setStartLesson(true);

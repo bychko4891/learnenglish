@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
-
+// Не Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {

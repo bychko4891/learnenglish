@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-public class DtoWordsCategory {
-    private Category wordsCategory;
+public class DtoCategory {
     private Category mainCategorySelect;
     private Category subcategorySelect;
+    private Category subSubcategorySelect;
 
-    public DtoWordsCategory() {
+    public DtoCategory() {
     }
 }

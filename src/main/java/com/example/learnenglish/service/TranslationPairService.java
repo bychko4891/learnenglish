@@ -11,6 +11,7 @@ import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.TranslationPair;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.TranslationPairRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,27 +20,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+// Буде змінюватись
 @Service
+@RequiredArgsConstructor
 public class TranslationPairService {
     private final TranslationPairRepository translationPairRepository;
-
-    private final UserService userService;
-
-
-    public TranslationPairService(TranslationPairRepository repository,
-                                  UserService userService) {
-        this.translationPairRepository = repository;
-        this.userService = userService;
-    }
 
     public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
         return translationPairRepository.countTranslationPairByUserIdAndLessonId(userId, lessonId);
 
     }
 
-    public TranslationPair pairForLesson(long lessonId, long userId, long lessonCounter) {
-        return translationPairRepository.findAllByUserAndLessonAndCounter(lessonId, userId, lessonCounter);
-    }
 
     public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
         return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
@@ -62,7 +53,7 @@ public class TranslationPairService {
 
 
     private DtoTranslationPairToUI translationPairConvertToDtoUserText(TranslationPair translationPair) {
-        DtoTranslationPairToUI dtoTranslationPairToUI = convertToDTO(translationPair);
+        DtoTranslationPairToUI dtoTranslationPairToUI = DtoTranslationPairToUI.convertToDTO(translationPair);
         int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {
@@ -127,19 +118,12 @@ public class TranslationPairService {
         List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
         if (list.size() != 0) {
             for (TranslationPair arr : list) {
-                toUIList.add(convertToDTO(arr));
+                toUIList.add(DtoTranslationPairToUI.convertToDTO(arr));
             }
             return toUIList;
         }
         return toUIList;
     }
 
-    private DtoTranslationPairToUI convertToDTO(TranslationPair translationPair) {
-        DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-        dtoTranslationPairToUI.setId(translationPair.getId());
-        dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
-        dtoTranslationPairToUI.setEngText(translationPair.getEngText());
-        return dtoTranslationPairToUI;
-    }
 
 }

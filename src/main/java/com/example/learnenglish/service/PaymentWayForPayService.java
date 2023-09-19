@@ -3,7 +3,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.PaymentByWayForPay;
 import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class PaymentWayForPayService {
@@ -86,14 +87,14 @@ public class PaymentWayForPayService {
         return paymentWayForPay;
     }
 
-    public ResponseMessage endOfPayment(PaymentByWayForPay paymentWayForPay){
+    public CustomResponseMessage endOfPayment(PaymentByWayForPay paymentWayForPay){
         String data = paymentWayForPay.getMerchantAccount() + ";" + paymentWayForPay.getOrderReference() + ";"
                 + paymentWayForPay.getAmount() + ";" + paymentWayForPay.getCurrency() + ";" + paymentWayForPay.getAuthCode() + ";"
                 + paymentWayForPay.getCardPan() + ";" + paymentWayForPay.getTransactionStatus() + ";" + paymentWayForPay.getReasonCode();
         String merchantSignature = generateMerchantSignatureMD5(data);
         if(merchantSignature.equals(paymentWayForPay.getMerchantSignature())){
             System.out.println("yes ***************************");
-            return new ResponseMessage(Message.SUCCESS);
+            return new CustomResponseMessage(Message.SUCCESS);
 
         }
 

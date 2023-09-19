@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class UserWordLessonStatisticService {

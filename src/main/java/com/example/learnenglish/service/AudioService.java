@@ -12,6 +12,8 @@ import com.example.learnenglish.exception.MyFileNotFoundException;
 import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.AudioRepository;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -29,7 +31,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
-
+// Буде змінюватись
 @Service
 public class AudioService {
     private final Path fileStorageLocation;
@@ -61,7 +63,7 @@ public class AudioService {
         throw new RuntimeException("Error in method 'getWordAudio' class 'AudioService'");
     }
 
-    public String saveAudioFile(MultipartFile brAudio, MultipartFile usaAudio, Long audioId) {
+    public CustomResponseMessage saveAudioFile(MultipartFile brAudio, MultipartFile usaAudio, Long audioId) {
        Audio audio = audioRepository.findById(audioId).get();
         String fileName = StringUtils.cleanPath(brAudio.getOriginalFilename());
         String fileName2 = StringUtils.cleanPath(usaAudio.getOriginalFilename());
@@ -80,7 +82,7 @@ public class AudioService {
             audio.setBrAudioName(brAudioName);
             audio.setUsaAudioName(usaAudioName);
             audioRepository.save(audio);
-            return "yes";
+            return new CustomResponseMessage(Message.SUCCESS);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 //            System.out.println(ex.getMessage());

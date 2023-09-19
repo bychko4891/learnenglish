@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class TranslationPairValidationAndSaveService {
@@ -49,21 +49,21 @@ public class TranslationPairValidationAndSaveService {
             dtoTranslationPairToUI.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
             dtoTranslationPairToUI.setEngText(dtoTranslationPairCleared.getEngText());
             return Optional.of(dtoTranslationPairToUI);
-        } else return Optional.of(new ResponseMessage(Message.ERRORVALIDATETEXT));
+        } else return Optional.of(new CustomResponseMessage(Message.VALIDATE_TEXT_ERROR));
     }
 
-    public ResponseMessage saveTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
+    public CustomResponseMessage saveTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
         DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
 
         if (validateTranslationPairs(dtoTranslationPairCleared)) {
             if (!translationPairService.existsByEngTextAndUkrText(dtoTranslationPairCleared.getEngText(), dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
                 translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared, roleUser));
-                return new ResponseMessage(Message.SUCCESSADDBASE);
+                return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
             } else {
-                return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+                return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
             }
         } else {
-            return new ResponseMessage(Message.ERRORVALIDATETEXT);
+            return new CustomResponseMessage(Message.VALIDATE_TEXT_ERROR);
         }
     }
 

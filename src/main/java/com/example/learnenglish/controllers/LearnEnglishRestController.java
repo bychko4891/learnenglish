@@ -3,10 +3,9 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
 import com.example.learnenglish.dto.DtoUserWordLessonStatisticToUi;
 import com.example.learnenglish.dto.DtoWordToUI;
-import com.example.learnenglish.model.PaymentByWayForPay;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -82,9 +81,9 @@ public class LearnEnglishRestController {
     }
 
     @PostMapping("/{id}/word-confirm")
-    public ResponseEntity<ResponseMessage> wordConfirm(@PathVariable("id") Long wordId,
-                                                       @RequestParam(name = "wordConfirm") String word,
-                                                       Principal principal) {
+    public ResponseEntity<CustomResponseMessage> wordConfirm(@PathVariable("id") Long wordId,
+                                                             @RequestParam(name = "wordConfirm") String word,
+                                                             Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.confirmWord(word, wordId));
         }

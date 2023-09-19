@@ -15,7 +15,7 @@ import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class WordService {
@@ -48,7 +48,7 @@ public class WordService {
         return wordRepository.lastId();
     }
 
-    public ResponseMessage saveWord(DtoWord dtoWord) {
+    public CustomResponseMessage saveWord(DtoWord dtoWord) {
         Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
         Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
                 dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
@@ -100,11 +100,11 @@ public class WordService {
                 word.setWordCategory(wordCategoryRepository.findById(categoryId).get());
             }
             wordRepository.save(word);
-            return new ResponseMessage(Message.SUCCESSADDBASE);
+            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         } else return saveNewWord(dtoWord, categoryId);
     }
 
-    private ResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
+    private CustomResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
         Word word = new Word();
         Audio audio = new Audio();
         Image images = new Image();
@@ -130,7 +130,7 @@ public class WordService {
             wordCategory.getWords().add(word);
         }
         wordRepository.save(word);
-        return new ResponseMessage(Message.SUCCESSADDBASE);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
     public Word getWord(Long id) {
@@ -179,14 +179,14 @@ public class WordService {
         return wordRepository.wordsFromLesson(pageable, wordLessonId);
     }
 
-    public ResponseMessage confirmWord(String wordConfirm, Long id) {
+    public CustomResponseMessage confirmWord(String wordConfirm, Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
             if (word.getName().equals(StringUtils.normalizeSpace(wordConfirm))) {
-                return new ResponseMessage(Message.SUCCESS, word.getName());
-            } else return new ResponseMessage(Message.ERROR, word.getName());
-        } else return new ResponseMessage(Message.ERRORBASE);
+                return new CustomResponseMessage(Message.SUCCESS, word.getName());
+            } else return new CustomResponseMessage(Message.ERROR, word.getName());
+        } else return new CustomResponseMessage(Message.BASE_ERROR);
     }
 
     public List<DtoWordToUI> wordsToAudit(List<Long> wordsId, int wordAuditCounter) {
