@@ -148,12 +148,9 @@ public class SecurityConfig {
 //                                .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                                 .successHandler((request, response, authentication) -> {
                                     HttpSession session = request.getSession();
-                                    session.setAttribute("username", authentication.getName());
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     User user = (User) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getImageName());
-                                    session.setAttribute("userFirstName", user.getFirstName());
-                                    session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());
                                     session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());

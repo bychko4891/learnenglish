@@ -9,6 +9,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.*;
 import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.Category;
+import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -87,13 +88,22 @@ public class AdminRestController {
                                                                    Principal principal) {
         if (principal != null) {
             Object obj = categoryValidator.categoryIsPresentInBase(dtoCategory);
-            if(obj instanceof Category){
-                Category category = (Category) obj;
-                if (category.getId().equals(dtoCategory.getSubcategorySelect().getId()) ||
-                        category.getId().equals(dtoCategory.getSubSubcategorySelect().getId())) {
+            if (obj instanceof Category categoryFromDatabase) {
+                if (categoryFromDatabase.getId().equals(dtoCategory.getSubcategorySelect().getId()) ||
+                        categoryFromDatabase.getId().equals(dtoCategory.getSubSubcategorySelect().getId())) {
                     return ResponseEntity.ok(new CustomResponseMessage(Message.SELF_ASSIGNMENT_CATEGORY_ERROR));
+                } else {
+                    if (dtoCategory.getSubcategorySelect().getId() == 0 && dtoCategory.getMainCategorySelect().isMainCategory()) {
+                        Category category = dtoCategory.getMainCategorySelect();
+                        if (category.getCategoryPages().get(0) == null) {
+                            category.getCategoryPages().clear();
+                            category.getCategoryPages().add(CategoryPage.NO_PAGE);
+                        }
+                        return ResponseEntity.ok(wordCategoryService.saveMainCategory(category, categoryFromDatabase));
+                    } else {
+                        return ResponseEntity.ok(wordCategoryService.saveSubcategory(dtoCategory, categoryFromDatabase));
+                    }
                 }
-                return ResponseEntity.ok(wordCategoryService.saveCategory(dtoCategory, category));
             } else {
                 return ResponseEntity.ok(wordCategoryService.saveNewCategory(dtoCategory));
             }
@@ -109,6 +119,7 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/word-lesson-save")
     public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody DtoWordLesson dtoWordLesson,
                                                                 Principal principal) {
@@ -173,8 +184,9 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/word-image/{id}/upload")
-    public ResponseEntity<CustomResponseMessage> uploadWordImage(@PathVariable("id")Long wordId, @RequestParam("wordImage") MultipartFile file,
+    public ResponseEntity<CustomResponseMessage> uploadWordImage(@PathVariable("id") Long wordId, @RequestParam("wordImage") MultipartFile file,
                                                                  Principal principal) {
         if (principal != null) {
             String contentType = file.getContentType();
@@ -187,7 +199,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/category-image/{id}/upload")
-    public ResponseEntity<CustomResponseMessage> uploadCategoryImage(@PathVariable("id")Long categoryId, @RequestParam("categoryImage") MultipartFile file,
+    public ResponseEntity<CustomResponseMessage> uploadCategoryImage(@PathVariable("id") Long categoryId, @RequestParam("categoryImage") MultipartFile file,
                                                                      Principal principal) {
         if (principal != null) {
             String contentType = file.getContentType();

@@ -11,7 +11,7 @@ import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-// Буде змінюватись
+
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
@@ -80,39 +80,36 @@ public class CategoryService {
         return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 
-    public CustomResponseMessage saveCategory(DtoCategory dtoCategory, Category сategory) {
+    public CustomResponseMessage saveMainCategory(Category category, Category categoryFromDatabase) {
+        categoryFromDatabase.setName(category.getName());
+        categoryFromDatabase.setInfo(category.getInfo());
+        categoryFromDatabase.setMainCategory(true);
+        categoryFromDatabase.setViewSubcategoryFullNoInfoOrNameAndInfo(category.isViewSubcategoryFullNoInfoOrNameAndInfo());
+        String page = category.getCategoryPages().get(0).name();
+        if (!page.equals("NO_PAGE")) {
+            categoryFromDatabase.getCategoryPages().clear();
+            categoryFromDatabase.getCategoryPages().add(category.getCategoryPages().get(0));
+        }
+        if (categoryFromDatabase.getParentCategory() != null) {
+            Category parentCategory = categoryFromDatabase.getParentCategory();
+            parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(categoryFromDatabase.getId()));
+        }
+        categoryFromDatabase.setParentCategory(null);
+        categoryRepository.save(categoryFromDatabase);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+    }
+
+
+    public CustomResponseMessage saveSubcategory(DtoCategory dtoCategory, Category сategory) {
         сategory.setName(dtoCategory.getMainCategorySelect().getName());
         сategory.setInfo(dtoCategory.getMainCategorySelect().getInfo());
-        сategory.setViewSubcategoryFullNoInfoOrNameAndInfo(dtoCategory.getMainCategorySelect().isViewSubcategoryFullNoInfoOrNameAndInfo());
-        String page = dtoCategory.getMainCategorySelect().getCategoryPages().toString();
-        if (!page.equals("[NO_PAGE]")) {
-            if (page.equals("[WORDS]")) {
-                сategory.getCategoryPages().clear();
-                сategory.getCategoryPages().add(CategoryPage.WORDS);
-            } else if (page.equals("[LESSON_WORDS]")) {
-                сategory.getCategoryPages().clear();
-                сategory.getCategoryPages().add(CategoryPage.LESSON_WORDS);
-            } else {
-                сategory.getCategoryPages().clear();
-                сategory.getCategoryPages().add(CategoryPage.TRANSLATION_PAIRS);
-            }
-        }
-        if (dtoCategory.getSubcategorySelect().getId() == 0 && dtoCategory.getSubSubcategorySelect().getId() == 0) {
-            сategory.setMainCategory(dtoCategory.getMainCategorySelect().isMainCategory());
-            if (dtoCategory.getMainCategorySelect().isMainCategory() && сategory.getParentCategory() != null) {
-                Category parentCategory = сategory.getParentCategory();
-                parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(сategory.getId()));
-                сategory.setParentCategory(null);
-            }
-            categoryRepository.save(сategory);
-            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-        } else if (dtoCategory.getSubcategorySelect().getId() != 0 && dtoCategory.getSubSubcategorySelect().getId() == 0) {
+        сategory.setMainCategory(false);
+        if (dtoCategory.getSubcategorySelect().getId() != 0 && dtoCategory.getSubSubcategorySelect().getId() == 0) {
             Category parentWordsCategory = categoryRepository.findById(dtoCategory.getSubcategorySelect().getId()).get();
             if (сategory.getParentCategory() != null) {
                 Category parentWordsCategoryRemove = сategory.getParentCategory();
                 parentWordsCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(сategory.getId()));
             }
-            сategory.setMainCategory(false);
             сategory.setParentCategory(parentWordsCategory);
             parentWordsCategory.getSubcategories().add(сategory);
             categoryRepository.save(сategory);
