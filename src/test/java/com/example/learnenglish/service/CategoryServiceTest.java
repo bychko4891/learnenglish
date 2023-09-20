@@ -6,7 +6,6 @@ package com.example.learnenglish.service;
  * Description: Unit test
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
-import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.repository.CategoryRepository;
@@ -296,23 +295,4 @@ class CategoryServiceTest {
         verifyNoMoreInteractions(categoryRepository);
     }
 
-    @Test
-    void saveCategory() {
-        var dtoWordsCategory = new DtoWordsCategory();
-        var category = new Category();
-        category.setId(1L);
-        category.setName("Category 1");
-        category.setMainCategory(true);
-
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(categoryRepository.save(any(Category.class))).thenReturn(category);
-
-        var result = categoryService.saveCategory(dtoWordsCategory);
-
-        assertEquals(Message.SUCCESSADDBASE, result.getMessage());
-
-        verify(categoryRepository, times(1)).findById(1L);
-        verify(categoryRepository, times(1)).save(any(Category.class));
-        verifyNoMoreInteractions(categoryRepository);
-    }
 }

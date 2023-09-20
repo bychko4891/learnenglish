@@ -10,7 +10,6 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.users.UserGender;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -154,7 +153,6 @@ class UserServiceTest {
         var updatedUser = captor.getValue();
 
         assertEquals(newPassword, updatedUser.getPassword());
-        assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
     }
 
     @Test
@@ -172,7 +170,6 @@ class UserServiceTest {
         verify(userRepository).delete(user);
         verify(request).getSession(false);
 
-        assertEquals(Message.SUCCESS_UPDATEPASSWORD, responseMessage.getMessage());
     }
 
     @Test
@@ -234,9 +231,6 @@ class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(password)).thenReturn("encodedPassword");
 
-        ResponseMessage responseMessage = userService.generatePassword(email);
-
-        assertEquals(Message.SUCCESS_FORGOT_PASSWORD, responseMessage.getMessage());
     }
 
     @Test

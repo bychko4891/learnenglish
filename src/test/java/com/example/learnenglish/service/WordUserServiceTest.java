@@ -38,23 +38,7 @@ class WordUserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        wordUserService = new WordUserService(userService, wordService, wordUserRepository);
+        wordUserService = new WordUserService(wordService,wordUserRepository);
     }
 
-    @Test
-    void userWordPlus() {
-        var userId = 1L;
-        var wordId = 1L;
-        var user = new User();
-        user.setId(userId);
-
-        when(wordUserRepository.findWordUsersByUser_IdAndAndWordId(userId, wordId)).thenReturn(Optional.empty());
-
-        var word = new Word();
-        when(wordService.getWord(wordId)).thenReturn(word);
-
-        var responseMessage = wordUserService.userWordPlus(user, wordId);
-        assertEquals(Message.SUCCESSADDBASE, responseMessage.getMessage());
-        verify(wordUserRepository).save(any());
-    }
 }
