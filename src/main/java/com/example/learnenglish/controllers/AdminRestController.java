@@ -95,10 +95,7 @@ public class AdminRestController {
                 } else {
                     if (dtoCategory.getSubcategorySelect().getId() == 0 && dtoCategory.getMainCategorySelect().isMainCategory()) {
                         Category category = dtoCategory.getMainCategorySelect();
-                        if (category.getCategoryPages().get(0) == null) {
-                            category.getCategoryPages().clear();
-                            category.getCategoryPages().add(CategoryPage.NO_PAGE);
-                        }
+                        category = categoryValidator.categoryPageIsNull(category);
                         return ResponseEntity.ok(wordCategoryService.saveMainCategory(category, categoryFromDatabase));
                     } else {
                         return ResponseEntity.ok(wordCategoryService.saveSubcategory(dtoCategory, categoryFromDatabase));
