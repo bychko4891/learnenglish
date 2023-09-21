@@ -1,8 +1,7 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.model.Lesson;
-import com.example.learnenglish.model.PageApplication;
-import com.example.learnenglish.model.TextOfAppPage;
+import com.example.learnenglish.dto.DtoWordsCategoryToUi;
+import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -370,23 +369,116 @@ class AdminControllerTest {
     }
 
     @Test
-    @Disabled
-    void translationPairsListAdminPage() {
+    void translationPairsListAdminPageIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var page = 1;
+        var size = 10;
+
+        Page<TranslationPair> translationPairPage = mock(Page.class);
+
+        when(translationPairService.getTranslationPairsFourAdmin(page, size, 1L)).thenReturn(translationPairPage);
+
+        var result = adminController.translationPairsListAdminPage(model, principal, page, size);
+
+        assertEquals("admin/adminTranslationPairs", result);
     }
 
     @Test
-    @Disabled
-    void words() {
+    void translationPairsListAdminPageIfPrincipalNull() {
+        Principal principal = null;
+        Model model = mock(Model.class);
+        var page = 1;
+        var size = 10;
+
+        var result = adminController.translationPairsListAdminPage(model, principal, page, size);
+
+        assertEquals("redirect:/login", result);
+        verifyNoInteractions(model);
     }
 
     @Test
-    @Disabled
-    void wordsCategory() {
+    void wordsIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+
+        var result = adminController.words(principal);
+
+        assertEquals("admin/wordsMainPage", result);
+        verifyNoInteractions(principal);
     }
 
     @Test
-    @Disabled
-    void wordsCategoryNewCategory() {
+    void wordsIfPrincipalNull() {
+        Principal principal = null;
+
+        var result = adminController.words(principal);
+
+        assertEquals("redirect:/login", result);
+    }
+
+    @Test
+    void wordsCategoryIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        List<DtoWordsCategoryToUi> categoryList = new ArrayList<>();
+
+        when(categoryService.getWordsCategories()).thenReturn(categoryList);
+
+        var result = adminController.wordsCategory(model, principal);
+
+        assertEquals("admin/categories", result);
+        verify(categoryService).getWordsCategories();
+    }
+
+    @Test
+    void wordsCategoryIfPrincipalNull() {
+        Principal principal = null;
+        Model model = mock(Model.class);
+
+        var result = adminController.wordsCategory(model, principal);
+
+        assertEquals("redirect:/login", result);
+        verifyNoInteractions(model);
+
+    }
+
+    @Test
+    void wordsCategoryNewCategoryIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        var count = 3L;
+
+        when(categoryService.countWordCategory()).thenReturn(count);
+
+        var result = adminController.wordsCategoryNewCategory(principal);
+
+        assertEquals("redirect:/admin-page/4/category-edit", result);
+    }
+
+    @Test
+    void wordsCategoryNewCategoryIfPrincipalNull() {
+        Principal principal = null;
+        var count = 3L;
+
+        when(categoryService.countWordCategory()).thenReturn(count);
+
+        var result = adminController.wordsCategoryNewCategory(principal);
+
+        assertEquals("redirect:/login", result);
+    }
+
+    @Test
+    void wordsCategoryNewCategoryIfNullPointerException() {
+        Principal principal = mock(Principal.class);
+        var count = 3L;
+
+        when(categoryService.countWordCategory()).thenThrow(NullPointerException.class);
+
+        var result = adminController.wordsCategoryNewCategory(principal);
+
+        assertEquals("redirect:/admin-page/1/category-edit", result);
+        verify(categoryService).countWordCategory();
+        verifyNoInteractions(principal);
+
     }
 
     @Test
