@@ -36,9 +36,6 @@ public class WordService {
     private final CategoryRepository wordCategoryRepository;
     private final TranslationPairRepository translationPairRepository;
 
-    private final UserService userService;
-
-
     public Page<Word> getWordsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return wordRepository.findAll(pageable);
@@ -51,20 +48,11 @@ public class WordService {
     public CustomResponseMessage saveWord(DtoWord dtoWord) {
         Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
         Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
-                dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
-                        dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
+                            dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
+                            dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
-            word.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
-            word.getAudio().setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
-            word.setTranslate(dtoWord.getWord().getTranslate());
-            word.setBrTranscription(dtoWord.getWord().getBrTranscription());
-            word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
-            word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
-            word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
-            word.setDescription(dtoWord.getWord().getDescription());
-            word.setPublished(dtoWord.getWord().isPublished());
-            word.setInfo(dtoWord.getWord().getInfo());
+            DtoWord.convertDtoToWord(dtoWord, word);
             List<TranslationPair> translationPairs = word.getTranslationPairs();
             if (translationPairs.size() != 0 && translationPairs.size() != dtoWord.getWord().getTranslationPairs().size()) {
                 List<TranslationPair> dtoTranslationPairs = dtoWord.getWord().getTranslationPairs();
@@ -108,18 +96,9 @@ public class WordService {
         Word word = new Word();
         Audio audio = new Audio();
         Image images = new Image();
-        word.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
-        word.setTranslate(dtoWord.getWord().getTranslate());
-        word.setPublished(dtoWord.getWord().isPublished());
-        word.setInfo(dtoWord.getWord().getInfo());
-        word.setBrTranscription(dtoWord.getWord().getBrTranscription());
-        word.setUsaTranscription(dtoWord.getWord().getUsaTranscription());
-        word.setIrregularVerbPt(dtoWord.getWord().getIrregularVerbPt());
-        word.setIrregularVerbPp(dtoWord.getWord().getIrregularVerbPp());
-        word.setDescription(dtoWord.getWord().getDescription());
-        audio.setName(StringUtils.normalizeSpace(dtoWord.getWord().getName()));
         word.setAudio(audio);
         word.setImages(images);
+        DtoWord.convertDtoToWord(dtoWord, word);
         if (dtoWord.getTranslationPairsId().size() != 0) {
             List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
             word.setTranslationPairs(list);
@@ -160,7 +139,6 @@ public class WordService {
         List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
         for (Word arr : wordsResult) {
             dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-
         }
         return dtoWordToUIList;
     }
@@ -209,7 +187,5 @@ public class WordService {
         }
         return dtoWordToUI;
     }
-
-
 
 }
