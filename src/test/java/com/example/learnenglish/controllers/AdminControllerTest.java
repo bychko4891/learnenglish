@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AdminControllerTest { // Change over. Need refactor
+class AdminControllerTest {
 
     @Mock
     private HttpSession session;
@@ -49,8 +50,6 @@ class AdminControllerTest { // Change over. Need refactor
     private ImagesService imagesService;
     @Mock
     private WordLessonService wordLessonService;
-    @Mock
-    private Model model;
     @InjectMocks
     private AdminController adminController;
 
@@ -78,6 +77,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void getTextsOfAppPagesIfPrincipalNotNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         List<TextOfAppPage> textOfAppPageList = new ArrayList<>();
         when(textOfAppPageService.getAppTextPageList()).thenReturn(textOfAppPageList);
 
@@ -90,6 +90,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void getTextsOfAppPagesIfPrincipalNull() {
         Principal principal = null;
+        Model model = mock(Model.class);
 
         var result = adminController.getTextsOfAppPages(model, principal);
 
@@ -122,6 +123,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void newTextOfAppPageIfPrincipalNotNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         List<PageApplication> pageApplicationList = new ArrayList<>();
         pageApplicationList.add(new PageApplication(1L, "Page 1"));
         pageApplicationList.add(new PageApplication(2L, "Page 2"));
@@ -137,6 +139,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void newTextOfAppPageIfPrincipalNull() {
         Principal principal = null;
+        Model model = mock(Model.class);
 
         var result = adminController.newTextOfAppPage(1L, model, principal);
 
@@ -147,6 +150,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     public void textOfAppPageEditIfPrincipalNotNullAndPageApplicationNotNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         List<PageApplication> pageApplicationList = new ArrayList<>();
         pageApplicationList.add(new PageApplication(1L, "Page 1"));
         pageApplicationList.add(new PageApplication(2L, "Page 2"));
@@ -168,6 +172,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     public void textOfAppPageEditIfPrincipalNotNullAndPageApplicationNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         List<PageApplication> pageApplicationList = new ArrayList<>();
         pageApplicationList.add(new PageApplication(1L, "Page 1"));
         pageApplicationList.add(new PageApplication(2L, "Page 2"));
@@ -189,10 +194,8 @@ class AdminControllerTest { // Change over. Need refactor
     public void textOfAppPageEditIfPrincipalNull() {
         Principal principal = null;
 
-        // Act
-        String result = adminController.textOfAppPageEdit(1L, null, principal);
+        var result = adminController.textOfAppPageEdit(1L, null, principal);
 
-        // Assert
         assertEquals("redirect:/login", result);
         verifyNoInteractions(textOfAppPageService);
         verifyNoInteractions(pageApplicationService);
@@ -201,6 +204,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void usersListAdminPageIfPrincipalNotNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         var page = 0;
         var size = 10;
         List<User> userList = new ArrayList<>();
@@ -220,6 +224,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void usersListAdminPageIfPrincipalNull() {
         Principal principal = null;
+        Model model = mock(Model.class);
         var page = 0;
         var size = 10;
 
@@ -232,6 +237,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void lessonsListAdminPageIfPrincipalNotNull() {
         Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
         var message = "Test Message";
         var page = 0;
         var size = 5;
@@ -253,6 +259,7 @@ class AdminControllerTest { // Change over. Need refactor
     @Test
     void lessonsListAdminPageIfPrincipalNull() {
         Principal principal = null;
+        Model model = mock(Model.class);
         var message = "Test Message";
         var page = 0;
         var size = 5;
@@ -264,18 +271,102 @@ class AdminControllerTest { // Change over. Need refactor
     }
 
     @Test
-    @Disabled
-    void newLessonAdminPage() {
+    public void newLessonAdminPageIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        var redirectAttributes = mock(RedirectAttributes.class);
+        var count = 16L;
+
+        when(lessonService.countLessons()).thenReturn(count);
+
+        var result = adminController.newLessonAdminPage(principal, redirectAttributes);
+
+        assertEquals("redirect:/admin-page/lesson/17/new-lesson-in-editor", result);
+        verify(lessonService).countLessons();
     }
 
     @Test
-    @Disabled
-    void newLesson() {
+    public void newLessonAdminPageIfPrincipalNotNullAndCountLessonsGreaterThan17() {
+        Principal principal = mock(Principal.class);
+        var redirectAttributes = mock(RedirectAttributes.class);
+        var count = 18L;
+
+        when(lessonService.countLessons()).thenReturn(count);
+
+        var result = adminController.newLessonAdminPage(principal, redirectAttributes);
+
+        assertEquals("redirect:/admin-page/lessons", result);
+        verify(lessonService).countLessons();
+        verify(redirectAttributes).addAttribute("message", "Дозволено максимум 17 уроків");
     }
 
     @Test
-    @Disabled
-    void lessonEdit() {
+    public void newLessonAdminPageIfPrincipalNull() {
+        Principal principal = null;
+        var redirectAttributes = mock(RedirectAttributes.class);
+
+        var result = adminController.newLessonAdminPage(principal, redirectAttributes);
+
+        assertEquals("redirect:/login", result);
+        verifyNoInteractions(lessonService);
+        verifyNoInteractions(redirectAttributes);
+    }
+
+
+    @Test
+    void newLessonIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 5L;
+        var expectedLesson = new Lesson();
+        expectedLesson.setLessonInfo("Lesson description" + id);
+        expectedLesson.setName("Test Name");
+        expectedLesson.setId(id);
+
+
+        var result = adminController.newLesson(id, model, principal);
+
+        assertEquals("admin/adminLessonInEditor", result);
+        verifyNoInteractions(principal);
+    }
+
+    @Test
+    void newLessonIfPrincipalNull() {
+        Principal principal = null;
+        Model model = mock(Model.class);
+
+        var result = adminController.newLesson(1L, model, principal);
+
+        assertEquals("redirect:/login", result);
+        verifyNoInteractions(model);
+    }
+
+    @Test
+    void lessonEditIfPrincipalNotNull() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 2L;
+        var expectedLesson = new Lesson();
+
+        when(lessonService.getLesson(id)).thenReturn(expectedLesson);
+
+        var result = adminController.lessonEdit(id, model, principal);
+
+        assertEquals("admin/adminLessonInEditor", result);
+        verify(model).addAttribute("lesson", expectedLesson);
+        verifyNoInteractions(principal);
+    }
+
+    @Test
+    void lessonEditIfPrincipalNull() {
+        Principal principal = null;
+        Model model = mock(Model.class);
+
+        var id = 1L;
+
+        var result = adminController.lessonEdit(id, model, principal);
+
+        assertEquals("redirect:/login", result);
+        verifyNoInteractions(model);
     }
 
     @Test
