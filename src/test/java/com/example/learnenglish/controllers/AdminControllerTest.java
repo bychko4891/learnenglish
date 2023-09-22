@@ -665,8 +665,6 @@ class AdminControllerTest {
         var res = adminController.newWordLessonAdminPage(principal);
 
         assertEquals("redirect:/admin-page/word-lesson/4/word-lesson-edit", res);
-        verify(principal);
-
 
         principal = null;
 
@@ -713,28 +711,93 @@ class AdminControllerTest {
     }
 
     @Test
-    @Disabled
     void audioListAdminPage() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var page = 1;
+        var size = 7;
+        Page<Audio> wordAudioPage = mock(Page.class);
+        when(wordAudioService.getWordsAudioPage(page, size)).thenReturn(wordAudioPage);
+
+        var res = adminController.audioListAdminPage(page, size, principal, model);
+
+        assertEquals("admin/audios", res);
+        verify(model).addAttribute("totalPages", 1);
+
+        principal = null;
+
+        var result = adminController.audioListAdminPage(page, size, principal, model);
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
     void wordAudioUpload() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 1L;
+
+        var wordAudio = new Audio();
+
+        when(wordAudioService.getWordAudio(id)).thenReturn(wordAudio);
+
+        var res = adminController.wordAudioUpload(id, model, principal);
+
+        assertEquals("admin/audioUpload", res);
+        verify(model).addAttribute("wordAudio", wordAudio);
+
+        principal = null;
+
+        var result = adminController.wordAudioUpload(id, model, principal);
+
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
     void translationPairsPages() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var page = 1;
+        var size = 7;
+        Page<TranslationPairsPage> translationPairsPages = mock(Page.class);
+        when(translationPairPageService.getTranslationPairsPages(page, size)).thenReturn(translationPairsPages);
+
+        var res = adminController.translationPairsPages(page, size, principal, model);
+
+        assertEquals("admin/translationPairPages", res);
+        verify(model).addAttribute("totalPages", 1);
+
+        principal = null;
+
+        var result = adminController.translationPairsPages(page, size, principal, model);
+
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
     void newTranslationPairPage() {
+        Principal principal = mock(Principal.class);
+        var count = 2L;
+
+        when(translationPairPageService.countTranslationPairPages()).thenReturn(count);
+
+        var res = adminController.newTranslationPairPage(principal);
+
+        assertEquals("redirect:/admin-page/phrase/" + (count + 1) + "/new-page-phrases-create", res);
+
+        principal = null;
+
+        var result = adminController.newTranslationPairPage(principal);
+
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
     void newTranslationPairPageCreate() {
+
     }
 
     @Test
