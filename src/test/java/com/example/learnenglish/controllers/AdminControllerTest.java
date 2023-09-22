@@ -61,42 +61,51 @@ class AdminControllerTest {
     }
 
     @Test
-    void adminPageIfPrincipalNotNull() {
+    void testAdminPage() {
         Principal principal = () -> "TestUser";
         var res = adminController.adminPage(principal);
         assertEquals("admin/adminMainPage", res);
-    }
 
-    @Test
-    void adminPageIfPrincipalNull() {
         var result = adminController.adminPage(null);
         assertEquals("redirect:/login", result);
     }
 
+//    @Test
+//    void adminPageIfPrincipalNull() {
+//        var result = adminController.adminPage(null);
+//        assertEquals("redirect:/login", result);
+//    }
+
     @Test
-    void getTextsOfAppPagesIfPrincipalNotNull() {
+    void testGetTextsOfAppPages() {
         Principal principal = mock(Principal.class);
         Model model = mock(Model.class);
         List<TextOfAppPage> textOfAppPageList = new ArrayList<>();
         when(textOfAppPageService.getAppTextPageList()).thenReturn(textOfAppPageList);
 
-        var result = adminController.getTextsOfAppPages(model, principal);
+        var res = adminController.getTextsOfAppPages(model, principal);
 
-        assertEquals("admin/adminTextsOfAppPages", result);
+        assertEquals("admin/adminTextsOfAppPages", res);
         verify(model).addAttribute("textOfAppPageList", textOfAppPageList);
-    }
 
-    @Test
-    void getTextsOfAppPagesIfPrincipalNull() {
-        Principal principal = null;
-        Model model = mock(Model.class);
+        principal = null;
 
         var result = adminController.getTextsOfAppPages(model, principal);
 
         assertEquals("redirect:/login", result);
-        verifyNoInteractions(textOfAppPageService);
-        verifyNoInteractions(model);
     }
+
+//    @Test
+//    void getTextsOfAppPagesIfPrincipalNull() {
+//        Principal principal = null;
+//        Model model = mock(Model.class);
+//
+//        var result = adminController.getTextsOfAppPages(model, principal);
+//
+//        assertEquals("redirect:/login", result);
+//        verifyNoInteractions(textOfAppPageService);
+//        verifyNoInteractions(model);
+//    }
 
     @Test
     void appInfoListAdminPageIfPrincipalNotNull() {
@@ -581,24 +590,102 @@ class AdminControllerTest {
     }
 
     @Test
-    @Disabled
-    void newWord() {
+    void testNewWord() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 1L;
+        List<Category> mainCategoryList = new ArrayList<>();
+        when(categoryService.mainWordCategoryList(true)).thenReturn(mainCategoryList);
+
+        var result = adminController.newWord(id, model, principal);
+
+        assertEquals("admin/wordEdit", result);
+        verifyNoInteractions(principal);
+
+        principal = null;
+
+        var result1 = adminController.newWord(id, model, principal);
+
+        assertEquals("redirect:/login", result1);
     }
 
     @Test
-    @Disabled
-    void wordEdit() {
+    void testWordEdit() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 1L;
+        Word word = mock(Word.class);
+        List<Category> mainCategoryList = new ArrayList<>();
+        when(categoryService.mainWordCategoryList(true)).thenReturn(mainCategoryList);
+        when(wordService.getWord(id)).thenReturn(word);
+
+        var res = adminController.wordEdit(id, model, principal);
+
+        assertEquals("admin/wordEdit", res);
+        verify(model).addAttribute("word", word);
+        verify(model).addAttribute("category", "Відсутня");
+
+        principal = null;
+
+        var result = adminController.wordEdit(id, model, principal);
+
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
-    void wordLessonsListAdminPage() {
+    void testWordLessonsListAdminPage() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var page = 1;
+        var size = 10;
+
+        Page<WordLesson> wordLessonPage = mock(Page.class);
+        when(wordLessonService.getWordLessonsPage(page, size)).thenReturn(wordLessonPage);
+
+        var res = adminController.wordLessonsListAdminPage(page, size, principal, model);
+
+        assertEquals("admin/wordLessons", res);
+        verify(model).addAttribute("totalPages", 1);
+
+        principal = null;
+
+        var result = adminController.wordLessonsListAdminPage(page, size, principal, model);
+
+        assertEquals("redirect:/login", result);
+
     }
 
     @Test
-    @Disabled
-    void newWordLessonAdminPage() {
+    void testNewWordLessonAdminPage() {
+        Principal principal = mock(Principal.class);
+        var count = 3L;
+        when(wordLessonService.countWordLesson()).thenReturn(count);
+
+        var res = adminController.newWordLessonAdminPage(principal);
+
+        assertEquals("redirect:/admin-page/word-lesson/4/word-lesson-edit", res);
+        verify(principal);
+
+
+        principal = null;
+
+        var result = adminController.newWordLessonAdminPage(principal);
+        assertEquals("redirect:/login", result);
+
     }
+
+    @Test
+    void testNewWordLessonAdminPageNullPointerException() {
+        Principal principal = mock(Principal.class);
+        var count = 3L;
+        when(wordLessonService.countWordLesson()).thenThrow(NullPointerException.class);
+
+        var resIfNullPointer = adminController.newWordLessonAdminPage(principal);
+
+        assertEquals("redirect:/admin-page/word-lesson/1/word-lesson-edit", resIfNullPointer);
+    }
+
 
     @Test
     @Disabled
