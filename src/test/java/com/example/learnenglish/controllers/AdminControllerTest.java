@@ -688,8 +688,28 @@ class AdminControllerTest {
 
 
     @Test
-    @Disabled
     void wordLessonEdit() {
+        Principal principal = mock(Principal.class);
+        Model model = mock(Model.class);
+        var id = 1L;
+        List<Category> mainCategories = new ArrayList<>();
+        WordLesson wordLesson = mock(WordLesson.class);
+
+        when(categoryService.mainWordLessonCategoryList(true)).thenReturn(mainCategories);
+        when(wordLessonService.getWordLesson(id)).thenReturn(wordLesson);
+
+        var res = adminController.wordLessonEdit(id, model, principal);
+
+        assertEquals("admin/wordLessonEdit", res);
+        verify(model).addAttribute("category", "Відсутня");
+        verify(model).addAttribute("wordLesson", wordLesson);
+        verify(model).addAttribute("mainCategories", mainCategories);
+
+        principal = null;
+
+        var result = adminController.wordLessonEdit(id, model, principal);
+
+        assertEquals("redirect:/login", result);
     }
 
     @Test
