@@ -14,14 +14,19 @@ public class PaymentWayForPayController {
     private final PaymentWayForPayService paymentWayForPayService;
 
     @GetMapping("/pay")
-    public String pay() {
+    public String pay(@RequestParam(value = "message", required = false) String message, Model model) {
+        if(message != null){
+            String responseMessage = paymentWayForPayService.paymentCodeResponseMessage(message);
+            model.addAttribute("errorMessage", responseMessage);
+        }
+
         return "pay";
     }
 
     @GetMapping("/payment-success")
     public String paymentSuccess(@RequestParam(value = "message", required = false) String message, Model model){
         message = "Дякую за донат";
-        model.addAttribute("message", message);
+        model.addAttribute("successMessage", message);
 
 
 

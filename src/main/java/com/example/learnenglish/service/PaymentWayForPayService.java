@@ -2,16 +2,14 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.PaymentByWayForPay;
 import com.example.learnenglish.model.WayForPayModule;
-import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.repository.PaymentByWayForPayRepository;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,6 +20,7 @@ public class PaymentWayForPayService {
     @Value(("${application.host}"))
     private String host;
     private final WayForPayModuleService wayForPayModuleService;
+    private final PaymentByWayForPayRepository paymentByWayForPayRepository;
 
     private WayForPayModule wayForPayModule;
 
@@ -29,13 +28,10 @@ public class PaymentWayForPayService {
         System.out.println(data);
         String algorithm = "HmacMD5";
         String key = wayForPayModule.getMerchantSecretKEY();
-        String merchantSignature = new HmacUtils(algorithm, key).hmacHex(data);
-        System.out.println("merchantSignature: " + merchantSignature);
-        return merchantSignature;
+        return new HmacUtils(algorithm, key).hmacHex(data);
     }
 
 
-    //    public String buildUrl(PaymentByWayForPay paymentWayForPay) {
     public PaymentByWayForPay startOfPayment(PaymentByWayForPay paymentWayForPay) {
         wayForPayModule = wayForPayModuleService.getWayForPayModule();
         if (wayForPayModule.isActive()) {
@@ -53,60 +49,38 @@ public class PaymentWayForPayService {
 
             String merchantSignature = generateMerchantSignatureMD5(data);
             paymentWayForPay.setMerchantSignature(merchantSignature);
-            System.out.println(merchantSignature);
-
-//            Timer timer = new Timer();
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-////                    userWordLessonStatisticService.deleteWordLessonStatistic(userId, wordLessonId);
-//                    TimerStorage.removeTimer(orderReference);
-//                    timer.cancel();
-//                }
-//            }, 10000);
-//            TimerStorage.addTimer(orderReference, timer);
         }
-
-        // Створюємо UriComponentsBuilder
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://secure.wayforpay.com/pay")
-//                .queryParam("merchantAccount", paymentWayForPay.getMerchantAccount())
-//                .queryParam("merchantDomainName", paymentWayForPay.getMerchantDomainName())
-////                .queryParam("returnUrl", returnUrl)
-//                .queryParam("merchantTransactionSecureType", paymentWayForPay.getMerchantTransactionSecureType())
-//                .queryParam("merchantSignature", paymentWayForPay.getMerchantSignature())
-//                .queryParam("orderReference", paymentWayForPay.getOrderReference())
-//                .queryParam("orderDate", paymentWayForPay.getOrderDate())
-//                .queryParam("amount", paymentWayForPay.getAmount())
-//                .queryParam("currency", paymentWayForPay.getCurrency())
-//                .queryParam("productName", encodeValue((paymentWayForPay.getProductName().get(0))))
-//                .queryParam("productPrice", paymentWayForPay.getProductPrice().get(0))
-//                .queryParam("productCount", paymentWayForPay.getProductCount().get(0));
-
-        // Повертаємо URL-рядок
-//        return builder.toUriString();
         return paymentWayForPay;
     }
 
-    public CustomResponseMessage endOfPayment(PaymentByWayForPay paymentWayForPay){
+    public CustomResponseMessage endOfPayment(PaymentByWayForPay paymentWayForPay) {
+        paymentWayForPay.setMerchantAccount(wayForPayModule.getMerchantAccount());
         String data = paymentWayForPay.getMerchantAccount() + ";" + paymentWayForPay.getOrderReference() + ";"
                 + paymentWayForPay.getAmount() + ";" + paymentWayForPay.getCurrency() + ";" + paymentWayForPay.getAuthCode() + ";"
                 + paymentWayForPay.getCardPan() + ";" + paymentWayForPay.getTransactionStatus() + ";" + paymentWayForPay.getReasonCode();
         String merchantSignature = generateMerchantSignatureMD5(data);
-        if(merchantSignature.equals(paymentWayForPay.getMerchantSignature())){
-            System.out.println("yes ***************************");
-            return new CustomResponseMessage(Message.SUCCESS);
-
+        if (merchantSignature.equals(paymentWayForPay.getMerchantSignature())) {
+            paymentByWayForPayRepository.save(paymentWayForPay);
+            if (paymentWayForPay.getReasonCode().equals("1100")) {
+                return new CustomResponseMessage(Message.SUCCESS);
+            }
         }
-
-
-        return null;
+        return new CustomResponseMessage(Message.ERROR);
     }
 
-    private String encodeValue(String value) {
-        try {
-            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex.getCause());
-        }
+    public String paymentCodeResponseMessage(String paymentCode) {
+        return switch (paymentCode) {
+            case "1101" -> "Не вдалося здійснити оплату. Зв'яжіться з вашим банком або скористайтеся іншою картою";
+            case "1102" ->
+                    "Не вдалося здійснити оплату. Будь ласка, переконайтеся в правильності введення параметрів і спробуйте ще";
+            case "1103" ->
+                    "Не вдалося здійснити оплату. Зв'яжіться з вашим банком або скористайтеся іншою картою. Будь ласка, переконайтеся в правильності введення установок і спробуйте ще";
+            case "1104" -> "Не вдалося здійснити оплату. Недостатньо коштів на карті";
+            case "1105" ->
+                    "Не вдалося здійснити оплату. Зв'яжіться з вашим банком або скористайтесь іншою карткою. Будь ласка, переконайтеся в правильності введення параметрів і спробуйте ще";
+            case "1106" -> "Не вдалося здійснити оплату. Зв'яжіться з вашим банком або скористайтесь іншою карткою.";
+            default ->
+                    "Не вдалося здійснити оплату. Повторіть спробу оплати пізніше або зв'яжіться з торговцем в адресу котрого здійснюєте платіж";
+        };
     }
 }

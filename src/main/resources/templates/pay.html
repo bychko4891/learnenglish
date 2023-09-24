@@ -99,7 +99,8 @@
             <input type="hidden" name="merchantSignature" id="merchantSignature">
             <button type="submit" id="payment-button">Pay</button>
           </form>
-          <h1 th:text="${message}"></h1>
+          <h1 th:if="${errorMessage != null}" th:text="${errorMessage}"></h1>
+          <h1 th:if="${successMessage != null}" th:text="${successMessage}"></h1>
 
 
 

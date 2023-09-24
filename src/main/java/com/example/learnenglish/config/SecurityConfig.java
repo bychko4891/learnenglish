@@ -106,7 +106,7 @@ public class SecurityConfig {
             "/lessons",
             "/pay",
             "/start-pay*",
-            "/payment-success*",
+            "/payment-success**",
             "/api/pay-success/*"
     };
     public static final String LOGIN_URL = "/login";
