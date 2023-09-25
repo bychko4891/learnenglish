@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="admin_page"
+             style="margin: 40px; width: calc(100% - 100px); color: white; font-size: 24px; text-align: center;">
+
+            <a href="/admin-page/users">
+                <div class="navigation_admin_page bb" style="background-color: rgb(116 21 45)">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Юзери</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/admin-page/lessons">
+                <div class="navigation_admin_page bb">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-brands fa-leanpub"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Уроки по фразам</span>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+            <a href="/admin-page/word-lessons">
+                <div class="navigation_admin_page bb" style="background-color: rgb(20 139 127);">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-brands fa-leanpub"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Уроки по словам</span>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+
+            <a href="/admin-page/texts-of-app-pages">
+                <div class="navigation_admin_page bb" style="background-color: rgb(84 57 172);">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Описи сторінок</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="/admin-page/translation-pairs">
+                <div class="navigation_admin_page bb" style="background-color: rgb(215 97 13);">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-regular fa-comments"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Фрази для занять </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="/admin-page/words-main-page">
+                <div class="navigation_admin_page bb" style="background-color: rgb(23 24 74);">
+                    <div class="d-flex flex-row align-items-center">
+                        <div style="width: 25%;">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+                        <div style="width: 75%;">
+                            <span>Матеріали додатка</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="container layout_page" style="padding: 40px;">
+            <div class="d-flex flex-column align-items-center" style="gap: 20px;">
+                <div class="row">
+                    <h3>Settings WayForPay module</h3>
+                    <img src="/images/wayForPay_logo.webp"
+                         style="width: 100px; height: auto; padding: 0; border-radius: 7px;">
+                    <br>
+                </div>
+                <form class="row" style="margin-right: auto; align-items: center; gap: 10px;">
+                    <span>Merchant login</span>
+                    <input type="text" th:placeholder="${wayForPaySettings.merchantAccount}">
+                    <span>Merchant secret key</span>
+                    <input type="text" th:placeholder="${wayForPaySettings.merchantSecretKey}">
+                    <span style="padding: 10px 0px 0px 25px;">Увімкнути: </span>
+                    <input id="toggleSwitch" type="checkbox" th:checked="${wayForPaySettings.isActive()}"
+                           class="toggle-switch" name="mainCategory">
+                    <label for="toggleSwitch" class="toggle-switch-label"></label>
+                    <button>Зберегти</button>
+                </form>
+            </div>
+
+
+        </div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+</body>
+</html>

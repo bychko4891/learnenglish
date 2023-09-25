@@ -80,7 +80,7 @@ public class PaymentWayForPayResController {
                 return  new RedirectView("/payment-success");
             }
         }
-        return new RedirectView("/pay");
+        return new RedirectView("/payment-donate");
     }
 
 

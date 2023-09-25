@@ -42,17 +42,16 @@ public class AdminController {
     private final TranslationPairPageService translationPairPageService;
     private final ImagesService imagesService;
     private final WordLessonService wordLessonService;
+    private final WayForPayModuleService wayForPayModuleService;
 
 
 
     @GetMapping
-    public String adminPage(Principal principal) {
+    public String adminPage(Principal principal, Model model) {
         if (principal != null) {
-//            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("wayForPaySettings", wayForPayModuleService.getWayForPayModule());
 
-//            model.addAttribute("user", user);
-
-            return "admin/adminMainPage";
+            return "admin/mainAdmin";
         }
         return "redirect:/login";
     }

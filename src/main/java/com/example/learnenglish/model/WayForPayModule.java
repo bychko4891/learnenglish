@@ -17,7 +17,7 @@ public class WayForPayModule {
 
     private String merchantAccount;
 
-    private String merchantSecretKEY;
+    private String merchantSecretKey;
 
     private boolean isActive = false;
 

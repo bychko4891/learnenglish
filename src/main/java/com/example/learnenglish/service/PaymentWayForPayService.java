@@ -27,7 +27,7 @@ public class PaymentWayForPayService {
     private String generateMerchantSignatureMD5(String data) {
         System.out.println(data);
         String algorithm = "HmacMD5";
-        String key = wayForPayModule.getMerchantSecretKEY();
+        String key = wayForPayModule.getMerchantSecretKey();
         return new HmacUtils(algorithm, key).hmacHex(data);
     }
 

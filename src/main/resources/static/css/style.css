@@ -1041,6 +1041,8 @@ td {
 .navigation_admin_page {
     border: 2px solid #4d5154;
     padding: 15px 10px;
+    height: 150px;
+    min-width: 200px;
 }
 
 /*  *********8   profile edit start   ********88      */
