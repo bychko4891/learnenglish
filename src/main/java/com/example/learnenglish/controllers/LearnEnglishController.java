@@ -51,7 +51,7 @@ public class LearnEnglishController {
                 model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
             }
             model.addAttribute("title", "Англійська за 16 годин - e-learn.top");
-            return "index";
+            return "main";
         }
     }
 

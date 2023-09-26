@@ -116,8 +116,13 @@ public class WordService {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isPresent()) {
             return wordOptional.get();
+        } else {
+            Word word = new Word();
+            word.setId(id);
+            word.setName("Enter name");
+            word.setInfo("Enter text");
+            return word;
         }
-        throw new RuntimeException("Error in method 'getWordToEditor' class 'WordService'");
     }
 
 

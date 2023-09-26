@@ -88,7 +88,7 @@
             <input type="hidden" name="currency" value="UAH">
 <!--            <input type="hidden" name="orderTimeout" value="49000">-->
             <input type="hidden" name="productName[]" id="productName">
-            <input type="text" name="productPrice[]">
+            <input type="text" name="productPrice[]" id="numeric-input">
             <input type="hidden" name="productCount[]" id="productCount">
 <!--            <input type="hidden" name="clientFirstName" value="Вася">-->
 <!--            <input type="hidden" name="clientLastName" value="Пупкин">-->
@@ -97,9 +97,11 @@
 <!--            <input type="hidden" name="clientEmail" value="some@mail.com">-->
 <!--            <input type="hidden" name="defaultPaymentSystem" value="card">-->
             <input type="hidden" name="merchantSignature" id="merchantSignature">
+            <div id="error-message" style="color: red;"></div>
             <button type="submit" id="payment-button">Pay</button>
           </form>
-          <h1 th:text="${message}"></h1>
+          <h1 th:if="${errorMessage != null}" th:text="${errorMessage}"></h1>
+          <h1 th:if="${successMessage != null}" th:text="${successMessage}"></h1>
 
 
 
@@ -154,6 +156,35 @@
         $("#preloader").hide();
       },
     });
+  });
+
+  // Встановлюємо обробник події для input
+
+
+  // Отримуємо посилання на input та повідомлення про помилку
+  var numericInput = document.getElementById("numeric-input");
+  var errorMessage = document.getElementById("error-message");
+
+  numericInput.addEventListener("input", function () {
+    // Видаляємо всі символи, які не є цифрами
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+
+  // Додаємо обробник події для input
+  numericInput.addEventListener("input", function () {
+    // Отримуємо введене значення і перетворюємо його в число
+    var value = parseInt(this.value);
+
+    // Перевіряємо, чи є значення менше 10
+    if (isNaN(value) || value < 10) {
+      // Показуємо повідомлення про помилку
+      errorMessage.textContent = "Значення повинно бути не менше 10";
+      this.classList.add("invalid");
+    } else {
+      // Приховуємо повідомлення про помилку
+      errorMessage.textContent = "";
+      this.classList.remove("invalid");
+    }
   });
 </script>
 </body>

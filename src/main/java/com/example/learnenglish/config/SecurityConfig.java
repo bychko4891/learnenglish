@@ -106,7 +106,7 @@ public class SecurityConfig {
             "/lessons",
             "/pay",
             "/start-pay*",
-            "/payment-success*",
+            "/payment-success**",
             "/api/pay-success/*"
     };
     public static final String LOGIN_URL = "/login";
@@ -151,12 +151,13 @@ public class SecurityConfig {
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     User user = (User) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getImageName());
+                                    session.setAttribute("userFirstName", user.getFirstName());
+                                    session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userDateOfCreated", user.getDateOfCreated());
                                     session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());
                                     session.setAttribute("userTextInLesson", user.isUserPhrasesInLesson());
-
-                                    response.sendRedirect(DEFAULT_SUCCESS_URL);
+                                    response.sendRedirect("/user/" + user.getId());
                                 })
                 )
 
