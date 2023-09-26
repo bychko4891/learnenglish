@@ -17,7 +17,6 @@ import static org.mockito.Mockito.*;
 
 class CustomUserDetailsServiceTest {
 
-    @Mock
     private UserRepository userRepositoryMock;
     @Mock
     private UserContextHolder userContextHolderMock;

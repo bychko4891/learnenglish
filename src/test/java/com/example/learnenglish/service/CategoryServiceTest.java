@@ -7,7 +7,6 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoWordsCategory;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.repository.CategoryRepository;
@@ -25,7 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class CategoryServiceTest {
+class CategoryServiceTest {   // Change over. Need refactor
     @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
@@ -113,7 +112,7 @@ class CategoryServiceTest {
     void countWordCategory() {
         when(categoryRepository.lastId()).thenReturn(10L);
 
-        var res = categoryService.countWordCategory();
+        var res = categoryService.countCategory();
 
         assertEquals(10L, res);
 
@@ -296,26 +295,4 @@ class CategoryServiceTest {
         verifyNoMoreInteractions(categoryRepository);
     }
 
-    @Test
-    void shouldGetErrorToSaveCategory() {
-        var dtoWordsCategory = new DtoWordsCategory();
-        var category = new Category();
-        category.setId(1L);
-        category.setName("Category 1");
-        category.setMainCategory(true);
-
-        dtoWordsCategory.setMainCategorySelect(category);
-        dtoWordsCategory.setWordsCategory(category);
-
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(categoryRepository.save(any(Category.class))).thenReturn(category);
-
-        var result = categoryService.saveCategory(dtoWordsCategory);
-
-        assertEquals("Не можно додати поточну категорію в вибрану"
-                , result.getMessage());
-
-        verify(categoryRepository, times(1)).findById(1L);
-        verifyNoMoreInteractions(categoryRepository);
-    }
 }

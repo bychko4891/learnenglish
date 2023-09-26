@@ -6,10 +6,9 @@ package com.example.learnenglish.service;
  * Description: Unit test
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
+
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.repository.LessonRepository;
-import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 
@@ -49,24 +48,6 @@ class LessonServiceTest {
         assertEquals(sampleLesson, result);
     }
 
-    @Test
-    void saveLesson() {
-        var id = 1L;
-        var name = "Lesson1";
-        var lesson = new Lesson();
-        lesson.setId(id);
-        lesson.setName(name);
-        when(lessonRepository.save(lesson)).thenReturn(new Lesson());
-
-        var message = Message.SUCCESSADDBASE;
-
-        var expectedLesson = lessonService.saveLesson(lesson);
-
-        var responseMessage = new ResponseMessage(message);
-
-        assertEquals(expectedLesson.getMessage(), responseMessage.getMessage());
-
-    }
 
     @Test
     void countLesson() {

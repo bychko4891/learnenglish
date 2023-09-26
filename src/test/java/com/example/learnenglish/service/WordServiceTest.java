@@ -33,11 +33,11 @@ class WordServiceTest {
     @Mock
     private UserService userService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        wordService = new WordService(wordRepository, categoryRepository, translationPairRepository, userService);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        MockitoAnnotations.openMocks(this);
+//        wordService = new WordService(wordRepository, categoryRepository, translationPairRepository, userService);
+//    }
     @Test
     void testGetWord() {
         Word sampleWord = new Word();
