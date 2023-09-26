@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -14,12 +14,13 @@ import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+// не Буде змінюватись
 @Service
 public class TranslationPairUserService {
     private final TranslationPairUserRepository translationPairUserRepository;
@@ -33,7 +34,7 @@ public class TranslationPairUserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) {
+    public CustomResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) {
         Optional<TranslationPairUser> optionalTranslationPairUser = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairsId, user.getId());
         if(optionalTranslationPairUser.isEmpty()){
         TranslationPair translationPair = translationPairRepository.findById(translationPairsId).get();
@@ -43,35 +44,35 @@ public class TranslationPairUserService {
         translationPairUser.setLesson(translationPair.getLesson());
         translationPairUser.setRepeatable(true);
         translationPairUserRepository.save(translationPairUser);
-        return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
-        } return new ResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+        return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+        } return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
 
     }
 
-    public ResponseMessage setRepetitionPhrase(Long translationPairId, Long userId, boolean isChecked) {
+    public CustomResponseMessage setRepetitionPhrase(Long translationPairId, Long userId, boolean isChecked) {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, userId);
         if (translationPairUserOptional.isPresent()) {
             TranslationPairUser translationPairUser = translationPairUserOptional.get();
             translationPairUser.setRepeatable(isChecked);
             translationPairUserRepository.save(translationPairUser);
-            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
-        } else return new ResponseMessage(Message.ERROR_SERVER);
+            return new CustomResponseMessage(Message.SUCCESS_CHECKBOX);
+        } else return new CustomResponseMessage(Message.ERROR_SERVER);
     }
 
-    public ResponseMessage userPhraseRemove(Long translationPairId, User user) {
+    public CustomResponseMessage userPhraseRemove(Long translationPairId, User user) {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, user.getId());
         TranslationPairUser translationPairUser = translationPairUserOptional.orElseThrow();
-        if (translationPairUser.getTranslationPair().getUser().getId() == user.getId()) {
+        if (translationPairUser.getTranslationPair().getUser().getId().equals(user.getId())) {
             List<TranslationPair> translationPairList = user.getTranslationPairs();
             translationPairList.removeIf(obj -> obj.getId().equals(translationPairId));
             user.setTranslationPairs(translationPairList);
             userRepository.save(user);
             translationPairUserRepository.delete(translationPairUserOptional.get());
             translationPairRepository.deleteById(translationPairId);
-            return new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
+            return new CustomResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
         }
         translationPairUserRepository.delete(translationPairUser);
-        return new ResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
+        return new CustomResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
     }
 
 }

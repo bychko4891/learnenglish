@@ -2,7 +2,6 @@ var slider = document.querySelector('.slider_word');
 var page = 1;
 var totalPage = 4;
 var currentIndex = 0;
-var currentIndexWord = 0;
 
 function updateSlider() {
     const slide = slider.firstElementChild;
@@ -19,17 +18,6 @@ function updateSlider() {
     if (currentSlide) {
         currentSlide.classList.remove('slide_active');
     }
-}
-
-function addEndSlide() {
-    const slide = document.createElement('div');
-    slide.className = 'slide bb';
-    slide.id = 'endSlide';
-    slider.appendChild(slide);
-    $('#endSlide').load("/fragmentsPages/endSlideSpelling", function () {
-    });
-    currentIndex++;
-    updateSlider();
 }
 
 
@@ -174,7 +162,7 @@ function confirm(element) {
     }
 
     $.ajax({
-        url: '/word/' + wordId + '/word-audit-confirm',
+        url: '/word-lesson/audit/' + wordId + '/word-confirm',
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(userWordLessonStatistic),
@@ -206,7 +194,7 @@ function nextSlide() {
     const slides = document.querySelector('.slider_word');
     var url = '/word-lesson/' + wordLessonId + '/word-audit-next';
     ++page;
-    if (page < totalPage) {
+    if (page <= totalPage) {
         $.ajax({
             url: url,
             type: "GET",
@@ -224,12 +212,175 @@ function nextSlide() {
             }
         });
     } else if (page === totalPage + 1) {
-        currentIndexWord = 0;
-        addEndSlide()
-        currentIndex = slides.children.length - 2;
-        updateSlider();
-    } else if (page === totalPage + 2) {
         currentIndex = slides.children.length - 1;
         updateSlider();
+    } else if (page === totalPage + 2) {
+        stopTimer();
+        addEndSlide();
     }
+}
+
+function addEndSlide() {
+
+    const clock = document.getElementById('timerDiv');
+    clock.style.visibility = 'hidden';
+    slider.innerHTML = '';
+    const slide = document.createElement('div');
+    slide.className = 'audit_result bb';
+    slider.appendChild(slide);
+    slider.style.transform = `translateX(0px)`;
+    slider.style.margin = `0px`;
+    $.ajax({
+        url: '/word-lesson/' + wordLessonId + '/audit-result',
+        type: 'GET',
+        success: function (result) {
+            $('.audit_result').load("/fragmentsPages/wordLessonAuditResult", function () {
+                console.log(result);
+                $('#audit-message').html(result.message);
+                $('#total-count').html(result.totalWords);
+                $('#error-count').html(result.dtoUserWordLessonStatisticErrorList.length);
+
+                var progressBar = document.querySelector('.progress-bar');
+                var progressText = document.querySelector('.progress-text');
+                var percent = result.rating;
+                progressBar.style.strokeDasharray = (2 * 3.1415 * 87) * (percent / 100) + ' 999';
+                progressText.textContent = percent + '%';
+                const container = document.getElementById('error-content');
+                const template = document.querySelector('.object-container');
+                result.dtoUserWordLessonStatisticErrorList.forEach(item => {
+                    const clone = template.cloneNode(true);
+                    clone.querySelector('.right-word').textContent = item.word;
+                    clone.querySelector('.user-answer').textContent = item.userAnswer;
+                    clone.querySelector('.word-info').innerHTML = item.wordInfo;
+
+                    container.appendChild(clone);
+                });
+                document.querySelector('.object-container:first-child').innerHTML = '';
+                const form = slide.querySelector("form");
+                form.action = '/word-lesson/' + result.wordLessonCategoryId + '/lessons';
+            });
+
+        },
+        error: function () {
+            let shel = {};
+            alert(Boolean(shel))
+        }
+    });
+
+}
+
+
+window.addEventListener('beforeunload', function (event) {
+    console.log('Stop timer!');
+    $.ajax({
+        url: '/stop-timer',
+        type: "GET"
+    });
+});
+
+function timerPosition() {
+    const pageHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+    );
+    const windowHeight = window.innerHeight;
+    const hasScrollbar = pageHeight > windowHeight;
+    const timerDiv = document.querySelector('#timerDiv');
+
+    const userAgent = navigator.userAgent;
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) && windowHeight > 776) {
+        if (hasScrollbar) {
+            timerDiv.style.paddingRight = '15px';
+            // console.log("YES!");
+        }
+        // else {
+        //     console.log("NO!");
+        // }
+    }
+}
+
+function startAudit() {
+    var minutes = parseFloat((totalPage / 3).toFixed(2));
+    startTimer(minutes);
+}
+
+let timeinterval; // Глобальна змінна для ідентифікатора таймера
+let remainingTime = 0; // Глобальна змінна для залишкового часу таймера
+let isTimerStopped = false; // Змінна, яка вказує, чи був таймер вручну зупинений
+
+function startTimer(minutes) {
+    timerPosition();
+    $.ajax({
+        url: '/start-timer',
+        type: "GET"
+    });
+
+    // Зупинити попередній таймер, якщо він був запущений
+    stopTimer();
+
+    // Обчислити кінцевий час для таймера
+    const deadline = new Date(Date.parse(new Date()) + minutes * 60 * 1000);
+
+    // Запустити таймер з обчисленим часом
+    initializeClock(deadline);
+
+    // Встановити таймаут, який викличе функцію onTimerEnd після закінчення таймера
+    setTimeout(function () {
+        if (!isTimerStopped) {
+            onTimerEnd();
+        }
+    }, minutes * 60 * 1000);
+}
+
+// Ваша функція initializeClock (залиште її без змін)
+function initializeClock(endtime) {
+    const clock = document.getElementById('timerDiv');
+    const minutesSpan = clock.querySelector('.minutes');
+    const secondsSpan = clock.querySelector('.seconds');
+
+    function updateClock() {
+        const t = getTimeRemaining(endtime);
+
+        minutesSpan.textContent = ('0' + t.minutes).slice(-2);
+        secondsSpan.textContent = ('0' + t.seconds).slice(-2);
+
+        remainingTime = t.total; // Оновлюємо залишковий час тут
+
+        if (t.total <= 0) {
+            clearInterval(timeinterval);
+        }
+    }
+
+    updateClock();
+    timeinterval = setInterval(updateClock, 1000);
+}
+
+// Ваша функція getTimeRemaining (залиште її без змін)
+function getTimeRemaining(endtime) {
+    const total = Date.parse(endtime) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+
+    return {
+        total,
+        minutes,
+        seconds
+    };
+}
+
+function stopTimer() {
+    clearInterval(timeinterval);
+    const clock = document.getElementById('timerDiv');
+    clock.querySelector('.minutes').textContent = '00';
+    clock.querySelector('.seconds').textContent = '00';
+    remainingTime = 0;
+    isTimerStopped = true;
+}
+
+function onTimerEnd() {
+    addEndSlide();
 }

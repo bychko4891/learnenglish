@@ -35,6 +35,9 @@ public class UserWordLessonStatistic {
     @Column
     private String userAnswer;
 
+    @Column
+    private Long wordLessonCategoryId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

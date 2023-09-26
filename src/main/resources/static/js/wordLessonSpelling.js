@@ -258,7 +258,7 @@ function confirm(element) {
         success: function (result) {
             nextSlide.classList.add('active');
             var status = result.status;
-            if (status == "Success") {
+            if (status === "Success") {
                 wordResultSuccess.innerHTML = result.info;
             } else {
                 wordResultError.innerHTML = result.info;

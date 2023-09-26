@@ -53,8 +53,6 @@ function saveChanges(button) {
         engText: inputs[2].value
     };
     var id = updatedData.id;
-    // var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-    // var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
     $.ajax({
         // url: $(this).attr('action'),
         url: '/translation-pair/check-edit',
@@ -110,13 +108,13 @@ function saveChanges(button) {
                     }
                 }
             } else {
-                showErrorToast("Помилка сервера");
+                showErrorToast('Помилка сервера');
             }
         }
     });
 }
 function confirmRemove(button) {
-    var confirmation = confirm("Ви впевнені, що хочете видалити цю фразу?");
+    var confirmation = confirm('Ви впевнені, що хочете видалити цю фразу?');
     if (confirmation) {
         deleteChanges(button);
     }
@@ -135,7 +133,7 @@ function deleteChanges(button) {
         },
         success: function (result) {
             var status = result.status;
-            if (status == "Success") {
+            if (status === 'Success') {
                 showSuccessToast(result.message);
                 setTimeout(function () {
                     location.reload();
@@ -150,12 +148,7 @@ function deleteChanges(button) {
 }
 
 
-function removeChanges(button) {
-    // Виконати код для видалення фрази зі списку
-}
 $('.toggle-switch').on('change', function() {
-    // var csrfToken = $("meta[name='_csrf']").attr("content");
-    // var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var isRepeatable = $(this).prop('checked');
     var translationPairsId = $(this).data('phrase-id');
     $.ajax({
@@ -168,7 +161,7 @@ $('.toggle-switch').on('change', function() {
         },
         success: function (result) {
             var status = result.status;
-            if (status == "Success") {
+            if (status === "Success") {
                 showSuccessToast(result.message);
             } else {
                 showErrorToast(result.message);

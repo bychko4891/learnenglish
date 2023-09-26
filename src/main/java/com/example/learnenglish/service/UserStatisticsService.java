@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+// Буде змінюватись
 @Aspect
 @Service
 @RequiredArgsConstructor
@@ -61,8 +61,8 @@ public class UserStatisticsService {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             UserStatistics userStatistics = userStatisticsOptional.get();
-            setUserRepetitionsCountNow(userStatistics); // визов метода
-            addTrainingDayInListMount(userStatistics);  // визов метода
+            setUserRepetitionsCountNow(userStatistics);
+            addTrainingDayInListMount(userStatistics);
             try {
                 userStatistics.setRepetitionsCount(userStatistics.getRepetitionsCount() + 1);
                 userStatistics.setTrainingTimeStartEnd(localDateTimeNow);

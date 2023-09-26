@@ -43,7 +43,7 @@ public class WordLesson implements Serializable {
     @OneToMany(mappedBy = "wordLesson")
     private List<Word> words;
 
-    @OneToOne(mappedBy = "wordLesson")
+    @Transient
     private UserWordLessonProgress userWordLessonProgress;
 
 

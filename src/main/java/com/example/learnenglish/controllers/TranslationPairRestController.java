@@ -10,7 +10,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
 import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
@@ -51,7 +51,7 @@ public class TranslationPairRestController {
             Object object = optional.get();
             if(object instanceof DtoTranslationPairToUI){
                 return ResponseEntity.ok((DtoTranslationPairToUI)object);
-            } else return ResponseEntity.ok((ResponseMessage)object);
+            } else return ResponseEntity.ok((CustomResponseMessage)object);
         }
         return ResponseEntity.notFound().build();
     }

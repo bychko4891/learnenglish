@@ -1,6 +1,6 @@
 package com.example.learnenglish.responsemessage;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -11,24 +11,24 @@ public enum Message {
 
     ERROR("Error"),
     SUCCESS("Success"),
-    SUCCESSADDBASE("Success","Операція пройшла успішно"),
-    ERRORBASE("Error","Щось трапилося з базою данних і операція збереження не може бути виконаною.\n" +
+    ADD_BASE_SUCCESS("Success","Операція пройшла успішно"),
+    BASE_ERROR("Error","Щось трапилося з базою данних і операція збереження не може бути виконаною.\n" +
             " Напишіть будь ласка про цю помилку адміністратору застосунка"),
     ERROR_DUPLICATE_TEXT("Error","Така фраза вже є у Вашій базі"),
-    ERRORVALIDATETEXT("Error","Щось пішло не так! Ви не пройшли валідацію текста"),
+    VALIDATE_TEXT_ERROR("Error","Щось пішло не так! Ви не пройшли валідацію текста"),
     ERRORNULLRELOAD("Error","Ви ще не завантажили жодного текста для навчання"),
-    ERRORLOGIN("Error", " Ви не авторизувались і не можете завантажувати текст"),
-    ERROR_UPDATEPASSWORD("Error", "Не вірний поточний пароль"),
-    SUCCESS_UPDATEPASSWORD("Success", "Ваш пароль успішно змінено"),
-    SUCCESS_CREATELESSON("Success", "Нове заняття створено"),
-    ERROR_CREATELESSON("Success", "Виникла помилка в створенні заняття"),
+    LOGIN_ERROR("Error", " Ви не авторизувались і не можете завантажувати текст"),
+    UPDATE_PASSWORD_ERROR("Error", "Не вірний поточний пароль"),
+    UPDATE_PASSWORD_SUCCESS("Success", "Ваш пароль успішно змінено"),
+    CREATE_LESSON_SUCCESS("Success", "Нове заняття створено"),
+    CREATE_LESSON_ERROR("Success", "Виникла помилка в створенні заняття"),
     SUCCESS_FORGOT_PASSWORD("Success", "Операція успішна! Слідуйте вказівкам в листі, яке надійшло на email."),
     ERROR_FORGOT_PASSWORD("Error", "Такий email не зареєстрований в додатку."),
     ERROR_CAPTCHA("Error", "Не вірно введена сумма двух чисел"),
     SUCCESS_SAVE_TEXT_OF_PAGE("Success", "Текст успішно збережено"),
     ERROR_SAVE_TEXT_OF_PAGE("Error", "На обраній сторінці текст вже існує"),
     SUCCESS_CHECKBOX("Success", "Параметр успішно застосовано"),
-    ERROR_SAVE_CATEGORY("Error", "Не можно додати поточну категорію в вибрану"),
+    SELF_ASSIGNMENT_CATEGORY_ERROR("Error", "Не можно додати поточну категорію в вибрану"),
     SUCCESS_SAVE_WORD_USER("Success", "Слово успішно збережено до Вашого списку"),
     SUCCESS_REMOVE_USER_PHRASE("Success", "Видалення успішне"),
     ERROR_SERVER("Error", "Помилка на сервері");

@@ -47,7 +47,7 @@ public class Category implements Serializable {
     @ElementCollection(targetClass = CategoryPage.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "category_page", joinColumns = @JoinColumn(name = "category_id"))
     @Enumerated(EnumType.STRING)
-    private Set<CategoryPage> categoryPages = new HashSet<>();
+    private List<CategoryPage> categoryPages = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")

@@ -1,14 +1,12 @@
 package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
+import com.example.learnenglish.dto.DtoUserWordLessonStatisticToUi;
 import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.responsemessage.ResponseMessage;
-import com.example.learnenglish.service.UserService;
-import com.example.learnenglish.service.UserWordLessonStatisticService;
-import com.example.learnenglish.service.WordLessonService;
-import com.example.learnenglish.service.WordService;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +26,8 @@ public class LearnEnglishRestController {
     private final UserService userService;
 
     private final UserWordLessonStatisticService userWordLessonStatisticService;
+
+    private final PaymentWayForPayService paymentWayForPayService;
 
 
 
@@ -81,9 +81,9 @@ public class LearnEnglishRestController {
     }
 
     @PostMapping("/{id}/word-confirm")
-    public ResponseEntity<ResponseMessage> wordConfirm(@PathVariable("id") Long wordId,
-                                                       @RequestParam(name = "wordConfirm") String word,
-                                                       Principal principal) {
+    public ResponseEntity<CustomResponseMessage> wordConfirm(@PathVariable("id") Long wordId,
+                                                             @RequestParam(name = "wordConfirm") String word,
+                                                             Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.confirmWord(word, wordId));
         }
@@ -160,7 +160,7 @@ public class LearnEnglishRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/word/{id}/word-audit-confirm")
+    @PostMapping("/word-lesson/audit/{id}/word-confirm")
     public ResponseEntity<String> wordAuditConfirm(@PathVariable("id") Long wordId,
                                                    @RequestBody DtoUserWordLessonStatistic userWordLessonStatistic,
                                                    Principal principal) {
@@ -169,6 +169,17 @@ public class LearnEnglishRestController {
             userWordLessonStatistic.setUser(user);
             userWordLessonStatisticService.saveUserWordLessonStatistic(userWordLessonStatistic);
             return ResponseEntity.ok("wordConfirm");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/word-lesson/{id}/audit-result")
+    public ResponseEntity<DtoUserWordLessonStatisticToUi> wordAuditResult(@PathVariable("id") Long wordLessonId,
+
+                                                                          Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(userWordLessonStatisticService.resultWordLessonAudit(user, wordLessonId));
         }
         return ResponseEntity.notFound().build();
     }

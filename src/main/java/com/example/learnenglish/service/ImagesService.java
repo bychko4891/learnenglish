@@ -13,7 +13,7 @@ import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.ImagesRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
-
+// Буде змінюватись
 @Service
 public class ImagesService {
     private final Path fileStorageLocation;
@@ -155,7 +155,7 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
-    public ResponseMessage saveWordImage(MultipartFile file, Long wordId, String contentType) {
+    public CustomResponseMessage saveWordImage(MultipartFile file, Long wordId, String contentType) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {
@@ -170,14 +170,14 @@ public class ImagesService {
             Image image = imagesRepository.findById(imageId).get();
             image.setImageName(resultFilename);
             imagesRepository.save(image);
-            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+            return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 //            System.out.println(ex.getMessage());
         }
     }
 
-    public ResponseMessage saveCategoryImage(MultipartFile file, Long categoryId, String contentType) {
+    public CustomResponseMessage saveCategoryImage(MultipartFile file, Long categoryId, String contentType) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {
@@ -192,7 +192,7 @@ public class ImagesService {
             Image image = imagesRepository.findById(imageId).get();
             image.setImageName(resultFilename);
             imagesRepository.save(image);
-            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+            return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
@@ -213,6 +213,7 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
+
     public Resource loadWordImages(String fileName) {
         try {
             Path filePath = this.storageLocationWordImage.resolve(fileName).normalize();
@@ -226,6 +227,7 @@ public class ImagesService {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
     }
+
     public Resource loadCategoryImages(String fileName) {
         try {
             Path filePath = this.storageLocationCategoryImage.resolve(fileName).normalize();

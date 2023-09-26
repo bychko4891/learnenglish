@@ -9,14 +9,13 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -36,9 +35,9 @@ public class UserRestController {
     private final HttpSession session;
 
     @PostMapping("/user/{id}/user-text-check")
-    public ResponseEntity<ResponseMessage> mytext(@PathVariable("id") Long userId,
-                                                  @RequestParam("userActive") boolean isChecked,
-                                                  Principal principal) {
+    public ResponseEntity<CustomResponseMessage> mytext(@PathVariable("id") Long userId,
+                                                        @RequestParam("userActive") boolean isChecked,
+                                                        Principal principal) {
         if (principal != null) {
             session.setAttribute("userTextInLesson", isChecked);
             return ResponseEntity.ok(userService.setUserTextInLesson(userId, isChecked));
@@ -63,12 +62,12 @@ public class UserRestController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<ResponseMessage> forgotPassword(@RequestParam("email") String email,
-                                                          @RequestParam("captcha") int captchaSum) {
+    public ResponseEntity<CustomResponseMessage> forgotPassword(@RequestParam("email") String email,
+                                                                @RequestParam("captcha") int captchaSum) {
         int captchaSumSession = (int) session.getAttribute("captchaSum");
         if (captchaSum == captchaSumSession) {
             return ResponseEntity.ok(userService.generatePassword(email));
-        } else return ResponseEntity.ok(new ResponseMessage(Message.ERROR_CAPTCHA));
+        } else return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_CAPTCHA));
     }
 
     @PostMapping("/user/{userId}/edit")
@@ -92,10 +91,10 @@ public class UserRestController {
 
     @PostMapping("/user/{userId}/update-password")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseMessage> setUserPassword(@PathVariable("userId") Long userId,
-                                                           @RequestParam(value = "password") String oldPassword,
-                                                           @RequestParam(value = "newPassword") String newPassword,
-                                                           Principal principal) {
+    public ResponseEntity<CustomResponseMessage> setUserPassword(@PathVariable("userId") Long userId,
+                                                                 @RequestParam(value = "password") String oldPassword,
+                                                                 @RequestParam(value = "newPassword") String newPassword,
+                                                                 Principal principal) {
         if (principal != null) {
 //            userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(userService.updateUserPassword(userId, oldPassword, newPassword));
@@ -104,8 +103,8 @@ public class UserRestController {
     }
 
     @PostMapping("/user-profile/delete")
-    public ResponseEntity<ResponseMessage> userProfileRemove(@RequestParam("password") String userPassword,
-                                                             Principal principal) {
+    public ResponseEntity<CustomResponseMessage> userProfileRemove(@RequestParam("password") String userPassword,
+                                                                   Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
             return ResponseEntity.ok(userService.userProfileDelete(user, userPassword));
@@ -120,18 +119,27 @@ public class UserRestController {
     }
 
     @PostMapping("/user/word-plus")
-    public ResponseEntity<ResponseMessage> wordUserPlus(@RequestParam("wordId") Long wordId,
-                                                        Principal principal) {
+    public ResponseEntity<CustomResponseMessage> wordUserPlus(@RequestParam("wordId") Long wordId,
+                                                              Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
             return ResponseEntity.ok(wordUserService.userWordPlus(user, wordId));
         }
         return ResponseEntity.notFound().build();
     }
+    @PostMapping("/user-word/remove")
+    public ResponseEntity<CustomResponseMessage> userWordRemove(@RequestParam("wordId") Long wordId,
+                                                                Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            return ResponseEntity.ok(wordUserService.userWordRemove(wordId, user));
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/user/phrase-plus")
-    public ResponseEntity<ResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
-                                                          Principal principal) {
+    public ResponseEntity<CustomResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
+                                                                Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
 
@@ -141,9 +149,9 @@ public class UserRestController {
     }
 
     @PostMapping("/phrase/repetition-phrase-check")
-    public ResponseEntity<ResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
-                                                              @RequestParam("translationPairsId") Long id,
-                                                              Principal principal) {
+    public ResponseEntity<CustomResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
+                                                                    @RequestParam("translationPairsId") Long id,
+                                                                    Principal principal) {
         if (principal != null) {
             Long userId = userService.findByEmail(principal.getName()).getId();
             return ResponseEntity.ok(translationPairUserService.setRepetitionPhrase(id, userId, isChecked));
@@ -151,9 +159,20 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/word/repetition-word-check")
+    public ResponseEntity<CustomResponseMessage> isRepetitionWord(@RequestParam("isRepeatable") boolean isChecked,
+                                                                  @RequestParam("wordId") Long id,
+                                                                  Principal principal) {
+        if (principal != null) {
+            Long userId = userService.findByEmail(principal.getName()).getId();
+            return ResponseEntity.ok(wordUserService.setRepetitionWord(id, userId, isChecked));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/user-phrase/remove")
-    public ResponseEntity<ResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
-                                                            Principal principal) {
+    public ResponseEntity<CustomResponseMessage> userPhraseRemove(@RequestParam("phraseId") Long translationPairId,
+                                                                  Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
             return ResponseEntity.ok(translationPairUserService.userPhraseRemove(translationPairId, user));

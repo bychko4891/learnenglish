@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/**
+/*
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -12,7 +12,7 @@ import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.TextOfAppPageRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class TextOfAppPageService {
     private final TextOfAppPageRepository textOfAppPageRepository;
     private final PageApplicationService pageApplicationService;
 
-    public ResponseMessage textOfAppPageEdit(DtoTextOfAppPage dtoTextOfAppPage) {
+    public CustomResponseMessage textOfAppPageEdit(DtoTextOfAppPage dtoTextOfAppPage) {
         Optional<TextOfAppPage> textOfAppPageOptional = textOfAppPageRepository.findById(dtoTextOfAppPage.getTextOfAppPage().getId());
         TextOfAppPage textOfAppPage = dtoTextOfAppPage.getTextOfAppPage();
         if (textOfAppPageOptional.isPresent()) {
@@ -37,7 +37,7 @@ public class TextOfAppPageService {
                     textOfAppPageBase.getPageApplication().setAddress(dtoTextOfAppPage.getSelectedPageApplication().getAddress());
                 }
                 textOfAppPageRepository.save(textOfAppPageBase);
-                return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+                return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
             } else {
                 PageApplication pageApplication = pageApplicationService.getPageApplication(dtoTextOfAppPage.getSelectedPageApplication().getId());
                 if(searchTextOfAppPageByPageApplicationId(pageApplication.getId()).isEmpty() ||
@@ -47,15 +47,15 @@ public class TextOfAppPageService {
                     }
                     textOfAppPageBase.setPageApplication(pageApplication);
                     textOfAppPageRepository.save(textOfAppPageBase);
-                    return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+                    return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
                 }else{
-                    return new ResponseMessage(Message.ERROR_SAVE_TEXT_OF_PAGE);
+                    return new CustomResponseMessage(Message.ERROR_SAVE_TEXT_OF_PAGE);
                 }
             }
         } else return saveNewTextOfAppPage(dtoTextOfAppPage);
     }
 
-    private ResponseMessage saveNewTextOfAppPage(DtoTextOfAppPage dtoTextOfAppPage){
+    private CustomResponseMessage saveNewTextOfAppPage(DtoTextOfAppPage dtoTextOfAppPage){
         TextOfAppPage textOfAppPage = new TextOfAppPage();
         textOfAppPage.setName(dtoTextOfAppPage.getTextOfAppPage().getName());
         textOfAppPage.setText(dtoTextOfAppPage.getTextOfAppPage().getText());
@@ -65,13 +65,13 @@ public class TextOfAppPageService {
                 pageApplication.setAddress(dtoTextOfAppPage.getSelectedPageApplication().getAddress());
                 textOfAppPage.setPageApplication(pageApplication);
                 textOfAppPageRepository.save(textOfAppPage);
-                return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+                return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
             } else {
-                return new ResponseMessage(Message.ERROR_SAVE_TEXT_OF_PAGE);
+                return new CustomResponseMessage(Message.ERROR_SAVE_TEXT_OF_PAGE);
             }
         } else {
             textOfAppPageRepository.save(textOfAppPage);
-            return new ResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
+            return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
         }
     }
 
@@ -80,7 +80,6 @@ public class TextOfAppPageService {
     }
 
     public List<TextOfAppPage> getAppTextPageList() {
-//        List<AppInfoText> appInfoTextList = appInfoRepository.findById(1l).get().getAppInfoTextPage();
         return (List<TextOfAppPage>) textOfAppPageRepository.findAll();
     }
 

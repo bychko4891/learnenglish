@@ -23,13 +23,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
         // securedEnabled = true,
-        // jsr250Enabled = true,
+//         jsr250Enabled = true,
         prePostEnabled = true)
 @ComponentScan(basePackages = "com.example.learnenglish")
 public class SecurityConfig {
@@ -101,7 +104,10 @@ public class SecurityConfig {
             "/word/training",
             "/category-image/**",
             "/lessons",
-            "/start-timer"
+            "/pay",
+            "/start-pay*",
+            "/payment-success**",
+            "/api/pay-success/*"
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
@@ -112,29 +118,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse
-        //        http.csrf().disable();
-        http.authorizeRequests(request ->
-                                request.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                                        .anyRequest()
-                                        .authenticated()
-                                        .and()
-                                        .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
-
-//                                .antMatchers("/api/test/**").addFilterBefore(customRequestLoggingFilter.getFilter(), BasicAuthenticationFilter.class)
+        http.csrf((csrf) -> csrf
+                        .ignoringRequestMatchers("/api/pay-success/*")
                 )
 
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                                .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+                                .anyRequest().authenticated()
+                )
+
+                .addFilterBefore(customRequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
+
                 .sessionManagement(session -> session
-//                                .sessionFixation((sessionFixation) -> sessionFixation
-//                                        .newSession()
-//                                )
 //                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
                                 .maximumSessions(1)
                                 .sessionRegistry(sessionRegistry()) // Додайте цей рядок
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
-//                              .maxSessionsPreventsLogin(true)
                 )
+
+
+
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)
                                 .loginProcessingUrl(LOGIN_URL)
@@ -144,7 +148,6 @@ public class SecurityConfig {
 //                                .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                                 .successHandler((request, response, authentication) -> {
                                     HttpSession session = request.getSession();
-                                    session.setAttribute("username", authentication.getName());
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     User user = (User) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getImageName());
@@ -154,10 +157,10 @@ public class SecurityConfig {
                                     session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());
                                     session.setAttribute("userTextInLesson", user.isUserPhrasesInLesson());
-
-                                    response.sendRedirect(DEFAULT_SUCCESS_URL);
+                                    response.sendRedirect("/user/" + user.getId());
                                 })
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)

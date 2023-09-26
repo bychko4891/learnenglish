@@ -42,17 +42,16 @@ public class AdminController {
     private final TranslationPairPageService translationPairPageService;
     private final ImagesService imagesService;
     private final WordLessonService wordLessonService;
+    private final WayForPayModuleService wayForPayModuleService;
 
 
 
     @GetMapping
-    public String adminPage(Principal principal) {
+    public String adminPage(Principal principal, Model model) {
         if (principal != null) {
-//            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("wayForPaySettings", wayForPayModuleService.getWayForPayModule());
 
-//            model.addAttribute("user", user);
-
-            return "admin/adminMainPage";
+            return "admin/mainAdmin";
         }
         return "redirect:/login";
     }
@@ -228,34 +227,16 @@ public class AdminController {
     public String wordsCategoryNewCategory(Principal principal) {
         if (principal != null) {
             Long count = 0l;
-            try{
-                count = categoryService.countWordCategory() + 1;
-            }catch(NullPointerException e){
-                count = 1l;
-                return "redirect:/admin-page/" + count + "/category-edit";
+            try {
+                count = categoryService.countCategory() + 1;
+            } catch(NullPointerException e){
+                return "redirect:/admin-page/1/category-edit";
             }
             return "redirect:/admin-page/" + count + "/category-edit";
         }
         return "redirect:/login";
     }
 
-//    @GetMapping("/{id}/category-create")
-//    public String wordsCategoryCreate(@PathVariable("id") Long id, Model model, Principal principal) {
-//        if (principal != null) {
-//            List<Category> mainCategories = categoryService.mainCategoryList(true);
-//            model.addAttribute("parentCategory", "Відсутня");
-//            if (mainCategories != null) {
-//                model.addAttribute("mainCategories", mainCategories);
-//            }
-//            Category category = new Category();
-//            category.setId(id);
-//            category.setName("Enter name category");
-//            category.setInfo("Enter info");
-//            model.addAttribute("category", category);
-//            return "admin/categoryEdit";
-//        }
-//        return "redirect:/login";
-//    }
 
     @GetMapping("/{id}/category-edit")
     public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
@@ -302,31 +283,10 @@ public class AdminController {
         if (principal != null) {
             try {
                 Long count = wordService.countWords() + 1;
-                return "redirect:/admin-page/word/" + count + "/new-word-in-editor";
+                return "redirect:/admin-page/words/" + count + "/word-edit";
             }catch (NullPointerException e){
-                return "redirect:/admin-page/word/1/new-word-in-editor";
+                return "redirect:/admin-page/words/1/word-edit";
             }
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/word/{id}/new-word-in-editor")
-    public String newWord(@PathVariable("id") Long id,
-                          Model model,
-                          Principal principal) {
-        if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
-            if (mainWordsCategories != null) {
-                model.addAttribute("mainWordsCategories", mainWordsCategories);
-            }
-            Word word = new Word();
-            word.setId(id);
-            word.setName("Enter name");
-            word.setInfo("Enter text");
-            model.addAttribute("word", word);
-            model.addAttribute("category", "Відсутня");
-
-            return "admin/wordEdit";
         }
         return "redirect:/login";
     }

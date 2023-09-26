@@ -1041,6 +1041,13 @@ td {
 .navigation_admin_page {
     border: 2px solid #4d5154;
     padding: 15px 10px;
+    height: 150px;
+    /*width: 200px;*/
+    margin: 5px;
+}
+
+.navigation-block {
+    flex-direction: row;
 }
 
 /*  *********8   profile edit start   ********88      */
@@ -1531,8 +1538,49 @@ td {
     margin: 20px;
 }
 
-/*.slider_block {*/
-/*    max-width: 100%;*/
-/*    height: fit-content;*/
-/*    margin-top: 20px;*/
-/*}*/
+.numerations-active {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 5px;
+    color: #f7f7f7;
+    background-color: #7b61ff;
+}
+
+.numerations {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 5px;
+    color: #f7f7f7;
+    background-color: #545454;
+}
+
+.rating-lesson {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+
+}
+.rating-lesson img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+}
+.rating-lesson span{
+    z-index: 2;
+}
+
+.adm-menu {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}

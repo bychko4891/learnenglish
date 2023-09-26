@@ -10,7 +10,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,7 @@ public class UserService {
         return userRepository.findByEmail(email).get();
     }
 
-    public User findById(long id) {
+    public User getUserById(long id) {
         return userRepository.findById(id).get();
     }
 
@@ -101,7 +101,7 @@ public class UserService {
 //        userRepository.save(user);
     }
 
-    public ResponseMessage updateUserPassword(Long userId, String oldPassword, String newPassword) {
+    public CustomResponseMessage updateUserPassword(Long userId, String oldPassword, String newPassword) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -109,8 +109,8 @@ public class UserService {
             if (passwordEncoder.matches(oldPassword, encodedPassword)) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
-                return new ResponseMessage(Message.SUCCESS_UPDATEPASSWORD);
-            } else return new ResponseMessage(Message.ERROR_UPDATEPASSWORD);
+                return new CustomResponseMessage(Message.UPDATE_PASSWORD_SUCCESS);
+            } else return new CustomResponseMessage(Message.UPDATE_PASSWORD_ERROR);
         } else {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
@@ -118,13 +118,13 @@ public class UserService {
     }
 
 
-    public ResponseMessage userProfileDelete(User user, String userPassword) {
+    public CustomResponseMessage userProfileDelete(User user, String userPassword) {
             String encodedPassword = user.getPassword();
             if (passwordEncoder.matches(userPassword, encodedPassword)) {
                 userRepository.delete(user);
                 logoutUser(request);
-                return new ResponseMessage(Message.SUCCESS_UPDATEPASSWORD);
-            } else return new ResponseMessage(Message.ERROR_UPDATEPASSWORD);
+                return new CustomResponseMessage(Message.UPDATE_PASSWORD_SUCCESS);
+            } else return new CustomResponseMessage(Message.UPDATE_PASSWORD_ERROR);
 
 
     }
@@ -166,7 +166,7 @@ public class UserService {
 
     }
 
-    public ResponseMessage generatePassword(String email) {
+    public CustomResponseMessage generatePassword(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             String rawPassword = generateRandomPassword();
@@ -176,9 +176,9 @@ public class UserService {
             String mailText = String.format("Hello, %s \n" + "New password: %s \n" + "to enter the application cabinet %s/login ",
                     user.getFirstName(), rawPassword, host);
             mailSender.sendSimpleMessage(user.getEmail(), "New password fo login", mailText);
-            return new ResponseMessage(Message.SUCCESS_FORGOT_PASSWORD);
+            return new CustomResponseMessage(Message.SUCCESS_FORGOT_PASSWORD);
         } else
-            return new ResponseMessage(Message.ERROR_FORGOT_PASSWORD);
+            return new CustomResponseMessage(Message.ERROR_FORGOT_PASSWORD);
     }
 
 
@@ -201,17 +201,14 @@ public class UserService {
         return true;
     }
 
-    public ResponseMessage setUserTextInLesson(Long userId, boolean isChecked) {
+    public CustomResponseMessage setUserTextInLesson(Long userId, boolean isChecked) {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             user.setUserPhrasesInLesson(isChecked);
             userRepository.save(user);
-            return new ResponseMessage(Message.SUCCESS_CHECKBOX);
+            return new CustomResponseMessage(Message.SUCCESS_CHECKBOX);
         }else throw new IllegalArgumentException("User with id " + userId + " not found");
     }
 
-    public void deletePreviousUserSession(String userEmail){
-
-    }
 }

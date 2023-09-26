@@ -51,7 +51,7 @@ public class LearnEnglishController {
                 model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
             }
             model.addAttribute("title", "Англійська за 16 годин - e-learn.top");
-            return "index";
+            return "main";
         }
     }
 
@@ -187,7 +187,8 @@ public class LearnEnglishController {
     }
 
     @GetMapping("/word-lessons/categories")
-    public String wordLessonsCategories(Model model, Principal principal) {
+    public String wordLessonsCategories(Model model,
+                                        Principal principal) {
         if(principal != null) {
             List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
             model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
@@ -196,19 +197,20 @@ public class LearnEnglishController {
     }
 
     @GetMapping("/word-lesson/{id}/lessons")
-    public String wordLessons(@PathVariable("id")Long categoryId, Model model, Principal principal) {
+    public String wordLessons(@PathVariable("id")Long categoryId,
+                              Model model,
+                              Principal principal) {
         if(principal != null) {
             User user = userService.findByEmail(principal.getName());
             Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
-            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(categoryId);
-            int summWords = 0;
+            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(user, categoryId);
+            int sumWords = 0;
             for (WordLesson arr: wordLessonCategory.getWordLessons()) {
-                summWords += arr.getWords().size();
+                sumWords += arr.getWords().size();
             }
             model.addAttribute("wordLessonCategory", wordLessonCategory);
             model.addAttribute("wordLessons", wordLessons);
-            model.addAttribute("words", summWords);
-            model.addAttribute("lessons", user.getWordLessonProgress());
+            model.addAttribute("words", sumWords);
         return "wordLessons";
         } return "redirect:/login";
     }
@@ -218,16 +220,14 @@ public class LearnEnglishController {
                              Model model,
                              Principal principal) {
         if(principal != null) {
-            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
-
-            if (wordsFromLesson.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
-            }
-            model.addAttribute("words", wordsFromLesson.getContent());
+//            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
+//            if (wordsFromLesson.getTotalPages() == 0) {
+//                model.addAttribute("totalPages", 1);
+//            } else {
+//                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
+//            }
+//            model.addAttribute("words", wordsFromLesson.getContent());
             model.addAttribute("wordLessonId", wordLessonId);
-
         return "wordLesson";
         } return "redirect:/login";
     }

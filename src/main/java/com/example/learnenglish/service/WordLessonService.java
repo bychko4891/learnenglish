@@ -3,12 +3,14 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.dto.DtoWordLesson;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Word;
+import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.WordLesson;
+import com.example.learnenglish.model.users.UserWordLessonProgress;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.WordLessonRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
+// Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class WordLessonService {
@@ -51,7 +53,7 @@ public class WordLessonService {
 
     }
 
-    public ResponseMessage saveWordLesson(DtoWordLesson dtoWordLesson) {
+    public CustomResponseMessage saveWordLesson(DtoWordLesson dtoWordLesson) {
         Optional<WordLesson> wordLessonOptional = wordLessonRepository.findById(dtoWordLesson.getWordLesson().getId());
         Long categoryId = dtoWordLesson.getSubSubcategorySelect().getId() != 0 ? dtoWordLesson.getSubSubcategorySelect().getId() :
                 dtoWordLesson.getSubcategorySelect().getId() != 0 ? dtoWordLesson.getSubcategorySelect().getId() :
@@ -69,7 +71,7 @@ public class WordLessonService {
                     Word word = iterator.next();
                     boolean containsId = false;
                     for (Word arr : dtoWords) {
-                        if (word.getId() == arr.getId()) {
+                        if (word.getId().equals(arr.getId())) {
                             containsId = true;
                             break;
                         }
@@ -95,12 +97,12 @@ public class WordLessonService {
                 wordLesson.setCategory(categoryRepository.findById(categoryId).get());
             }
             wordLessonRepository.save(wordLesson);
-            return new ResponseMessage(Message.SUCCESSADDBASE);
+            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         } else return saveNewWordLesson(dtoWordLesson, categoryId);
 
     }
 
-    private ResponseMessage saveNewWordLesson(DtoWordLesson dtoWordLesson, Long categoryId) {
+    private CustomResponseMessage saveNewWordLesson(DtoWordLesson dtoWordLesson, Long categoryId) {
         WordLesson wordLesson = new WordLesson();
         wordLesson.setName(dtoWordLesson.getWordLesson().getName());
         wordLesson.setDescription(dtoWordLesson.getWordLesson().getDescription());
@@ -120,11 +122,22 @@ public class WordLessonService {
             wordLesson.setSerialNumber(1000);
         }
         wordLessonRepository.save(wordLesson);
-        return new ResponseMessage(Message.SUCCESSADDBASE);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
-    public List<WordLesson> getWordLessonsCategory(Long categoryId) {
-        return wordLessonRepository.wordLessonsCategory(categoryId);
+    public List<WordLesson> getWordLessonsCategory(User user, Long categoryId) {
+        List<WordLesson> wordLessonList = wordLessonRepository.findAllByCategoryIdOrderBySerialNumber(categoryId);
+        List<UserWordLessonProgress> userWordLessonProgressList = user.getWordLessonProgress();
+        if (userWordLessonProgressList.size() != 0) {
+            for (WordLesson wordLesson : wordLessonList) {
+                for (UserWordLessonProgress arrP : userWordLessonProgressList) {
+                    if (wordLesson.getId().equals(arrP.getWordLesson().getId())) {
+                        wordLesson.setUserWordLessonProgress(arrP);
+                    }
+                }
+            }
+        }
+        return wordLessonList;
     }
 
     public List<Long> wordsIdInWordLesson(Long wordLessonId) {

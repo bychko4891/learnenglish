@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+// не Буде змінюватись
 @Service
 public class PageApplicationService {
     private final PageApplicationRepository pageApplicationRepository;

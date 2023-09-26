@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<style>
+  .load {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*change these sizes to fit into your project*/
+    width: 100px;
+    height: 100px;
+  }
+  .load hr {
+    border: 0;
+    margin: 0;
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 1;
+    animation: spin 2s ease infinite;
+  }
+
+  .load :first-child {
+    background: #19a68c;
+    animation-delay: -1.5s;
+  }
+  .load :nth-child(2) {
+    background: #f63d3a;
+    animation-delay: -1s;
+  }
+  .load :nth-child(3) {
+    background: #fda543;
+    animation-delay: -0.5s;
+  }
+  .load :last-child {
+    background: #193b48;
+  }
+
+  @keyframes spin {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+    25% {
+      transform: translate(160%);
+    }
+    50% {
+      transform: translate(160%, 160%);
+    }
+    75% {
+      transform: translate(0, 160%);
+    }
+  }
+</style>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div id="preloader" class="load" role="status" style="display:none;">
+  <hr/><hr/><hr/><hr/>
+</div>
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page">
+      <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="/forgot-password">Відновлення пароля</a></li>
+          <!--                    <li class="breadcrumb-item active" aria-current="page">Current Page</li>-->
+        </ol>
+      </nav>
+      <div class="row">
+        <div class="col-md-11 forgot-password-page">
+
+
+          <h3>Донат</h3><br>
+
+          <form id="wayforpayForm" method="post" action="https://secure.wayforpay.com/pay" accept-charset="utf-8">
+            <input type="hidden" name="merchantAccount" id="merchantAccount">
+<!--            <input type="hidden" name="merchantAuthType" value="SimpleSignature">-->
+<!--            <input type="hidden" name="merchantDomainName" id="merchantDomainName" value="www.e-learn.top">-->
+            <input type="hidden" name="merchantDomainName" id="merchantDomainName">
+            <input type="hidden" name="returnUrl" id="returnUrl">
+            <input type="hidden" name="orderReference" id="orderReference">
+            <input type="hidden" name="orderDate" id="orderDate">
+            <input type="hidden" name="amount" id="amount">
+            <input type="hidden" name="currency" value="UAH">
+<!--            <input type="hidden" name="orderTimeout" value="49000">-->
+            <input type="hidden" name="productName[]" id="productName">
+            <input type="text" name="productPrice[]" id="numeric-input">
+            <input type="hidden" name="productCount[]" id="productCount">
+<!--            <input type="hidden" name="clientFirstName" value="Вася">-->
+<!--            <input type="hidden" name="clientLastName" value="Пупкин">-->
+<!--            <input type="hidden" name="clientAddress" value="пр. Гагарина, 12">-->
+<!--            <input type="hidden" name="clientCity" value="Днепропетровск">-->
+<!--            <input type="hidden" name="clientEmail" value="some@mail.com">-->
+<!--            <input type="hidden" name="defaultPaymentSystem" value="card">-->
+            <input type="hidden" name="merchantSignature" id="merchantSignature">
+            <div id="error-message" style="color: red;"></div>
+            <button type="submit" id="payment-button">Pay</button>
+          </form>
+          <h1 th:if="${errorMessage != null}" th:text="${errorMessage}"></h1>
+          <h1 th:if="${successMessage != null}" th:text="${successMessage}"></h1>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<!--<script type="text/javascript" th:src="@{/js/forgotPassword.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>-->
+<script>
+  $("#payment-button").click(function (event) {
+    event.preventDefault();
+    $("#preloader").show();
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+    var productPrice = $('#wayforpayForm input[name="productPrice[]"]').val();
+
+    var payment = {
+      productPrice: productPrice
+    };
+    $.ajax({
+      type: "POST",
+      url: "/start-payment",
+      contentType: "application/json",
+      data: JSON.stringify(payment),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+      },
+      encode: true,
+      success: function (result) {
+        console.log(result);
+        $("#merchantAccount").val(result.merchantAccount);
+        $("#merchantDomainName").val(result.merchantDomainName);
+        $("#returnUrl").val(result.returnUrl);
+        $("#orderReference").val(result.orderReference);
+        $("#orderDate").val(result.orderDate);
+        $("#amount").val(result.amount);
+        $("#productName").val(result.productName);
+        $("#productCount").val(result.productCount);
+        $("#merchantSignature").val(result.merchantSignature);
+
+        // $("#preloader").hide();
+
+        $("#wayforpayForm").submit();
+      },
+      error: function () {
+        $("#preloader").hide();
+      },
+    });
+  });
+
+  // Встановлюємо обробник події для input
+
+
+  // Отримуємо посилання на input та повідомлення про помилку
+  var numericInput = document.getElementById("numeric-input");
+  var errorMessage = document.getElementById("error-message");
+
+  numericInput.addEventListener("input", function () {
+    // Видаляємо всі символи, які не є цифрами
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+
+  // Додаємо обробник події для input
+  numericInput.addEventListener("input", function () {
+    // Отримуємо введене значення і перетворюємо його в число
+    var value = parseInt(this.value);
+
+    // Перевіряємо, чи є значення менше 10
+    if (isNaN(value) || value < 10) {
+      // Показуємо повідомлення про помилку
+      errorMessage.textContent = "Значення повинно бути не менше 10";
+      this.classList.add("invalid");
+    } else {
+      // Приховуємо повідомлення про помилку
+      errorMessage.textContent = "";
+      this.classList.remove("invalid");
+    }
+  });
+</script>
+</body>
+</html>

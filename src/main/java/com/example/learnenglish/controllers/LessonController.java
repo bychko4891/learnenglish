@@ -12,7 +12,7 @@ import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
 import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
 import com.example.learnenglish.service.UserService;
@@ -100,7 +100,7 @@ public class LessonController {
             System.out.println(roleUser);
             return ResponseEntity.ok(validationTranslationPair.saveTranslationPair(dtoTranslationPair, roleUser));
         }
-        return ResponseEntity.ok(new ResponseMessage(Message.ERRORLOGIN));
+        return ResponseEntity.ok(new CustomResponseMessage(Message.LOGIN_ERROR));
     }
 
 }

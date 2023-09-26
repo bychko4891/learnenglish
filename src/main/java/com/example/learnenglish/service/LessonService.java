@@ -10,14 +10,14 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.repository.LessonRepository;
 import com.example.learnenglish.responsemessage.Message;
-import com.example.learnenglish.responsemessage.ResponseMessage;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+// Не Буде змінюватись
 @Service
 public class LessonService {
     private final LessonRepository lessonRepository;
@@ -36,21 +36,21 @@ public class LessonService {
         return lessonRepository.findAll(pageable);
     }
 
-    public ResponseMessage saveLesson(Lesson lesson) {
+    public CustomResponseMessage saveLesson(Lesson lesson) {
         if (lesson.getId() != null) {
             Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
             if (!lessonOptional.isPresent()) {
                 lessonSave(lesson);
-                return new ResponseMessage(Message.SUCCESSADDBASE);
+                return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
             } else {
                 Lesson lessonFromBase = lessonOptional.get();
                 lessonFromBase.setName(lesson.getName());
                 lessonFromBase.setLessonInfo(lesson.getLessonInfo());
                 lessonRepository.save(lessonFromBase);
-                return new ResponseMessage(Message.SUCCESSADDBASE);
+                return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
             }
         } else {
-            return new ResponseMessage(Message.ERROR_SERVER);
+            return new CustomResponseMessage(Message.ERROR_SERVER);
         }
     }
 

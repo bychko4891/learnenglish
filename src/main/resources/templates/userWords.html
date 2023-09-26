@@ -33,8 +33,8 @@
 <!--                <div><a th:href="@{/user/{id}/translation-pairs(page=0,size=10,sort='isRepeatable')}">Repeatable</a>-->
 <!--                </div>-->
 
-                <div th:each="word : ${words}">
-                    <input type="hidden" name="id" th:value="${word.id}"/>
+                <div th:each="word : ${words}" class="user-word">
+                    <input type="hidden" name="wordId" th:value="${word.id}"/>
                     <div style="display: flex; flex-direction: row;">
                         <table>
                             <td style="height: 25px;">
@@ -68,8 +68,13 @@
                                     <input th:id="${'toggleSwitch-' + word.id}" type="checkbox"
                                            th:checked="${word.repeatable}"
                                            class="toggle-switch"
-                                           name="isRepeatable" th:data-phrase-id="${word.id}"/>
+                                           name="isRepeatable" th:data-word-id="${word.id}"/>
                                     <label th:for="${'toggleSwitch-' + word.id}" class="toggle-switch-label"></label>
+                                </form>
+                            </td>
+                            <td>
+                                <form>
+                                    <button type="button" onclick="confirmRemove(this)"><i class="fa-regular fa-trash-can"></i></button>
                                 </form>
                             </td>
                         </table>
@@ -98,12 +103,7 @@
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('.toggle').click(function () {
-            $(this).siblings('.category').slideToggle().toggleClass('visible');
-        });
-    });
-</script>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script type="text/javascript" th:src="@{/js/userWords.js}"></script>
 </body>
 </html>

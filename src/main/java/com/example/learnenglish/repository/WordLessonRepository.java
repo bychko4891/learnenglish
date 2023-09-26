@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
@@ -26,7 +27,5 @@ public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
     @Query("SELECT MAX(wl.id) FROM WordLesson wl")
     Long lastId();
 
-//    @Query("SELECT wl FROM WordLesson wl WHERE wl.category.id = :categoryId ORDER BY LENGTH(wl.name), wl.name")
-    @Query("SELECT wl FROM WordLesson wl WHERE wl.category.id = :categoryId ORDER BY wl.serialNumber")
-    List<WordLesson> wordLessonsCategory(@Param("categoryId") Long categoryId);
+    List<WordLesson> findAllByCategoryIdOrderBySerialNumber(Long categoryId);
 }

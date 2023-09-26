@@ -4,7 +4,6 @@ var userId = url.match(/user\/(\d+)/)[1];
 // console.log(userId);
 url = '/user/' + userId + '/user-statistics';
 $.getJSON(url, function (data) {
-    // console.log(data);
     var studyTimeInTwoWeeks = data.studyTimeInTwoWeeks;
     console.log(studyTimeInTwoWeeks);
     var repetitionsCount = data.repetitionsCount; // repetitionsCount
