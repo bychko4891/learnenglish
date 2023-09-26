@@ -42,7 +42,7 @@ public class CategoryService {
         return dtoWordsCategoryToUiList;
     }
 
-    public Long countWordCategory() {
+    public Long countCategory() {
         return categoryRepository.lastId();
     }
 

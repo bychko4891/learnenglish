@@ -11,6 +11,7 @@ import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.*;
@@ -40,6 +41,7 @@ public class AdminRestController {
     private final TranslationPairPageService translationPairPageService;
     private final WordLessonService wordLessonService;
     private final CategoryValidator categoryValidator;
+    private final WayForPayModuleService wayForPayModuleService;
 
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -208,4 +210,23 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/save-wayforpay-module-settings")
+    public ResponseEntity<CustomResponseMessage> saveSettingsWayForPayModule(@RequestBody WayForPayModule wayForPayModule,
+                                                                             Principal principal){
+        if(principal != null){
+            if(wayForPayModule.isActive()){
+                if(wayForPayModule.getMerchantSecretKey().isBlank() && wayForPayModule.getMerchantAccount().isBlank()
+                        && wayForPayModule.getMerchantAccount().isEmpty() && wayForPayModule.getMerchantSecretKey().isEmpty()){
+
+                }
+            }
+
+
+            return ResponseEntity.ok(null);
+
+        }
+        return null;
+    }
+
 }
