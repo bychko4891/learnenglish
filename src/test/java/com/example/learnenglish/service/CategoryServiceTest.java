@@ -112,7 +112,7 @@ class CategoryServiceTest {   // Change over. Need refactor
     void countWordCategory() {
         when(categoryRepository.lastId()).thenReturn(10L);
 
-        var res = categoryService.countWordCategory();
+        var res = categoryService.countCategory();
 
         assertEquals(10L, res);
 

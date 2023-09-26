@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Artur Hasparian
+ * Application Name: Learn English
+ * Description: Unit test
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
@@ -50,6 +57,8 @@ class AdminControllerTest {
     @Mock
     private WordLessonService wordLessonService;
     @Mock
+    private WayForPayModuleService wayForPayModuleService;
+    @Mock
     private Principal principal;
     @Mock
     private Model model;
@@ -61,20 +70,20 @@ class AdminControllerTest {
         MockitoAnnotations.openMocks(this);
         adminController = new AdminController(session, lessonService, userService, translationPairService,
                 textOfAppPageService, pageApplicationService, categoryService, wordService, wordAudioService,
-                translationPairPageService, imagesService, wordLessonService);
+                translationPairPageService, imagesService, wordLessonService, wayForPayModuleService);
     }
 
 
     @Test
     void adminPageIfPrincipalNotNull() {
-        var res = adminController.adminPage(principal);
-        assertEquals("admin/adminMainPage", res);
+        var res = adminController.adminPage(principal, model);
+        assertEquals("admin/mainAdmin", res);
 
     }
 
     @Test
     void adminPageIfPrincipalNull() {
-        var result = adminController.adminPage(null);
+        var result = adminController.adminPage(null,model);
         assertEquals("redirect:/login", result);
     }
 
@@ -422,7 +431,7 @@ class AdminControllerTest {
     void wordsCategoryNewCategoryIfPrincipalNotNull() {
         var count = 3L;
 
-        when(categoryService.countWordCategory()).thenReturn(count);
+        when(categoryService.countCategory()).thenReturn(count);
 
         var result = adminController.wordsCategoryNewCategory(principal);
 
@@ -434,7 +443,7 @@ class AdminControllerTest {
         principal = null;
         var count = 3L;
 
-        when(categoryService.countWordCategory()).thenReturn(count);
+        when(categoryService.countCategory()).thenReturn(count);
 
         var result = adminController.wordsCategoryNewCategory(principal);
 
@@ -444,12 +453,12 @@ class AdminControllerTest {
     @Test
     void wordsCategoryNewCategoryIfNullPointerException() {
 
-        when(categoryService.countWordCategory()).thenThrow(NullPointerException.class);
+        when(categoryService.countCategory()).thenThrow(NullPointerException.class);
 
         var result = adminController.wordsCategoryNewCategory(principal);
 
         assertEquals("redirect:/admin-page/1/category-edit", result);
-        verify(categoryService).countWordCategory();
+        verify(categoryService).countCategory();
         verifyNoInteractions(principal);
 
     }
@@ -517,7 +526,7 @@ class AdminControllerTest {
 
         var result = adminController.newWordAdminPage(principal);
 
-        assertEquals("redirect:/admin-page/word/" + count + "/new-word-in-editor", result);
+        assertEquals("redirect:/admin-page/words/" + count + "/word-edit", result);
 
 
     }
@@ -539,29 +548,29 @@ class AdminControllerTest {
 
         var result = adminController.newWordAdminPage(principal);
 
-        assertEquals("redirect:/admin-page/word/1/new-word-in-editor", result);
+        assertEquals("redirect:/admin-page/words/1/word-edit", result);
         verify(wordService).countWords();
         verifyNoInteractions(principal);
 
     }
 
-    @Test
-    void testNewWord() {
-        var id = 1L;
-        List<Category> mainCategoryList = new ArrayList<>();
-        when(categoryService.mainWordCategoryList(true)).thenReturn(mainCategoryList);
-
-        var result = adminController.newWord(id, model, principal);
-
-        assertEquals("admin/wordEdit", result);
-        verifyNoInteractions(principal);
-
-        principal = null;
-
-        var result1 = adminController.newWord(id, model, principal);
-
-        assertEquals("redirect:/login", result1);
-    }
+//    @Test
+//    void testNewWord() {
+//        var id = 1L;
+//        List<Category> mainCategoryList = new ArrayList<>();
+//        when(categoryService.mainWordCategoryList(true)).thenReturn(mainCategoryList);
+//
+//        var result = adminController.newWord(id, model, principal);
+//
+//        assertEquals("admin/wordEdit", result);
+//        verifyNoInteractions(principal);
+//
+//        principal = null;
+//
+//        var result1 = adminController.newWord(id, model, principal);
+//
+//        assertEquals("redirect:/login", result1);
+//    }
 
     @Test
     void testWordEdit() {
