@@ -1,5 +1,12 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.PageApplicationRepository;
@@ -8,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-// не Буде змінюватись
+// не Буде змінюватись в роботу Артур
 @Service
 public class PageApplicationService {
     private final PageApplicationRepository pageApplicationRepository;

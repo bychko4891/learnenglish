@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
-// Не Буде змінюватись
+// Не Буде змінюватись - в роботу
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
