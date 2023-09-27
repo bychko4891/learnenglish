@@ -46,11 +46,13 @@ class CategoryServiceTest {   // Change over. Need refactor
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
-        var result = categoryService.getCategoryToEditor(categoryId);
+        var res = categoryService.getCategoryToEditor(categoryId);
 
-        assertEquals(categoryId, result.getId());
-        assertEquals("Test Category", result.getName());
-        assertEquals("Test Info", result.getInfo());
+        assertEquals(category, res);
+
+        assertEquals(categoryId, res.getId());
+        assertEquals("Test Category", res.getName());
+        assertEquals("Test Info", res.getInfo());
 
         verify(categoryRepository, times(1)).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
