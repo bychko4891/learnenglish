@@ -168,7 +168,7 @@ function save() {
         },
         success: function (result) {
             var status = result.status;
-            if (status == "Success") {
+            if (status === "Success") {
                 showSuccessToast(result.message);
             } else {
                 showErrorToast(result.message)

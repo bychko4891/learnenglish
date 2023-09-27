@@ -14,13 +14,16 @@ public class WayForPayModule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
+    @Column
     private String merchantAccount;
 
+    @Column
     private String merchantSecretKey;
 
-    private boolean isActive = false;
+    @Column
+    private boolean active = false;
 
 
-
+    public WayForPayModule() {
+    }
 }

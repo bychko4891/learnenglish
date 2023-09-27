@@ -213,20 +213,22 @@ public class AdminRestController {
 
     @PostMapping("/save-wayforpay-module-settings")
     public ResponseEntity<CustomResponseMessage> saveSettingsWayForPayModule(@RequestBody WayForPayModule wayForPayModule,
-                                                                             Principal principal){
-        if(principal != null){
-            if(wayForPayModule.isActive()){
-                if(wayForPayModule.getMerchantSecretKey().isBlank() && wayForPayModule.getMerchantAccount().isBlank()
-                        && wayForPayModule.getMerchantAccount().isEmpty() && wayForPayModule.getMerchantSecretKey().isEmpty()){
-
+                                                                             Principal principal) {
+        if (principal != null) {
+            wayForPayModule.setId(1L);
+            if (wayForPayModule.isActive()) {
+                if (!wayForPayModule.getMerchantSecretKey().isBlank() && !wayForPayModule.getMerchantAccount().isBlank()) {
+                    wayForPayModuleService.saveWayForPayModule(wayForPayModule);
+                    return ResponseEntity.ok(new CustomResponseMessage(Message.SUCCESS));
+                } else {
+                    return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR, "Поля не можуть бути пустими"));
                 }
+            } else {
+                wayForPayModuleService.saveWayForPayModule(wayForPayModule);
+                return ResponseEntity.ok(new CustomResponseMessage(Message.SUCCESS, "Налаштування збережені"));
             }
-
-
-            return ResponseEntity.ok(null);
-
         }
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
 }

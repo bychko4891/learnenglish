@@ -107,16 +107,18 @@
                     <span>Merchant secret key</span>
                     <input type="text" name="merchantSecretKey" th:value="${wayForPaySettings.merchantSecretKey}">
                     <span style="padding: 10px 0px 0px 25px;">Увімкнути: </span>
-                    <input id="toggleSwitch" type="checkbox" th:checked="${wayForPaySettings.isActive()}"
-                           class="toggle-switch" name="mainCategory">
+                    <input id="toggleSwitch" type="checkbox" th:checked="${wayForPaySettings.active}"
+                           class="toggle-switch" name="isActive">
                     <label for="toggleSwitch" class="toggle-switch-label"></label>
                     <button>Зберегти</button>
                 </form>
             </div>
         </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
     $('#way-for-pay').submit(function (event) {
         event.preventDefault();
@@ -125,8 +127,9 @@
         var wayForPayModule = {
             merchantAccount: $('#way-for-pay input[name="merchantAccount"]').val(),
             merchantSecretKey: $('#way-for-pay input[name="merchantSecretKey"]').val(),
-            isActive: $('#toggleSwitch').is(':checked')
+            active: $('#toggleSwitch').is(':checked')
         }
+        console.log(wayForPayModule);
         $.ajax({
             url: '/admin-page/save-wayforpay-module-settings',
             type: "POST",
@@ -136,8 +139,12 @@
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
-                reloadValue();
-                showSuccessToast(result);
+                var status = result.status;
+                if (status === "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message)
+                }
             },
             error: function () {
                 let shel = {};
