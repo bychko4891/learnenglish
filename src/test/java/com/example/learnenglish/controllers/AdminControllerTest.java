@@ -669,7 +669,7 @@ class AdminControllerTest {
         var page = 1;
         var size = 7;
         Page<Audio> wordAudioPage = mock(Page.class);
-        when(wordAudioService.getWordsAudioPage(page, size)).thenReturn(wordAudioPage);
+        when(wordAudioService.getAudioPage(page, size)).thenReturn(wordAudioPage);
 
         var res = adminController.audioListAdminPage(page, size, principal, model);
 
@@ -689,7 +689,7 @@ class AdminControllerTest {
 
         var wordAudio = new Audio();
 
-        when(wordAudioService.getWordAudio(id)).thenReturn(wordAudio);
+        when(wordAudioService.getAudio(id)).thenReturn(wordAudio);
 
         var res = adminController.wordAudioUpload(id, model, principal);
 

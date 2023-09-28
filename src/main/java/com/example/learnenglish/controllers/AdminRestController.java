@@ -8,8 +8,8 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.*;
 import com.example.learnenglish.exception.FileFormatException;
+import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.responsemessage.Message;
@@ -22,7 +22,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.*;
 
@@ -36,7 +35,7 @@ public class AdminRestController {
     private final TextOfAppPageService textOfAppPageService;
     private final CategoryService wordCategoryService;
     private final WordService wordService;
-    private final AudioService wordAudioService;
+    private final AudioService audioService;
     private final TranslationPairService translationPairService;
     private final ImagesService imagesService;
     private final TranslationPairPageService translationPairPageService;
@@ -112,8 +111,8 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-save")
-    public ResponseEntity<CustomResponseMessage> saveWord(@RequestBody DtoWord dtoWord,
-                                                          Principal principal) {
+    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody DtoWord dtoWord,
+                                                                  Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordService.saveWord(dtoWord));
         }
@@ -130,16 +129,20 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-audio/{id}/upload")
-    public ResponseEntity<CustomResponseMessage> saveWord(@PathVariable("id") Long wordId,
-                                                          @RequestParam("brAudio") MultipartFile brAudio,
-                                                          @RequestParam("usaAudio") MultipartFile usaAudio,
-                                                          Principal principal) {
+    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@PathVariable("id") Long audioId,
+                                                                  @RequestParam("brAudio") MultipartFile brAudio,
+                                                                  @RequestParam("usaAudio") MultipartFile usaAudio,
+                                                                  Principal principal) {
         if (principal != null) { // спочатку дістати аудіо через сервіс , перевірити чи не порожні в нього поля якщо ні запустити видалення файлів, зберегти файли,  потім передати все на збереження в аудіо сервіс сам Аудіо
+            Audio audio = audioService.getAudio(audioId);
+            if(audio.getBrAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getBrAudioName());
+            if(audio.getUsaAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getUsaAudioName());
             Map<String, MultipartFile> audioFiles = new HashMap<>();
             audioFiles.put("brAudio", brAudio);
             audioFiles.put("usaAudio", usaAudio);
-            wordAudioService.saveAudioFile(audioFiles, wordId);
-            return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
+            audioService.saveAudioFile(audioFiles, audio);
+
+            return ResponseEntity.ok(audioService.saveTheEditedAudio(audio));
         }
         return ResponseEntity.notFound().build();
     }

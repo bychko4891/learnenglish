@@ -365,7 +365,7 @@ public class AdminController {
                                      Model model) {
         if (principal != null) {
             if (page < 0) page = 0;
-            Page<Audio> wordAudioPage = wordAudioService.getWordsAudioPage(page, size);
+            Page<Audio> wordAudioPage = wordAudioService.getAudioPage(page, size);
             if (wordAudioPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -382,7 +382,7 @@ public class AdminController {
     @GetMapping("/word-audio/{id}/audio-upload-page")
     public String wordAudioUpload(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            Audio wordAudio = wordAudioService.getWordAudio(id);
+            Audio wordAudio = wordAudioService.getAudio(id);
             model.addAttribute("wordAudio", wordAudio);
             return "admin/audioUpload";
         }

@@ -29,12 +29,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-// Буде змінюватись в роботу 28.09
+// Не Буде змінюватись в роботу Артур
 @Service
 public class AudioService {
     private final Path fileStorageLocation;
@@ -53,12 +52,12 @@ public class AudioService {
         }
     }
 
-    public Page<Audio> getWordsAudioPage(int page, int size) {
+    public Page<Audio> getAudioPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return audioRepository.findAll(pageable);
     }
 
-    public Audio getWordAudio(Long id) {
+    public Audio getAudio(Long id) {
         Optional<Audio> audioOptional = audioRepository.findById(id);
         if (audioOptional.isPresent()) {
             return audioOptional.get();
@@ -66,8 +65,7 @@ public class AudioService {
         throw new RuntimeException("Error in method 'getWordAudio' class 'AudioService'");
     }
 
-    public CustomResponseMessage saveAudioFile(Map<String, MultipartFile> audioFiles, Long audioId) {
-        Audio audio = audioRepository.findById(audioId).get();
+    public Audio saveAudioFile(Map<String, MultipartFile> audioFiles, Audio audio) {
         for (Map.Entry<String, MultipartFile> file : audioFiles.entrySet()) {
             String fileName = StringUtils.cleanPath(file.getValue().getOriginalFilename());
             try {
@@ -88,8 +86,7 @@ public class AudioService {
                 throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
             }
         }
-        audioRepository.save(audio);
-        return new CustomResponseMessage(Message.SUCCESS);
+        return audio;
     }
 
     public Resource loadFileAsResource(String fileName) {
@@ -99,25 +96,28 @@ public class AudioService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
-
+                throw new MyFileNotFoundException("Audio File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            throw new MyFileNotFoundException("Audio File not found " + fileName, ex);
 //            System.out.println(ex.getMessage());
         }
     }
 
-    private void deleteImageFromDirectory(String avatarNameDelete) {
-        Path targetLocation = this.fileStorageLocation.resolve(avatarNameDelete);
+    public void deleteAudioFilesFromDirectory(String audioFileName) {
+        Path targetLocation = this.fileStorageLocation.resolve(audioFileName);
         try {
             Files.delete(targetLocation);
         } catch (IOException e) {
 //            throw new RuntimeException("Image not found");
-            System.out.println(e.getMessage());
-            return;
+            System.out.println("Error in 'deleteAudioFilesFromDirectory' methods! File not found: " + audioFileName);
         }
     }
 
+
+    public CustomResponseMessage saveTheEditedAudio(Audio audio){
+        audioRepository.save(audio);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+    }
 
 }
