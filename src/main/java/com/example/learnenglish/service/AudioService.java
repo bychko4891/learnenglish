@@ -4,7 +4,7 @@ package com.example.learnenglish.service;
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
- *  GitHub source code: https://github.com/bychko4891/learnenglish
+ * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
 import com.example.learnenglish.exception.FileStorageException;
@@ -29,8 +29,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
 // Буде змінюватись в роботу 28.09
 @Service
 public class AudioService {
@@ -57,36 +60,36 @@ public class AudioService {
 
     public Audio getWordAudio(Long id) {
         Optional<Audio> audioOptional = audioRepository.findById(id);
-        if(audioOptional.isPresent()){
+        if (audioOptional.isPresent()) {
             return audioOptional.get();
         }
         throw new RuntimeException("Error in method 'getWordAudio' class 'AudioService'");
     }
 
-    public CustomResponseMessage saveAudioFile(MultipartFile brAudio, MultipartFile usaAudio, Long audioId) {
-       Audio audio = audioRepository.findById(audioId).get();
-        String fileName = StringUtils.cleanPath(brAudio.getOriginalFilename());
-        String fileName2 = StringUtils.cleanPath(usaAudio.getOriginalFilename());
-        try {
-            if (fileName.contains("..") && fileName2.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+    public CustomResponseMessage saveAudioFile(Map<String, MultipartFile> audioFiles, Long audioId) {
+        Audio audio = audioRepository.findById(audioId).get();
+        for (Map.Entry<String, MultipartFile> file : audioFiles.entrySet()) {
+            String fileName = StringUtils.cleanPath(file.getValue().getOriginalFilename());
+            try {
+                if (fileName.contains("..")) {
+                    throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                }
+                String uuidFile = UUID.randomUUID().toString();
+                String audioName = audio.getName() + "_uk_" + uuidFile + ".mp3";
+                if (file.getKey().equals("usaAudio")) {
+                    audioName = audio.getName() + "_usa_" + uuidFile + ".mp3";
+                    audio.setUsaAudioName(audioName);
+                } else {
+                    audio.setBrAudioName(audioName);
+                }
+                Path targetLocationAudio = this.fileStorageLocation.resolve(audioName);
+                Files.copy(file.getValue().getInputStream(), targetLocationAudio, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
             }
-            String nameWord = audio.getWord().getName();
-            String uuidFile = UUID.randomUUID().toString();
-            String brAudioName = nameWord + "_uk_" + uuidFile + ".mp3";
-            String usaAudioName = nameWord + "_usa_" + uuidFile + ".mp3";
-            Path targetLocationBrAudio = this.fileStorageLocation.resolve(brAudioName);
-            Path targetLocationUsaAudio = this.fileStorageLocation.resolve(usaAudioName);
-            Files.copy(brAudio.getInputStream(), targetLocationBrAudio, StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(brAudio.getInputStream(), targetLocationUsaAudio, StandardCopyOption.REPLACE_EXISTING);
-            audio.setBrAudioName(brAudioName);
-            audio.setUsaAudioName(usaAudioName);
-            audioRepository.save(audio);
-            return new CustomResponseMessage(Message.SUCCESS);
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-//            System.out.println(ex.getMessage());
         }
+        audioRepository.save(audio);
+        return new CustomResponseMessage(Message.SUCCESS);
     }
 
     public Resource loadFileAsResource(String fileName) {
@@ -102,6 +105,17 @@ public class AudioService {
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
 //            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void deleteImageFromDirectory(String avatarNameDelete) {
+        Path targetLocation = this.fileStorageLocation.resolve(avatarNameDelete);
+        try {
+            Files.delete(targetLocation);
+        } catch (IOException e) {
+//            throw new RuntimeException("Image not found");
+            System.out.println(e.getMessage());
+            return;
         }
     }
 

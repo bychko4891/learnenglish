@@ -21,7 +21,6 @@ public class PaymentWayForPayService {
     private String host;
     private final WayForPayModuleService wayForPayModuleService;
     private final PaymentByWayForPayRepository paymentByWayForPayRepository;
-
     private WayForPayModule wayForPayModule;
 
     private String generateMerchantSignatureMD5(String data) {

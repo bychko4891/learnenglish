@@ -22,8 +22,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Array;
 import java.security.Principal;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin-page")
@@ -133,8 +134,11 @@ public class AdminRestController {
                                                           @RequestParam("brAudio") MultipartFile brAudio,
                                                           @RequestParam("usaAudio") MultipartFile usaAudio,
                                                           Principal principal) {
-        if (principal != null) {
-            wordAudioService.saveAudioFile(brAudio, usaAudio, wordId);
+        if (principal != null) { // спочатку дістати аудіо через сервіс , перевірити чи не порожні в нього поля якщо ні запустити видалення файлів, зберегти файли,  потім передати все на збереження в аудіо сервіс сам Аудіо
+            Map<String, MultipartFile> audioFiles = new HashMap<>();
+            audioFiles.put("brAudio", brAudio);
+            audioFiles.put("usaAudio", usaAudio);
+            wordAudioService.saveAudioFile(audioFiles, wordId);
             return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
         }
         return ResponseEntity.notFound().build();

@@ -107,7 +107,7 @@ public class ImagesService {
         Optional<Image> optionalUserAvatar = imagesRepository.findById(userId);
         if (optionalUserAvatar.isPresent()) {
             Image avatar = optionalUserAvatar.get();
-            if (avatar.getImageName() != null) deleteImageToDirectory(avatar.getImageName());
+            if (avatar.getImageName() != null) deleteImageFromDirectory(avatar.getImageName());
             avatar.setImageName(userAvatarName);
             imagesRepository.save(avatar);
 //            return userRepository.save(user);
@@ -118,7 +118,7 @@ public class ImagesService {
 
 
 
-    private void deleteImageToDirectory(String avatarNameDelete) {
+    private void deleteImageFromDirectory(String avatarNameDelete) {
         Path targetLocation = this.storageLocationUserAvatar.resolve(avatarNameDelete);
         try {
             Files.delete(targetLocation);
