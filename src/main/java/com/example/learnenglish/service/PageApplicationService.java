@@ -8,14 +8,12 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.PageApplication;
-import com.example.learnenglish.model.TextOfAppPage;
 import com.example.learnenglish.repository.PageApplicationRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-// не Буде змінюватись в роботу Артур
+
 @Service
 public class PageApplicationService {
     private final PageApplicationRepository pageApplicationRepository;
@@ -27,13 +25,16 @@ public class PageApplicationService {
     public void savePageApplication(PageApplication pageApplication) {
         pageApplicationRepository.save(pageApplication);
     }
-    public PageApplication getPageApplication(Long id){
+
+    public PageApplication getPageApplication(Long id) {
         Optional<PageApplication> pageApplicationOptional = pageApplicationRepository.findById(id);
-        if(pageApplicationOptional.isPresent()){
+        if (pageApplicationOptional.isPresent()) {
             return pageApplicationOptional.get();
-        } else throw new RuntimeException("Error base in method getPageApplication() --> 'PageApplicationService.class' ");
+        } else
+            throw new RuntimeException("Error base in method getPageApplication() --> 'PageApplicationService.class' ");
     }
-    public List<PageApplication> pageApplicationList(){
-        return (List<PageApplication>)pageApplicationRepository.findAll();
+
+    public List<PageApplication> pageApplicationList() {
+        return (List<PageApplication>) pageApplicationRepository.findAll();
     }
 }
