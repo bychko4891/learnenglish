@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -56,6 +57,14 @@ class PageApplicationServiceTest {
         var actualPage = pageApplicationService.getPageApplication(id);
 
         assertEquals(expectedPage, actualPage);
+    }
+
+    @Test
+    void getPageApplicationThrowRuntimeException() {
+        var id = 1L;
+
+        assertThrows(RuntimeException.class, () -> pageApplicationService.getPageApplication(id));
+
     }
 
     @Test
