@@ -1,6 +1,6 @@
 package com.example.learnenglish.config;
 
-/*
+/**
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -21,6 +21,6 @@ public class ApplicationStartup {
     }
     @EventListener(ApplicationReadyEvent.class)
     public void clearUserSessions() {
-//        jdbcTemplate.update("DELETE FROM spring_session");
+        jdbcTemplate.update("DELETE FROM spring_session");
     }
 }

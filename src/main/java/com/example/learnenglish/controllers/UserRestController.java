@@ -102,7 +102,7 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/user-profile/delete")
+    @DeleteMapping("/user-profile/delete")
     public ResponseEntity<CustomResponseMessage> userProfileRemove(@RequestParam("password") String userPassword,
                                                                    Principal principal) {
         if (principal != null) {

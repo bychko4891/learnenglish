@@ -31,7 +31,6 @@ public class TranslationPairService {
 
     }
 
-
     public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
         return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
     }

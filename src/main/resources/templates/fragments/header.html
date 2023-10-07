@@ -26,7 +26,7 @@
             </div>
 
             <div sec:authorize="isAuthenticated()">
-                <form action="/logout" method="post">
+                <form action="/logout?logout" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <button class="btn_main" type="submit">Вихід</button>
                 </form>

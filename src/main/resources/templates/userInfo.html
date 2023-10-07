@@ -371,14 +371,14 @@
         var formData = $(this).serializeArray();
         $.ajax({
             url: "/user-profile/delete",
-            type: "POST",
+            type: "DELETE",
             data: formData,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function (result) {
                 var status = result.status;
-                if (status == "Success") {
+                if (status === "Success") {
                     showSuccessToast(result.message);
                     setTimeout(function () {
                         location.reload();

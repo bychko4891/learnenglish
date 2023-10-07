@@ -1,6 +1,6 @@
 package com.example.learnenglish.config;
 
-/*
+/**
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description

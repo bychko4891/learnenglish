@@ -33,7 +33,7 @@ public class TomcatWebServerFactoryMyCustomizer {
         RemoteIpValve valve = new RemoteIpValve();
         valve.setRemoteIpHeader("X-Forwarded-For");
         valve.setProtocolHeader("X-Forwarded-Proto");
-        valve.setProtocolHeaderHttpsValue("https"); // Optional: Specify the HTTPS protocol value
+        valve.setProtocolHeaderHttpsValue("https");
         return valve;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.learnenglish.config;
 
-/*
+/**
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -136,15 +136,13 @@ public class SecurityConfig {
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
                 )
-
-
-
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)
                                 .loginProcessingUrl(LOGIN_URL)
                                 .failureUrl(LOGIN_FAIL_URL)
                                 .usernameParameter(USERNAME)
                                 .passwordParameter(PASSWORD)
+
 //                                .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                                 .successHandler((request, response, authentication) -> {
                                     HttpSession session = request.getSession();

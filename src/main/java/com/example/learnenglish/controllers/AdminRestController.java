@@ -133,7 +133,7 @@ public class AdminRestController {
                                                                   @RequestParam("brAudio") MultipartFile brAudio,
                                                                   @RequestParam("usaAudio") MultipartFile usaAudio,
                                                                   Principal principal) {
-        if (principal != null) { // спочатку дістати аудіо через сервіс , перевірити чи не порожні в нього поля якщо ні запустити видалення файлів, зберегти файли,  потім передати все на збереження в аудіо сервіс сам Аудіо
+        if (principal != null) {
             Audio audio = audioService.getAudio(audioId);
             if(audio.getBrAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getBrAudioName());
             if(audio.getUsaAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getUsaAudioName());
@@ -141,7 +141,6 @@ public class AdminRestController {
             audioFiles.put("brAudio", brAudio);
             audioFiles.put("usaAudio", usaAudio);
             audioService.saveAudioFile(audioFiles, audio);
-
             return ResponseEntity.ok(audioService.saveTheEditedAudio(audio));
         }
         return ResponseEntity.notFound().build();
