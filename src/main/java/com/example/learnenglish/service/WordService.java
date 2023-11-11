@@ -1,6 +1,6 @@
 package com.example.learnenglish.service;
 
-/*
+/**
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -16,6 +16,7 @@ import com.example.learnenglish.repository.TranslationPairRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,8 @@ public class WordService {
         return wordRepository.lastId();
     }
 
+
+    @Transactional
     public CustomResponseMessage saveWord(DtoWord dtoWord) {
         Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
         Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
@@ -93,23 +96,26 @@ public class WordService {
     }
 
     private CustomResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
-        Word word = new Word();
-        Audio audio = new Audio();
-        Image images = new Image();
-        word.setAudio(audio);
-        word.setImages(images);
-        DtoWord.convertDtoToWord(dtoWord, word);
-        if (dtoWord.getTranslationPairsId().size() != 0) {
-            List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
-            word.setTranslationPairs(list);
+        if(!wordRepository.existsByNameIsIgnoreCase(dtoWord.getWord().getName().trim())) {
+            Word word = new Word();
+            Audio audio = new Audio();
+            Image images = new Image();
+            word.setAudio(audio);
+            word.setImages(images);
+            DtoWord.convertDtoToWord(dtoWord, word);
+            if (dtoWord.getTranslationPairsId().size() != 0) {
+                List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
+                word.setTranslationPairs(list);
+            }
+            if (categoryId != 0) {
+                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
+                word.setWordCategory(wordCategory);
+                wordCategory.getWords().add(word);
+            }
+            wordRepository.save(word);
+            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         }
-        if (categoryId != 0) {
-            Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-            word.setWordCategory(wordCategory);
-            wordCategory.getWords().add(word);
-        }
-        wordRepository.save(word);
-        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
     }
 
     public Word getWord(Long id) {

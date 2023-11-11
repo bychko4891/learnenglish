@@ -132,7 +132,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
 //                                .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
                                 .maximumSessions(1)
-                                .sessionRegistry(sessionRegistry()) // Додайте цей рядок
+                                .sessionRegistry(sessionRegistry())
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
                 )

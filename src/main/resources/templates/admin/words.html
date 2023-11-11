@@ -5,9 +5,12 @@
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <main class="section">
+    <!--    <main class="section" style="position: relative; padding-bottom: 90px;">-->
+    <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page ">
+        <main class="container layout_page">
+
+
             <div class="page-table row">
                 <h3 style="margin-bottom: auto;">Слова додатка</h3>
                 <div style="margin-left: auto; margin-bottom: auto;">
@@ -81,21 +84,30 @@
                 <!--        </div>-->
 
             </div>
-            <!-- відображення пагінації -->
-            <div style="position: fixed; margin-left: 80px; width: 100%;">
-                <a th:href="@{/admin-page/words(page=(${currentPage} - 1))}">Previous</a>
-                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+
+
+
+        </main>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/admin-page/words(page=(${currentPage} - 1))}">Попередня</a>
+        </div>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <a th:href="@{/admin-page/words(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
-                <a th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Next</a>
-            </div>
         </div>
-        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
+        <div>
+            <a style="margin-right: auto"
+               th:href="@{/admin-page/words(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-<div th:replace="~{fragments/popup :: popup}"></div>
 <script>
 
     $(document).ready(function () {
@@ -139,7 +151,7 @@
                 }
             });
         });
-        });
+    });
 </script>
 </body>
 </html>

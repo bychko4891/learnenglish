@@ -62,6 +62,8 @@ public class ImagesService {
         try {
             Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.storageLocationUserAvatar);
+            Files.createDirectories(this.storageLocationWordImage);
+            Files.createDirectories(this.storageLocationCategoryImage);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }

@@ -22,5 +22,6 @@ public class ApplicationStartup {
     @EventListener(ApplicationReadyEvent.class)
     public void clearUserSessions() {
         jdbcTemplate.update("DELETE FROM spring_session");
+        jdbcTemplate.update("DELETE FROM spring_session_attributes");
     }
 }

@@ -40,4 +40,6 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     @Query("SELECT w FROM Word w WHERE w.wordLesson.id = :wordLessonId ORDER BY w.name ASC")
     Page<Word> wordsFromLesson(Pageable pageable, @Param("wordLessonId")Long wordLessonId);
 
+    boolean existsByNameIsIgnoreCase(String name);
+
 }
