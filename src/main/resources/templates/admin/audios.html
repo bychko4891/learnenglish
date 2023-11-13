@@ -5,9 +5,9 @@
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <main class="section">
+    <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page row">
+        <main class="container layout_page">
 
 
             <div class="page-table" style="flex-direction: column;">
@@ -38,23 +38,29 @@
                     </tr>
                     </tbody>
                 </table>
-
-            </div>
-            <!-- відображення пагінації -->
-            <div style="position: fixed; bottom: 0; margin-left: 40px; width: 100%;">
-                <a th:href="@{/admin-page/audios(page=(${currentPage} - 1))}">Previous</a>
-                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/admin-page/audios(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-                </span>
-                <a th:href="@{/admin-page/audios(page=(${currentPage} + 1))}">Next</a>
             </div>
 
 
 
-        </div>
+        </main>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
+    </div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/admin-page/audios(page=(${currentPage} - 1))}">Попередня</a>
+        </div>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/audios(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+            </span>
+        </div>
+        <div>
+            <a style="margin-right: auto" th:href="@{/admin-page/audios(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

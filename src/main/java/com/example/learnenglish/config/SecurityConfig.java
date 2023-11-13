@@ -92,7 +92,7 @@ public class SecurityConfig {
             "/words-main-category",
             "/words-main-category/*",
             "/subcategory/*",
-            "/word/*",
+            "/word/**",
             "/phrases-categories",
             "/phrases-category/**",
             "/phrases-page**",

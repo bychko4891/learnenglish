@@ -259,7 +259,7 @@ public class AdminController {
 
     @GetMapping("/words")
     public String wordsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     @RequestParam(value = "size", defaultValue = "30", required = false) int size,
                                      Principal principal,
                                      Model model) {
         if (principal != null) {
@@ -360,7 +360,7 @@ public class AdminController {
 
     @GetMapping("/audios")
     public String audioListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                                     @RequestParam(value = "size", defaultValue = "30", required = false) int size,
                                      Principal principal,
                                      Model model) {
         if (principal != null) {

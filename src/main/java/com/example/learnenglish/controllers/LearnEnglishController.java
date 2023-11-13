@@ -174,7 +174,8 @@ public class LearnEnglishController {
         model.addAttribute("mainId", parentCategory.getParentCategory().getId());
         return "wordsSubcategoryView";
     }
-    @GetMapping("/word-lessons/{id}")
+
+    @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
         Category wordCategory = word.getWordCategory().getParentCategory();
