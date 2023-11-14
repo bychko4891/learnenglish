@@ -2,23 +2,19 @@ function save() {
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
     var categoryPages = [$('#page').val()];
-    var mainCategorySelect = {
+    var category = {
         id: $('#editor input[name="id"]').val(),
         name: $('#editor input[name="name"]').val(),
         mainCategory: $('#toggleSwitch').is(':checked'),
         categoryPages: categoryPages,
         info: $('#editor textarea[name="info"]').val()
     };
-    var subcategorySelect = {
-        id: $('#subcategorySelect').val()
-    };
-    var subSubcategorySelect = {
-        id: $('#subSubcategorySelect').val()
-    };
+    var mainCategoryId = $('#subcategorySelect').val();
+    var subcategoryId =  $('#subSubcategorySelect').val();
     var data = {
-        mainCategorySelect: mainCategorySelect,
-        subcategorySelect: subcategorySelect,
-        subSubcategorySelect: subSubcategorySelect
+        category: category,
+        mainCategoryId: mainCategoryId,
+        subcategoryId: subcategoryId
     };
     $.ajax({
         url: '/admin-page/category-save',

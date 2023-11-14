@@ -33,7 +33,7 @@ public class AdminRestController {
     private final LessonService lessonService;
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
-    private final CategoryService wordCategoryService;
+    private final CategoryService categoryService;
     private final WordService wordService;
     private final AudioService audioService;
     private final TranslationPairService translationPairService;
@@ -80,31 +80,31 @@ public class AdminRestController {
     @GetMapping("/getSubcategories")
     public ResponseEntity<List<DtoWordsCategoryToUi>> wordsSubcategories(@RequestParam("mainCategoryId") Long id, Principal principal) {
         if (principal != null && id != 0) {
-            return ResponseEntity.ok(wordCategoryService.getDtoSubcategoriesInMainCategory(id));
+            return ResponseEntity.ok(categoryService.getDtoSubcategoriesInMainCategory(id));
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/category-save")
-    public ResponseEntity<CustomResponseMessage> SaveWordsCategory(@RequestBody DtoCategory dtoCategory,
+    public ResponseEntity<CustomResponseMessage> SaveWordsCategory(@RequestBody DtoCategoryFromEditor categoryRequest,
                                                                    Principal principal) {
-        if (principal != null) {
-            Object obj = categoryValidator.categoryIsPresentInBase(dtoCategory);
+        if (principal != null && categoryRequest.getMainCategoryId() != null && categoryRequest.getSubcategoryId() != null) {
+            Object obj = categoryValidator.categoryIsPresentInBase(categoryRequest);
             if (obj instanceof Category categoryFromDatabase) {
-                if (categoryFromDatabase.getId().equals(dtoCategory.getSubcategorySelect().getId()) ||
-                        categoryFromDatabase.getId().equals(dtoCategory.getSubSubcategorySelect().getId())) {
+                if (categoryFromDatabase.getId().equals(categoryRequest.getMainCategoryId()) ||
+                        categoryFromDatabase.getId().equals(categoryRequest.getSubcategoryId())) {
                     return ResponseEntity.ok(new CustomResponseMessage(Message.SELF_ASSIGNMENT_CATEGORY_ERROR));
                 } else {
-                    if (dtoCategory.getSubcategorySelect().getId() == 0 && dtoCategory.getMainCategorySelect().isMainCategory()) {
-                        Category category = dtoCategory.getMainCategorySelect();
+                    if (categoryRequest.getMainCategoryId() == 0 && categoryRequest.getCategory().isMainCategory()) {
+                        Category category = categoryRequest.getCategory();
                         category = categoryValidator.categoryPageIsNull(category);
-                        return ResponseEntity.ok(wordCategoryService.saveMainCategory(category, categoryFromDatabase));
+                        return ResponseEntity.ok(categoryService.saveMainCategory(category, categoryFromDatabase));
                     } else {
-                        return ResponseEntity.ok(wordCategoryService.saveSubcategory(dtoCategory, categoryFromDatabase));
+                        return ResponseEntity.ok(categoryService.saveSubcategory(categoryRequest, categoryFromDatabase));
                     }
                 }
             } else {
-                return ResponseEntity.ok(wordCategoryService.saveNewCategory(dtoCategory));
+                return ResponseEntity.ok(categoryService.saveNewCategory(categoryRequest)); //
             }
         }
         return ResponseEntity.notFound().build();
