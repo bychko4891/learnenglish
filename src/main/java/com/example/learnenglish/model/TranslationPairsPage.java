@@ -38,7 +38,7 @@ public class TranslationPairsPage implements Serializable {
     @JoinTable(name = "phrase_and_phrases_page",
             joinColumns = @JoinColumn(name = "phrases_page_id"),
             inverseJoinColumns = @JoinColumn(name = "phrase_id"))
-    private List<TranslationPair> translationPairs = new ArrayList<>();
+    private List<PhraseUser> phraseUsers = new ArrayList<>();
 
 //    @OneToMany
 //    @JoinColumn(name = "translation_pair_id")

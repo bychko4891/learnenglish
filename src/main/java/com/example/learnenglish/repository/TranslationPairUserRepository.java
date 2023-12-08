@@ -7,15 +7,15 @@ package com.example.learnenglish.repository;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPairUser;
+import com.example.learnenglish.model.PhrasesAndUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface TranslationPairUserRepository extends CrudRepository<TranslationPairUser, Long> {
+public interface TranslationPairUserRepository extends CrudRepository<PhrasesAndUser, Long> {
 
-    Optional<TranslationPairUser> findTranslationPairUserByTranslationPair_IdAndUserId(Long translationPairId, Long userId);
+    Optional<PhrasesAndUser> findTranslationPairUserByPhraseUser_IdAndUserId(Long translationPairId, Long userId);
 
 }

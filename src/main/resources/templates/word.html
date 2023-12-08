@@ -92,12 +92,12 @@
                 <span th:text="${word.translate}" style="color: #428BFF; font-size: 18px;"></span>
 
                 <div th:utext="${word.getInfo}"></div>
-                <div th:each="translationPair : ${word.translationPairs}">
+                <div th:each="phraseUser : ${word.phraseUsers}">
                     <div style="display: flex; width: auto; height: auto; position: relative;" >
-                        <span th:text="${translationPair.engText + ' -'}"></span>
-                        <span th:text="${'- ' + translationPair.ukrText}"></span>
+                        <span th:text="${phraseUser.engText + ' -'}"></span>
+                        <span th:text="${'- ' + phraseUser.ukrText}"></span>
                         <form sec:authorize="isAuthenticated()" class="phrasePlus">
-                            <input id="phraseId" type="hidden" name="phraseId" th:value="${translationPair.id}">
+                            <input id="phraseId" type="hidden" name="phraseId" th:value="${phraseUser.id}">
                             <button type="submit" id="plus" class="btn_plus_page custom-tooltip pulse" data-tooltip="Додати в свою базу">
                                 <span class="lesson_plus_ico"></span>
                             </button>

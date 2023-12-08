@@ -197,7 +197,7 @@ public class AdminController {
                                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                                 @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         if (principal != null) {
-            Page<TranslationPair> translationPairsPage = translationPairService.getTranslationPairsFourAdmin(page, size, 1l);
+            Page<PhraseUser> translationPairsPage = translationPairService.getTranslationPairsFourAdmin(page, size, 1l);
             model.addAttribute("translationPairs", translationPairsPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", translationPairsPage.getTotalPages());

@@ -9,11 +9,11 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoTranslationPairsPage;
 import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.PhraseUser;
 import com.example.learnenglish.model.TranslationPairsPage;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairPageRepository;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.Optional;
 public class TranslationPairPageService {
 
     private final TranslationPairPageRepository translationPairPageRepository;
-    private final TranslationPairRepository translationPairRepository;
+    private final PhraseUserRepository phraseUserRepository;
     private final CategoryRepository categoryRepository;
 
 
@@ -67,15 +67,15 @@ public class TranslationPairPageService {
             translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
             translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
             translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
-            List<TranslationPair> translationPairs = translationPairsPage.getTranslationPairs();
-            if (translationPairsPage.getTranslationPairs().size() != 0 &&
-                    translationPairsPage.getTranslationPairs().size() != dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs().size()) {
-                List<TranslationPair> dtoTranslationPairs = dtoTranslationPairsPage.getTranslationPairsPage().getTranslationPairs();
-                Iterator<TranslationPair> iterator = translationPairs.iterator();
+            List<PhraseUser> phraseUsers = translationPairsPage.getPhraseUsers();
+            if (translationPairsPage.getPhraseUsers().size() != 0 &&
+                    translationPairsPage.getPhraseUsers().size() != dtoTranslationPairsPage.getTranslationPairsPage().getPhraseUsers().size()) {
+                List<PhraseUser> dtoPhraseUsers = dtoTranslationPairsPage.getTranslationPairsPage().getPhraseUsers();
+                Iterator<PhraseUser> iterator = phraseUsers.iterator();
                 while (iterator.hasNext()) {
-                    TranslationPair pair = iterator.next();
+                    PhraseUser pair = iterator.next();
                     boolean containsId = false;
-                    for (TranslationPair arr : dtoTranslationPairs) {
+                    for (PhraseUser arr : dtoPhraseUsers) {
                         if (pair.getId().equals(arr.getId())) {
                             containsId = true;
                             break;
@@ -87,12 +87,12 @@ public class TranslationPairPageService {
                 }
             }
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
-            List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
-            for (TranslationPair arr : list) {
-                translationPairsPage.getTranslationPairs().add(arr);
+            List<PhraseUser> list = phraseUserRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+            for (PhraseUser arr : list) {
+                translationPairsPage.getPhraseUsers().add(arr);
             }
         }
-            translationPairsPage.setTranslationPairs(translationPairs);
+            translationPairsPage.setPhraseUsers(phraseUsers);
         if (categoryId != 0 && translationPairsPage.getTranslationPairsPageCategory() == null) {
             Category category = categoryRepository.findById(categoryId).get();
             translationPairsPage.setTranslationPairsPageCategory(category);
@@ -114,8 +114,8 @@ public class TranslationPairPageService {
         translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());
         translationPairsPage.setInfo(dtoTranslationPairsPage.getTranslationPairsPage().getInfo());
         if (dtoTranslationPairsPage.getTranslationPairsId().size() != 0) {
-            List<TranslationPair> list = translationPairRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
-            translationPairsPage.setTranslationPairs(list);
+            List<PhraseUser> list = phraseUserRepository.findByIds(dtoTranslationPairsPage.getTranslationPairsId());
+            translationPairsPage.setPhraseUsers(list);
         }
         if (categoryId != 0) {
             Category category = categoryRepository.findById(categoryId).get();

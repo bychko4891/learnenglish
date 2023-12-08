@@ -10,11 +10,11 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.TranslationPairUser;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.model.PhrasesAndUser;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import com.example.learnenglish.responsemessage.*;
-import com.example.learnenglish.model.TranslationPair;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,23 +28,23 @@ public class TranslationPairValidationAndSaveService {
     private final TranslationPairService translationPairService;
     private final LessonService lessonService;
     private final UserService userService;
-    private final TranslationPairRepository translationPairRepository;
+    private final PhraseUserRepository phraseUserRepository;
     private final TranslationPairUserRepository translationPairUserRepository;
 
 
 
     public Optional<?> check(DtoTranslationPair dtoTranslationPair, String roleUser) {
-        Optional<TranslationPair> translationPairOptional = translationPairRepository.findById(dtoTranslationPair.getId());
+        Optional<PhraseUser> translationPairOptional = phraseUserRepository.findById(dtoTranslationPair.getId());
         DtoTranslationPair dtoTranslationPairCleared = cleaningText(dtoTranslationPair, roleUser);
 
         if (translationPairOptional.isPresent() && validateTranslationPairs(dtoTranslationPairCleared)) {
-            TranslationPair translationPairBase = translationPairOptional.get();
-            translationPairBase.setUkrText(dtoTranslationPairCleared.getUkrText());
-            translationPairBase.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
-            translationPairBase.setEngText(dtoTranslationPairCleared.getEngText());
-            translationPairRepository.save(translationPairBase);
+            PhraseUser phraseUserBase = translationPairOptional.get();
+            phraseUserBase.setUkrText(dtoTranslationPairCleared.getUkrText());
+//            phraseUserBase.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
+            phraseUserBase.setEngText(dtoTranslationPairCleared.getEngText());
+            phraseUserRepository.save(phraseUserBase);
             DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-            dtoTranslationPairToUI.setId(translationPairBase.getId());
+            dtoTranslationPairToUI.setId(phraseUserBase.getId());
             dtoTranslationPairToUI.setUkrText(dtoTranslationPairCleared.getUkrText());
             dtoTranslationPairToUI.setUkrTextFemale(dtoTranslationPairCleared.getUkrTextFemale());
             dtoTranslationPairToUI.setEngText(dtoTranslationPairCleared.getEngText());
@@ -57,7 +57,7 @@ public class TranslationPairValidationAndSaveService {
 
         if (validateTranslationPairs(dtoTranslationPairCleared)) {
             if (!translationPairService.existsByEngTextAndUkrText(dtoTranslationPairCleared.getEngText(), dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId())) {
-                translationPairRepository.save(convertToTranslationPair(dtoTranslationPairCleared, roleUser));
+                phraseUserRepository.save(convertToTranslationPair(dtoTranslationPairCleared, roleUser));
                 return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
             } else {
                 return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
@@ -100,33 +100,33 @@ public class TranslationPairValidationAndSaveService {
     }
 
 
-    private TranslationPair convertToTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
-        TranslationPair translationPair = new TranslationPair();
-        translationPair.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
-        translationPair.setUkrText(dtoTranslationPair.getUkrText());
-        translationPair.setUkrTextFemale(dtoTranslationPair.getUkrTextFemale());
-        translationPair.setEngText(dtoTranslationPair.getEngText());
+    private PhraseUser convertToTranslationPair(DtoTranslationPair dtoTranslationPair, String roleUser) {
+        PhraseUser phraseUser = new PhraseUser();
+//        phraseUser.setLessonCounter(translationPairService.findByCountTranslationPairInLesson(dtoTranslationPair.getLessonId(), dtoTranslationPair.getUserId()) + 1);
+        phraseUser.setUkrText(dtoTranslationPair.getUkrText());
+//        phraseUser.setUkrTextFemale(dtoTranslationPair.getUkrTextFemale());
+        phraseUser.setEngText(dtoTranslationPair.getEngText());
         if(roleUser.equals("[ROLE_ADMIN]")){
-            if(translationPair.getAudio() == null){
+            if(phraseUser.getAudio() == null){
                 Audio audio = new Audio();
                 audio.setName(dtoTranslationPair.getEngText());
-                translationPair.setAudio(audio);
+                phraseUser.setAudio(audio);
             } else {
-                translationPair.getAudio().setName(dtoTranslationPair.getEngText());
+                phraseUser.getAudio().setName(dtoTranslationPair.getEngText());
             }
         }
-        translationPair.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
-        translationPair.setUser(userService.getUserById(dtoTranslationPair.getUserId()));
+        phraseUser.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
+        phraseUser.setUser(userService.getUserById(dtoTranslationPair.getUserId()));
         if(roleUser.equals("[ROLE_USER]")){
-            translationPair.setUserTranslationPair(true);
-            TranslationPairUser translationPairUser = new TranslationPairUser();
-            translationPairUser.setTranslationPair(translationPair);
-            translationPairUser.setUser(userService.getUserById(dtoTranslationPair.getUserId()));
-            translationPairUser.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
-            translationPairUser.setRepeatable(true);
-            translationPairUserRepository.save(translationPairUser);
+            phraseUser.setUserTranslationPair(true);
+            PhrasesAndUser phrasesAndUser = new PhrasesAndUser();
+            phrasesAndUser.setPhraseUser(phraseUser);
+            phrasesAndUser.setUser(userService.getUserById(dtoTranslationPair.getUserId()));
+            phrasesAndUser.setLesson(lessonService.getLesson(dtoTranslationPair.getLessonId()));
+            phrasesAndUser.setRepeatable(true);
+            translationPairUserRepository.save(phrasesAndUser);
         }
-        return translationPair;
+        return phraseUser;
     }
 
 }

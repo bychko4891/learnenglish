@@ -51,12 +51,12 @@
                                      th:alt="${'Американська вимова слова ' + word.name}"
                                      th:title="${'Американська вимова слова ' + word.name}">
                                 </span>
-<!--                                <div th:if="${word.translationPairs != null}"-->
-                                <span th:if="${#lists.size(word.translationPairs) > 0}" class="toggle" >▼</span>
-                                <ul th:if="${word.translationPairs}" class="category phrase_content">
-                                    <li th:each="translationPair : ${word.translationPairs}" style="margin-top: 5px;">
-                                        <span th:text="${translationPair.engText}"></span>
-                                        <span th:text="${translationPair.ukrText }"></span>
+<!--                                <div th:if="${word.phraseUsers != null}"-->
+                                <span th:if="${#lists.size(word.phraseUsers) > 0}" class="toggle" >▼</span>
+                                <ul th:if="${word.phraseUsers}" class="category phrase_content">
+                                    <li th:each="phraseUser : ${word.phraseUsers}" style="margin-top: 5px;">
+                                        <span th:text="${phraseUser.engText}"></span>
+                                        <span th:text="${phraseUser.ukrText }"></span>
 <!--                                        <a th:href="@{'/admin-page/' + ${subcategoryTwo.id} + '/category-edit'}" style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>-->
                                     </li>
                                 </ul>

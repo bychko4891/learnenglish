@@ -7,7 +7,7 @@ package com.example.learnenglish.dto;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.PhraseUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -30,11 +30,11 @@ public class DtoTranslationPairToUI {
     public DtoTranslationPairToUI(Long id, String ukrText, String engText) {
     }
 
-    public static DtoTranslationPairToUI convertToDTO(TranslationPair translationPair) {
+    public static DtoTranslationPairToUI convertToDTO(PhraseUser phraseUser) {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-        dtoTranslationPairToUI.setId(translationPair.getId());
-        dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
-        dtoTranslationPairToUI.setEngText(translationPair.getEngText());
+        dtoTranslationPairToUI.setId(phraseUser.getId());
+        dtoTranslationPairToUI.setUkrText(phraseUser.getUkrText());
+        dtoTranslationPairToUI.setEngText(phraseUser.getEngText());
         return dtoTranslationPairToUI;
     }
 }

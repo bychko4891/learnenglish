@@ -10,7 +10,7 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.TranslationPairsPage;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.repository.TranslationPairPageRepository;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +34,7 @@ class TranslationPairPageServiceTest {
     private TranslationPairPageRepository translationPairPageRepository;
 
     @Mock
-    private TranslationPairRepository translationPairRepository;
+    private PhraseUserRepository phraseUserRepository;
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -44,7 +44,7 @@ class TranslationPairPageServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        translationPairPageService = new TranslationPairPageService(translationPairPageRepository, translationPairRepository, categoryRepository);
+        translationPairPageService = new TranslationPairPageService(translationPairPageRepository, phraseUserRepository, categoryRepository);
     }
 
     @Test

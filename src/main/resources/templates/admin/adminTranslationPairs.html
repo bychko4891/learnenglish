@@ -23,31 +23,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="translationPair : ${translationPairs}">
-                        <td style="display: none"><input type="hidden" name="id" th:value="${translationPair.id}"/></td>
+                    <tr th:each="phraseUser : ${phraseUsers}">
+                        <td style="display: none"><input type="hidden" name="id" th:value="${phraseUser.id}"/></td>
                         <td>
-                            <span th:text="${translationPair.lesson.name}"></span>
+                            <span th:text="${phraseUser.lesson.name}"></span>
                         </td>
                         <td>
                             <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
-                            <span th:text="${translationPair.ukrText}"></span>
-                            <input th:id="'ukrText' + ${translationPair.id}" class="hidden_content" type="text"
-                                   th:value="${translationPair.ukrText}"/>
-                            <div th:id="'ukrTextError' + ${translationPair.id}" class="error_message"></div>
+                            <span th:text="${phraseUser.ukrText}"></span>
+                            <input th:id="'ukrText' + ${phraseUser.id}" class="hidden_content" type="text"
+                                   th:value="${phraseUser.ukrText}"/>
+                            <div th:id="'ukrTextError' + ${phraseUser.id}" class="error_message"></div>
                         </td>
                         <td>
                             <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
-                            <span th:text="${translationPair.ukrTextFemale}"></span>
-                            <input th:id="'ukrTextFemale' + ${translationPair.id}" class="hidden_content" type="text"
-                                   th:value="${translationPair.getUkrTextFemale}"/>
-                            <div th:id="'ukrTextFemaleError' + ${translationPair.id}" class="error_message"></div>
+                            <span th:text="${phraseUser.ukrTextFemale}"></span>
+                            <input th:id="'ukrTextFemale' + ${phraseUser.id}" class="hidden_content" type="text"
+                                   th:value="${phraseUser.getUkrTextFemale}"/>
+                            <div th:id="'ukrTextFemaleError' + ${phraseUser.id}" class="error_message"></div>
                         </td>
                         <td>
                             <!-- Відображення поля як текст або як input, залежно від режиму редагування -->
-                            <span th:text="${translationPair.engText}"></span>
-                            <input th:id="'engText' + ${translationPair.id}" class="hidden_content" type="text"
-                                   th:value="${translationPair.engText}"/>
-                            <div th:id="'engTextError' + ${translationPair.id}" class="error_message"></div>
+                            <span th:text="${phraseUser.engText}"></span>
+                            <input th:id="'engText' + ${phraseUser.id}" class="hidden_content" type="text"
+                                   th:value="${phraseUser.engText}"/>
+                            <div th:id="'engTextError' + ${phraseUser.id}" class="error_message"></div>
                         </td>
                         <td>
                             <button class="editButton" onclick="toggleEditMode(this)"><i class="fa-regular fa-pen-to-square"></i></button>

@@ -1,6 +1,6 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.PhraseUser;
 import com.example.learnenglish.service.TranslationPairService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ public class TranslationPairController {
                                                 @PathVariable("id") Long userId) {
         if (principal != null) {
             if(page < 0) page = 0;
-            Page<TranslationPair> userTranslationPairs = translationPairService.getUserTranslationPairs(page, size, userId);
+            Page<PhraseUser> userTranslationPairs = translationPairService.getUserTranslationPairs(page, size, userId);
             if(userTranslationPairs.getTotalPages() == 0){
                 model.addAttribute("totalPages", 1);
             }else{

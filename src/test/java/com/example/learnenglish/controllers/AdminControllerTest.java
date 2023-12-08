@@ -365,7 +365,7 @@ class AdminControllerTest {
         var page = 1;
         var size = 10;
 
-        Page<TranslationPair> translationPairPage = mock(Page.class);
+        Page<PhraseUser> translationPairPage = mock(Page.class);
 
         when(translationPairService.getTranslationPairsFourAdmin(page, size, 1L)).thenReturn(translationPairPage);
 

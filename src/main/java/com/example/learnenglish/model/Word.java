@@ -65,7 +65,7 @@ public class Word implements Serializable {
     @JoinTable(name = "phrase_and_word",
             joinColumns = @JoinColumn(name = "word_id"),
             inverseJoinColumns = @JoinColumn(name = "phrase_id"))
-    private List<TranslationPair> translationPairs;
+    private List<PhraseUser> phraseUsers;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id")
@@ -78,11 +78,11 @@ public class Word implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Word word)) return false;
-        return isRepeatable == word.isRepeatable && published == word.published && Objects.equals(id, word.id) && Objects.equals(name, word.name) && Objects.equals(translate, word.translate) && Objects.equals(description, word.description) && Objects.equals(brTranscription, word.brTranscription) && Objects.equals(usaTranscription, word.usaTranscription) && Objects.equals(irregularVerbPt, word.irregularVerbPt) && Objects.equals(irregularVerbPp, word.irregularVerbPp) && Objects.equals(info, word.info) && Objects.equals(images, word.images) && Objects.equals(wordLesson, word.wordLesson) && Objects.equals(audio, word.audio) && Objects.equals(translationPairs, word.translationPairs) && Objects.equals(wordCategory, word.wordCategory);
+        return isRepeatable == word.isRepeatable && published == word.published && Objects.equals(id, word.id) && Objects.equals(name, word.name) && Objects.equals(translate, word.translate) && Objects.equals(description, word.description) && Objects.equals(brTranscription, word.brTranscription) && Objects.equals(usaTranscription, word.usaTranscription) && Objects.equals(irregularVerbPt, word.irregularVerbPt) && Objects.equals(irregularVerbPp, word.irregularVerbPp) && Objects.equals(info, word.info) && Objects.equals(images, word.images) && Objects.equals(wordLesson, word.wordLesson) && Objects.equals(audio, word.audio) && Objects.equals(phraseUsers, word.phraseUsers) && Objects.equals(wordCategory, word.wordCategory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, translate, description, brTranscription, usaTranscription, irregularVerbPt, irregularVerbPp, isRepeatable, info, published, images, wordLesson, audio, translationPairs, wordCategory);
+        return Objects.hash(id, name, translate, description, brTranscription, usaTranscription, irregularVerbPt, irregularVerbPp, isRepeatable, info, published, images, wordLesson, audio, phraseUsers, wordCategory);
     }
 }

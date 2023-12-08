@@ -18,21 +18,20 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "translation_pair_user")
-public class TranslationPairUser implements Serializable {
+public class PhrasesAndUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "translation_pair_id")
-    private TranslationPair translationPair;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "phrase_user_id") // Змінив поле
+    private PhraseUser phraseUser;
 
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @JoinColumn(name = "phrase_application_id") // змінив поле
+    private PhraseApplication phraseApplication;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -41,6 +40,6 @@ public class TranslationPairUser implements Serializable {
     @Column(name = "is_repetable")
     private boolean isRepeatable = true;
 
-    public TranslationPairUser() {
+    public PhrasesAndUser() {
     }
 }

@@ -12,7 +12,7 @@ import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.CategoryRepository;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -35,7 +35,7 @@ import java.util.Optional;
 public class WordService {
     private final WordRepository wordRepository;
     private final CategoryRepository wordCategoryRepository;
-    private final TranslationPairRepository translationPairRepository;
+    private final PhraseUserRepository phraseUserRepository;
 
     public Page<Word> getWordsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -56,14 +56,14 @@ public class WordService {
         if (wordOptional.isPresent()) {
             Word word = wordOptional.get();
             DtoWord.convertDtoToWord(dtoWord, word);
-            List<TranslationPair> translationPairs = word.getTranslationPairs();
-            if (translationPairs.size() != 0 && translationPairs.size() != dtoWord.getWord().getTranslationPairs().size()) {
-                List<TranslationPair> dtoTranslationPairs = dtoWord.getWord().getTranslationPairs();
-                Iterator<TranslationPair> iterator = translationPairs.iterator();
+            List<PhraseUser> phraseUsers = word.getPhraseUsers();
+            if (phraseUsers.size() != 0 && phraseUsers.size() != dtoWord.getWord().getPhraseUsers().size()) {
+                List<PhraseUser> dtoPhraseUsers = dtoWord.getWord().getPhraseUsers();
+                Iterator<PhraseUser> iterator = phraseUsers.iterator();
                 while (iterator.hasNext()) {
-                    TranslationPair pair = iterator.next();
+                    PhraseUser pair = iterator.next();
                     boolean containsId = false;
-                    for (TranslationPair arr : dtoTranslationPairs) {
+                    for (PhraseUser arr : dtoPhraseUsers) {
                         if (pair.getId().equals(arr.getId())) {
                             containsId = true;
                             break;
@@ -75,12 +75,12 @@ public class WordService {
                 }
             }
             if (dtoWord.getTranslationPairsId().size() != 0) {
-                List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
-                for (TranslationPair arr : list) {
-                    word.getTranslationPairs().add(arr);
+                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
+                for (PhraseUser arr : list) {
+                    word.getPhraseUsers().add(arr);
                 }
             }
-            word.setTranslationPairs(translationPairs);
+            word.setPhraseUsers(phraseUsers);
             if (categoryId != 0 && word.getWordCategory() == null) {
                 Category wordCategory = wordCategoryRepository.findById(categoryId).get();
                 word.setWordCategory(wordCategory);
@@ -104,8 +104,8 @@ public class WordService {
             word.setImages(images);
             DtoWord.convertDtoToWord(dtoWord, word);
             if (dtoWord.getTranslationPairsId().size() != 0) {
-                List<TranslationPair> list = translationPairRepository.findByIds(dtoWord.getTranslationPairsId());
-                word.setTranslationPairs(list);
+                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
+                word.setPhraseUsers(list);
             }
             if (categoryId != 0) {
                 Category wordCategory = wordCategoryRepository.findById(categoryId).get();

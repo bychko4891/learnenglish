@@ -8,13 +8,11 @@ package com.example.learnenglish.service;
  */
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.CategoryRepository;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.WordRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -29,7 +27,7 @@ class WordServiceTest {
     @Mock
     private CategoryRepository categoryRepository;
     @Mock
-    private TranslationPairRepository translationPairRepository;
+    private PhraseUserRepository phraseUserRepository;
     @Mock
     private UserService userService;
 

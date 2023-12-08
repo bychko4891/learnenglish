@@ -8,9 +8,9 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.PhraseUser;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,26 +24,26 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class TranslationPairService {
-    private final TranslationPairRepository translationPairRepository;
+    private final PhraseUserRepository phraseUserRepository;
 
     public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
-        return translationPairRepository.countTranslationPairByUserIdAndLessonId(userId, lessonId);
+        return phraseUserRepository.countTranslationPairByUserIdAndLessonId(userId, lessonId);
 
     }
 
     public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
-        return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
+        return phraseUserRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
     }
 
 
     public DtoTranslationPairToUI getDtoTranslationPair(User user, Long lessonId,  String userGender) {
         if(!user.isUserPhrasesInLesson()){
-            Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPair(1l, lessonId);
+            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPair(1l, lessonId);
             if(translationPairOptional.isPresent()){
                 return translationPairConvertToDtoApplicationText(translationPairOptional.get(), userGender);
             } else return translationPairIsNull();
         }else {
-            Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPairUserText(user.getId(), lessonId);
+            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPairUserText(user.getId(), lessonId);
             if(translationPairOptional.isPresent()){
                 return translationPairConvertToDtoUserText(translationPairOptional.get());
             } else return translationPairIsNull();
@@ -51,8 +51,8 @@ public class TranslationPairService {
     }
 
 
-    private DtoTranslationPairToUI translationPairConvertToDtoUserText(TranslationPair translationPair) {
-        DtoTranslationPairToUI dtoTranslationPairToUI = DtoTranslationPairToUI.convertToDTO(translationPair);
+    private DtoTranslationPairToUI translationPairConvertToDtoUserText(PhraseUser phraseUser) {
+        DtoTranslationPairToUI dtoTranslationPairToUI = DtoTranslationPairToUI.convertToDTO(phraseUser);
         int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {
@@ -73,15 +73,15 @@ public class TranslationPairService {
         return dtoTranslationPairToUI;
     }
 
-    private DtoTranslationPairToUI translationPairConvertToDtoApplicationText(TranslationPair translationPair, String userGender) {
+    private DtoTranslationPairToUI translationPairConvertToDtoApplicationText(PhraseUser phraseUser, String userGender) {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
-        dtoTranslationPairToUI.setId(translationPair.getId());
+        dtoTranslationPairToUI.setId(phraseUser.getId());
         if (userGender.equals("[FEMALE]")) {
-            dtoTranslationPairToUI.setUkrText(translationPair.getUkrTextFemale());
+            dtoTranslationPairToUI.setUkrText(phraseUser.getUkrTextFemale());
         } else {
-            dtoTranslationPairToUI.setUkrText(translationPair.getUkrText());
+            dtoTranslationPairToUI.setUkrText(phraseUser.getUkrText());
         }
-        dtoTranslationPairToUI.setEngText(translationPair.getEngText());
+        dtoTranslationPairToUI.setEngText(phraseUser.getEngText());
         int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {
@@ -94,29 +94,29 @@ public class TranslationPairService {
         return dtoTranslationPairToUI;
     }
 
-    public Page<TranslationPair> getUserTranslationPairs(int page, int size, Long userId) {
+    public Page<PhraseUser> getUserTranslationPairs(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Object[]> resultPage = translationPairRepository.findAll(pageable, userId);
-        List<TranslationPair> translationPairs = new ArrayList<>();
+        Page<Object[]> resultPage = phraseUserRepository.findAll(pageable, userId);
+        List<PhraseUser> phraseUsers = new ArrayList<>();
         for (Object[] result : resultPage.getContent()) {
-            TranslationPair translationPair = (TranslationPair) result[0];
+            PhraseUser phraseUser = (PhraseUser) result[0];
             Boolean isRepeatable = (Boolean) result[1];
-            translationPair.setRepeatable(isRepeatable);
-            translationPairs.add(translationPair);
+            phraseUser.setRepeatable(isRepeatable);
+            phraseUsers.add(phraseUser);
         }
-        return new PageImpl<>(translationPairs, pageable, resultPage.getTotalElements());
+        return new PageImpl<>(phraseUsers, pageable, resultPage.getTotalElements());
     }
 
-    public Page<TranslationPair> getTranslationPairsFourAdmin(int page, int size, Long userId) {
+    public Page<PhraseUser> getTranslationPairsFourAdmin(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
-        return translationPairRepository.findAllForAdmin(pageable, userId);
+        return phraseUserRepository.findAllForAdmin(pageable, userId);
     }
 
     public List<DtoTranslationPairToUI> searchResult(String searchTerm) {
-        List<TranslationPair> list = translationPairRepository.findTranslationPair(1l, searchTerm);
+        List<PhraseUser> list = phraseUserRepository.findTranslationPair(1l, searchTerm);
         List<DtoTranslationPairToUI> toUIList = new ArrayList<>();
         if (list.size() != 0) {
-            for (TranslationPair arr : list) {
+            for (PhraseUser arr : list) {
                 toUIList.add(DtoTranslationPairToUI.convertToDTO(arr));
             }
             return toUIList;

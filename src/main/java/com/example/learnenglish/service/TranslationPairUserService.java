@@ -7,10 +7,10 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPair;
-import com.example.learnenglish.model.TranslationPairUser;
+import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.model.PhrasesAndUser;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
@@ -24,54 +24,54 @@ import java.util.Optional;
 @Service
 public class TranslationPairUserService {
     private final TranslationPairUserRepository translationPairUserRepository;
-    private final TranslationPairRepository translationPairRepository;
+    private final PhraseUserRepository phraseUserRepository;
     private final UserRepository userRepository;
 
     public TranslationPairUserService(TranslationPairUserRepository translationPairUserRepository,
-                                      TranslationPairRepository translationPairRepository, UserRepository userRepository) {
+                                      PhraseUserRepository phraseUserRepository, UserRepository userRepository) {
         this.translationPairUserRepository = translationPairUserRepository;
-        this.translationPairRepository = translationPairRepository;
+        this.phraseUserRepository = phraseUserRepository;
         this.userRepository = userRepository;
     }
 
     public CustomResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) {
-        Optional<TranslationPairUser> optionalTranslationPairUser = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairsId, user.getId());
+        Optional<PhrasesAndUser> optionalTranslationPairUser = translationPairUserRepository.findTranslationPairUserByPhraseUser_IdAndUserId(translationPairsId, user.getId());
         if(optionalTranslationPairUser.isEmpty()){
-        TranslationPair translationPair = translationPairRepository.findById(translationPairsId).get();
-        TranslationPairUser translationPairUser = new TranslationPairUser();
-        translationPairUser.setUser(user);
-        translationPairUser.setTranslationPair(translationPair);
-        translationPairUser.setLesson(translationPair.getLesson());
-        translationPairUser.setRepeatable(true);
-        translationPairUserRepository.save(translationPairUser);
+        PhraseUser phraseUser = phraseUserRepository.findById(translationPairsId).get();
+        PhrasesAndUser phrasesAndUser = new PhrasesAndUser();
+        phrasesAndUser.setUser(user);
+        phrasesAndUser.setPhraseUser(phraseUser);
+        phrasesAndUser.setLesson(phraseUser.getLesson());
+        phrasesAndUser.setRepeatable(true);
+        translationPairUserRepository.save(phrasesAndUser);
         return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
         } return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
 
     }
 
     public CustomResponseMessage setRepetitionPhrase(Long translationPairId, Long userId, boolean isChecked) {
-        Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, userId);
+        Optional<PhrasesAndUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByPhraseUser_IdAndUserId(translationPairId, userId);
         if (translationPairUserOptional.isPresent()) {
-            TranslationPairUser translationPairUser = translationPairUserOptional.get();
-            translationPairUser.setRepeatable(isChecked);
-            translationPairUserRepository.save(translationPairUser);
+            PhrasesAndUser phrasesAndUser = translationPairUserOptional.get();
+            phrasesAndUser.setRepeatable(isChecked);
+            translationPairUserRepository.save(phrasesAndUser);
             return new CustomResponseMessage(Message.SUCCESS_CHECKBOX);
         } else return new CustomResponseMessage(Message.ERROR_SERVER);
     }
 
     public CustomResponseMessage userPhraseRemove(Long translationPairId, User user) {
-        Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, user.getId());
-        TranslationPairUser translationPairUser = translationPairUserOptional.orElseThrow();
-        if (translationPairUser.getTranslationPair().getUser().getId().equals(user.getId())) {
-            List<TranslationPair> translationPairList = user.getTranslationPairs();
-            translationPairList.removeIf(obj -> obj.getId().equals(translationPairId));
-            user.setTranslationPairs(translationPairList);
+        Optional<PhrasesAndUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByPhraseUser_IdAndUserId(translationPairId, user.getId());
+        PhrasesAndUser phrasesAndUser = translationPairUserOptional.orElseThrow();
+        if (phrasesAndUser.getPhraseUser().getUser().getId().equals(user.getId())) {
+            List<PhraseUser> phraseUserList = user.getPhraseUsers();
+            phraseUserList.removeIf(obj -> obj.getId().equals(translationPairId));
+            user.setPhraseUsers(phraseUserList);
             userRepository.save(user);
             translationPairUserRepository.delete(translationPairUserOptional.get());
-            translationPairRepository.deleteById(translationPairId);
+            phraseUserRepository.deleteById(translationPairId);
             return new CustomResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
         }
-        translationPairUserRepository.delete(translationPairUser);
+        translationPairUserRepository.delete(phrasesAndUser);
         return new CustomResponseMessage(Message.SUCCESS_REMOVE_USER_PHRASE);
     }
 

@@ -7,7 +7,7 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.repository.TranslationPairRepository;
+import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.TranslationPairUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class TranslationPairValidationAndSaveServiceTest {
     @Mock
     private UserService userService;
     @Mock
-    private TranslationPairRepository translationPairRepository;
+    private PhraseUserRepository phraseUserRepository;
     @Mock
     private TranslationPairUserRepository translationPairUserRepository;
     @InjectMocks
@@ -33,7 +33,7 @@ class TranslationPairValidationAndSaveServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         translationPairValidationAndSaveService = new TranslationPairValidationAndSaveService(translationPairService,
-                lessonService, userService, translationPairRepository, translationPairUserRepository);
+                lessonService, userService, phraseUserRepository, translationPairUserRepository);
     }
 
     @Test

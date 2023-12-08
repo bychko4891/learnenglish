@@ -7,7 +7,7 @@ package com.example.learnenglish.model.users;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPair;
+import com.example.learnenglish.model.PhraseUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,7 +63,7 @@ public class User implements UserDetails {
     private List<UserWordLessonProgress> wordLessonProgress;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-    private List<TranslationPair> translationPairs = new ArrayList<>();
+    private List<PhraseUser> phraseUsers = new ArrayList<>();
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
 //    private List<Word> words = new ArrayList<>();

@@ -65,10 +65,10 @@
 
                 <label>Присутні фрази на сторінці: </label>
                 <div id="savedItemsContainer">
-                    <div th:each="translationPair : ${word.translationPairs}">
-                        <label th:text="${translationPair.engText}"></label>
-                        <input name="id" type="hidden" th:value="${translationPair.id}">
-                        <button class="deleteBtn" th:data-id="${translationPair.id}">Видалити</button>
+                    <div th:each="phraseUser : ${word.phraseUsers}">
+                        <label th:text="${phraseUser.engText}"></label>
+                        <input name="id" type="hidden" th:value="${phraseUser.id}">
+                        <button class="deleteBtn" th:data-id="${phraseUser.id}">Видалити</button>
                     </div>
                 </div>
 
