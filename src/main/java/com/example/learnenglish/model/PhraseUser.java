@@ -27,20 +27,23 @@ public class PhraseUser implements Serializable {
 //    @Column(name="lesson_counter")
 //    private Long lessonCounter;
 
-    @Column(name = "ukr_text", length = 500)
-    private String ukrText;
+    @Column(name = "ukr_translate", length = 500)
+    private String ukrTranslate;
 
 //    @Column(name = "ukr_text_female", length = 500)
 //    private String ukrTextFemale;
 
-    @Column(name = "eng_text", length = 500)
-    private String engText;
+    @Column(name = "eng_phrase", length = 500)
+    private String engPhrase;
 
     @Transient
     private boolean isRepeatable;
 
-    @Column
-    private boolean userTranslationPair = false;
+    @OneToOne(mappedBy = "phraseUser", cascade = CascadeType.ALL)
+    private PhraseAndUser phraseAndUser;
+
+//    @Column
+//    private boolean userTranslationPair = false;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "audio_id")

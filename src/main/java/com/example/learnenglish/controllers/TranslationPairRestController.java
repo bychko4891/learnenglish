@@ -12,7 +12,7 @@ import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
-import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
+import com.example.learnenglish.service.PhraseUserService;
 import com.example.learnenglish.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ public class TranslationPairRestController {
     private final UserService userService;
     private final HttpSession session;
     private final TranslationPairService translationPairService;
-    private final TranslationPairValidationAndSaveService translationPairValidationAndSaveService;
+    private final PhraseUserService phraseUserService;
 
 
     @PostMapping("/translation-pair/check-edit")
@@ -47,7 +47,7 @@ public class TranslationPairRestController {
                 return ResponseEntity.badRequest().body(errors);
             }
             String roleUser = userService.findByEmail(principal.getName()).getAuthority().toString();
-            Optional<?> optional = translationPairValidationAndSaveService.check(dtoTranslationPair, roleUser);
+            Optional<?> optional = phraseUserService.check(dtoTranslationPair, roleUser);
             Object object = optional.get();
             if(object instanceof DtoTranslationPairToUI){
                 return ResponseEntity.ok((DtoTranslationPairToUI)object);

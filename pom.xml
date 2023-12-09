@@ -142,7 +142,21 @@
             <version>6.0.11</version>
         </dependency>
 
-    </dependencies>
+		<!--   mapper   -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.5.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.5.5.Final</version>
+		</dependency>
+
+
+
+	</dependencies>
 
 	<build>
 		<plugins>

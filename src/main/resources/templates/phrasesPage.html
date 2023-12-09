@@ -65,8 +65,8 @@
                 <div th:utext="${translationPairsPage.info}"></div>
 
                 <div th:each="phraseUsers : ${translationPairsPage.phraseUsers}">
-                    <span th:text="${phraseUsers.engText + ' - '}"></span>
-                    <span th:text="${phraseUsers.ukrText}"></span>
+                    <span th:text="${phraseUsers.getEngPhrase + ' - '}"></span>
+                    <span th:text="${phraseUsers.getUkrTranslate}"></span>
 
                 </div>
 

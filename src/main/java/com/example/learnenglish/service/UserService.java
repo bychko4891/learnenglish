@@ -11,6 +11,7 @@ import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +47,8 @@ public class UserService {
 
     private final HttpServletRequest request;
 
+    private final AuthenticationManager authenticationManager;
+
     public boolean createUser(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email).isPresent()) return false;
@@ -67,6 +71,12 @@ public class UserService {
             mailSender.sendSimpleMessage(user.getEmail(), "Activation code", mailText);
         }
         return true;
+    }
+
+    public User getUserFromSecurityContextHolder() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return userRepository.findByEmail(userDetails.getUsername()).get();
     }
 
 

@@ -8,14 +8,15 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.repository.PhraseUserRepository;
-import com.example.learnenglish.repository.TranslationPairUserRepository;
+import com.example.learnenglish.repository.PhrasesAndUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class TranslationPairValidationAndSaveServiceTest {
+class PhraseAndUserServiceTest {
+
     @Mock
     private TranslationPairService translationPairService;
     @Mock
@@ -24,16 +25,19 @@ class TranslationPairValidationAndSaveServiceTest {
     private UserService userService;
     @Mock
     private PhraseUserRepository phraseUserRepository;
+
     @Mock
-    private TranslationPairUserRepository translationPairUserRepository;
+    private PhraseAndUserService phraseAndUserService;
+    @Mock
+    private PhrasesAndUserRepository phrasesAndUserRepository;
     @InjectMocks
-    private TranslationPairValidationAndSaveService translationPairValidationAndSaveService;
+    private PhraseUserService phraseUserService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        translationPairValidationAndSaveService = new TranslationPairValidationAndSaveService(translationPairService,
-                lessonService, userService, phraseUserRepository, translationPairUserRepository);
+        phraseUserService = new PhraseUserService(translationPairService,
+                lessonService, userService, phraseUserRepository, phraseAndUserService, phrasesAndUserRepository);
     }
 
     @Test

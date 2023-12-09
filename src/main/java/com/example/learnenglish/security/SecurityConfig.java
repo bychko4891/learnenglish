@@ -1,4 +1,4 @@
-package com.example.learnenglish.config;
+package com.example.learnenglish.security;
 
 /**
  * @author: Anatolii Bychko
@@ -7,8 +7,10 @@ package com.example.learnenglish.config;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.config.CustomRequestLoggingFilter;
+import com.example.learnenglish.config.MySessionInformationExpiredStrategy;
 import com.example.learnenglish.model.users.User;
-import com.example.learnenglish.service.CustomUserDetailsService;
+import com.example.learnenglish.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.*;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -36,18 +35,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
         prePostEnabled = true)
 @ComponentScan(basePackages = "com.example.learnenglish")
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
 
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setUserDetailsService(userDetailsServiceImpl);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

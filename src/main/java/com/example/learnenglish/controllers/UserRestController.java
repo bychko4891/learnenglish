@@ -29,7 +29,7 @@ public class UserRestController {
 
     private final WordUserService wordUserService;
 
-    private final TranslationPairUserService translationPairUserService;
+    private final PhraseAndUserService phraseAndUserService;
     private final UserWordLessonProgressService userWordLessonProgressService;
 
     private final HttpSession session;
@@ -137,16 +137,7 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/user/phrase-plus")
-    public ResponseEntity<CustomResponseMessage> phraseUserPlus(@RequestParam("translationPairsId") Long translationPairsId,
-                                                                Principal principal) {
-        if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
 
-            return ResponseEntity.ok(translationPairUserService.userPlusTranslationPairs(user, translationPairsId));
-        }
-        return ResponseEntity.notFound().build();
-    }
 
     @PostMapping("/phrase/repetition-phrase-check")
     public ResponseEntity<CustomResponseMessage> isRepetitionPhrase(@RequestParam("isRepeatable") boolean isChecked,
@@ -154,7 +145,7 @@ public class UserRestController {
                                                                     Principal principal) {
         if (principal != null) {
             Long userId = userService.findByEmail(principal.getName()).getId();
-            return ResponseEntity.ok(translationPairUserService.setRepetitionPhrase(id, userId, isChecked));
+            return ResponseEntity.ok(phraseAndUserService.setRepetitionPhrase(id, userId, isChecked));
         }
         return ResponseEntity.notFound().build();
     }
@@ -175,7 +166,7 @@ public class UserRestController {
                                                                   Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
-            return ResponseEntity.ok(translationPairUserService.userPhraseRemove(translationPairId, user));
+            return ResponseEntity.ok(phraseAndUserService.userPhraseRemove(translationPairId, user));
         }
         return ResponseEntity.notFound().build();
     }

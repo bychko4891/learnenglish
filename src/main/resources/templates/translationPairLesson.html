@@ -54,8 +54,9 @@
                             <form id="phrasePlusLesson">
                                 <input id="phraseId" type="hidden" name="phraseId" value="">
                                 <button type="submit" id="plus" class="btn_plus_lesson custom-tooltip pulse"
-                                        data-tooltip="Додати в свою базу" style="margin-left: 40px;"><span
-                                        class="lesson_plus_ico"></span></button>
+                                        data-tooltip="Додати в свою базу" style="margin-left: 40px;">
+                                    <span class="lesson_plus_ico"></span>
+                                </button>
                                 <div class="tooltip_info"></div>
 
                             </form>
@@ -84,31 +85,14 @@
                         <h2>Завантажити</h2>
                         <div class="row">
                             <div class="col-md-6 col-lg-7 block_left">
-
                                 <h3 th:text="'Завантажити власний тект для ' + ${lesson.name}"></h3>
                                 <form id="add-pair">
-                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                <textarea id="ukrText" name="ukrText" rows="1"
-                                          placeholder="Текст українською"></textarea>
-                                        <div id="ukrTextError" class="error_message"></div>
+                                    <textarea id="ukrText" name="ukrTranslate" rows="1" placeholder="Текст українською"></textarea>
+                                    <div id="ukrTextError" class="error_message"></div>
                                         <br>
-                                        <textarea id="ukrTextFemale" name="ukrTextFemale" rows="1"
-                                                  placeholder="Текст українською W"></textarea>
-                                        <div class="error_message" id="ukrTextFemaleError"></div>
-                                        <br>
-                                    </div>
-                                    <div sec:authorize="hasRole('ROLE_USER')">
-                                <textarea id="ukrText" name="ukrText" rows="1"
-                                          placeholder="Текст українською"></textarea>
-                                        <div id="ukrTextError" class="error_message"></div>
-                                        <br>
-                                    </div>
-
-                                    <textarea id="engText" name="engText" rows="1" placeholder="In English"></textarea>
+                                    <textarea id="engText" name="engPhrase" rows="1" placeholder="In English"></textarea>
                                     <div id="engTextError" class="error_message"></div>
                                     <br>
-                                    <input type="hidden" name="lessonId" th:value="${lessonId}">
-                                    <input type="hidden" name="userId" th:value="${session.userId}">
                                     <button type="submit">Завантажити</button>
                                     <br>
                                 </form>

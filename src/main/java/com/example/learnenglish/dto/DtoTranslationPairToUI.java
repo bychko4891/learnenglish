@@ -33,8 +33,8 @@ public class DtoTranslationPairToUI {
     public static DtoTranslationPairToUI convertToDTO(PhraseUser phraseUser) {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
         dtoTranslationPairToUI.setId(phraseUser.getId());
-        dtoTranslationPairToUI.setUkrText(phraseUser.getUkrText());
-        dtoTranslationPairToUI.setEngText(phraseUser.getEngText());
+        dtoTranslationPairToUI.setUkrText(phraseUser.getUkrTranslate());
+        dtoTranslationPairToUI.setEngText(phraseUser.getEngPhrase());
         return dtoTranslationPairToUI;
     }
 }

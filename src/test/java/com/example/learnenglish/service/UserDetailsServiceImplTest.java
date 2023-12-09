@@ -15,18 +15,18 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CustomUserDetailsServiceTest {
+class UserDetailsServiceImplTest {
 
     private UserRepository userRepositoryMock;
     @Mock
     private UserContextHolder userContextHolderMock;
     @InjectMocks
-    private CustomUserDetailsService customUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        customUserDetailsService = new CustomUserDetailsService(userRepositoryMock, userContextHolderMock);
+        userDetailsServiceImpl = new UserDetailsServiceImpl(userRepositoryMock, userContextHolderMock);
     }
 
     @Test
@@ -39,7 +39,7 @@ class CustomUserDetailsServiceTest {
 
         when(userRepositoryMock.findByEmail("user@example.com")).thenReturn(Optional.of(user));
 
-        var userDetails = customUserDetailsService.loadUserByUsername("user@example.com");
+        var userDetails = userDetailsServiceImpl.loadUserByUsername("user@example.com");
 
         assertNotNull(userDetails);
         assertEquals(user.getEmail(), userDetails.getUsername());
@@ -56,7 +56,7 @@ class CustomUserDetailsServiceTest {
     void shouldGiveExceptionUserByUsernameIfNotExist() {
         when(userRepositoryMock.findByEmail("user@example.com")).thenReturn(Optional.empty());
         assertThrows(UsernameNotFoundException.class, () -> {
-            customUserDetailsService.loadUserByUsername("user@example.com");
+            userDetailsServiceImpl.loadUserByUsername("user@example.com");
         });
 
         verify(userRepositoryMock, times(1)).findByEmail("user@example.com");

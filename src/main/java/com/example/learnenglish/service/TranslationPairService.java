@@ -27,27 +27,30 @@ public class TranslationPairService {
     private final PhraseUserRepository phraseUserRepository;
 
     public Long findByCountTranslationPairInLesson(long lessonId, long userId) {
-        return phraseUserRepository.countTranslationPairByUserIdAndLessonId(userId, lessonId);
+//        return phraseUserRepository.countTranslationPairByUserIdAndLessonId(userId, lessonId);
 
+        return null;
     }
 
     public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
-        return phraseUserRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
+//        return phraseUserRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
+        return true;
     }
 
 
     public DtoTranslationPairToUI getDtoTranslationPair(User user, Long lessonId,  String userGender) {
-        if(!user.isUserPhrasesInLesson()){
-            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPair(1l, lessonId);
-            if(translationPairOptional.isPresent()){
-                return translationPairConvertToDtoApplicationText(translationPairOptional.get(), userGender);
-            } else return translationPairIsNull();
-        }else {
-            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPairUserText(user.getId(), lessonId);
-            if(translationPairOptional.isPresent()){
-                return translationPairConvertToDtoUserText(translationPairOptional.get());
-            } else return translationPairIsNull();
-        }
+//        if(!user.isUserPhrasesInLesson()){
+//            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPair(1l, lessonId);
+//            if(translationPairOptional.isPresent()){
+//                return translationPairConvertToDtoApplicationText(translationPairOptional.get(), userGender);
+//            } else return translationPairIsNull();
+//        }else {
+//            Optional<PhraseUser> translationPairOptional = phraseUserRepository.randomTranslationPairUserText(user.getId(), lessonId);
+//            if(translationPairOptional.isPresent()){
+//                return translationPairConvertToDtoUserText(translationPairOptional.get());
+//            } else return translationPairIsNull();
+//        }
+        return null;
     }
 
 
@@ -76,12 +79,8 @@ public class TranslationPairService {
     private DtoTranslationPairToUI translationPairConvertToDtoApplicationText(PhraseUser phraseUser, String userGender) {
         DtoTranslationPairToUI dtoTranslationPairToUI = new DtoTranslationPairToUI();
         dtoTranslationPairToUI.setId(phraseUser.getId());
-        if (userGender.equals("[FEMALE]")) {
-            dtoTranslationPairToUI.setUkrText(phraseUser.getUkrTextFemale());
-        } else {
-            dtoTranslationPairToUI.setUkrText(phraseUser.getUkrText());
-        }
-        dtoTranslationPairToUI.setEngText(phraseUser.getEngText());
+        dtoTranslationPairToUI.setUkrText(phraseUser.getUkrTranslate());
+        dtoTranslationPairToUI.setEngText(phraseUser.getEngPhrase());
         int generateNumber = new Random().nextInt(1, 5);
         dtoTranslationPairToUI.setFragment("Fragment " + generateNumber);
         if (generateNumber == 4) {

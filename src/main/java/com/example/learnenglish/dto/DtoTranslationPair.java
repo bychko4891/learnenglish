@@ -36,9 +36,9 @@ public class DtoTranslationPair {
     @Length(min = 4, message = "Ваше речення дуже коротке")
     private String engText;
 
-    private Long lessonId;
+//    private Long lessonId;
 
-    private Long userId;
+//    private Long userId;
 
     public DtoTranslationPair() {
     }

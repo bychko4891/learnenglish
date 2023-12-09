@@ -153,9 +153,9 @@ $(document).ready(function () {
         event.preventDefault();
         var csrfToken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        var url = '/translation-pair/add';
+        var url = '/phrase/add';
         var formData = $(this).serializeArray();
-        if ($('textarea[name="ukrText"]').val() && $('textarea[name="engText"]').val()) {
+        if ($('textarea[name="ukrTranslate"]').val() && $('textarea[name="engPhrase"]').val()) {
             var jsonFormData = {};
             $(formData).each(function (index, obj) {
                 jsonFormData[obj.name] = obj.value;
@@ -172,7 +172,6 @@ $(document).ready(function () {
                     var status = result.status;
                     if (status == "Success") {
                         $('textarea[name="ukrText"]').val('');
-                        $('textarea[name="ukrTextFemale"]').val('');
                         $('textarea[name="engText"]').val('');
                         showSuccessToast(result.message);
                     } else {

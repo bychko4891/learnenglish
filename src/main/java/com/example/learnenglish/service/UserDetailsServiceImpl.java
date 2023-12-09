@@ -10,21 +10,19 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.UserContextHolder;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.UserRepository;
+import com.example.learnenglish.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
-// Не Буде змінюватись - в роботу
+
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     private final UserContextHolder userContextHolder;
@@ -34,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) throw new UsernameNotFoundException("User with name not found");
         userContextHolder.setActive(optionalUser.get().isActive());
-        return optionalUser.get();
+        return new UserDetailsImpl(optionalUser.get());
     }
 
 }

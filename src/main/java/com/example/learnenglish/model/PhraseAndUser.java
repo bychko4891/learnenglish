@@ -17,15 +17,15 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "translation_pair_user")
-public class PhrasesAndUser implements Serializable {
+@Table(name = "phrases_and_user") // Змінив поле
+public class PhraseAndUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "phrase_user_id") // Змінив поле
     private PhraseUser phraseUser;
 
@@ -40,6 +40,6 @@ public class PhrasesAndUser implements Serializable {
     @Column(name = "is_repetable")
     private boolean isRepeatable = true;
 
-    public PhrasesAndUser() {
+    public PhraseAndUser() {
     }
 }

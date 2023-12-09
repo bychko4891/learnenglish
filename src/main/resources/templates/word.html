@@ -94,8 +94,8 @@
                 <div th:utext="${word.getInfo}"></div>
                 <div th:each="phraseUser : ${word.phraseUsers}">
                     <div style="display: flex; width: auto; height: auto; position: relative;" >
-                        <span th:text="${phraseUser.engText + ' -'}"></span>
-                        <span th:text="${'- ' + phraseUser.ukrText}"></span>
+                        <span th:text="${phraseUser.getEngPhrase + ' -'}"></span>
+                        <span th:text="${'- ' + phraseUser.getUkrTranslate}"></span>
                         <form sec:authorize="isAuthenticated()" class="phrasePlus">
                             <input id="phraseId" type="hidden" name="phraseId" th:value="${phraseUser.id}">
                             <button type="submit" id="plus" class="btn_plus_page custom-tooltip pulse" data-tooltip="Додати в свою базу">

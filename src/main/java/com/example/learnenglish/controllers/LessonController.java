@@ -14,7 +14,7 @@ import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.TranslationPairService;
-import com.example.learnenglish.service.TranslationPairValidationAndSaveService;
+import com.example.learnenglish.service.PhraseUserService;
 import com.example.learnenglish.service.UserService;
 import com.example.learnenglish.service.UserStatisticsService;
 import jakarta.servlet.http.HttpSession;
@@ -37,7 +37,7 @@ public class LessonController {
     private final HttpSession session;
     private final TranslationPairService translationPairService;
 
-    private final TranslationPairValidationAndSaveService validationTranslationPair;
+    private final PhraseUserService validationTranslationPair;
     private final UserStatisticsService userStatisticsService;
     private final UserService userService;
 
@@ -82,25 +82,6 @@ public class LessonController {
     }
 
 
-    @PostMapping(path = "/translation-pair/add")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<?> textADD(@Valid @RequestBody DtoTranslationPair dtoTranslationPair,
-                                     BindingResult bindingResult,
-                                     Principal principal) {
-        if (principal != null) {
-            if (bindingResult.hasErrors()) {
-                // Опрацювання помилок валідації
 
-                List<FieldErrorDTO> errors = bindingResult.getFieldErrors().stream()
-                        .map(fieldError -> new FieldErrorDTO(fieldError.getField(), fieldError.getDefaultMessage()))
-                        .collect(Collectors.toList());
-                return ResponseEntity.badRequest().body(errors);
-            }
-            String roleUser = userService.findByEmail(principal.getName()).getAuthority().toString();
-            System.out.println(roleUser);
-            return ResponseEntity.ok(validationTranslationPair.saveTranslationPair(dtoTranslationPair, roleUser));
-        }
-        return ResponseEntity.ok(new CustomResponseMessage(Message.LOGIN_ERROR));
-    }
 
 }
