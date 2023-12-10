@@ -26,7 +26,7 @@
                     <tr th:each="phraseUser : ${phraseUsers}">
                         <td style="display: none"><input type="hidden" name="id" th:value="${phraseUser.id}"/></td>
                         <td>
-                            <span th:text="${phraseUser.lesson.name}"></span>
+                            <span th:text="${phraseUser.phraseLesson.name}"></span>
                         </td>
                         <td>
                             <!-- Відображення поля як текст або як input, залежно від режиму редагування -->

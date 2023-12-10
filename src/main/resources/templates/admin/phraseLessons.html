@@ -9,7 +9,8 @@
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page ">
             <div class="page-table row">
-                <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">
+<!--                <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">-->
+                <div class="col-md-6 col-lg-7 block_left">
                     <h3>Заняття</h3>
                     <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
                     <!--                    <div class="page-table">-->
@@ -18,23 +19,15 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Category</th>
-                            <th>Published</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="translationPairsPage : ${translationPairsPages}">
-                            <td th:text="${translationPairsPage.id}"></td>
-                            <td th:text="${translationPairsPage.name}"></td>
-                            <td th:if="${translationPairsPage.getTranslationPairsPageCategory != null}" th:text="${translationPairsPage.getTranslationPairsPageCategory.name}"></td>
-                            <td th:if="${translationPairsPage.getTranslationPairsPageCategory == null}">Не назначенно</td>
+                        <tr th:each="lesson : ${lessons}">
+                            <td th:text="${lesson.id}"></td>
+                            <td th:text="${lesson.name}"></td>
                             <td>
-                                <span th:if="${translationPairsPage.published}" th:text="Yes"></span>
-                                <span th:if="${!translationPairsPage.published}" th:text="No"></span>
-                            </td>
-                            <td>
-                                <a th:href="@{/admin-page/phrase/{id}/page-phrases-edit(id=${translationPairsPage.id})}"
+                                <a th:href="@{/admin-page/phrase-lesson/{id}/lesson-edit(id=${lesson.id})}"
                                    class="btn btn-primary">Edit</a>
                             </td>
                         </tr>
@@ -48,11 +41,12 @@
                     <!--                <div class="row">-->
 
 
-                    <h3>Додати нову сторінку фраз</h3>
+                    <h3>Створити нове заняття</h3>
                     <div>
-                        <form action="/admin-page/phrases-pages/new-page-phrases">
-                            <button type="submit">New page</button>
+                        <form action="/admin-page/lessons/new-lesson">
+                            <button type="submit">New phraseLesson</button>
                         </form>
+                        <div th:text="${message}"></div>
                     </div>
 
                     <!--                </div>-->
@@ -61,14 +55,13 @@
             </div>
             <!-- відображення пагінації -->
             <div style="position: fixed; margin-left: 80px; width: 100%;">
-                <a th:href="@{/admin-page/phrases-pages(page=(${currentPage} - 1))}">Previous</a>
+                <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>
                 <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/admin-page/phrases-pages(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    <a th:href="@{/admin-page/lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
                 </span>
-                <a th:href="@{/admin-page/phrases-pages(page=(${currentPage} + 1))}">Next</a>
+                <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
             </div>
         </div>
-        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>

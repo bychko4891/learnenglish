@@ -12,14 +12,14 @@
 
             <!--            <div class="page-table" style="flex-direction: column;">-->
             <h1 th:text="${categoryName}"></h1>
-            <div th:each="translationPairsPage: ${translationPairsPages}">
+            <div th:each="miniStory: ${translationPairsPages}">
                 <div style="display: flex; flex-direction: column; padding: 0 20px;">
-                    <h3 th:text="${translationPairsPage.name}" style="border-width: 1px; border-top-width: 1px; border-top-width: 1px; border-style: solid; border-top-style: solid; border-top-style: solid;
+                    <h3 th:text="${miniStory.name}" style="border-width: 1px; border-top-width: 1px; border-top-width: 1px; border-style: solid; border-top-style: solid; border-top-style: solid;
 border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 34, 42, 0.5)) 1 0%; border-top: 0; color: white; padding: 10px 20px;"></h3>
                     <br>
                     <div class="left_border"
-                         th:utext="${translationPairsPage.info.length() > 100 ? #strings.substring(translationPairsPage.info, 0, 100) + '....' : translationPairsPage.info + '....'}"></div>
-                    <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"
+                         th:utext="${miniStory.getStory.length() > 100 ? #strings.substring(miniStory.getStory, 0, 100) + '....' : miniStory.getStory + '....'}"></div>
+                    <form th:action="@{/phrases-page/{id}(id=${miniStory.id})}"
                           style="margin-left: auto; padding-right: calc(5% + 20px);">
                         <button class="btn_main" type="submit">Перейти</button>
                     </form>

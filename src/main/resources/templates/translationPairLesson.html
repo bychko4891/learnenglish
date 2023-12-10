@@ -41,7 +41,7 @@
                     <section>
                         <h2>Тренування</h2>
 
-                        <div id="lessonId" th:data-lesson-id="${session.lessonId}"></div>
+                        <div id="lessonId" th:data-phraseLesson-id="${session.lessonId}"></div>
                         <div id="replace_div" style="min-height: 350px;"></div>
                         <div class="inline-container" style="display: flex; margin-right: auto;">
                             <form id="nextText">
@@ -78,14 +78,14 @@
 
                     <section>
                         <h2>Опис заняття</h2>
-                        <div th:utext="${lesson.lessonInfo}"></div>
+                        <div th:utext="${phraseLesson.lessonInfo}"></div>
                     </section>
 
                     <section>
                         <h2>Завантажити</h2>
                         <div class="row">
                             <div class="col-md-6 col-lg-7 block_left">
-                                <h3 th:text="'Завантажити власний тект для ' + ${lesson.name}"></h3>
+                                <h3 th:text="'Завантажити власний тект для ' + ${phraseLesson.name}"></h3>
                                 <form id="add-pair">
                                     <textarea id="ukrText" name="ukrTranslate" rows="1" placeholder="Текст українською"></textarea>
                                     <div id="ukrTextError" class="error_message"></div>

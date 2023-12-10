@@ -7,6 +7,7 @@ package com.example.learnenglish.model;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;

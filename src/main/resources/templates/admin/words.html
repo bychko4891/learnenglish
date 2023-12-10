@@ -33,8 +33,8 @@
                     <tr th:each="word : ${words}">
                         <td th:text="${word.id}"></td>
                         <td th:text="${word.name}"></td>
-                        <td th:if="${word.wordCategory != null}" th:text="${word.wordCategory.name}"></td>
-                        <td th:if="${word.wordCategory == null}">Не назначенно</td>
+                        <td th:if="${word.getCategory != null}" th:text="${word.getCategory.name}"></td>
+                        <td th:if="${word.getCategory == null}">Не назначенно</td>
                         <td>
                             <span th:if="${word.published}" th:text="Yes"></span>
                             <span th:if="${!word.published}" th:text="No"></span>

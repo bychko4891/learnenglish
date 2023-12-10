@@ -7,12 +7,9 @@ package com.example.learnenglish.model.users;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.PhraseUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

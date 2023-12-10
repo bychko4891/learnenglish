@@ -13,7 +13,7 @@
             <h1>Нова сторінка для фраз</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" id="name" name="name" th:value="${translationPairsPage.name}">
+                <input type="text" id="name" name="name" th:value="${miniStory.name}">
                 <label>Категорія:</label> <label th:text="${category} + ' | '"></label>
                 <label for="mainCategorySelect">Змінити категорію: </label>
                 <select id="mainCategorySelect" name="selectedPageApplication">
@@ -30,7 +30,7 @@
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select>
                 <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${translationPairsPage.published}"
+                <input id="toggleSwitch" type="checkbox" th:checked="${miniStory.published}"
                        class="toggle-switch" name="published">
                 <label for="toggleSwitch" class="toggle-switch-label"></label><br>
 
@@ -41,7 +41,7 @@
 
                 <label>Присутні фрази на сторінці: </label>
                 <div id="savedItemsContainer">
-                    <div th:each="phraseUser : ${translationPairsPage.phraseUsers}">
+                    <div th:each="phraseUser : ${miniStory.phraseUsers}">
                         <label th:text="${phraseUser.getEngPhrase}"></label>
                         <input name="id" type="hidden" th:value="${phraseUser.id}">
                         <button class="deleteBtn" th:data-id="${phraseUser.id}">Видалити</button>
@@ -50,8 +50,8 @@
 
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="info" th:text="${translationPairsPage.info}"></textarea>
-                <input type="hidden" id="phrasesPage" name="id" th:value="${translationPairsPage.id}" required>
+                <textarea id="info" name="info" th:text="${miniStory.info}"></textarea>
+                <input type="hidden" id="phrasesPage" name="id" th:value="${miniStory.id}" required>
                 <button type="submit">Зберегти</button>
             </form>
         </div>

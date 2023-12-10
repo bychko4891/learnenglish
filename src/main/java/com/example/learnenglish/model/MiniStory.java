@@ -7,19 +7,18 @@ package com.example.learnenglish.model;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.users.Image;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "translation_pairs_pages")
-public class TranslationPairsPage implements Serializable {
+@Table(name = "mini_story")
+@Data
+public class MiniStory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -32,13 +31,21 @@ public class TranslationPairsPage implements Serializable {
     private boolean published = false;
 
     @Column(columnDefinition = "text")
-    private String info;
+    private String story;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "phrase_and_phrases_page",
-            joinColumns = @JoinColumn(name = "phrases_page_id"),
-            inverseJoinColumns = @JoinColumn(name = "phrase_id"))
-    private List<PhraseUser> phraseUsers = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "audio_id")
+    private Audio audio;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(name = "phrase_and_phrases_page",
+//            joinColumns = @JoinColumn(name = "phrases_page_id"),
+//            inverseJoinColumns = @JoinColumn(name = "phrase_id"))
+//    private List<PhraseUser> phraseUsers = new ArrayList<>();
 
 //    @OneToMany
 //    @JoinColumn(name = "translation_pair_id")
@@ -46,5 +53,5 @@ public class TranslationPairsPage implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category translationPairsPageCategory;
+    private Category category;
 }

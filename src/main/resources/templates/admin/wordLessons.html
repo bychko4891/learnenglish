@@ -14,7 +14,7 @@
 
                 <h3 style="margin-bottom: auto;">Слова додатка</h3>
                 <div style="margin-left: auto; margin-bottom: auto;">
-                    <form action="/admin-page/word-lessons/new-lesson">
+                    <form action="/admin-page/word-lessons/new-phraseLesson">
                         <button type="submit"><i class="fa-regular fa-square-plus"></i></button>
                     </form>
                 </div>
@@ -40,7 +40,7 @@
                         <td th:if="${wordLesson.category == null}">Не назначенно</td>
 
                         <td>
-                            <form th:action="@{/admin-page/word-lesson/{id}/word-lesson-edit(id=${wordLesson.id})}">
+                            <form th:action="@{/admin-page/word-phraseLesson/{id}/word-phraseLesson-edit(id=${wordLesson.id})}">
                                 <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
                         </td>

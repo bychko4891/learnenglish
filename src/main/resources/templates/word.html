@@ -24,8 +24,8 @@
                            th:text="${mainCategoryName}"></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a th:href="@{/subcategory/{id}(id=${word.wordCategory.id})}"
-                           th:text="${word.wordCategory.name}"></a>
+                        <a th:href="@{/subcategory/{id}(id=${word.getCategory.id})}"
+                           th:text="${word.getCategory.name}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <a th:href="@{/word/{id}(id=${word.id})}" th:text="${word.name}"></a>

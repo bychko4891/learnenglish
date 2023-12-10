@@ -18,50 +18,50 @@
                 </div>
             </div>
             <div class="row mt-5 mt-md-5 mx-xl-0 mb-5 mb-md-12 word_lessons">
-                <div th:each="lesson, lessonIndex : ${wordLessons}" class="col-md-6 bb" style="padding: 20px 30px;">
+                <div th:each="phraseLesson, lessonIndex : ${wordLessons}" class="col-md-6 bb" style="padding: 20px 30px;">
                     <div class="d-flex" style="flex-flow: wrap; justify-content: space-between;">
-                        <div th:if="${lesson.userWordLessonProgress != null}" class="numerations-active">
-                            <h3 th:text="${lesson.serialNumber}"></h3>
+                        <div th:if="${phraseLesson.userWordLessonProgress != null}" class="numerations-active">
+                            <h3 th:text="${phraseLesson.serialNumber}"></h3>
                         </div>
-                        <div th:if="${lesson.userWordLessonProgress == null}" class="numerations">
-                            <h3 th:text="${lesson.serialNumber}"></h3>
+                        <div th:if="${phraseLesson.userWordLessonProgress == null}" class="numerations">
+                            <h3 th:text="${phraseLesson.serialNumber}"></h3>
                         </div>
                         <div class="d-flex justify-content-between w-100" style="margin-bottom: 40px;">
 
                             <div>
-                                <a th:href="@{/word-lesson/{id}(id=${lesson.id})}">
-                                    <h5 th:text="${lesson.name}" style="color: #6c757d;"></h5>
+                                <a th:href="@{/word-phraseLesson/{id}(id=${phraseLesson.id})}">
+                                    <h5 th:text="${phraseLesson.name}" style="color: #6c757d;"></h5>
                                 </a>
-                                <h3 th:text="${lesson.description}"></h3>
-                                <h6 th:text="${#arrays.length(lesson.words) + ' слів'}" style="color: #6c757d;"></h6>
+                                <h3 th:text="${phraseLesson.description}"></h3>
+                                <h6 th:text="${#arrays.length(phraseLesson.words) + ' слів'}" style="color: #6c757d;"></h6>
                             </div>
                             <div class="d-flex flex-column">
 
-                                <div th:if="${lesson.userWordLessonProgress != null}">
+                                <div th:if="${phraseLesson.userWordLessonProgress != null}">
                                     <!--                                    <span>оцінка,%: </span>-->
-                                    <div th:if="${lesson.userWordLessonProgress.rating >= 90}" class="rating-lesson">
+                                    <div th:if="${phraseLesson.userWordLessonProgress.rating >= 90}" class="rating-phraseLesson">
                                         <img src="/images/sun.png" alt="" width="55"
                                              style="filter: invert(57%) sepia(73%) saturate(2704%) hue-rotate(122deg) brightness(92%) contrast(102%);">
-                                        <span th:text="${lesson.userWordLessonProgress.rating + '%'} " style="color: white; font-weight: 600;"></span>
+                                        <span th:text="${phraseLesson.userWordLessonProgress.rating + '%'} " style="color: white; font-weight: 600;"></span>
                                     </div>
-                                    <div th:if="${lesson.userWordLessonProgress.rating >= 70 && lesson.userWordLessonProgress.rating < 90}" class="rating-lesson">
+                                    <div th:if="${phraseLesson.userWordLessonProgress.rating >= 70 && phraseLesson.userWordLessonProgress.rating < 90}" class="rating-phraseLesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(77%) sepia(54%) saturate(490%) hue-rotate(348deg) brightness(101%) contrast(101%);">
-                                        <span th:text="${lesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
+                                        <span th:text="${phraseLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
                                         <span style="color: black; font-size: 16px;">%</span>
                                     </div>
-                                    <div th:if="${lesson.userWordLessonProgress.rating < 70}" class="rating-lesson">
+                                    <div th:if="${phraseLesson.userWordLessonProgress.rating < 70}" class="rating-phraseLesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(82%) sepia(60%) saturate(2032%) hue-rotate(303deg) brightness(93%) contrast(96%);">
-                                        <span th:text="${lesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
+                                        <span th:text="${phraseLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
                                         <span style="color: black; font-size: 16px;">%</span>
                                     </div>
 
                                 </div>
-                                <div th:if="${lesson.userWordLessonProgress == null}"
+                                <div th:if="${phraseLesson.userWordLessonProgress == null}"
                                      style="position: relative; ">
                                     <!--                                    <span>оцінка,%: </span>-->
-                                    <div class="rating-lesson">
+                                    <div class="rating-phraseLesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(100%) sepia(0) saturate(7462%) hue-rotate(51deg) brightness(11%) contrast(59%);">
 <!--                                        <span style="margin-left: 12px;">0%</span>-->
@@ -88,7 +88,7 @@
                                     </g>
                                 </svg>
                             </a>
-                            <a th:href="@{/word-lesson/{id}(id=${lesson.id})}" class="btn btn_main"
+                            <a th:href="@{/word-phraseLesson/{id}(id=${phraseLesson.id})}" class="btn btn_main"
                                style="width: fit-content;">Навчатися</a>
                         </div>
                     </div>

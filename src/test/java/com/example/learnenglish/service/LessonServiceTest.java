@@ -7,7 +7,7 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.model.PhraseLesson;
 import com.example.learnenglish.repository.LessonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,16 +36,16 @@ class LessonServiceTest {
 
     @Test
     void getLesson() {
-        Lesson sampleLesson = new Lesson();
-        sampleLesson.setId(1L);
-        sampleLesson.setName("Заняття № 2");
-        sampleLesson.setLessonInfo("<p>Опис заняття</p>");
+        PhraseLesson samplePhraseLesson = new PhraseLesson();
+        samplePhraseLesson.setId(1L);
+        samplePhraseLesson.setName("Заняття № 2");
+        samplePhraseLesson.setDescription("<p>Опис заняття</p>");
 
-        when(lessonRepository.findById(1L)).thenReturn(Optional.of(sampleLesson));
+        when(lessonRepository.findById(1L)).thenReturn(Optional.of(samplePhraseLesson));
 
-        Lesson result = lessonService.getLesson(1L);
+        PhraseLesson result = lessonService.getLesson(1L);
 
-        assertEquals(sampleLesson, result);
+        assertEquals(samplePhraseLesson, result);
     }
 
 

@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -103,7 +104,7 @@ public class SecurityConfig {
             "/word/training",
             "/category-image/**",
             "/lessons",
-            "/pay",
+            "/payment-donate",
             "/start-pay*",
             "/payment-success**",
             "/api/pay-success/*"
@@ -134,27 +135,26 @@ public class SecurityConfig {
                                 .sessionRegistry(sessionRegistry())
                                 .expiredSessionStrategy(new MySessionInformationExpiredStrategy())
 //                                .maxSessionsPreventsLogin(true)
+
+
                 )
+
                 .formLogin(form -> form
                                 .loginPage(LOGIN_URL)
                                 .loginProcessingUrl(LOGIN_URL)
                                 .failureUrl(LOGIN_FAIL_URL)
                                 .usernameParameter(USERNAME)
                                 .passwordParameter(PASSWORD)
-
 //                                .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                                 .successHandler((request, response, authentication) -> {
                                     HttpSession session = request.getSession();
                                     session.setAttribute("authorities", authentication.getAuthorities());
-                                    User user = (User) authentication.getPrincipal();
+                                    UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getImageName());
                                     session.setAttribute("userFirstName", user.getFirstName());
                                     session.setAttribute("userLastName", user.getLastName());
-                                    session.setAttribute("userDateOfCreated", user.getDateOfCreated());
-                                    session.setAttribute("userGender", user.getGender().toString());
                                     session.setAttribute("userId", user.getId());
-                                    session.setAttribute("userTextInLesson", user.isUserPhrasesInLesson());
-                                    response.sendRedirect("/user/" + user.getId());
+                                    response.sendRedirect("/user");
                                 })
                 )
 
@@ -163,7 +163,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl(LOGIN_URL + "?logout"))
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll());
+                .logout(LogoutConfigurer::permitAll);
         return http.build();
     }
 

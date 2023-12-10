@@ -14,9 +14,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -57,14 +55,14 @@ public class Category implements Serializable {
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> subcategories = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "wordCategory")
-    private List<Word> words;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "category")
+//    private List<Word> words;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPageCategory")
-    private List<TranslationPairsPage> translationPairsPages;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPageCategory")
+//    private List<TranslationPairsPage> translationPairsPages;
 
-    @OneToMany(mappedBy = "category")
-    private List<WordLesson> wordLessons;
+//    @OneToMany(mappedBy = "category")
+//    private List<WordLesson> wordLessons;
 
     public Category() {
     }

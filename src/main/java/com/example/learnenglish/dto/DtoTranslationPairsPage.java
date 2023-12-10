@@ -8,7 +8,7 @@ package com.example.learnenglish.dto;
  */
 
 import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.TranslationPairsPage;
+import com.example.learnenglish.model.MiniStory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 public class DtoTranslationPairsPage {
 
-    private TranslationPairsPage translationPairsPage;
+    private MiniStory miniStory;
     private Category mainCategorySelect;
     private Category subcategorySelect;
     private Category subSubcategorySelect;

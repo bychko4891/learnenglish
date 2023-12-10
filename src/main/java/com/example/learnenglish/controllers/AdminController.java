@@ -1,5 +1,5 @@
 package com.example.learnenglish.controllers;
-/*
+/**
  * @author: Anatolii Bychko
  * Application Name: Learn English
  * Description: My Description
@@ -8,6 +8,7 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -39,7 +40,7 @@ public class AdminController {
     private final CategoryService categoryService;
     private final WordService wordService;
     private final AudioService wordAudioService;
-    private final TranslationPairPageService translationPairPageService;
+    private final MiniStoryService miniStoryService;
     private final ImagesService imagesService;
     private final WordLessonService wordLessonService;
     private final WayForPayModuleService wayForPayModuleService;
@@ -134,7 +135,7 @@ public class AdminController {
                                        Model model) {
         if (principal != null) {
             if (page < 0) page = 0;
-            Page<Lesson> lessonPage = lessonService.getLessonsPage(page, size);
+            Page<PhraseLesson> lessonPage = lessonService.getLessonsPage(page, size);
             if (lessonPage.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -144,7 +145,7 @@ public class AdminController {
             model.addAttribute("lessons", lessonPage.getContent());
             model.addAttribute("currentPage", page);
 
-            return "admin/adminLessons";
+            return "admin/phraseLessons";
         }
         return "redirect:/login";
     }
@@ -153,40 +154,26 @@ public class AdminController {
     public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
         if (principal != null) {
             Long count = lessonService.countLessons() + 1;
-            if (count > 17) {
-                String message = "Дозволено максимум 17 уроків";
-                redirectAttributes.addAttribute("message", message);
-                return "redirect:/admin-page/lessons";
-            }
-            return "redirect:/admin-page/lesson/" + count + "/new-lesson-in-editor";
+            return "redirect:/admin-page/phrase-lesson/" + count + "/lesson-edit";
         }
         return "redirect:/login";
     }
 
-    @GetMapping("/lesson/{id}/new-lesson-in-editor")
-    public String newLesson(@PathVariable("id") Long id,
-                            Model model,
-                            Principal principal) {
-        if (principal != null) {
-//            lesson = lessonService.findById(id);
-            Lesson lesson = new Lesson();
-            lesson.setId(id);
-            lesson.setName("Заняття № " + id);
-            lesson.setLessonInfo("Опис заняття");
-            model.addAttribute("lesson", lesson);
-            return "admin/adminLessonInEditor";
-        }
-        return "redirect:/login";
-    }
 
-    @GetMapping("/lesson/{id}/lesson-in-editor")
-    public String lessonEdit(@PathVariable("id") Long id,
+    @GetMapping("/phrase-lesson/{id}/lesson-edit")
+    public String phraseLessonEdit(@PathVariable("id") Long id,
                              Model model,
                              Principal principal) {
         if (principal != null) {
-            Lesson lesson = lessonService.getLesson(id);
+            List<Category> mainPhraseLessonCategories = categoryService.mainPhraseLessonCategoryList(true);
+            PhraseLesson lesson = lessonService.getLesson(id);
+            model.addAttribute("category", "Відсутня");
+            if (lesson.getCategory() != null) {
+                model.addAttribute("category", lesson.getCategory().getName());
+            }
             model.addAttribute("lesson", lesson);
-            return "admin/adminLessonInEditor";
+            model.addAttribute("mainCategories", mainPhraseLessonCategories);
+            return "admin/phraseLessonEdit";
         }
         return "redirect:/login";
     }
@@ -297,8 +284,8 @@ public class AdminController {
             List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
             Word word = wordService.getWord(id);
             model.addAttribute("category", "Відсутня");
-            if (word.getWordCategory() != null) {
-                model.addAttribute("category", word.getWordCategory().getName());
+            if (word.getCategory() != null) {
+                model.addAttribute("category", word.getCategory().getName());
             }
             model.addAttribute("word", word);
             model.addAttribute("mainWordsCategories", mainWordsCategories);
@@ -396,7 +383,7 @@ public class AdminController {
                                         Model model) {
         if (principal != null) {
             if (page < 0) page = 0;
-            Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPages(page, size);
+            Page<MiniStory> translationPairsPages = miniStoryService.getTranslationPairsPages(page, size);
             if (translationPairsPages.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -405,7 +392,7 @@ public class AdminController {
             model.addAttribute("translationPairsPages", translationPairsPages.getContent());
             model.addAttribute("currentPage", page);
 
-            return "admin/translationPairPages";
+            return "admin/miniStories";
         }
         return "redirect:/login";
     }
@@ -413,7 +400,7 @@ public class AdminController {
     @GetMapping("/phrases-pages/new-page-phrases")
     public String newTranslationPairPage(Principal principal) {
         if (principal != null) {
-            Long count = translationPairPageService.countTranslationPairPages() + 1;
+            Long count = miniStoryService.countTranslationPairPages() + 1;
             return "redirect:/admin-page/phrase/" + count + "/new-page-phrases-create";
         }
         return "redirect:/login";
@@ -428,14 +415,14 @@ public class AdminController {
             if (mainTranslationPairsPagesCategories != null) {
                 model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
             }
-            TranslationPairsPage translationPairsPage = new TranslationPairsPage();
-            translationPairsPage.setId(id);
-            translationPairsPage.setName("Enter name");
-            translationPairsPage.setInfo("Enter text");
-            model.addAttribute("translationPairsPage", translationPairsPage);
+            MiniStory miniStory = new MiniStory();
+            miniStory.setId(id);
+            miniStory.setName("Enter name");
+            miniStory.setStory("Enter text");
+            model.addAttribute("translationPairsPage", miniStory);
             model.addAttribute("category", "Відсутня");
 
-            return "admin/translationPairPageEdit";
+            return "admin/miniStoriesEdit";
         }
         return "redirect:/login";
     }
@@ -446,19 +433,19 @@ public class AdminController {
                                              Principal principal) {
         if (principal != null) {
             List<Category> mainTranslationPairsPagesCategories = categoryService.mainTranslationPairsCategoryList(true);
-            TranslationPairsPage translationPairsPage = translationPairPageService.getTranslationPairsPage(id);
+            MiniStory miniStory = miniStoryService.getTranslationPairsPage(id);
             model.addAttribute("category", "Відсутня");
-            if(translationPairsPage.getTranslationPairsPageCategory() != null){
-                model.addAttribute("category", translationPairsPage.getTranslationPairsPageCategory().getName());
+            if(miniStory.getCategory() != null){
+                model.addAttribute("category", miniStory.getCategory().getName());
             }
 
             if (mainTranslationPairsPagesCategories != null) {
                 model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
             }
-            model.addAttribute("translationPairsPage", translationPairsPage);
+            model.addAttribute("translationPairsPage", miniStory);
 
 
-            return "admin/translationPairPageEdit";
+            return "admin/miniStoriesEdit";
         }
         return "redirect:/login";
     }

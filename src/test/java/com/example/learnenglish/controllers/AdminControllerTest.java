@@ -10,6 +10,7 @@ package com.example.learnenglish.controllers;
 import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -51,7 +52,7 @@ class AdminControllerTest {
     @Mock
     private AudioService wordAudioService;
     @Mock
-    private TranslationPairPageService translationPairPageService;
+    private MiniStoryService miniStoryService;
     @Mock
     private ImagesService imagesService;
     @Mock
@@ -70,7 +71,7 @@ class AdminControllerTest {
         MockitoAnnotations.openMocks(this);
         adminController = new AdminController(session, lessonService, userService, translationPairService,
                 textOfAppPageService, pageApplicationService, categoryService, wordService, wordAudioService,
-                translationPairPageService, imagesService, wordLessonService, wayForPayModuleService);
+                miniStoryService, imagesService, wordLessonService, wayForPayModuleService);
     }
 
 
@@ -243,11 +244,11 @@ class AdminControllerTest {
         var page = 0;
         var size = 5;
 
-        List<Lesson> lessonList = new ArrayList<>();
+        List<PhraseLesson> phraseLessonList = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            lessonList.add(new Lesson());
+            phraseLessonList.add(new PhraseLesson());
         }
-        Page<Lesson> lessonPage = new PageImpl<>(lessonList);
+        Page<PhraseLesson> lessonPage = new PageImpl<>(phraseLessonList);
 
         when(lessonService.getLessonsPage(page, size)).thenReturn(lessonPage);
 
@@ -313,8 +314,8 @@ class AdminControllerTest {
     @Test
     void newLessonIfPrincipalNotNull() {
         var id = 5L;
-        var expectedLesson = new Lesson();
-        expectedLesson.setLessonInfo("Lesson description" + id);
+        var expectedLesson = new PhraseLesson();
+        expectedLesson.setDescription("Lesson description" + id);
         expectedLesson.setName("Test Name");
         expectedLesson.setId(id);
 
@@ -337,7 +338,7 @@ class AdminControllerTest {
     @Test
     void lessonEditIfPrincipalNotNull() {
         var id = 2L;
-        var expectedLesson = new Lesson();
+        var expectedLesson = new PhraseLesson();
 
         when(lessonService.getLesson(id)).thenReturn(expectedLesson);
 
@@ -708,8 +709,8 @@ class AdminControllerTest {
     void translationPairsPages() {
         var page = 1;
         var size = 7;
-        Page<TranslationPairsPage> translationPairsPages = mock(Page.class);
-        when(translationPairPageService.getTranslationPairsPages(page, size)).thenReturn(translationPairsPages);
+        Page<MiniStory> translationPairsPages = mock(Page.class);
+        when(miniStoryService.getTranslationPairsPages(page, size)).thenReturn(translationPairsPages);
 
         var res = adminController.translationPairsPages(page, size, principal, model);
 
@@ -728,7 +729,7 @@ class AdminControllerTest {
     void newTranslationPairPage() {
         var count = 2L;
 
-        when(translationPairPageService.countTranslationPairPages()).thenReturn(count);
+        when(miniStoryService.countTranslationPairPages()).thenReturn(count);
 
         var res = adminController.newTranslationPairPage(principal);
 
@@ -765,15 +766,15 @@ class AdminControllerTest {
     void newTranslationPairPageEdit() {
         var id = 1L;
         List<Category> mainTranslationPairsPagesCategories = new ArrayList<>();
-        TranslationPairsPage translationPairsPage = mock(TranslationPairsPage.class);
+        MiniStory miniStory = mock(MiniStory.class);
         when(categoryService.mainTranslationPairsCategoryList(true)).thenReturn(mainTranslationPairsPagesCategories);
-        when(translationPairPageService.getTranslationPairsPage(id)).thenReturn(translationPairsPage);
+        when(miniStoryService.getTranslationPairsPage(id)).thenReturn(miniStory);
 
         var res = adminController.newTranslationPairPageEdit(id, model, principal);
 
         assertEquals("admin/translationPairPageEdit", res);
         verify(model).addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
-        verify(model).addAttribute("translationPairsPage", translationPairsPage);
+        verify(model).addAttribute("translationPairsPage", miniStory);
 
         principal = null;
 

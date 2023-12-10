@@ -32,7 +32,7 @@ public class LearnEnglishController {
     private final CategoryService categoryService;
     private final WordService wordService;
     private final WordLessonService wordLessonService;
-    private final TranslationPairPageService translationPairPageService;
+    private final MiniStoryService miniStoryService;
 
 
     @GetMapping("/")
@@ -82,7 +82,7 @@ public class LearnEnglishController {
 
     @GetMapping("/lesson/{lessonId}")
     public String lessonPage(@PathVariable("lessonId") Long lessonId,
-                             Lesson lesson, Principal principal, Model model) {
+                             PhraseLesson phraseLesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             PageApplication pageApplication = pageApplicationService.getPageApplication(4l);
@@ -91,10 +91,10 @@ public class LearnEnglishController {
             } else {
                 model.addAttribute("pageText", "No text in this page");
             }
-            lesson = lessonService.getLesson(lessonId);
-            session.setAttribute("lessonId", lesson.getId());
-            model.addAttribute("lessonId", lesson.getId());
-            model.addAttribute("lesson", lesson);
+            phraseLesson = lessonService.getLesson(lessonId);
+            session.setAttribute("lessonId", phraseLesson.getId());
+            model.addAttribute("lessonId", phraseLesson.getId());
+            model.addAttribute("lesson", phraseLesson);
             return "translationPairLesson";
         }
         return "redirect:/login";
@@ -115,16 +115,16 @@ public class LearnEnglishController {
         if (phrasesMainCategories != null) {
             model.addAttribute("phrasesMainCategories", phrasesMainCategories);
         }
-        return "phrasesCategories";
+        return "miniStoriesMainCategories";
     }
 
     @GetMapping("/phrases-page/{id}")
     public String getTranslationPairsPage(@PathVariable("id")Long id,
                                           Model model) {
-        TranslationPairsPage translationPairsPage = translationPairPageService.getTranslationPairsPage(id);
-        model.addAttribute("translationPairsPage", translationPairsPage);
-        if (translationPairsPage.getTranslationPairsPageCategory() != null) {
-            model.addAttribute("category", translationPairsPage.getTranslationPairsPageCategory());
+        MiniStory miniStory = miniStoryService.getTranslationPairsPage(id);
+        model.addAttribute("translationPairsPage", miniStory);
+        if (miniStory.getCategory() != null) {
+            model.addAttribute("category", miniStory.getCategory());
         }
         return "phrasesPage";
     }
@@ -135,7 +135,7 @@ public class LearnEnglishController {
                                         @RequestParam(name = "size", defaultValue = "10", required = false) int size,
                                         Model model) {
             if (page < 0) page = 0;
-            Page<TranslationPairsPage> translationPairsPages = translationPairPageService.getTranslationPairsPagesToUser(page, size, id);
+            Page<MiniStory> translationPairsPages = miniStoryService.getTranslationPairsPagesToUser(page, size, id);
             Category category = categoryService.getCategoryToEditor(id);
             if (translationPairsPages.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
@@ -169,7 +169,7 @@ public class LearnEnglishController {
     public String wordsSubcategories(@PathVariable Long id, Model model) {
         Category subcategory = categoryService.getCategoryToEditor(id);
         Category parentCategory = subcategory.getParentCategory();
-        model.addAttribute("words", subcategory.getWords());
+//        model.addAttribute("words", subcategory.getWords());
         model.addAttribute("subId", subcategory.getId());
         model.addAttribute("mainId", parentCategory.getParentCategory().getId());
         return "wordsSubcategoryView";
@@ -178,7 +178,7 @@ public class LearnEnglishController {
     @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
-        Category wordCategory = word.getWordCategory().getParentCategory();
+        Category wordCategory = word.getCategory().getParentCategory();
         model.addAttribute("word", word);
         if(wordCategory != null){
             model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
@@ -206,9 +206,9 @@ public class LearnEnglishController {
             Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
             List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(user, categoryId);
             int sumWords = 0;
-            for (WordLesson arr: wordLessonCategory.getWordLessons()) {
-                sumWords += arr.getWords().size();
-            }
+//            for (WordLesson arr: wordLessonCategory.getWordLessons()) {
+//                sumWords += arr.getWords().size();
+//            }
             model.addAttribute("wordLessonCategory", wordLessonCategory);
             model.addAttribute("wordLessons", wordLessons);
             model.addAttribute("words", sumWords);

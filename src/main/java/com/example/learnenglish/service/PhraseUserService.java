@@ -8,11 +8,9 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoTranslationPair;
-import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.PhraseUserDto;
-import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.PhraseUser;
-import com.example.learnenglish.model.PhraseAndUser;
+import com.example.learnenglish.mapper.PhraseUserMapper;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.PhrasesAndUserRepository;
@@ -33,8 +31,10 @@ public class PhraseUserService {
     private final PhraseUserRepository phraseUserRepository;
     private final PhraseAndUserService phraseAndUserService;
     private final PhrasesAndUserRepository phrasesAndUserRepository;
+    private final PhraseUserMapper mapper;
 
-    public CustomResponseMessage saveNewPhraseUser(User user, PhraseUser phraseUser) {
+    public CustomResponseMessage saveNewPhraseUser(User user, PhraseUserDto phraseUserDto) {
+        PhraseUser phraseUser = mapper.toModel(phraseUserDto);
         phraseUser.setUser(user);
         phraseAndUserService.saveNewPhrasesAndUser(phraseUser);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);

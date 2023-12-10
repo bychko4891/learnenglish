@@ -1,10 +1,9 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.dto.PhraseUserDto;
-import com.example.learnenglish.mapper.UserPhraseMapper;
-import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.mapper.PhraseUserMapper;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
@@ -14,11 +13,9 @@ import com.example.learnenglish.validate.ValidatePhraseUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -32,8 +29,6 @@ public class PhraseUserRestController {
     private final PhraseUserService service;
 
     private final UserService userService;
-
-    private final UserPhraseMapper mapper;
 
 
 
@@ -50,10 +45,9 @@ public class PhraseUserRestController {
             }
             service.cleaningText(phraseUserDto);
             if(ValidatePhraseUser.validateTranslationPairs(phraseUserDto)){
-                PhraseUser phraseUser = mapper.toModel(phraseUserDto);
                 User user = userService.findByEmail(principal.getName());
-                if(service.duplicatePhraseUserInDB(user, phraseUser.getEngPhrase())) return ResponseEntity.ok(new CustomResponseMessage(Message.LOGIN_ERROR)); // ЗМІНИТИ !!!
-                return ResponseEntity.ok(service.saveNewPhraseUser(user, phraseUser));
+                if(service.duplicatePhraseUserInDB(user, phraseUserDto.getEngPhrase())) return ResponseEntity.ok(new CustomResponseMessage(Message.LOGIN_ERROR)); // ЗМІНИТИ !!!
+                return ResponseEntity.ok(service.saveNewPhraseUser(user, phraseUserDto));
             }
             return ResponseEntity.ok(new CustomResponseMessage(Message.LOGIN_ERROR)); // ЗМІНИТИ!!!!!!!!!!!
         }

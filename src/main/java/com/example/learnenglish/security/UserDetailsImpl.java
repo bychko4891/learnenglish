@@ -1,5 +1,6 @@
 package com.example.learnenglish.security;
 
+import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.model.users.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,20 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user){
         this.user = user;
     }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+    public Long getId() {
+        return user.getId();
+    }
+    public Image getUserAvatar() {
+        return user.getUserAvatar();
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

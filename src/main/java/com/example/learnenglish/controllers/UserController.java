@@ -85,13 +85,10 @@ public class UserController {
         return "forgotPassword";
     }
 
-    @GetMapping("/user/{id}")
-    public String userPage(@PathVariable("id") Long userId,
-                           Principal principal,
-                           Model model) {
+    @GetMapping("/user")
+    public String userPage(Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
-//            userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("user", user);
             return "userInfo";
@@ -99,10 +96,8 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/user/{userId}/statistics")
-    public String userStatisticsPage(@PathVariable("userId") Long userId,
-                                     Principal principal,
-                                     Model model) {
+    @GetMapping("/user/statistics")
+    public String userStatisticsPage(Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             return "userStatistics";

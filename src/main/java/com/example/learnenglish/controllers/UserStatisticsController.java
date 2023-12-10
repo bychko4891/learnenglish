@@ -36,11 +36,10 @@ public class UserStatisticsController {
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/user/{userId}/user-statistics")
-    public ResponseEntity<DtoUserStatisticsToUi> getTrainingUserStatistics(@PathVariable(value = "userId") long userId,
-                                                                           Principal principal) {
+    @GetMapping("/user/user-statistics")
+    public ResponseEntity<DtoUserStatisticsToUi> getTrainingUserStatistics(Principal principal) {
         if (principal != null) {
-            userId = userService.findByEmail(principal.getName()).getId();
+            Long userId = userService.findByEmail(principal.getName()).getId();
 //            UserStatistics userStatistics = userStatisticsService.trainingStatistics(userId);
             return ResponseEntity.ok(userStatisticsService.trainingStatistics(userId));
         }

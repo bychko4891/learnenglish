@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <div class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <main class="container layout_page">
+
+
+
+            <h1>Edit Lesson phrase</h1>
+            <form id="editor">
+                <label for="name">Назва:</label>
+                <input type="text" id="name" name="name" th:value="${lesson.name}">
+                <label>&nbsp; Категорія:</label> <label th:text="${category}"></label>
+
+                <br>
+
+                <label for="mainCategorySelect">Змінити категорію: </label>
+                <select id="mainCategorySelect" name="selectedPageApplication">
+                    <option name="id" value="0">Оберіть категорію</option>
+                    <option th:each="mainCategory : ${mainCategories}" th:value="${mainCategory.id}"
+                            th:text="${mainCategory.name}">
+                    </option>
+                </select>
+                <select id="subcategorySelect" name="subcategorySelect">
+                    <option name="id" value="0">Оберіть підкатегорію</option>
+                </select>
+                <select id="subSubcategorySelect" name="subcategorySelect">
+                    <option name="id" value="0">Оберіть підкатегорію</option>
+                </select>
+
+                <br>
+
+                <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
+                <input id="toggleSwitch" type="checkbox" th:checked="${lesson.published}" class="toggle-switch"
+                       name="published">
+                <label for="toggleSwitch" class="toggle-switch-label"></label>
+
+                <hr>
+                <label>Опис:</label>
+                <textarea id="info" name="info" th:text="${lesson.description}"></textarea>
+
+
+
+<!--                <label>Додані фрази на сторінку: </label>-->
+<!--                <div id="addedItemsContainer"></div>-->
+<!--                <br>-->
+
+<!--                <label>Присутні фрази на сторінці: </label>-->
+<!--                <div id="savedItemsContainer">-->
+<!--                    <div th:each="phraseUser : ${word.phraseUsers}">-->
+<!--                        <label th:text="${phraseUser.getEngPhrase}"></label>-->
+<!--                        <input name="id" type="hidden" th:value="${phraseUser.id}">-->
+<!--                        <button class="deleteBtn" th:data-id="${phraseUser.id}">Видалити</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+
+<!--                <hr>-->
+<!--                <label for="info">Текст:</label>-->
+<!--                <textarea id="info" name="text" th:text="${word.getInfo}"></textarea>-->
+                <input type="hidden" name="lessonId" th:value="${lesson.id}">
+                <button type="submit">Зберегти</button>
+            </form>
+
+
+
+
+        </main>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script type="text/javascript" th:src="@{/js/adminPage_js/tinyMce.js}"></script>
+<script type="text/javascript" th:src="@{/js/adminPage_js/lessonEdit.js}"></script>
+</body>
+</html>

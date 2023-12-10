@@ -42,7 +42,7 @@
                     </li>
                 </ol>
             </nav>
-            <h1>Фрази</h1>
+            <h1>Міні історії</h1>
             <div class="category-container">
                 <div class="category-grid" th:each="phrasesMainCategory : ${phrasesMainCategories}">
                     <a th:href="@{/phrases-category/{id}/phrases-pages(id=${phrasesMainCategory.id})}">
@@ -55,14 +55,14 @@
             <hr>
             <div th:each="phrasesMainCategory, iter : ${phrasesMainCategories}">
                 <div th:if="${iter.index == 0}">
-                    <div th:each="translationPairsPage : ${phrasesMainCategory.translationPairsPages}" th:limit="5">
+                    <div th:each="miniStory : ${phrasesMainCategory.translationPairsPages}" th:limit="5">
                         <div style="display: flex; flex-direction: column; padding: 0 20px;">
-                            <h3 th:text="${translationPairsPage.name}" style="border-width: 1px; border-top-width: 1px; border-top-width: 1px; border-style: solid; border-top-style: solid; border-top-style: solid;
+                            <h3 th:text="${miniStory.name}" style="border-width: 1px; border-top-width: 1px; border-top-width: 1px; border-style: solid; border-top-style: solid; border-top-style: solid;
 border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 34, 42, 0.5)) 1 0%; border-top: 0; color: white; padding: 10px 20px;"></h3>
                             <br>
                             <div class="left_border"
-                                 th:utext="${translationPairsPage.info.length() > 250 ? #strings.substring(translationPairsPage.info, 0, 250) + '....' : translationPairsPage.info + '....'}"></div>
-                            <form th:action="@{/phrases-page/{id}(id=${translationPairsPage.id})}"
+                                 th:utext="${miniStory.info.length() > 250 ? #strings.substring(miniStory.info, 0, 250) + '....' : miniStory.info + '....'}"></div>
+                            <form th:action="@{/phrases-page/{id}(id=${miniStory.id})}"
                                   style="margin-left: auto; padding-right: calc(5% + 20px);">
                                 <button class="btn_main" type="submit">Перейти</button>
                             </form>

@@ -8,11 +8,13 @@ package com.example.learnenglish.model;
  */
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "texts_of_app_pages")
+@Data
 public class TextOfAppPage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,42 +26,9 @@ public class TextOfAppPage implements Serializable {
 
     @Column(name = "text", columnDefinition = "text")
     private String text;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "page_application_id")
     private PageApplication pageApplication;
 
-    public TextOfAppPage() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public PageApplication getPageApplication() {
-        return pageApplication;
-    }
-
-    public void setPageApplication(PageApplication pageApplication) {
-        this.pageApplication = pageApplication;
-    }
 }

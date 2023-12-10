@@ -49,73 +49,75 @@ public class WordService {
 
     @Transactional
     public CustomResponseMessage saveWord(DtoWord dtoWord) {
-        Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
-        Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
-                            dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
-                            dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
-        if (wordOptional.isPresent()) {
-            Word word = wordOptional.get();
-            DtoWord.convertDtoToWord(dtoWord, word);
-            List<PhraseUser> phraseUsers = word.getPhraseUsers();
-            if (phraseUsers.size() != 0 && phraseUsers.size() != dtoWord.getWord().getPhraseUsers().size()) {
-                List<PhraseUser> dtoPhraseUsers = dtoWord.getWord().getPhraseUsers();
-                Iterator<PhraseUser> iterator = phraseUsers.iterator();
-                while (iterator.hasNext()) {
-                    PhraseUser pair = iterator.next();
-                    boolean containsId = false;
-                    for (PhraseUser arr : dtoPhraseUsers) {
-                        if (pair.getId().equals(arr.getId())) {
-                            containsId = true;
-                            break;
-                        }
-                    }
-                    if (!containsId) {
-                        iterator.remove();
-                    }
-                }
-            }
-            if (dtoWord.getTranslationPairsId().size() != 0) {
-                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
-                for (PhraseUser arr : list) {
-                    word.getPhraseUsers().add(arr);
-                }
-            }
-            word.setPhraseUsers(phraseUsers);
-            if (categoryId != 0 && word.getWordCategory() == null) {
-                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-                word.setWordCategory(wordCategory);
-                wordCategory.getWords().add(word);
-            } else if (categoryId != 0 && !word.getWordCategory().getId().equals(categoryId)) {
-                Category wordCategoryRemove = word.getWordCategory();
-                wordCategoryRemove.getWords().removeIf(obj -> obj.getId().equals(word.getId()));
-                word.setWordCategory(wordCategoryRepository.findById(categoryId).get());
-            }
-            wordRepository.save(word);
-            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-        } else return saveNewWord(dtoWord, categoryId);
+//        Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
+//        Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
+//                            dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
+//                            dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
+//        if (wordOptional.isPresent()) {
+//            Word word = wordOptional.get();
+//            DtoWord.convertDtoToWord(dtoWord, word);
+//            List<PhraseUser> phraseUsers = word.getPhraseUsers();
+//            if (phraseUsers.size() != 0 && phraseUsers.size() != dtoWord.getWord().getPhraseUsers().size()) {
+//                List<PhraseUser> dtoPhraseUsers = dtoWord.getWord().getPhraseUsers();
+//                Iterator<PhraseUser> iterator = phraseUsers.iterator();
+//                while (iterator.hasNext()) {
+//                    PhraseUser pair = iterator.next();
+//                    boolean containsId = false;
+//                    for (PhraseUser arr : dtoPhraseUsers) {
+//                        if (pair.getId().equals(arr.getId())) {
+//                            containsId = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!containsId) {
+//                        iterator.remove();
+//                    }
+//                }
+//            }
+//            if (dtoWord.getTranslationPairsId().size() != 0) {
+//                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
+//                for (PhraseUser arr : list) {
+//                    word.getPhraseUsers().add(arr);
+//                }
+//            }
+//            word.setPhraseUsers(phraseUsers);
+//            if (categoryId != 0 && word.getCategory() == null) {
+//                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
+//                word.setCategory(wordCategory);
+//                wordCategory.getWords().add(word);
+//            } else if (categoryId != 0 && !word.getCategory().getId().equals(categoryId)) {
+//                Category wordCategoryRemove = word.getCategory();
+//                wordCategoryRemove.getWords().removeIf(obj -> obj.getId().equals(word.getId()));
+//                word.setCategory(wordCategoryRepository.findById(categoryId).get());
+//            }
+//            wordRepository.save(word);
+//            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+//        } else return saveNewWord(dtoWord, categoryId);
+        return null;
     }
 
     private CustomResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
-        if(!wordRepository.existsByNameIsIgnoreCase(dtoWord.getWord().getName().trim())) {
-            Word word = new Word();
-            Audio audio = new Audio();
-            Image images = new Image();
-            word.setAudio(audio);
-            word.setImages(images);
-            DtoWord.convertDtoToWord(dtoWord, word);
-            if (dtoWord.getTranslationPairsId().size() != 0) {
-                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
-                word.setPhraseUsers(list);
-            }
-            if (categoryId != 0) {
-                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-                word.setWordCategory(wordCategory);
-                wordCategory.getWords().add(word);
-            }
-            wordRepository.save(word);
-            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-        }
-        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+//        if(!wordRepository.existsByNameIsIgnoreCase(dtoWord.getWord().getName().trim())) {
+//            Word word = new Word();
+//            Audio audio = new Audio();
+//            Image images = new Image();
+//            word.setAudio(audio);
+//            word.setImages(images);
+//            DtoWord.convertDtoToWord(dtoWord, word);
+//            if (dtoWord.getTranslationPairsId().size() != 0) {
+//                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
+//                word.setPhraseUsers(list);
+//            }
+//            if (categoryId != 0) {
+//                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
+//                word.setCategory(wordCategory);
+//                wordCategory.getWords().add(word);
+//            }
+//            wordRepository.save(word);
+//            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+//        }
+//        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
+        return null;
     }
 
     public Word getWord(Long id) {

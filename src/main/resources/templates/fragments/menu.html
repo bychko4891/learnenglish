@@ -1,5 +1,5 @@
 <!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<div class="sidebar" th:fragment="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div class="sidebar" th:fragment="menu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!--    <div class="sidebar">-->
 
         <div class="profile" sec:authorize="isAnonymous()">
@@ -24,13 +24,13 @@
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/{id}(id=${session.userId})}">
+                <a href="/user">
                     <span class="icon"><i class="fas fa-user"></i></span>
                     <span class="item">Профіль</span>
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/{id}/statistics(id=${session.userId})}">
+                <a href="user/statistics">
                     <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                     <span class="item">Статистика</span>
                 </a>

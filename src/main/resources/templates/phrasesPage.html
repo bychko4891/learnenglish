@@ -31,7 +31,7 @@
 
             <div class="content">
 
-                <h3 th:text="${translationPairsPage.name}"></h3>
+                <h3 th:text="${miniStory.name}"></h3>
 <!--                <div style="display: flex;">-->
 <!--                    <div>-->
 <!--                        <i>Амер.</i>-->
@@ -62,9 +62,9 @@
 
 
 
-                <div th:utext="${translationPairsPage.info}"></div>
+                <div th:utext="${miniStory.info}"></div>
 
-                <div th:each="phraseUsers : ${translationPairsPage.phraseUsers}">
+                <div th:each="phraseUsers : ${miniStory.phraseUsers}">
                     <span th:text="${phraseUsers.getEngPhrase + ' - '}"></span>
                     <span th:text="${phraseUsers.getUkrTranslate}"></span>
 

@@ -100,6 +100,8 @@ public class AdminAccountInitializer implements ApplicationRunner {
     }
     private void createWayForPayModule() {
         WayForPayModule wayForPayModule = new WayForPayModule();
+        wayForPayModule.setMerchantAccount("Enter merch");
+        wayForPayModule.setMerchantSecretKey("Enter key");
         wayForPayModuleService.saveWayForPayModule(wayForPayModule);
     }
 }

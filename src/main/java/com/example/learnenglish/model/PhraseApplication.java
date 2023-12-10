@@ -1,5 +1,12 @@
 package com.example.learnenglish.model;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +27,10 @@ public class PhraseApplication {
     @Column
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "eng_phrases",
+            joinColumns = @JoinColumn(name = "phrase_application_id"),
+            inverseJoinColumns = @JoinColumn(name = "word_id"))
     private List<Word> engPhrase = new ArrayList<>();
 
     @Column
@@ -34,5 +44,12 @@ public class PhraseApplication {
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    private PhraseLesson phraseLesson;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @ManyToOne
+    @JoinColumn(name = "word_id")
+    private Word word;
 }

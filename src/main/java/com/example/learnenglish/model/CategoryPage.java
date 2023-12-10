@@ -1,7 +1,7 @@
 package com.example.learnenglish.model;
 
 public enum CategoryPage {
-    WORDS, TRANSLATION_PAIRS, LESSON_WORDS, NO_PAGE
+    WORDS, MINI_STORIES, LESSON_WORDS, LESSON_PHRASES, NO_PAGE
 
 
 

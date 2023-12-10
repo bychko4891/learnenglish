@@ -10,7 +10,6 @@ import com.example.learnenglish.dto.*;
 import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.Lesson;
 import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -38,7 +37,7 @@ public class AdminRestController {
     private final AudioService audioService;
     private final TranslationPairService translationPairService;
     private final ImagesService imagesService;
-    private final TranslationPairPageService translationPairPageService;
+    private final MiniStoryService miniStoryService;
     private final WordLessonService wordLessonService;
     private final CategoryValidator categoryValidator;
     private final WayForPayModuleService wayForPayModuleService;
@@ -55,10 +54,11 @@ public class AdminRestController {
     }
 
     @PostMapping("/lesson-save")
-    public ResponseEntity<CustomResponseMessage> lessonsSave(@RequestBody Lesson lesson,
-                                                             Principal principal) {
+    public ResponseEntity<CustomResponseMessage> phraseLessonSave(@RequestBody PhraseLessonDto phraseLessonDto,
+                                                                  Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(lessonService.saveLesson(lesson));
+            if(phraseLessonDto.getPhraseLesson().getId() == null) throw new RuntimeException("Method 'phraseLessonSave' id - NULL");
+            return ResponseEntity.ok(lessonService.saveLesson(phraseLessonDto)); // Додати перевірку на новий чи вже існуючий !!!!!
         }
         return ResponseEntity.notFound().build();
     }
@@ -170,7 +170,7 @@ public class AdminRestController {
     public ResponseEntity<CustomResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
                                                                          Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(translationPairPageService.saveTranslationPairsPage(dtoTranslationPairsPage));
+            return ResponseEntity.ok(miniStoryService.saveTranslationPairsPage(dtoTranslationPairsPage));
         }
         return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
     }

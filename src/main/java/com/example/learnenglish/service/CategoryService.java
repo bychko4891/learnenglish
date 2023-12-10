@@ -53,6 +53,9 @@ public class CategoryService {
     public List<Category> mainWordCategoryList(boolean mainCategory) {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.WORDS);
     }
+    public List<Category> mainPhraseLessonCategoryList(boolean mainCategory) {
+        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.LESSON_PHRASES);
+    }
 
     public List<Category> mainWordLessonCategoryList(boolean mainCategory) {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.LESSON_WORDS);
@@ -60,11 +63,11 @@ public class CategoryService {
 
     //               метод для Фраз            //
     public List<Category> mainTranslationPairsCategoryList(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.TRANSLATION_PAIRS);
+        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.MINI_STORIES);
     }
 
     public List<Category> mainTranslationPairsCategoryListUser(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByIdAsc(mainCategory, CategoryPage.TRANSLATION_PAIRS);
+        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByIdAsc(mainCategory, CategoryPage.MINI_STORIES);
     }
 
     public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(Long id) {

@@ -7,9 +7,9 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.TranslationPairsPage;
+import com.example.learnenglish.model.MiniStory;
 import com.example.learnenglish.repository.CategoryRepository;
-import com.example.learnenglish.repository.TranslationPairPageRepository;
+import com.example.learnenglish.repository.MiniStoryRepository;
 import com.example.learnenglish.repository.PhraseUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class TranslationPairPageServiceTest {
+class MiniStoryServiceTest {
 
     @Mock
-    private TranslationPairPageRepository translationPairPageRepository;
+    private MiniStoryRepository miniStoryRepository;
 
     @Mock
     private PhraseUserRepository phraseUserRepository;
@@ -39,24 +39,24 @@ class TranslationPairPageServiceTest {
     @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
-    private TranslationPairPageService translationPairPageService;
+    private MiniStoryService miniStoryService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        translationPairPageService = new TranslationPairPageService(translationPairPageRepository, phraseUserRepository, categoryRepository);
+        miniStoryService = new MiniStoryService(miniStoryRepository, phraseUserRepository, categoryRepository);
     }
 
     @Test
     void getTranslationPairsPages() {
         Pageable pageable = PageRequest.of(0, 10);
 
-        List<TranslationPairsPage> translationPairsPagesList = new ArrayList<>();
-        Page<TranslationPairsPage> page = new PageImpl<>(translationPairsPagesList, pageable, translationPairsPagesList.size());
+        List<MiniStory> translationPairsPagesList = new ArrayList<>();
+        Page<MiniStory> page = new PageImpl<>(translationPairsPagesList, pageable, translationPairsPagesList.size());
 
-        when(translationPairPageRepository.findAll(pageable)).thenReturn(page);
+        when(miniStoryRepository.findAll(pageable)).thenReturn(page);
 
-        Page<TranslationPairsPage> result = translationPairPageService.getTranslationPairsPages(0, 10);
+        Page<MiniStory> result = miniStoryService.getTranslationPairsPages(0, 10);
 
         assertEquals(page,result);
     }
@@ -66,12 +66,12 @@ class TranslationPairPageServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         var id = 1L;
 
-        List<TranslationPairsPage> translationPairsPagesList = new ArrayList<>();
-        Page<TranslationPairsPage> page = new PageImpl<>(translationPairsPagesList, pageable, translationPairsPagesList.size());
+        List<MiniStory> translationPairsPagesList = new ArrayList<>();
+        Page<MiniStory> page = new PageImpl<>(translationPairsPagesList, pageable, translationPairsPagesList.size());
 
-        when(translationPairPageRepository.findAllToUser(pageable,id)).thenReturn(page);
+        when(miniStoryRepository.findAllToUser(pageable,id)).thenReturn(page);
 
-        Page<TranslationPairsPage> result = translationPairPageService.getTranslationPairsPagesToUser(0, 10,id);
+        Page<MiniStory> result = miniStoryService.getTranslationPairsPagesToUser(0, 10,id);
 
         assertEquals(page,result);
     }
@@ -80,9 +80,9 @@ class TranslationPairPageServiceTest {
     void countTranslationPairPages() {
         var count = 1L;
 
-        when(translationPairPageRepository.count()).thenReturn(count);
+        when(miniStoryRepository.count()).thenReturn(count);
 
-        var resCount = translationPairPageService.countTranslationPairPages();
+        var resCount = miniStoryService.countTranslationPairPages();
 
         assertEquals(count,resCount);
     }
@@ -90,11 +90,11 @@ class TranslationPairPageServiceTest {
     @Test
     void getTranslationPairsPage() {
         var expectedId = 1L;
-        var expectedTranslationPairsPage = new TranslationPairsPage();
+        var expectedTranslationPairsPage = new MiniStory();
 
-        when(translationPairPageRepository.findById(expectedId)).thenReturn(Optional.of(expectedTranslationPairsPage));
+        when(miniStoryRepository.findById(expectedId)).thenReturn(Optional.of(expectedTranslationPairsPage));
 
-        var resultTranslationPairsPage = translationPairPageService.getTranslationPairsPage(expectedId);
+        var resultTranslationPairsPage = miniStoryService.getTranslationPairsPage(expectedId);
 
         assertNotNull(resultTranslationPairsPage);
         assertSame(expectedTranslationPairsPage,resultTranslationPairsPage);

@@ -261,8 +261,8 @@
                     <section>
                         <h1>Змінити аватар</h1><br>
                         <div class="user_avatar_profile">
-                            <img id="userAvatarPM"
-                                 th:src="@{/avatar/{avatarName}(avatarName = ${user.userAvatar.imageName})}"/>
+<!--                            <img id="userAvatarPM"-->
+<!--                                 th:src="@{/avatar/{avatarName}(avatarName = ${user.userAvatar.imageName})}"/>-->
                         </div>
                         <div class="demo-wrap upload-demo">
                             <div class="actions">
@@ -324,13 +324,13 @@
                         <div style="display: flex; flex-direction: column; border: 1px solid; padding: 20px; border-radius: 20px; gap: 10px;">
                             <h5>Налаштування занять</h5>
                             <div style="display: contents; font-size: 20px; font-weight: 500;">
-                                <form>
-                                    <span style="padding: 10px 0px 0px 25px;">Фрази в уроці з власного списку: </span>
-                                    <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}"
-                                           class="toggle-switch"
-                                           name="userActive" th:data-user-id="${session.userId}"/>
-                                    <label for="toggleSwitch" class="toggle-switch-label"></label>
-                                </form>
+<!--                                <form>-->
+<!--                                    <span style="padding: 10px 0px 0px 25px;">Фрази в уроці з власного списку: </span>-->
+<!--                                    <input id="toggleSwitch" type="checkbox" th:checked="${session.userTextInLesson}"-->
+<!--                                           class="toggle-switch"-->
+<!--                                           name="userActive" th:data-user-id="${session.userId}"/>-->
+<!--                                    <label for="toggleSwitch" class="toggle-switch-label"></label>-->
+<!--                                </form>-->
                             </div>
                         </div>
 

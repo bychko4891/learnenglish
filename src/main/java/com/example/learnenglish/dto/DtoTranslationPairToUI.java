@@ -7,7 +7,7 @@ package com.example.learnenglish.dto;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.model.users.PhraseUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

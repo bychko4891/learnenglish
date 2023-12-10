@@ -1,6 +1,6 @@
 package com.example.learnenglish.controllers;
 
-import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.service.TranslationPairService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

@@ -118,6 +118,7 @@ public class UserRestController {
         return "redirect:/";
     }
 
+
     @PostMapping("/user/word-plus")
     public ResponseEntity<CustomResponseMessage> wordUserPlus(@RequestParam("wordId") Long wordId,
                                                               Principal principal) {

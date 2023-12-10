@@ -8,7 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
-import com.example.learnenglish.model.PhraseUser;
+import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.PhraseUserRepository;
 import lombok.RequiredArgsConstructor;

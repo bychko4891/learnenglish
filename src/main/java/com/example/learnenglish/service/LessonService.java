@@ -7,7 +7,8 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.Lesson;
+import com.example.learnenglish.dto.PhraseLessonDto;
+import com.example.learnenglish.model.PhraseLesson;
 import com.example.learnenglish.repository.LessonRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 // Не Буде змінюватись
 @Service
 public class LessonService {
@@ -27,35 +29,45 @@ public class LessonService {
 
     }
 
-    public Lesson getLesson(long id) {
-        return lessonRepository.findById(id).get();
+    public PhraseLesson getLesson(Long id) {
+        Optional<PhraseLesson> phraseLessonOptional = lessonRepository.findById(id);
+        if (phraseLessonOptional.isPresent()) {
+            return phraseLessonOptional.get();
+        } else {
+            PhraseLesson phraseLesson = new PhraseLesson();
+            phraseLesson.setId(id);
+            phraseLesson.setName("Заняття № " + id);
+            phraseLesson.setDescription("Опис заняття");
+            return phraseLesson;
+        }
+
     }
 
-    public Page<Lesson> getLessonsPage(int page, int size) {
+    public Page<PhraseLesson> getLessonsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return lessonRepository.findAll(pageable);
     }
 
-    public CustomResponseMessage saveLesson(Lesson lesson) {
-        if (lesson.getId() != null) {
-            Optional<Lesson> lessonOptional = lessonRepository.findById(lesson.getId());
-            if (!lessonOptional.isPresent()) {
-                lessonSave(lesson);
-                return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-            } else {
-                Lesson lessonFromBase = lessonOptional.get();
-                lessonFromBase.setName(lesson.getName());
-                lessonFromBase.setLessonInfo(lesson.getLessonInfo());
-                lessonRepository.save(lessonFromBase);
-                return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+    public CustomResponseMessage saveLesson(PhraseLessonDto phraseLessonDto) {
+        Optional<PhraseLesson> lessonOptional = lessonRepository.findById(phraseLessonDto.getPhraseLesson().getId());
+        if (lessonOptional.isPresent()) {
+            PhraseLesson phraseLessonFromBase = lessonOptional.get();
+            phraseLessonFromBase.setName(phraseLessonDto.getPhraseLesson().getName());
+            phraseLessonFromBase.setDescription(phraseLessonDto.getPhraseLesson().getDescription());
+            phraseLessonFromBase.setPublished(phraseLessonDto.getPhraseLesson().isPublished());
+            if (phraseLessonDto.getPhraseLesson().getId() != 0 && !phraseLessonDto.getPhraseLesson().getId().equals(phraseLessonFromBase.getId())) {
+                phraseLessonFromBase.setCategory(phraseLessonDto.getPhraseLesson().getCategory());
             }
+            lessonRepository.save(phraseLessonFromBase);
+            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         } else {
-            return new CustomResponseMessage(Message.ERROR_SERVER);
+            lessonSave(phraseLessonDto.getPhraseLesson());
+            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         }
     }
 
-    public void lessonSave(Lesson lesson) {
-        lessonRepository.save(lesson);
+    public void lessonSave(PhraseLesson phraseLesson) {
+        lessonRepository.save(phraseLesson);
     }
 
 

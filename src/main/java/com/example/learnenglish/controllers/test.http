@@ -1,5 +1,5 @@
 ###
-GET https://localhost:8443/word-lesson/1/word-audit-start
+GET https://localhost:8443/word-phraseLesson/1/word-audit-start
 
 ###
-GET https://localhost:8443/word-lesson/1/word-lesson-audit-add-words
+GET https://localhost:8443/word-phraseLesson/1/word-phraseLesson-audit-add-words

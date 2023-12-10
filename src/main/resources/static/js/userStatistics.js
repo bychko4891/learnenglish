@@ -1,8 +1,5 @@
 var availableDates = [];
-var url = window.location.href;
-var userId = url.match(/user\/(\d+)/)[1];
-// console.log(userId);
-url = '/user/' + userId + '/user-statistics';
+var url = '/user/user-statistics';
 $.getJSON(url, function (data) {
     var studyTimeInTwoWeeks = data.studyTimeInTwoWeeks;
     console.log(studyTimeInTwoWeeks);
