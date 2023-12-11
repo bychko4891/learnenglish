@@ -8,11 +8,9 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.dto.*;
 import com.example.learnenglish.exception.FileFormatException;
-import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.Category;
-import com.example.learnenglish.model.WayForPayModule;
-import com.example.learnenglish.responsemessage.Message;
+import com.example.learnenglish.model.*;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.*;
 import com.example.learnenglish.validate.CategoryValidator;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +20,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin-page")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RequiredArgsConstructor
 public class AdminRestController {
-    private final LessonService lessonService;
+    private final PhraseLessonService phraseLessonService;
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
     private final CategoryService categoryService;
@@ -41,6 +41,8 @@ public class AdminRestController {
     private final WordLessonService wordLessonService;
     private final CategoryValidator categoryValidator;
     private final WayForPayModuleService wayForPayModuleService;
+
+    private final PhraseApplicationService phraseApplicationService;
 
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -58,7 +60,14 @@ public class AdminRestController {
                                                                   Principal principal) {
         if (principal != null) {
             if(phraseLessonDto.getPhraseLesson().getId() == null) throw new RuntimeException("Method 'phraseLessonSave' id - NULL");
-            return ResponseEntity.ok(lessonService.saveLesson(phraseLessonDto)); // Додати перевірку на новий чи вже існуючий !!!!!
+            try {
+
+            } catch (RuntimeException e) {
+
+            }
+
+
+            return ResponseEntity.ok(phraseLessonService.saveLesson(phraseLessonDto)); // Додати перевірку на новий чи вже існуючий !!!!!
         }
         return ResponseEntity.notFound().build();
     }
@@ -111,10 +120,16 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-save")
-    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody DtoWord dtoWord,
+    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody WordDto wordDto,
                                                                   Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(wordService.saveWord(dtoWord));
+            try {
+                Word wordDB = wordService.getWord(wordDto.getWord().getId());
+                return ResponseEntity.ok(wordService.saveWord(wordDB, wordDto));
+
+            } catch (RuntimeException e) {
+                return ResponseEntity.ok(wordService.saveNewWord(wordDto));
+            }
         }
         return ResponseEntity.notFound().build();
     }
@@ -124,6 +139,21 @@ public class AdminRestController {
                                                                 Principal principal) {
         if (principal != null) {
             return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/phrase-application-save")
+    public ResponseEntity<CustomResponseMessage> savePhraseApplication(@RequestBody PhraseApplication phraseApplication,
+                                                                Principal principal) {
+        if (principal != null) {
+            try {
+                PhraseApplication phraseApplicationDB = phraseApplicationService.getPhraseApplication(phraseApplication.getId());
+                phraseApplicationService.savePhraseApplication(phraseApplicationDB, phraseApplication);
+            } catch (RuntimeException e) {
+                phraseApplicationService.saveNewPhraseApplication(phraseApplication);
+            }
+//            return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
         }
         return ResponseEntity.notFound().build();
     }

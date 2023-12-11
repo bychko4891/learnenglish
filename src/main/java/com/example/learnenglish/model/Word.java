@@ -62,7 +62,7 @@ public class Word implements Serializable {
     @JoinColumn(name = "word_audio_id")
     private Audio audio;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

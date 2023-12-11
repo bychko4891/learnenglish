@@ -27,14 +27,19 @@ public class PhraseApplication {
     @Column
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(name = "eng_phrases",
-            joinColumns = @JoinColumn(name = "phrase_application_id"),
-            inverseJoinColumns = @JoinColumn(name = "word_id"))
-    private List<Word> engPhrase = new ArrayList<>();
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "eng_phrases",
+//            joinColumns = @JoinColumn(name = "phrase_application_id"),
+//            inverseJoinColumns = @JoinColumn(name = "word_id"))
+    @OneToMany(mappedBy = "phraseApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("listOrder")
+    private List<WordWithOrder> engPhrase = new ArrayList<>();
 
     @Column
     private String ukrTranslate;
+
+    @Column
+    private boolean questionForm = false;
 
     @Transient
     private boolean isRepeatable;
@@ -42,13 +47,13 @@ public class PhraseApplication {
     @OneToOne
     private Audio audio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "lesson_id")
     private PhraseLesson phraseLesson;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
-    @JoinColumn(name = "category_id")
-    private Category category;
+//    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+//    @JoinColumn(name = "category_id")
+//    private Category category;
     @ManyToOne
     @JoinColumn(name = "word_id")
     private Word word;

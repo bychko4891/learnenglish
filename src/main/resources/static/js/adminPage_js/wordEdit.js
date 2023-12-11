@@ -118,13 +118,18 @@ function save() {
 
     const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
     const savedItemsInput = document.querySelectorAll('#savedItemsContainer input[name="id"]');
-    var translationPairsId = [];
+    var subSubcategorySelect = $('#subSubcategorySelect').val();
+    var categoryId = 0;
+    if(subSubcategorySelect > 0) {
+        categoryId = subSubcategorySelect;
+    }
+    var phrasesApplicationId = [];
     selectedItemsInput.forEach(function (input) {
-        translationPairsId.push(input.value);
+        phrasesApplicationId.push(input.value);
     });
-    var translationPairs = [];
+    var phraseExamples = [];
     savedItemsInput.forEach(function (input) {
-        translationPairs.push({id: input.value});
+        phraseExamples.push({id: input.value});
     });
 
     var url = '/admin-page/word-save';
@@ -137,28 +142,18 @@ function save() {
         irregularVerbPt: $('#editor input[name="irregularVerbPt"]').val(),
         irregularVerbPp: $('#editor input[name="irregularVerbPp"]').val(),
         published: $('#toggleSwitch').is(':checked'),
-        translationPairs: translationPairs,
+        phraseExamples: phraseExamples,
         description: $('#editor textarea[name="description"]').val(),
-        text: $('#editor textarea[name="text"]').val()
-    };
-    var mainCategorySelect = {
-        id: $('#mainCategorySelect').val()
-    };
-    var subcategorySelect = {
-        id: $('#subcategorySelect').val()
-    };
-    var subSubcategorySelect = {
-        id: $('#subSubcategorySelect').val()
+        info: $('#editor textarea[name="info"]').val(),
+        category: {
+            id: categoryId
+        }
     };
     var data = {
         word: word,
-        mainCategorySelect: mainCategorySelect,
-        subcategorySelect: subcategorySelect,
-        subSubcategorySelect: subSubcategorySelect,
-        translationPairsId: translationPairsId
+        phrasesApplicationId: phrasesApplicationId
     };
     $.ajax({
-        // url: $(this).attr('action'),
         url: url,
         type: 'POST',
         contentType: "application/json",

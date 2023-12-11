@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PhraseUserService {
     private final TranslationPairService translationPairService;
-    private final LessonService lessonService;
+    private final PhraseLessonService phraseLessonService;
     private final UserService userService;
     private final PhraseUserRepository phraseUserRepository;
     private final PhraseAndUserService phraseAndUserService;

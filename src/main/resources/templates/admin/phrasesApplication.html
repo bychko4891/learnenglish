@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/css/tableInPage.css}">
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <div class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <main class="container layout_page">
+
+
+            <div class="page-table row">
+                <h3 style="margin-bottom: auto;">Фрази додатка</h3>
+                <div style="margin-left: auto; margin-bottom: auto;">
+                    <form action="/admin-page/phrases-application/new-phrase-application">
+                        <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
+                    </form>
+                </div>
+                <table style="width: 100%; margin-top: 20px;">
+                    <thead>
+                    <tr>
+                        <th>Заняття</th>
+                        <th>Текст українською</th>
+                        <th>Текст англійською</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="phrase : ${phrasesApplication}">
+                        <td style="display: none"><input type="hidden" name="id" th:value="${phrase.id}"/></td>
+                        <td>
+                            <span th:if="${phrase.phraseLesson != null}" th:text="${phrase.phraseLesson.name}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${phrase.ukrTranslate}"></span>
+                        </td>
+                        <td>
+                            <span th:each="wordWithOrder : ${phrase.engPhrase}" th:text="${wordWithOrder.word.name + ' '}"></span>
+                        </td>
+                        <td>
+                            <form th:action="@{/admin-page/phrases-application/phrase-application-edit/{id}(id=${phrase.id})}" method="get">
+                            <button class="editButton" type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
+<!--                            <button class="cancelButton disabled" onclick="toggleCancelMode(this)"><i class="fa-solid fa-xmark"></i></button>-->
+<!--                            <button class="saveButton disabled" onclick="saveChanges(this)"><i class="fa-regular fa-floppy-disk"></i></button>-->
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </main>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/admin-page/translation-pairs(page=(${currentPage} - 1))}">Попередня</a>
+        </div>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin-page/translation-pairs(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
+        </div>
+        <div>
+            <a style="margin-right: auto"
+               th:href="@{/admin-page/translation-pairs(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/popup :: popup}"></div>
+<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
+<script>
+
+    $(document).ready(function () {
+        $('.open-modal').click(function () {
+            var entityId = $(this).data('entity-id');
+            $('#entityId').val(entityId);
+        });
+
+        $('#imageForm').submit(function (event) {
+            event.preventDefault();
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var entityId = $('#imageForm input[name="entityId"]').val();
+            var wordImage = $('#image')[0].files[0];
+            var formData = new FormData();
+            var url = '/admin-page/word-image/' + entityId + '/upload';
+            formData.append('wordImage', wordImage);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData, // Використовуємо об'єкт FormData замість JSON
+                processData: false,
+                contentType: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (result) {
+                    var status = result.status;
+                    if (status == "Success") {
+                        showSuccessToast(result.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    } else {
+                        showErrorToast(result.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorToast("Помилка при завантаженні");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

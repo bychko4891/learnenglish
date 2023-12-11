@@ -9,7 +9,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.PhraseLessonDto;
 import com.example.learnenglish.model.PhraseLesson;
-import com.example.learnenglish.repository.LessonRepository;
+import com.example.learnenglish.repository.PhraseLessonRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import org.springframework.data.domain.Page;
@@ -21,16 +21,16 @@ import java.util.Optional;
 
 // Не Буде змінюватись
 @Service
-public class LessonService {
-    private final LessonRepository lessonRepository;
+public class PhraseLessonService {
+    private final PhraseLessonRepository phraseLessonRepository;
 
-    public LessonService(LessonRepository lessonRepository) {
-        this.lessonRepository = lessonRepository;
+    public PhraseLessonService(PhraseLessonRepository phraseLessonRepository) {
+        this.phraseLessonRepository = phraseLessonRepository;
 
     }
 
     public PhraseLesson getLesson(Long id) {
-        Optional<PhraseLesson> phraseLessonOptional = lessonRepository.findById(id);
+        Optional<PhraseLesson> phraseLessonOptional = phraseLessonRepository.findById(id);
         if (phraseLessonOptional.isPresent()) {
             return phraseLessonOptional.get();
         } else {
@@ -45,20 +45,21 @@ public class LessonService {
 
     public Page<PhraseLesson> getLessonsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return lessonRepository.findAll(pageable);
+        return phraseLessonRepository.findAll(pageable);
     }
 
     public CustomResponseMessage saveLesson(PhraseLessonDto phraseLessonDto) {
-        Optional<PhraseLesson> lessonOptional = lessonRepository.findById(phraseLessonDto.getPhraseLesson().getId());
+        Optional<PhraseLesson> lessonOptional = phraseLessonRepository.findById(phraseLessonDto.getPhraseLesson().getId());
         if (lessonOptional.isPresent()) {
             PhraseLesson phraseLessonFromBase = lessonOptional.get();
             phraseLessonFromBase.setName(phraseLessonDto.getPhraseLesson().getName());
             phraseLessonFromBase.setDescription(phraseLessonDto.getPhraseLesson().getDescription());
             phraseLessonFromBase.setPublished(phraseLessonDto.getPhraseLesson().isPublished());
-            if (phraseLessonDto.getPhraseLesson().getId() != 0 && !phraseLessonDto.getPhraseLesson().getId().equals(phraseLessonFromBase.getId())) {
+            if (phraseLessonDto.getPhraseLesson().getCategory().getId() != 0 &&
+                    !phraseLessonDto.getPhraseLesson().getCategory().getId().equals(phraseLessonFromBase.getCategory().getId())) {
                 phraseLessonFromBase.setCategory(phraseLessonDto.getPhraseLesson().getCategory());
             }
-            lessonRepository.save(phraseLessonFromBase);
+            phraseLessonRepository.save(phraseLessonFromBase);
             return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
         } else {
             lessonSave(phraseLessonDto.getPhraseLesson());
@@ -67,12 +68,12 @@ public class LessonService {
     }
 
     public void lessonSave(PhraseLesson phraseLesson) {
-        lessonRepository.save(phraseLesson);
+        phraseLessonRepository.save(phraseLesson);
     }
 
 
     public Long countLessons() {
-        return lessonRepository.count();
+        return phraseLessonRepository.count();
     }
 
 

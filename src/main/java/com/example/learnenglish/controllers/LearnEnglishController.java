@@ -27,7 +27,7 @@ import java.util.List;
 public class LearnEnglishController {
     private final HttpSession session;
     private final UserService userService;
-    private final LessonService lessonService;
+    private final PhraseLessonService phraseLessonService;
     private final PageApplicationService pageApplicationService;
     private final CategoryService categoryService;
     private final WordService wordService;
@@ -91,7 +91,7 @@ public class LearnEnglishController {
             } else {
                 model.addAttribute("pageText", "No text in this page");
             }
-            phraseLesson = lessonService.getLesson(lessonId);
+            phraseLesson = phraseLessonService.getLesson(lessonId);
             session.setAttribute("lessonId", phraseLesson.getId());
             model.addAttribute("lessonId", phraseLesson.getId());
             model.addAttribute("lesson", phraseLesson);

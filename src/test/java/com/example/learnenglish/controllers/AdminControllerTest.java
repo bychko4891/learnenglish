@@ -36,7 +36,7 @@ class AdminControllerTest {
     @Mock
     private HttpSession session;
     @Mock
-    private LessonService lessonService;
+    private PhraseLessonService phraseLessonService;
     @Mock
     private UserService userService;
     @Mock
@@ -69,7 +69,7 @@ class AdminControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        adminController = new AdminController(session, lessonService, userService, translationPairService,
+        adminController = new AdminController(session, phraseLessonService, userService, translationPairService,
                 textOfAppPageService, pageApplicationService, categoryService, wordService, wordAudioService,
                 miniStoryService, imagesService, wordLessonService, wayForPayModuleService);
     }
@@ -250,12 +250,12 @@ class AdminControllerTest {
         }
         Page<PhraseLesson> lessonPage = new PageImpl<>(phraseLessonList);
 
-        when(lessonService.getLessonsPage(page, size)).thenReturn(lessonPage);
+        when(phraseLessonService.getLessonsPage(page, size)).thenReturn(lessonPage);
 
         var result = adminController.lessonsListAdminPage(message, page, size, principal, model);
 
         assertEquals("admin/adminLessons", result);
-        verify(lessonService).getLessonsPage(page, size);
+        verify(phraseLessonService).getLessonsPage(page, size);
     }
 
     @Test
@@ -268,7 +268,7 @@ class AdminControllerTest {
         var result = adminController.lessonsListAdminPage(message, page, size, principal, model);
 
         assertEquals("redirect:/login", result);
-        verifyNoInteractions(lessonService);
+        verifyNoInteractions(phraseLessonService);
     }
 
     @Test
@@ -276,12 +276,12 @@ class AdminControllerTest {
         var redirectAttributes = mock(RedirectAttributes.class);
         var count = 16L;
 
-        when(lessonService.countLessons()).thenReturn(count);
+        when(phraseLessonService.countLessons()).thenReturn(count);
 
         var result = adminController.newLessonAdminPage(principal, redirectAttributes);
 
         assertEquals("redirect:/admin-page/lesson/17/new-lesson-in-editor", result);
-        verify(lessonService).countLessons();
+        verify(phraseLessonService).countLessons();
     }
 
     @Test
@@ -289,12 +289,12 @@ class AdminControllerTest {
         var redirectAttributes = mock(RedirectAttributes.class);
         var count = 18L;
 
-        when(lessonService.countLessons()).thenReturn(count);
+        when(phraseLessonService.countLessons()).thenReturn(count);
 
         var result = adminController.newLessonAdminPage(principal, redirectAttributes);
 
         assertEquals("redirect:/admin-page/lessons", result);
-        verify(lessonService).countLessons();
+        verify(phraseLessonService).countLessons();
         verify(redirectAttributes).addAttribute("message", "Дозволено максимум 17 уроків");
     }
 
@@ -306,7 +306,7 @@ class AdminControllerTest {
         var result = adminController.newLessonAdminPage(principal, redirectAttributes);
 
         assertEquals("redirect:/login", result);
-        verifyNoInteractions(lessonService);
+        verifyNoInteractions(phraseLessonService);
         verifyNoInteractions(redirectAttributes);
     }
 
@@ -340,7 +340,7 @@ class AdminControllerTest {
         var id = 2L;
         var expectedLesson = new PhraseLesson();
 
-        when(lessonService.getLesson(id)).thenReturn(expectedLesson);
+        when(phraseLessonService.getLesson(id)).thenReturn(expectedLesson);
 
         var result = adminController.lessonEdit(id, model, principal);
 

@@ -7,8 +7,9 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoWord;
+import com.example.learnenglish.dto.WordDto;
 import com.example.learnenglish.dto.DtoWordToUI;
+import com.example.learnenglish.mapper.WordMapper;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.CategoryRepository;
@@ -26,16 +27,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
 // Буде змінюватись
 @Service
 @RequiredArgsConstructor
 public class WordService {
     private final WordRepository wordRepository;
-    private final CategoryRepository wordCategoryRepository;
-    private final PhraseUserRepository phraseUserRepository;
+
 
     public Page<Word> getWordsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -48,11 +48,46 @@ public class WordService {
 
 
     @Transactional
-    public CustomResponseMessage saveWord(DtoWord dtoWord) {
+    public CustomResponseMessage saveWord(Word wordDB, WordDto wordDto) {
+        Optional.ofNullable(wordDto.getWord().getName()).ifPresent(wordDB::setName);
+        Optional.ofNullable(wordDto.getWord().getTranslate()).ifPresent(wordDB::setTranslate);
+        Optional.ofNullable(wordDto.getWord().getDescription()).ifPresent(wordDB::setDescription);
+        Optional.ofNullable(wordDto.getWord().getBrTranscription()).ifPresent(wordDB::setBrTranscription);
+        Optional.ofNullable(wordDto.getWord().getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
+        Optional.ofNullable(wordDto.getWord().getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
+        Optional.ofNullable(wordDto.getWord().getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
+        Optional.ofNullable(wordDto.getWord().getInfo()).ifPresent(wordDB::setInfo);
+        wordDB.setPublished(wordDto.getWord().isPublished());
+        if (wordDto.getWord().getCategory() != null && wordDto.getWord().getCategory().getId() != 0) {
+            if (wordDB.getCategory() == null || !wordDto.getWord().getCategory().getId().equals(wordDB.getCategory().getId())) {
+                wordDB.setCategory(wordDto.getWord().getCategory());
+            }
+        }
+        wordRepository.save(wordDB);
+        return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+    }
+
+
+    @Transactional
+    public CustomResponseMessage saveNewWord(WordDto wordDto) {
+        List<Long> id = wordDto.getPhrasesApplicationId();
+        Word word = wordDto.getWord();
+        word.setImages(new Image());
+        word.setAudio(new Audio());
+        if (word.getCategory().getId() == 0) {
+            word.setCategory(null);
+        }
+        if(id != null && id.size() > 0) {
+            for (Long arr : id) {
+                PhraseApplication pa = new PhraseApplication();
+                pa.setId(arr);
+                word.getPhraseExamples().add(pa);
+            }
+        }
+        wordRepository.save(wordDto.getWord());
+        return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+
 //        Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
-//        Long categoryId = dtoWord.getSubSubcategorySelect().getId() != 0 ? dtoWord.getSubSubcategorySelect().getId() :
-//                            dtoWord.getSubcategorySelect().getId() != 0 ? dtoWord.getSubcategorySelect().getId() :
-//                            dtoWord.getMainCategorySelect().getId() != 0 ? dtoWord.getMainCategorySelect().getId() : 0;
 //        if (wordOptional.isPresent()) {
 //            Word word = wordOptional.get();
 //            DtoWord.convertDtoToWord(dtoWord, word);
@@ -93,10 +128,14 @@ public class WordService {
 //            wordRepository.save(word);
 //            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
 //        } else return saveNewWord(dtoWord, categoryId);
-        return null;
+
     }
 
-    private CustomResponseMessage saveNewWord(DtoWord dtoWord, Long categoryId) {
+    private CustomResponseMessage saveNewWord(WordDto wordDto, Long categoryId) {
+
+        return null;
+    }
+//    private CustomResponseMessage saveNewWord(WordDto wordDto, Long categoryId) {
 //        if(!wordRepository.existsByNameIsIgnoreCase(dtoWord.getWord().getName().trim())) {
 //            Word word = new Word();
 //            Audio audio = new Audio();
@@ -117,20 +156,23 @@ public class WordService {
 //            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
 //        }
 //        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
-        return null;
-    }
+//        return null;
+//    }
 
     public Word getWord(Long id) {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isPresent()) {
             return wordOptional.get();
-        } else {
-            Word word = new Word();
-            word.setId(id);
-            word.setName("Enter name");
-            word.setInfo("Enter text");
-            return word;
         }
+        throw new RuntimeException("");
+    }
+
+    public Word getNewWord(Long id) {
+        Word word = new Word();
+        word.setId(id);
+        word.setName("Enter name");
+        word.setInfo("Enter text");
+        return word;
     }
 
 
@@ -200,5 +242,6 @@ public class WordService {
         }
         return dtoWordToUI;
     }
+
 
 }

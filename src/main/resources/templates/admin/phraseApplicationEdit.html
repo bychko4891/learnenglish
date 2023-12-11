@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+ .deleteBtn {
+     margin-right: auto;
+     margin-left: auto;
+     width: 45px;
+ }
+.phrases-list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+</style>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+    <main class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="container layout_page">
+            <h1>Фраза додатку</h1>
+            <form id="editor">
+                <label for="ukrTranslate">Фраза українською: </label>
+                <input type="text" id="ukrTranslate" name="ukrTranslate" th:value="${phrase.ukrTranslate}" style="width: 500px;">
+<!--                <label for="name">Опис:</label>-->
+<!--                <input type="text" id="description" name="description" th:value="${wordLesson.description}"><br>-->
+<!--                <label for="name">Порядковий номер:</label>-->
+<!--                <input type="text" id="number" name="serialNumber" th:value="${wordLesson.serialNumber}" th:placeholder="${wordLesson.serialNumber}">-->
+                <br>
+                <span style="padding: 10px 0px 0px 25px;">Питальна форма: </span>
+                <input id="toggleSwitch" type="checkbox" th:checked="${phrase.questionForm}" class="toggle-switch"
+                       name="published">
+                <label for="toggleSwitch" class="toggle-switch-label"></label>
+                <br>
+
+
+
+                <label>Додані слова до уроку: </label>
+                <div id="addedItemsContainer"></div>
+                <hr>
+
+                <label>Присутні слова в уроці: </label>
+                <div id="savedItemsContainer" style="display: flex;">
+                    <div th:each="wordWithOrder : ${phrase.engPhrase}" class="phrases-list" >
+                        <label th:text="${wordWithOrder.word.name}" style="font-size: 28px;"></label>
+                        <input name="id" type="hidden" th:value="${wordWithOrder.word.id}">
+<!--                        <div class="button-block">-->
+                            <button class="deleteBtn" th:data-id="${wordWithOrder.word.id}">X</button>
+<!--                        </div>-->
+                    </div>
+                </div><br>
+                <input type="hidden" name="phraseId" th:value="${phrase.id}">
+                <button type="submit">Зберегти</button>
+            </form>
+
+
+
+
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </main>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<!--<script type="text/javascript" th:src="@{/js/adminPage_js/wordEdit.js}"></script>-->
+<script>
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value;
+        if (searchTerm.length > 0) {
+            searchItems(searchTerm);
+        }
+    });
+
+    function searchItems(searchTerm) {
+        $.ajax({
+            url: '/admin-page/search-word',
+            type: 'GET',
+            data: {searchTerm: searchTerm},
+            success: function (response) {
+                displaySearchResults(response);
+            },
+            error: function () {
+                console.error('Помилка при виконанні запиту на сервер');
+            }
+        });
+    }
+
+    function displaySearchResults(results) {
+        const searchResultsContainer = document.getElementById('searchResults');
+        searchResultsContainer.classList.add('search_result_style');
+        if (results.length === 0) {
+            searchResultsContainer.classList.remove('search_result_style');
+        }
+        document.addEventListener('click', function (event) {
+            const targetElement = event.target;
+
+            if (!searchResultsContainer.contains(targetElement)) {
+                searchResultsContainer.innerHTML = '';
+                searchResultsContainer.classList.remove('search_result_style');
+            }
+        });
+        searchResultsContainer.innerHTML = '';
+
+        for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+
+            const resultBlock = document.createElement('div');
+            resultBlock.classList.add('result-block');
+
+            const nameElement = document.createElement('h2');
+            nameElement.textContent = result.name;
+            resultBlock.appendChild(nameElement);
+
+            const idElement = document.createElement('input');
+            idElement.type = 'hidden';
+            idElement.value = result.id;
+            resultBlock.appendChild(idElement);
+
+            const addButton = document.createElement('button');
+            addButton.classList.add('add-button');
+            addButton.textContent = 'Додати';
+            addButton.addEventListener('click', function () {
+                const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
+
+                const addedItemsContainer = document.getElementById('savedItemsContainer');
+                const newItem = document.createElement('div');
+                newItem.classList.add('phrases-list');
+
+                const inputElement = document.createElement('input');
+                inputElement.type = 'hidden';
+                inputElement.name = 'id';
+                inputElement.value = selectedId;
+                newItem.appendChild(inputElement);
+
+                const labelElement = document.createElement('label');
+                labelElement.textContent = result.name;
+                labelElement.style.fontSize = '28px';
+                newItem.appendChild(labelElement);
+
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'X';
+                deleteButton.classList.add('deleteBtn');
+                deleteButton.addEventListener('click', function () {
+                    addedItemsContainer.removeChild(newItem);
+                });
+
+                newItem.appendChild(deleteButton);
+
+                addedItemsContainer.appendChild(newItem);
+            });
+
+            resultBlock.appendChild(addButton);
+
+            searchResultsContainer.appendChild(resultBlock);
+        }
+    }
+    window.addEventListener('DOMContentLoaded', function () {
+        var deleteButtons = document.getElementsByClassName('deleteBtn');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+
+                deleteTranslationPair(id);
+            });
+        }
+    });
+
+    function deleteTranslationPair(id) {
+        var element = document.querySelector('[data-id="' + id + '"]').parentNode;
+        element.parentNode.removeChild(element);
+    }
+
+    $('#editor').submit(function (event) {
+        event.preventDefault();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        const savedItemsInput = document.querySelectorAll('#savedItemsContainer input[name="id"]');
+
+        var count = 0;
+        var engPhrase = [];
+        savedItemsInput.forEach(function (input) {
+            engPhrase.push({
+                listOrder: count += 1,
+                word:{
+                    id: input.value
+                }});
+        });
+
+        var url = '/admin-page/phrase-application-save';
+        var phraseApplication = {
+            id: $('#editor input[name="phraseId"]').val(),
+            ukrTranslate: $('#editor input[name="ukrTranslate"]').val(),
+            questionForm: $('#toggleSwitch').is(':checked'),
+            engPhrase: engPhrase
+        };
+
+        // var data = {
+        //     wordLesson: wordLesson,
+        //     wordsId: wordsId
+        // };
+        console.log(phraseApplication);
+        $.ajax({
+            // url: $(this).attr('action'),
+            url: url,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(phraseApplication),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == "Success") {
+                    showSuccessToast(result.message);
+                } else {
+                    showErrorToast(result.message)
+                }
+            },
+            error: function () {
+                let shel = {};
+                alert(Boolean(shel))
+                showErrorToast('Помилка запиту на сервер');
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

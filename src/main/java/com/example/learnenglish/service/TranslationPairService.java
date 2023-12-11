@@ -106,10 +106,10 @@ public class TranslationPairService {
         return new PageImpl<>(phraseUsers, pageable, resultPage.getTotalElements());
     }
 
-    public Page<PhraseUser> getTranslationPairsFourAdmin(int page, int size, Long userId) {
-        Pageable pageable = PageRequest.of(page, size);
-        return phraseUserRepository.findAllForAdmin(pageable, userId);
-    }
+//    public Page<PhraseUser> getTranslationPairsFourAdmin(int page, int size, Long userId) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return phraseUserRepository.findAllPhraseApplicationForAdmin(pageable, userId);
+//    }
 
     public List<DtoTranslationPairToUI> searchResult(String searchTerm) {
         List<PhraseUser> list = phraseUserRepository.findTranslationPair(1l, searchTerm);

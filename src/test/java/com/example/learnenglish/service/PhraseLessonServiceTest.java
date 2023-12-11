@@ -8,7 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.model.PhraseLesson;
-import com.example.learnenglish.repository.LessonRepository;
+import com.example.learnenglish.repository.PhraseLessonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,17 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 
-class LessonServiceTest {
+class PhraseLessonServiceTest {
     @InjectMocks
-    private LessonService lessonService;
+    private PhraseLessonService phraseLessonService;
 
     @Mock
-    private LessonRepository lessonRepository;
+    private PhraseLessonRepository phraseLessonRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        lessonService = new LessonService(lessonRepository);
+        phraseLessonService = new PhraseLessonService(phraseLessonRepository);
     }
 
     @Test
@@ -41,9 +41,9 @@ class LessonServiceTest {
         samplePhraseLesson.setName("Заняття № 2");
         samplePhraseLesson.setDescription("<p>Опис заняття</p>");
 
-        when(lessonRepository.findById(1L)).thenReturn(Optional.of(samplePhraseLesson));
+        when(phraseLessonRepository.findById(1L)).thenReturn(Optional.of(samplePhraseLesson));
 
-        PhraseLesson result = lessonService.getLesson(1L);
+        PhraseLesson result = phraseLessonService.getLesson(1L);
 
         assertEquals(samplePhraseLesson, result);
     }
@@ -52,8 +52,8 @@ class LessonServiceTest {
     @Test
     void countLesson() {
         var longest = 1L;
-        when(lessonRepository.count()).thenReturn(longest);
-        var expected = lessonService.countLessons();
+        when(phraseLessonRepository.count()).thenReturn(longest);
+        var expected = phraseLessonService.countLessons();
         assertEquals(expected, longest);
     }
 }

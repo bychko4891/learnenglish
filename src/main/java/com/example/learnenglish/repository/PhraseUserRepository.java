@@ -35,8 +35,6 @@ public interface PhraseUserRepository extends CrudRepository<PhraseUser, Long> {
 //    @Query("SELECT t FROM TranslationPair t INNER JOIN TranslationPairUser tu ON t.id = tu.translationPair.id WHERE tu.user.id = :userId ORDER BY t.id ASC")
     @Query("SELECT t, tu.isRepeatable FROM PhraseUser t LEFT JOIN PhraseAndUser tu ON t.id = tu.phraseUser.id WHERE tu.user.id = :userId")
     Page<Object[]> findAll(Pageable pageable, @Param("userId")Long userId);
-    @Query("SELECT t FROM PhraseUser t WHERE t.user.id = :userId ORDER BY t.id ASC")
-    Page<PhraseUser> findAllForAdmin(Pageable pageable, @Param("userId")Long userId);
 
     @Query("SELECT tr FROM PhraseUser tr WHERE tr.user.id = :id AND LOWER(tr.engPhrase) LIKE CONCAT('%', LOWER(:firstLetter), '%')")
     List<PhraseUser> findTranslationPair(@Param("id") Long id, @Param("firstLetter") String firstLetter);

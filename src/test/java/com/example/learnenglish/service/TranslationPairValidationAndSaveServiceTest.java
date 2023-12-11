@@ -20,7 +20,7 @@ class PhraseAndUserServiceTest {
     @Mock
     private TranslationPairService translationPairService;
     @Mock
-    private LessonService lessonService;
+    private PhraseLessonService phraseLessonService;
     @Mock
     private UserService userService;
     @Mock
@@ -37,7 +37,7 @@ class PhraseAndUserServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         phraseUserService = new PhraseUserService(translationPairService,
-                lessonService, userService, phraseUserRepository, phraseAndUserService, phrasesAndUserRepository);
+                phraseLessonService, userService, phraseUserRepository, phraseAndUserService, phrasesAndUserRepository);
     }
 
     @Test
