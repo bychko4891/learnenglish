@@ -31,7 +31,7 @@ public class PhraseApplication {
 //    @JoinTable(name = "eng_phrases",
 //            joinColumns = @JoinColumn(name = "phrase_application_id"),
 //            inverseJoinColumns = @JoinColumn(name = "word_id"))
-    @OneToMany(mappedBy = "phraseApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "phraseApplication", cascade = {CascadeType.ALL, CascadeType.MERGE}, orphanRemoval = true)
     @OrderBy("listOrder")
     private List<WordWithOrder> engPhrase = new ArrayList<>();
 

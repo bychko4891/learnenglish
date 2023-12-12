@@ -135,10 +135,16 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-lesson-save")
-    public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody DtoWordLesson dtoWordLesson,
+    public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody WordLesson wordLesson,
                                                                 Principal principal) {
         if (principal != null) {
-            return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
+            try {
+                WordLesson wordLessonDB = wordLessonService.getWordLesson(wordLesson.getId());
+                return ResponseEntity.ok(wordLessonService.saveWordLesson(wordLessonDB, wordLesson));
+            } catch (RuntimeException e) {
+                return ResponseEntity.ok(wordLessonService.saveNewWordLesson(wordLesson));
+            }
+
         }
         return ResponseEntity.notFound().build();
     }
@@ -149,9 +155,9 @@ public class AdminRestController {
         if (principal != null) {
             try {
                 PhraseApplication phraseApplicationDB = phraseApplicationService.getPhraseApplication(phraseApplication.getId());
-                phraseApplicationService.savePhraseApplication(phraseApplicationDB, phraseApplication);
+                return ResponseEntity.ok(phraseApplicationService.savePhraseApplication(phraseApplicationDB, phraseApplication));
             } catch (RuntimeException e) {
-                phraseApplicationService.saveNewPhraseApplication(phraseApplication);
+               return ResponseEntity.ok(phraseApplicationService.saveNewPhraseApplication(phraseApplication));
             }
 //            return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
         }

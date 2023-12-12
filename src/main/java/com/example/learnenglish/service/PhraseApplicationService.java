@@ -10,6 +10,8 @@ package com.example.learnenglish.service;
 import com.example.learnenglish.model.PhraseApplication;
 import com.example.learnenglish.model.WordWithOrder;
 import com.example.learnenglish.repository.PhraseApplicationRepository;
+import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,7 +34,7 @@ public class PhraseApplicationService {
 
     public PhraseApplication getPhraseApplication(Long id) {
         Optional<PhraseApplication> phraseApplicationOptional = repository.findById(id);
-        if(phraseApplicationOptional.isPresent()) return phraseApplicationOptional.get();
+        if (phraseApplicationOptional.isPresent()) return phraseApplicationOptional.get();
         throw new RuntimeException("");
     }
 
@@ -47,17 +49,29 @@ public class PhraseApplicationService {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAllPhraseApplicationForAdmin(pageable);
     }
+
     @Transactional
-    public void saveNewPhraseApplication(PhraseApplication phraseApplication) {
+    public CustomResponseMessage saveNewPhraseApplication(PhraseApplication phraseApplication) {
         List<WordWithOrder> wwo = phraseApplication.getEngPhrase();
         for (int i = 0; i < wwo.size(); i++) {
             wwo.get(i).setPhraseApplication(phraseApplication);
         }
         phraseApplication.setEngPhrase(wwo);
         repository.save(phraseApplication);
+        return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
     }
 
-    public void savePhraseApplication(PhraseApplication phraseApplicationDB, PhraseApplication phraseApplication) {
-
+    @Transactional
+    public CustomResponseMessage savePhraseApplication(PhraseApplication phraseApplicationDB, PhraseApplication phraseApplication) {
+        Optional.ofNullable(phraseApplication.getUkrTranslate()).ifPresent(phraseApplicationDB::setUkrTranslate);
+        Optional.of(phraseApplication.isQuestionForm()).ifPresent(phraseApplicationDB::setQuestionForm);
+        phraseApplicationDB.getEngPhrase().clear();
+        List<WordWithOrder> listUI = phraseApplication.getEngPhrase();
+        for (int i = 0; i < listUI.size(); i++) {
+            listUI.get(i).setPhraseApplication(phraseApplicationDB);
+            phraseApplicationDB.getEngPhrase().add(listUI.get(i));
+        }
+        repository.save(phraseApplicationDB);
+        return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
     }
 }

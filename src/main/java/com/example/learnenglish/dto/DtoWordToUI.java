@@ -30,11 +30,11 @@ public class DtoWordToUI {
         dtoWordToUI.setTranscription(word.getUsaTranscription());
         dtoWordToUI.setTranslate(word.getTranslate());
         dtoWordToUI.setDescription(word.getDescription());
-        if(word.getWordLesson() != null){
-            dtoWordToUI.setWordLessonId(word.getWordLesson().getId());
-        }
-        dtoWordToUI.setImageName(word.getImages().getImageName());
-        dtoWordToUI.setAudioName(word.getAudio().getUsaAudioName());
+//        if(word.getWordLesson() != null){
+//            dtoWordToUI.setWordLessonId(word.getWordLesson().getId());
+//        }
+//        dtoWordToUI.setImageName(word.getImages().getImageName());
+//        dtoWordToUI.setAudioName(word.getAudio().getUsaAudioName());
         return dtoWordToUI;
     }
 }

@@ -215,7 +215,7 @@ public class AdminController {
             try {
                 PhraseApplication pa = phraseApplicationService.getPhraseApplication(id);
                 model.addAttribute("phrase", pa);
-            } catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 model.addAttribute("phrase", phraseApplicationService.newPhraseApplication(id));
             }
             return "admin/phraseApplicationEdit";
@@ -354,25 +354,29 @@ public class AdminController {
         if (principal != null) {
             try {
                 Long count = wordLessonService.countWordLesson() + 1;
-                return "redirect:/admin-page/word-lesson/" + count + "/word-lesson-edit";
+                return "redirect:/admin-page/word-lessons/word-lesson-edit/" + count;
             } catch (NullPointerException e) {
-                return "redirect:/admin-page/word-lesson/1/word-lesson-edit";
+                return "redirect:/admin-page/word-lessons/word-lesson-edit/1";
             }
         }
         return "redirect:/login";
     }
 
-    @GetMapping("/word-lesson/{id}/word-lesson-edit")
+    @GetMapping("/word-lessons/word-lesson-edit/{id}")
     public String wordLessonEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainCategories = categoryService.mainWordLessonCategoryList(true);
-            WordLesson wordLesson = wordLessonService.getWordLesson(id);
             model.addAttribute("category", "Відсутня");
-            if (wordLesson.getCategory() != null) {
-                model.addAttribute("category", wordLesson.getCategory().getName());
-            }
-            model.addAttribute("wordLesson", wordLesson);
             model.addAttribute("mainCategories", mainCategories);
+            try {
+                WordLesson wordLesson = wordLessonService.getWordLesson(id);
+                if (wordLesson.getCategory() != null) {
+                    model.addAttribute("category", wordLesson.getCategory().getName());
+                }
+                model.addAttribute("wordLesson", wordLesson);
+            } catch (RuntimeException e) {
+                model.addAttribute("wordLesson", wordLessonService.getNewWordLesson(id));
+            }
             return "admin/wordLessonEdit";
         }
         return "redirect:/login";

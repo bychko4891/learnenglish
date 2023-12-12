@@ -4,6 +4,18 @@
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+  .deleteBtn {
+    margin-right: auto;
+    margin-left: auto;
+    width: 45px;
+  }
+  .phrases-list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+  }
+</style>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
@@ -36,16 +48,16 @@
         </select><br>
 
 
-        <label>Додані слова до уроку: </label>
-        <div id="addedItemsContainer"></div>
+<!--        <label>Додані слова до уроку: </label>-->
+<!--        <div id="addedItemsContainer"></div>-->
         <hr>
 
-        <label>Присутні слова в уроці: </label>
-        <div id="savedItemsContainer">
-          <div th:each="word : ${wordLesson.words}">
-            <label th:text="${word.name}"></label>
+        <label>Cлова в уроці: </label>
+        <div id="savedItemsContainer" class="d-flex">
+          <div th:each="word : ${wordLesson.words}" class="phrases-list">
+            <label th:text="${word.name + ','}" style="font-size: 28px;"></label>
             <input name="id" type="hidden" th:value="${word.id}">
-            <button class="deleteBtn" th:data-id="${word.id}">Видалити</button>
+            <button class="deleteBtn" th:data-id="${word.id}">X</button>
           </div>
         </div><br>
         <input type="hidden" name="wordLessonId" th:value="${wordLesson.id}">
@@ -130,9 +142,10 @@
       addButton.addEventListener('click', function () {
         const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
 
-        const addedItemsContainer = document.getElementById('addedItemsContainer');
+        // const addedItemsContainer = document.getElementById('addedItemsContainer');
+        const addedItemsContainer = document.getElementById('savedItemsContainer');
         const newItem = document.createElement('div');
-        newItem.classList.add('phrasesList');
+        newItem.classList.add('phrases-list');
 
         // Створення input з атрибутом name="id" та значенням value="${selectedId}"
         const inputElement = document.createElement('input');
@@ -141,10 +154,20 @@
         inputElement.value = selectedId;
         newItem.appendChild(inputElement);
 
-        // Створення label для поля engText
         const labelElement = document.createElement('label');
-        labelElement.textContent = result.name;
+        labelElement.textContent = result.name + ',';
+        labelElement.style.fontSize = '28px';
         newItem.appendChild(labelElement);
+
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.classList.add('deleteBtn');
+        deleteButton.addEventListener('click', function () {
+          addedItemsContainer.removeChild(newItem);
+        });
+
+        newItem.appendChild(deleteButton);
 
         addedItemsContainer.appendChild(newItem);
       });
@@ -175,47 +198,48 @@
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
-    const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
+    // const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
     const savedItemsInput = document.querySelectorAll('#savedItemsContainer input[name="id"]');
-    var wordsId = [];
-    selectedItemsInput.forEach(function (input) {
-      wordsId.push(input.value);
-    });
+    var subcategorySelect = $('#subcategorySelect').val();
+    var categoryId = 0;
+    if(subcategorySelect > 0) {
+      categoryId = subcategorySelect;
+    }
+    // var wordsId = [];
+    // selectedItemsInput.forEach(function (input) {
+    //   wordsId.push(input.value);
+    // });
+    var count = 0;
     var words = [];
     savedItemsInput.forEach(function (input) {
-      words.push({id: input.value});
+      words.push({
+        listOrder: count += 1,
+        word:{
+          id: input.value
+        }});
     });
-
-    var url = '/admin-page/word-phraseLesson-save';
+    console.log(words);
     var wordLesson = {
       id: $('#editor input[name="wordLessonId"]').val(),
       name: $('#editor input[name="name"]').val(),
       serialNumber: $('#editor input[name="serialNumber"]').val(),
       description: $('#editor input[name="description"]').val(),
+      category: {
+        id: categoryId
+      },
       words: words
     };
-    var mainCategorySelect = {
-      id: $('#mainCategorySelect').val()
-    };
-    var subcategorySelect = {
-      id: $('#subcategorySelect').val()
-    };
-    var subSubcategorySelect = {
-      id: $('#subSubcategorySelect').val()
-    };
-    var data = {
-      wordLesson: wordLesson,
-      mainCategorySelect: mainCategorySelect,
-      subcategorySelect: subcategorySelect,
-      subSubcategorySelect: subSubcategorySelect,
-      wordsId: wordsId
-    };
+    // var data = {
+    //   wordLesson: wordLesson,
+    //   wordsId: wordsId
+    // };
+    console.log(wordLesson);
     $.ajax({
       // url: $(this).attr('action'),
-      url: url,
+      url: '/admin-page/word-lesson-save',
       type: 'POST',
       contentType: "application/json",
-      data: JSON.stringify(data),
+      data: JSON.stringify(wordLesson),
       beforeSend: function (xhr) {
         xhr.setRequestHeader(csrfHeader, csrfToken);
       },

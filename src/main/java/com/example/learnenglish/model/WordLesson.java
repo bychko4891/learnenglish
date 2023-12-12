@@ -36,12 +36,13 @@ public class WordLesson implements Serializable {
     @Column
     private int serialNumber;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "wordLesson")
-    private List<Word> words;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wordLesson", orphanRemoval = true)
+    @OrderBy("listOrder")
+    private List<WordInWordLesson> words;
 
     @Transient
     private UserWordLessonProgress userWordLessonProgress;

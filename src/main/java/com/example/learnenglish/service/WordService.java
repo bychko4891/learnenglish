@@ -198,6 +198,7 @@ public class WordService {
         return dtoWordToUIList;
     }
 
+    @Transactional
     public List<DtoWordToUI> searchWordToAdminPage(String searchTerm) {
         List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
         List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();

@@ -40,7 +40,7 @@
                         <td th:if="${wordLesson.category == null}">Не назначенно</td>
 
                         <td>
-                            <form th:action="@{/admin-page/word-phraseLesson/{id}/word-phraseLesson-edit(id=${wordLesson.id})}">
+                            <form th:action="@{/admin-page/word-lessons/word-lesson-edit/{id}(id=${wordLesson.id})}">
                                 <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
                         </td>
