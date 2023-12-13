@@ -125,40 +125,40 @@ public class AdminController {
         return "redirect:/login";
     }
 
-//    @GetMapping("/lessons")
-//    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message,
-//                                       @RequestParam(value = "page", defaultValue = "0") int page,
-//                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size,
-//                                       Principal principal,
-//                                       Model model) {
-//        if (principal != null) {
-//            if (page < 0) page = 0;
-//            Page<PhraseLesson> lessonPage = phraseLessonService.getLessonsPage(page, size);
-//            if (lessonPage.getTotalPages() == 0) {
-//                model.addAttribute("totalPages", 1);
-//            } else {
-//                model.addAttribute("totalPages", lessonPage.getTotalPages());
-//            }
-//            model.addAttribute("message", message);
-//            model.addAttribute("lessons", lessonPage.getContent());
-//            model.addAttribute("currentPage", page);
-//
-//            return "admin/phraseLessons";
-//        }
-//        return "redirect:/login";
-//    }
+    @GetMapping("/phrase-lessons")
+    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message,
+                                       @RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size,
+                                       Principal principal,
+                                       Model model) {
+        if (principal != null) {
+            if (page < 0) page = 0;
+            Page<PhraseLesson> lessonPage = phraseLessonService.getLessonsPage(page, size);
+            if (lessonPage.getTotalPages() == 0) {
+                model.addAttribute("totalPages", 1);
+            } else {
+                model.addAttribute("totalPages", lessonPage.getTotalPages());
+            }
+            model.addAttribute("message", message);
+            model.addAttribute("lessons", lessonPage.getContent());
+            model.addAttribute("currentPage", page);
 
-//    @GetMapping("/lessons/new-lesson")
-//    public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
-//        if (principal != null) {
-//            Long count = phraseLessonService.countLessons() + 1;
-//            return "redirect:/admin-page/phrase-lesson/" + count + "/lesson-edit";
-//        }
-//        return "redirect:/login";
-//    }
+            return "admin/phraseLessons";
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/phrase-lessons/new-phrase-lesson")
+    public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
+        if (principal != null) {
+            Long count = phraseLessonService.countLessons() + 1;
+            return "redirect:/admin-page/phrase-lessons/phrase-lesson-edit/" + count ;
+        }
+        return "redirect:/login";
+    }
 
 
-    @GetMapping("/phrase-lesson/{id}/lesson-edit")
+    @GetMapping("/phrase-lessons/phrase-lesson-edit/{id}")
     public String phraseLessonEdit(@PathVariable("id") Long id,
                                    Model model,
                                    Principal principal) {

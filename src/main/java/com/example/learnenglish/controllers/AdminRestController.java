@@ -202,6 +202,16 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/search-word/for-phrase")
+    public ResponseEntity<List<DtoWordToUI>> searchWordForPhrase(@RequestParam("searchTerm") String searchTerm) {
+
+        if (!searchTerm.isBlank()) {
+            List<DtoWordToUI> list = wordService.searchWordForPhraseApplication(searchTerm);
+            return ResponseEntity.ok(list);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/page-phrases-save")
     public ResponseEntity<CustomResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,
                                                                          Principal principal) {

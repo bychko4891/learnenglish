@@ -50,13 +50,6 @@ public class Word implements Serializable {
     @Column
     private boolean published = false;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinColumn(name = "word_lesson_id")
-//    private WordLesson wordLesson;//
-//
-    @OneToOne(mappedBy = "word", fetch = FetchType.LAZY)
-    private WordInWordLesson wordInWordLesson;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image images;

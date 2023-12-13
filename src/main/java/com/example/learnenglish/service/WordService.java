@@ -36,6 +36,22 @@ import java.util.Optional;
 public class WordService {
     private final WordRepository wordRepository;
 
+    public Word getWord(Long id) {
+        Optional<Word> wordOptional = wordRepository.findById(id);
+        if (wordOptional.isPresent()) {
+            return wordOptional.get();
+        }
+        throw new RuntimeException("");
+    }
+
+    public Word getNewWord(Long id) {
+        Word word = new Word();
+        word.setId(id);
+        word.setName("Enter name");
+        word.setInfo("Enter text");
+        return word;
+    }
+
 
     public Page<Word> getWordsPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -77,7 +93,7 @@ public class WordService {
         if (word.getCategory().getId() == 0) {
             word.setCategory(null);
         }
-        if(id != null && id.size() > 0) {
+        if (id != null && id.size() > 0) {
             for (Long arr : id) {
                 PhraseApplication pa = new PhraseApplication();
                 pa.setId(arr);
@@ -86,94 +102,8 @@ public class WordService {
         }
         wordRepository.save(wordDto.getWord());
         return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
-
-//        Optional<Word> wordOptional = wordRepository.findById(dtoWord.getWord().getId());
-//        if (wordOptional.isPresent()) {
-//            Word word = wordOptional.get();
-//            DtoWord.convertDtoToWord(dtoWord, word);
-//            List<PhraseUser> phraseUsers = word.getPhraseUsers();
-//            if (phraseUsers.size() != 0 && phraseUsers.size() != dtoWord.getWord().getPhraseUsers().size()) {
-//                List<PhraseUser> dtoPhraseUsers = dtoWord.getWord().getPhraseUsers();
-//                Iterator<PhraseUser> iterator = phraseUsers.iterator();
-//                while (iterator.hasNext()) {
-//                    PhraseUser pair = iterator.next();
-//                    boolean containsId = false;
-//                    for (PhraseUser arr : dtoPhraseUsers) {
-//                        if (pair.getId().equals(arr.getId())) {
-//                            containsId = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!containsId) {
-//                        iterator.remove();
-//                    }
-//                }
-//            }
-//            if (dtoWord.getTranslationPairsId().size() != 0) {
-//                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
-//                for (PhraseUser arr : list) {
-//                    word.getPhraseUsers().add(arr);
-//                }
-//            }
-//            word.setPhraseUsers(phraseUsers);
-//            if (categoryId != 0 && word.getCategory() == null) {
-//                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-//                word.setCategory(wordCategory);
-//                wordCategory.getWords().add(word);
-//            } else if (categoryId != 0 && !word.getCategory().getId().equals(categoryId)) {
-//                Category wordCategoryRemove = word.getCategory();
-//                wordCategoryRemove.getWords().removeIf(obj -> obj.getId().equals(word.getId()));
-//                word.setCategory(wordCategoryRepository.findById(categoryId).get());
-//            }
-//            wordRepository.save(word);
-//            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-//        } else return saveNewWord(dtoWord, categoryId);
-
     }
 
-    private CustomResponseMessage saveNewWord(WordDto wordDto, Long categoryId) {
-
-        return null;
-    }
-//    private CustomResponseMessage saveNewWord(WordDto wordDto, Long categoryId) {
-//        if(!wordRepository.existsByNameIsIgnoreCase(dtoWord.getWord().getName().trim())) {
-//            Word word = new Word();
-//            Audio audio = new Audio();
-//            Image images = new Image();
-//            word.setAudio(audio);
-//            word.setImages(images);
-//            DtoWord.convertDtoToWord(dtoWord, word);
-//            if (dtoWord.getTranslationPairsId().size() != 0) {
-//                List<PhraseUser> list = phraseUserRepository.findByIds(dtoWord.getTranslationPairsId());
-//                word.setPhraseUsers(list);
-//            }
-//            if (categoryId != 0) {
-//                Category wordCategory = wordCategoryRepository.findById(categoryId).get();
-//                word.setCategory(wordCategory);
-//                wordCategory.getWords().add(word);
-//            }
-//            wordRepository.save(word);
-//            return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
-//        }
-//        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
-//        return null;
-//    }
-
-    public Word getWord(Long id) {
-        Optional<Word> wordOptional = wordRepository.findById(id);
-        if (wordOptional.isPresent()) {
-            return wordOptional.get();
-        }
-        throw new RuntimeException("");
-    }
-
-    public Word getNewWord(Long id) {
-        Word word = new Word();
-        word.setId(id);
-        word.setName("Enter name");
-        word.setInfo("Enter text");
-        return word;
-    }
 
 
     public Page<Word> getUserWords(int page, int size, Long userId) {
@@ -208,9 +138,20 @@ public class WordService {
         return dtoWordToUIList;
     }
 
+    @Transactional
+    public List<DtoWordToUI> searchWordForPhraseApplication(String searchTerm) {
+        List<Word> wordsResult = wordRepository.findWordForPhraseApplication(searchTerm);
+        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+        for (Word arr : wordsResult) {
+            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+        }
+        return dtoWordToUIList;
+    }
+
     public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId) {
-        Pageable pageable = PageRequest.of(page, size);
-        return wordRepository.wordsFromLesson(pageable, wordLessonId);
+//        Pageable pageable = PageRequest.of(page, size);
+//        return wordRepository.wordsFromLesson(pageable, wordLessonId);
+        return null;
     }
 
     public CustomResponseMessage confirmWord(String wordConfirm, Long id) {

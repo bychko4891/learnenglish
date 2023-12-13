@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,9 +41,9 @@ public class WordLesson implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wordLesson", orphanRemoval = true)
+    @OneToMany(mappedBy = "wordLesson", cascade = {CascadeType.ALL, CascadeType.MERGE}, orphanRemoval = true)
     @OrderBy("listOrder")
-    private List<WordInWordLesson> words;
+    private List<WordInWordLesson> words = new ArrayList<>();
 
     @Transient
     private UserWordLessonProgress userWordLessonProgress;

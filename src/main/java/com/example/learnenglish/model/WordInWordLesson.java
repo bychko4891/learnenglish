@@ -17,14 +17,14 @@ public class WordInWordLesson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "word_lesson_id")
     private WordLesson wordLesson;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "word_id")
     private Word word;
 

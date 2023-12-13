@@ -2,6 +2,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.WordInWordLesson;
+import com.example.learnenglish.model.WordWithOrder;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.model.WordLesson;
 import com.example.learnenglish.model.users.UserWordLessonProgress;
@@ -61,69 +62,25 @@ public class WordLessonService {
         Optional.ofNullable(wordLesson.getName()).ifPresent(wordLessonDB::setName);
         Optional.ofNullable(wordLesson.getDescription()).ifPresent(wordLessonDB::setDescription);
         Optional.of(wordLesson.getSerialNumber()).ifPresent(wordLessonDB::setSerialNumber);
-//        List<Word> words = wordLessonDB.getWords();
-//        if (words.size() != 0 && words.size() != wordLesson.getWords().size()) {
-//            List<Word> dtoWords = wordLesson.getWords();
-//            Iterator<Word> iterator = words.iterator();
-//            while (iterator.hasNext()) {
-//                Word word = iterator.next();
-//                boolean containsId = false;
-//                for (Word arr : dtoWords) {
-//                    if (word.getId().equals(arr.getId())) {
-//                        containsId = true;
-//                        break;
-//                    }
-//                }
-//                if (!containsId) {
-//                    iterator.remove();
-//                    word.setWordLesson(null);
-//                }
-//            }
-//        }
-//        if (wordLessonDto.getWordsId().size() != 0) {
-//            List<Word> list = wordRepository.findByIds(wordLessonDto.getWordsId());
-//            for (Word arr : list) {
-//                wordLessonDB.getWords().add(arr);
-//                arr.setWordLesson(wordLessonDB);
-//            }
-//        }
-//        wordLessonDB.setWords(words);
-//        if (wordLessonDto.getWordLesson().getCategory() != null && wordLessonDto.getWordLesson().getCategory().getId() != 0) {
-//            if (wordLessonDto.getWordLesson() == null || !wordLessonDto.getWordLesson().getCategory().getId().equals(wordLessonDB.getCategory().getId())) {
-//                wordLessonDB.setCategory(wordLessonDto.getWordLesson().getCategory());
-//            }
-//        }
-//        wordLessonRepository.save(wordLessonDB);
+        wordLessonDB.getWords().clear();
+        List<WordInWordLesson> listUI = wordLesson.getWords();
+        for (int i = 0; i < listUI.size(); i++) {
+            listUI.get(i).setWordLesson(wordLessonDB);
+            wordLessonDB.getWords().add(listUI.get(i));
+        }
+        repository.save(wordLessonDB);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
     @Transactional
     public CustomResponseMessage saveNewWordLesson(WordLesson wordLesson) {
-        if(wordLesson.getCategory().getId() == 0)wordLesson.setCategory(null);
-
+        if (wordLesson.getCategory().getId() == 0) wordLesson.setCategory(null);
         List<WordInWordLesson> words = wordLesson.getWords();
         for (int i = 0; i < words.size(); i++) {
             words.get(i).setWordLesson(wordLesson);
         }
         wordLesson.setWords(words);
         repository.save(wordLesson);
-
-
-//        WordLesson wordLesson = new WordLesson();
-//        wordLesson.setName(wordLessonDto.getWordLesson().getName());
-//        wordLesson.setDescription(wordLessonDto.getWordLesson().getDescription());
-//        if (wordLessonDto.getWordsId().size() != 0) {
-//            List<Word> list = wordRepository.findByIds(wordLessonDto.getWordsId());
-//            for (Word arr : list) {
-//                arr.setWordLesson(wordLesson);
-//            }
-//            wordLesson.setWords(list);
-//        }
-//        wordLesson.setSerialNumber(wordLessonDto.getWordLesson().getSerialNumber());
-//        if (wordLessonDto.getWordLesson().getSerialNumber() == 0) {
-//            wordLesson.setSerialNumber(1000);
-//        }
-//        wordLessonRepository.save(wordLesson);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 

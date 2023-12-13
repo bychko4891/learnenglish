@@ -27,7 +27,7 @@
                             <td th:text="${lesson.id}"></td>
                             <td th:text="${lesson.name}"></td>
                             <td>
-                                <a th:href="@{/admin-page/phrase-lesson/{id}/lesson-edit(id=${lesson.id})}"
+                                <a th:href="@{/admin-page/phrase-lessons/phrase-lesson-edit/{id}(id=${lesson.id})}"
                                    class="btn btn-primary">Edit</a>
                             </td>
                         </tr>
@@ -43,7 +43,7 @@
 
                     <h3>Створити нове заняття</h3>
                     <div>
-                        <form action="/admin-page/lessons/new-lesson">
+                        <form action="/admin-page/phrase-lessons/new-phrase-lesson">
                             <button type="submit">New phraseLesson</button>
                         </form>
                         <div th:text="${message}"></div>

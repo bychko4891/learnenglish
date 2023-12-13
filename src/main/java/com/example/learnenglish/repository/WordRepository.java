@@ -32,13 +32,17 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     Page<Object[]> findAll(Pageable pageable, @Param("userId")Long userId);
 
 //    @Query("SELECT w FROM Word w WHERE w.wordInWordLesson.id = NULL AND LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
-    @Query("SELECT w FROM Word w WHERE LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
+    @Query("SELECT w FROM Word w WHERE LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%') " +
+        "AND w.id NOT IN (SELECT wiwl.word.id FROM WordInWordLesson wiwl WHERE wiwl.word.id IS NOT NULL)")
     List<Word> findWordToAdminPage(@Param("firstLetter") String firstLetter);
+
+    @Query("SELECT w FROM Word w WHERE LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
+    List<Word> findWordForPhraseApplication(@Param("firstLetter") String firstLetter);
     @Query("SELECT w FROM Word w WHERE w.id IN :ids")
     List<Word> findByIds(@Param("ids") List<Long> ids);
 
-    @Query("SELECT w FROM Word w WHERE w.wordInWordLesson.id = :wordLessonId ORDER BY w.name ASC")
-    Page<Word> wordsFromLesson(Pageable pageable, @Param("wordLessonId")Long wordLessonId);
+//    @Query("SELECT w FROM Word w WHERE w.wordInWordLesson.id = :wordLessonId ORDER BY w.name ASC")
+//    Page<Word> wordsFromLesson(Pageable pageable, @Param("wordLessonId")Long wordLessonId);
 
     boolean existsByNameIsIgnoreCase(String name);
 

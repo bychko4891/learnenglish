@@ -54,10 +54,10 @@
 
         <label>Cлова в уроці: </label>
         <div id="savedItemsContainer" class="d-flex">
-          <div th:each="word : ${wordLesson.words}" class="phrases-list">
-            <label th:text="${word.name + ','}" style="font-size: 28px;"></label>
-            <input name="id" type="hidden" th:value="${word.id}">
-            <button class="deleteBtn" th:data-id="${word.id}">X</button>
+          <div th:each="wordOrdered : ${wordLesson.words}" class="phrases-list">
+            <label th:text="${wordOrdered.word.name + ','}" style="font-size: 28px;"></label>
+            <input name="id" type="hidden" th:value="${wordOrdered.word.id}">
+            <button class="deleteBtn" th:data-id="${wordOrdered.word.id}">X</button>
           </div>
         </div><br>
         <input type="hidden" name="wordLessonId" th:value="${wordLesson.id}">

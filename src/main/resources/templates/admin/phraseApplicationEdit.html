@@ -79,7 +79,7 @@
 
     function searchItems(searchTerm) {
         $.ajax({
-            url: '/admin-page/search-word',
+            url: '/admin-page/search-word/for-phrase',
             type: 'GET',
             data: {searchTerm: searchTerm},
             success: function (response) {
