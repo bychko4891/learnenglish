@@ -90,7 +90,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
         pageApplicationService.savePageApplication(pageApplicationRegistration);
         PageApplication pageApplicationAboutTheApp = new PageApplication("About the app page");
         pageApplicationService.savePageApplication(pageApplicationAboutTheApp);
-        PageApplication pageApplicationUploadUserText = new PageApplication("Upload user text page");
+        PageApplication pageApplicationUploadUserText = new PageApplication("Mini description phrase lessons");
         pageApplicationService.savePageApplication(pageApplicationUploadUserText);
         PageApplication pageApplicationMainTop = new PageApplication("Main page Top");
         pageApplicationService.savePageApplication(pageApplicationMainTop);

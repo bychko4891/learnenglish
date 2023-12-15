@@ -7,16 +7,14 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.WordDto;
 import com.example.learnenglish.dto.DtoWordToUI;
-import com.example.learnenglish.mapper.WordMapper;
-import com.example.learnenglish.model.*;
+import com.example.learnenglish.model.Audio;
+import com.example.learnenglish.model.PhraseApplication;
+import com.example.learnenglish.model.Word;
 import com.example.learnenglish.model.users.Image;
-import com.example.learnenglish.repository.CategoryRepository;
-import com.example.learnenglish.repository.PhraseUserRepository;
 import com.example.learnenglish.repository.WordRepository;
-import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -64,19 +62,19 @@ public class WordService {
 
 
     @Transactional
-    public CustomResponseMessage saveWord(Word wordDB, WordDto wordDto) {
-        Optional.ofNullable(wordDto.getWord().getName()).ifPresent(wordDB::setName);
-        Optional.ofNullable(wordDto.getWord().getTranslate()).ifPresent(wordDB::setTranslate);
-        Optional.ofNullable(wordDto.getWord().getDescription()).ifPresent(wordDB::setDescription);
-        Optional.ofNullable(wordDto.getWord().getBrTranscription()).ifPresent(wordDB::setBrTranscription);
-        Optional.ofNullable(wordDto.getWord().getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
-        Optional.ofNullable(wordDto.getWord().getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
-        Optional.ofNullable(wordDto.getWord().getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
-        Optional.ofNullable(wordDto.getWord().getInfo()).ifPresent(wordDB::setInfo);
-        wordDB.setPublished(wordDto.getWord().isPublished());
-        if (wordDto.getWord().getCategory() != null && wordDto.getWord().getCategory().getId() != 0) {
-            if (wordDB.getCategory() == null || !wordDto.getWord().getCategory().getId().equals(wordDB.getCategory().getId())) {
-                wordDB.setCategory(wordDto.getWord().getCategory());
+    public CustomResponseMessage saveWord(Word wordDB, Word word) {
+        Optional.ofNullable(word.getName()).ifPresent(wordDB::setName);
+        Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
+        Optional.ofNullable(word.getDescription()).ifPresent(wordDB::setDescription);
+        Optional.ofNullable(word.getBrTranscription()).ifPresent(wordDB::setBrTranscription);
+        Optional.ofNullable(word.getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
+        Optional.ofNullable(word.getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
+        Optional.ofNullable(word.getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
+        Optional.ofNullable(word.getInfo()).ifPresent(wordDB::setInfo);
+        wordDB.setPublished(word.isPublished());
+        if (word.getCategory() != null && word.getCategory().getId() != 0) {
+            if (wordDB.getCategory() == null || !word.getCategory().getId().equals(wordDB.getCategory().getId())) {
+                wordDB.setCategory(word.getCategory());
             }
         }
         wordRepository.save(wordDB);
@@ -85,22 +83,25 @@ public class WordService {
 
 
     @Transactional
-    public CustomResponseMessage saveNewWord(WordDto wordDto) {
-        List<Long> id = wordDto.getPhrasesApplicationId();
-        Word word = wordDto.getWord();
+    public CustomResponseMessage saveNewWord(Word word) {
+        List<PhraseApplication> id = word.getPhraseExamples();
+
         word.setImages(new Image());
         word.setAudio(new Audio());
         if (word.getCategory().getId() == 0) {
             word.setCategory(null);
         }
-        if (id != null && id.size() > 0) {
-            for (Long arr : id) {
-                PhraseApplication pa = new PhraseApplication();
-                pa.setId(arr);
-                word.getPhraseExamples().add(pa);
-            }
-        }
-        wordRepository.save(wordDto.getWord());
+
+        /////////// Переробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        if (id != null && id.size() > 0) {
+//            for (PhraseApplication arr : id) {
+//                PhraseApplication pa = new PhraseApplication();
+//                pa.setId(arr);
+//                word.getPhraseExamples().add(pa);
+//            }
+//        }
+        /////////////
+        wordRepository.save(word);
         return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
     }
 

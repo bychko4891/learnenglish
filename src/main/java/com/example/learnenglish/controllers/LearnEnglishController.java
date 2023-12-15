@@ -80,29 +80,11 @@ public class LearnEnglishController {
     }
 
 
-    @GetMapping("/lesson/{lessonId}")
-    public String lessonPage(@PathVariable("lessonId") Long lessonId,
-                             PhraseLesson phraseLesson, Principal principal, Model model) {
-        model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            PageApplication pageApplication = pageApplicationService.getPageApplication(4l);
-            if (pageApplication.getTextOfAppPage() != null) {
-                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
-            } else {
-                model.addAttribute("pageText", "No text in this page");
-            }
-            phraseLesson = phraseLessonService.getLesson(lessonId);
-            session.setAttribute("lessonId", phraseLesson.getId());
-            model.addAttribute("lessonId", phraseLesson.getId());
-            model.addAttribute("lesson", phraseLesson);
-            return "translationPairLesson";
-        }
-        return "redirect:/login";
-    }
+
 
     @GetMapping("/words-main-category")
     public String wordsMainCategories(Model model) {
-        List<Category> wordsMainCategories = categoryService.mainWordCategoryList(true);
+        List<Category> wordsMainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
         if (wordsMainCategories != null) {
             model.addAttribute("wordsMainCategories", wordsMainCategories);
         }
@@ -191,7 +173,7 @@ public class LearnEnglishController {
     public String wordLessonsCategories(Model model,
                                         Principal principal) {
         if(principal != null) {
-            List<Category> wordLessonMainCategory = categoryService.mainWordLessonCategoryList(true);
+            List<Category> wordLessonMainCategory = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
             model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
         return "wordLessonsCategory";
         } return "redirect:/login";

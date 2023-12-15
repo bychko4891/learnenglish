@@ -18,7 +18,7 @@
             <h1>Словник</h1>
             <div th:each="wordsMainCategory : ${wordsMainCategories}">
                 <h3 th:text="${wordsMainCategory.name}"></h3><br>
-                <div class="left_border" th:utext="${wordsMainCategory.info}"></div>
+                <div class="left_border" th:utext="${wordsMainCategory.getDescription}"></div>
                 <form th:action="@{/words-main-category/{id}(id=${wordsMainCategory.id})}">
                     <button type="submit">Перейти</button>
                 </form>

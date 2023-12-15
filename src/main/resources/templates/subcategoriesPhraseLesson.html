@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<body class="active">
+<div class="wrapper">
+    <div class="section">
+        <header th:replace="~{fragments/header :: header}"></header>
+        <div class="flex-grow-1">
+            <div class="d-flex l_info">
+<!--                <img th:src="@{/category-image/{name}(name=${wordLessonCategory.image.imageName})}"/>-->
+                <div class="d-flex flex-grow-1" style="align-content: center; flex-wrap: wrap;">
+                    <div class="d-flex flex-column">
+<!--                        <h3 th:text="${wordLessonCategory.name}"></h3>-->
+<!--                        <div th:utext="${wordLessonCategory.getDescription}"></div>-->
+<!--                        <span th:text="${#arrays.length(wordLessonCategory.wordLessons) + ' занять(тя) - ' + words + ' слів'}"></span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 mt-md-5 mx-xl-0 mb-5 mb-md-12 word_lessons">
+                <div th:each="category, count : ${categories}" class="col-md-6 bb" style="padding: 20px 30px;">
+                    <div class="d-flex" style="flex-flow: wrap; justify-content: space-between;">
+                        <div class="numerations">
+                            <h3 th:text="${count.index + 1}"></h3>
+                        </div>
+                        <div class="d-flex justify-content-between w-100" style="margin-bottom: 10px;">
+
+                            <div>
+                                <a th:href="@{/word-phraseLesson/{id}(id=${category.id})}">
+                                    <h5 th:text="${category.name}" style="color: #6c757d;"></h5>
+                                </a>
+                                <p th:utext="${category.description}"></p>
+<!--                                <h6 th:text="${#arrays.length(phraseLesson.words) + ' слів'}" style="color: #6c757d;"></h6>-->
+                            </div>
+<!--                            <div class="d-flex flex-column">-->
+
+<!--                                <div th:if="${phraseLesson.userWordLessonProgress != null}">-->
+<!--                                    &lt;!&ndash;                                    <span>оцінка,%: </span>&ndash;&gt;-->
+<!--                                    <div th:if="${phraseLesson.userWordLessonProgress.rating >= 90}" class="rating-phraseLesson">-->
+<!--                                        <img src="/images/sun.png" alt="" width="55"-->
+<!--                                             style="filter: invert(57%) sepia(73%) saturate(2704%) hue-rotate(122deg) brightness(92%) contrast(102%);">-->
+<!--                                        <span th:text="${phraseLesson.userWordLessonProgress.rating + '%'} " style="color: white; font-weight: 600;"></span>-->
+<!--                                    </div>-->
+<!--                                    <div th:if="${phraseLesson.userWordLessonProgress.rating >= 70 && phraseLesson.userWordLessonProgress.rating < 90}" class="rating-phraseLesson">-->
+<!--                                        <img src="/images/sun.png" alt="" width="50"-->
+<!--                                             style="filter: invert(77%) sepia(54%) saturate(490%) hue-rotate(348deg) brightness(101%) contrast(101%);">-->
+<!--                                        <span th:text="${phraseLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>-->
+<!--                                        <span style="color: black; font-size: 16px;">%</span>-->
+<!--                                    </div>-->
+<!--                                    <div th:if="${phraseLesson.userWordLessonProgress.rating < 70}" class="rating-phraseLesson">-->
+<!--                                        <img src="/images/sun.png" alt="" width="50"-->
+<!--                                             style="filter: invert(82%) sepia(60%) saturate(2032%) hue-rotate(303deg) brightness(93%) contrast(96%);">-->
+<!--                                        <span th:text="${phraseLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>-->
+<!--                                        <span style="color: black; font-size: 16px;">%</span>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+<!--                                <div th:if="${phraseLesson.userWordLessonProgress == null}" style="position: relative; ">-->
+<!--                                    &lt;!&ndash;                                    <span>оцінка,%: </span>&ndash;&gt;-->
+<!--                                    <div class="rating-phraseLesson">-->
+<!--                                        <img src="/images/sun.png" alt="" width="50"-->
+<!--                                             style="filter: invert(100%) sepia(0) saturate(7462%) hue-rotate(51deg) brightness(11%) contrast(59%);">-->
+<!--                                        &lt;!&ndash;                                        <span style="margin-left: 12px;">0%</span>&ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+
+                        <div class="d-flex justify-content-between w-100 align-items-center align-items-md-end">
+<!--                            <a role="button" tabindex="0" href="/en/vocab/subcategory/1/word-list" title="Word list"-->
+<!--                               class="SubcategoryItem_circleButton__j_98Q button shadow normalText btn btn-primary">-->
+<!--                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 202.5 202.5" width="23">-->
+<!--                                    <g>-->
+<!--                                        <g>-->
+<!--                                            <rect x="7.5" y="7.5" width="75" height="75" rx="18" ry="18"-->
+<!--                                                  style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect>-->
+<!--                                            <rect x="120" y="7.5" width="75" height="75" rx="18" ry="18"-->
+<!--                                                  style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect>-->
+<!--                                            <rect x="7.5" y="120" width="75" height="75" rx="18" ry="18"-->
+<!--                                                  style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect>-->
+<!--                                            <rect x="120" y="120" width="75" height="75" rx="18" ry="18"-->
+<!--                                                  style="fill: none; stroke: rgb(255, 255, 255); stroke-width: 15px;"></rect>-->
+<!--                                        </g>-->
+<!--                                    </g>-->
+<!--                                </svg>-->
+<!--                            </a>-->
+                            <a th:href="@{/word-phraseLesson/{id}(id=${category.id})}" class="btn btn_main"
+                               style="width: fit-content; margin-left: auto;">Навчатися</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        const pageHeight = Math.max(-->
+<!--            document.body.scrollHeight,-->
+<!--            document.documentElement.scrollHeight,-->
+<!--            document.body.offsetHeight,-->
+<!--            document.documentElement.offsetHeight,-->
+<!--            document.body.clientHeight,-->
+<!--            document.documentElement.clientHeight-->
+<!--        );-->
+
+<!--// Отримати висоту вікна браузера-->
+<!--        const windowHeight = window.innerHeight;-->
+
+<!--// Перевірити, чи є полоса прокрутки-->
+<!--        const hasScrollbar = pageHeight > windowHeight;-->
+
+<!--        if (hasScrollbar) {-->
+<!--            console.log("Є полоса прокрутки.");-->
+<!--        } else {-->
+<!--            console.log("Немає полоси прокрутки.");-->
+<!--        }-->
+<!--    };-->
+
+<!--</script>-->
+<script>
+
+
+    function isBodyOverflowed() {
+        return document.body.scrollHeight > document.body.clientHeight;
+    }
+
+    function updateWordLessonsPadding() {
+        var wordLessonsElements = document.querySelectorAll('.word_lessons');
+        wordLessonsElements.forEach(function (element) {
+            var isBodyOverflowedNow = isBodyOverflowed();
+            var isMobileViewport = window.innerWidth <= 767;
+            if (isBodyOverflowedNow && !isMobileViewport) {
+                element.style.paddingRight = '20px';
+            } else {
+                element.style.paddingRight = '0';
+            }
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', updateWordLessonsPadding);
+    window.addEventListener('resize', updateWordLessonsPadding);
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.example.learnenglish.controllers;
+package com.example.learnenglish.controllers.restConrollers;
 
 import com.example.learnenglish.dto.DtoUserWordLessonStatistic;
 import com.example.learnenglish.dto.DtoUserWordLessonStatisticToUi;

@@ -42,7 +42,7 @@ class CategoryServiceTest {   // Change over. Need refactor
         var category = new Category();
         category.setId(categoryId);
         category.setName("Test Category");
-        category.setInfo("Test Info");
+        category.setDescription("Test Info");
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
@@ -52,7 +52,7 @@ class CategoryServiceTest {   // Change over. Need refactor
 
         assertEquals(categoryId, res.getId());
         assertEquals("Test Category", res.getName());
-        assertEquals("Test Info", res.getInfo());
+        assertEquals("Test Info", res.getDescription());
 
         verify(categoryRepository, times(1)).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
@@ -68,7 +68,7 @@ class CategoryServiceTest {   // Change over. Need refactor
 
         assertEquals(categoryId, result.getId());
         assertEquals("Enter new name category", result.getName());
-        assertEquals("Enter new info category", result.getInfo());
+        assertEquals("Enter new info category", result.getDescription());
 
         verify(categoryRepository, times(1)).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
@@ -81,13 +81,13 @@ class CategoryServiceTest {   // Change over. Need refactor
         var category1 = new Category();
         category1.setId(1L);
         category1.setName("Category 1");
-        category1.setInfo("Info 1");
+        category1.setDescription("Info 1");
         categories.add(category1);
 
         var category2 = new Category();
         category2.setId(2L);
         category2.setName("Category 2");
-        category2.setInfo("Info 2");
+        category2.setDescription("Info 2");
         categories.add(category2);
 
         when(categoryRepository.findAll()).thenReturn(categories);
@@ -160,7 +160,7 @@ class CategoryServiceTest {   // Change over. Need refactor
         when(categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(true, CategoryPage.WORDS))
                 .thenReturn(Arrays.asList(category1, category2));
 
-        var result = categoryService.mainWordCategoryList(true);
+        var result = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
 
         assertEquals(2, result.size());
         assertEquals(category1.getId(), result.get(0).getId());
@@ -185,7 +185,7 @@ class CategoryServiceTest {   // Change over. Need refactor
         when(categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(true, CategoryPage.LESSON_WORDS))
                 .thenReturn(Arrays.asList(category1, category2));
 
-        List<Category> result = categoryService.mainWordLessonCategoryList(true);
+        List<Category> result = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
 
         assertEquals(2, result.size());
         assertEquals(category1.getId(), result.get(0).getId());
@@ -210,7 +210,7 @@ class CategoryServiceTest {   // Change over. Need refactor
         when(categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(true, CategoryPage.TRANSLATION_PAIRS))
                 .thenReturn(Arrays.asList(category1, category2));
 
-        var result = categoryService.mainTranslationPairsCategoryList(true);
+        var result = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
 
         assertEquals(2, result.size());
         assertEquals(category1.getId(), result.get(0).getId());

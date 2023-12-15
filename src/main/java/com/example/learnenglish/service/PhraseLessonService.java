@@ -8,6 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.PhraseLessonDto;
+import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.PhraseLesson;
 import com.example.learnenglish.repository.PhraseLessonRepository;
 import com.example.learnenglish.responsemessage.Message;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-// Не Буде змінюватись
 @Service
 public class PhraseLessonService {
     private final PhraseLessonRepository phraseLessonRepository;
@@ -75,6 +75,8 @@ public class PhraseLessonService {
     public Long countLessons() {
         return phraseLessonRepository.count();
     }
+
+
 
 
 }

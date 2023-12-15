@@ -43,7 +43,7 @@
                 </div>
                 <hr>
                 <label for="info">Текст:</label>
-                <textarea id="info" name="info" th:text="${category.info}"></textarea>
+                <textarea id="info" name="info" th:text="${category.description}"></textarea>
                 <input type="hidden" name="id" th:value="${category.id}"><br>
                 <button type="submit">Зберегти</button>
             </form>

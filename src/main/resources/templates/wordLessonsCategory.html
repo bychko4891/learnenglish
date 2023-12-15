@@ -35,7 +35,7 @@
         <header th:replace="~{fragments/header :: header}"></header>
         <div th:each="wordLesson, iter : ${wordLessonMainCategory}" th:limit="1" class="d-flex flex-column">
             <h1 th:text="${wordLesson.name}"></h1>
-            <div th:utext="${wordLesson.info}"></div>
+            <div th:utext="${wordLesson.getDescription}"></div>
 
             <div th:if="${iter.index == 0}" class="d-flex flex-column flex-lg-column lessons">
                 <div th:each="subcatery : ${wordLesson.subcategories}">
@@ -46,8 +46,8 @@
                         <div class="d-flex flex-column flex-grow-1 justify-content-between">
                             <a th:href="@{/word-phraseLesson/{id}/lessons(id=${subcatery.id})}"><h3 th:text="${subcatery.name}"></h3></a>
                             <p th:text="${#arrays.length(subcatery.wordLessons) + ' занять(тя)'}"></p>
-                            <div th:utext="${subcatery.info}" class="text_info"></div>
-                            <div th:utext="${subcatery.info.length() > 100 ? #strings.substring(subcatery.info, 0, 100) + '....' : subcatery.info + '....'}" class="text_info_m"></div>
+                            <div th:utext="${subcatery.getDescription}" class="text_info"></div>
+                            <div th:utext="${subcatery.getDescription.length() > 100 ? #strings.substring(subcatery.getDescription, 0, 100) + '....' : subcatery.getDescription + '....'}" class="text_info_m"></div>
                         <a th:href="@{/word-phraseLesson/{id}/lessons(id=${subcatery.id})}" class="btn btn_main" style="width: fit-content;">Навчатися</a>
                         </div>
                         <br>

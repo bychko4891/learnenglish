@@ -149,15 +149,15 @@ function save() {
             id: categoryId
         }
     };
-    var data = {
-        word: word,
-        phrasesApplicationId: phrasesApplicationId
-    };
+    // var data = {
+    //     word: word,
+    //     phrasesApplicationId: phrasesApplicationId
+    // };
     $.ajax({
         url: url,
         type: 'POST',
         contentType: "application/json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(word),
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },

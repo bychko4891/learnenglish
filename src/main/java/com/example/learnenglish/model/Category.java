@@ -29,6 +29,9 @@ public class Category implements Serializable {
     @Column
     private String name;
 
+    @Column(name = "description", columnDefinition = "text") //Змінив поле!!!
+    private String description; //Змінив поле!!!
+
     @Column
     private boolean mainCategory = false;
 
@@ -39,8 +42,7 @@ public class Category implements Serializable {
     @Column(name="view_subcategory_full_no_info_or_name_and_info")
     private boolean viewSubcategoryFullNoInfoOrNameAndInfo = false;
 
-    @Column(name = "info", columnDefinition = "text")
-    private String info;
+
 
     @ElementCollection(targetClass = CategoryPage.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "category_page", joinColumns = @JoinColumn(name = "category_id"))

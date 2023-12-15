@@ -27,7 +27,7 @@ public class DtoWordsCategoryToUi {
         dto.setId(wordCategory.getId());
         dto.setName(wordCategory.getName());
         dto.setMainCategory(wordCategory.isMainCategory());
-        dto.setInfo(wordCategory.getInfo());
+        dto.setInfo(wordCategory.getDescription());
         dto.setParentCategory(wordCategory.getParentCategory());
 
         List<Category> subcategories = wordCategory.getSubcategories();
@@ -45,7 +45,7 @@ public class DtoWordsCategoryToUi {
         DtoWordsCategoryToUi dto = new DtoWordsCategoryToUi();
         dto.setId(wordCategory.getId());
         dto.setName(wordCategory.getName());
-        dto.setInfo(wordCategory.getInfo());
+        dto.setInfo(wordCategory.getDescription());
         return dto;
     }
 

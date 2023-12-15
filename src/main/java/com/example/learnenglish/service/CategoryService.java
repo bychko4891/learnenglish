@@ -28,7 +28,7 @@ public class CategoryService {
             Category category = new Category();
             category.setId(id);
             category.setName("Enter new name category");
-            category.setInfo("Enter new info category");
+            category.setDescription("Enter new info category");
             return category;
         }
     }
@@ -50,20 +50,8 @@ public class CategoryService {
         return categoryRepository.findCategoriesByMainCategoryOrderByNameAsc(mainCategory);
     }
 
-    public List<Category> mainWordCategoryList(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.WORDS);
-    }
-    public List<Category> mainPhraseLessonCategoryList(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.LESSON_PHRASES);
-    }
-
-    public List<Category> mainWordLessonCategoryList(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.LESSON_WORDS);
-    }
-
-    //               метод для Фраз            //
-    public List<Category> mainTranslationPairsCategoryList(boolean mainCategory) {
-        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, CategoryPage.MINI_STORIES);
+    public List<Category> mainCategoryListByCategoryPage(boolean mainCategory, CategoryPage categoryPage) {
+        return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, categoryPage);
     }
 
     public List<Category> mainTranslationPairsCategoryListUser(boolean mainCategory) {
@@ -79,13 +67,22 @@ public class CategoryService {
         return dtoWordsCategoryToUiList;
     }
 
+    public List<Category> getSubcategoriesPhraseLesson() {
+        List<Category> phraseLessonMainCategories = mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
+        List<Category> subcategories = new ArrayList<>();
+        for (Category arr: phraseLessonMainCategories) {
+            subcategories.addAll(arr.getSubcategories());
+        }
+        return subcategories;
+    }
+
     public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
         return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 
     public CustomResponseMessage saveMainCategory(Category category, Category categoryFromDatabase) {
         categoryFromDatabase.setName(category.getName());
-        categoryFromDatabase.setInfo(category.getInfo());
+        categoryFromDatabase.setDescription(category.getDescription());
         categoryFromDatabase.setMainCategory(true);
         categoryFromDatabase.setViewSubcategoryFullNoInfoOrNameAndInfo(category.isViewSubcategoryFullNoInfoOrNameAndInfo());
         String page = category.getCategoryPages().get(0).name();
@@ -105,7 +102,7 @@ public class CategoryService {
 
     public CustomResponseMessage saveSubcategory(DtoCategoryFromEditor dtoCategory, Category сategory) {
         сategory.setName(dtoCategory.getCategory().getName());
-        сategory.setInfo(dtoCategory.getCategory().getInfo());
+        сategory.setDescription(dtoCategory.getCategory().getDescription());
         сategory.setMainCategory(false);
         if (dtoCategory.getMainCategoryId() != 0) {
             Category parentCategory = null;
@@ -129,7 +126,7 @@ public class CategoryService {
         Category category = new Category();
         Image image = new Image();
         category.setName(dtoCategory.getCategory().getName());
-        category.setInfo(dtoCategory.getCategory().getInfo());
+        category.setDescription(dtoCategory.getCategory().getDescription());
         category.setImage(image);
         if (dtoCategory.getMainCategoryId() == 0 && dtoCategory.getSubcategoryId() == 0) {
             category.setMainCategory(dtoCategory.getCategory().isMainCategory());

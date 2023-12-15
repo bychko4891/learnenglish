@@ -12,7 +12,7 @@
                 <div class="d-flex flex-grow-1" style="align-content: center; flex-wrap: wrap;">
                     <div class="d-flex flex-column">
                         <h3 th:text="${wordLessonCategory.name}"></h3>
-                        <div th:utext="${wordLessonCategory.info}"></div>
+                        <div th:utext="${wordLessonCategory.getDescription}"></div>
                         <span th:text="${#arrays.length(wordLessonCategory.wordLessons) + ' занять(тя) - ' + words + ' слів'}"></span>
                     </div>
                 </div>

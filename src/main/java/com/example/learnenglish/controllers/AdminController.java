@@ -163,7 +163,7 @@ public class AdminController {
                                    Model model,
                                    Principal principal) {
         if (principal != null) {
-            List<Category> mainPhraseLessonCategories = categoryService.mainPhraseLessonCategoryList(true);
+            List<Category> mainPhraseLessonCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
             PhraseLesson lesson = phraseLessonService.getLesson(id);
             model.addAttribute("category", "Відсутня");
             if (lesson.getCategory() != null) {
@@ -310,7 +310,7 @@ public class AdminController {
     @GetMapping("/words/{id}/word-edit")
     public String wordEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainWordCategoryList(true);
+            List<Category> mainWordsCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
             model.addAttribute("category", "Відсутня");
             model.addAttribute("mainWordsCategories", mainWordsCategories);
             try {
@@ -365,7 +365,7 @@ public class AdminController {
     @GetMapping("/word-lessons/word-lesson-edit/{id}")
     public String wordLessonEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainCategories = categoryService.mainWordLessonCategoryList(true);
+            List<Category> mainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
             model.addAttribute("category", "Відсутня");
             model.addAttribute("mainCategories", mainCategories);
             try {
@@ -449,7 +449,7 @@ public class AdminController {
                                                Model model,
                                                Principal principal) {
         if (principal != null) {
-            List<Category> mainTranslationPairsPagesCategories = categoryService.mainTranslationPairsCategoryList(true);
+            List<Category> mainTranslationPairsPagesCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
             if (mainTranslationPairsPagesCategories != null) {
                 model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
             }
@@ -470,7 +470,7 @@ public class AdminController {
                                              Model model,
                                              Principal principal) {
         if (principal != null) {
-            List<Category> mainTranslationPairsPagesCategories = categoryService.mainTranslationPairsCategoryList(true);
+            List<Category> mainTranslationPairsPagesCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
             MiniStory miniStory = miniStoryService.getTranslationPairsPage(id);
             model.addAttribute("category", "Відсутня");
             if (miniStory.getCategory() != null) {

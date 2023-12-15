@@ -473,7 +473,7 @@ class AdminControllerTest {
         category.setName("Category 1");
         category.setMainCategory(true);
 
-        when(categoryService.mainWordCategoryList(true)).thenReturn(mainWordsCategory);
+        when(categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS)).thenReturn(mainWordsCategory);
         when(categoryService.getCategoryToEditor(id)).thenReturn(category);
 
         var result = adminController.wordsCategoryEdit(id, model, principal);
@@ -578,7 +578,7 @@ class AdminControllerTest {
         var id = 1L;
         Word word = mock(Word.class);
         List<Category> mainCategoryList = new ArrayList<>();
-        when(categoryService.mainWordCategoryList(true)).thenReturn(mainCategoryList);
+        when(categoryService.mainCategoryListByCategoryPage(true,CategoryPage.WORDS)).thenReturn(mainCategoryList);
         when(wordService.getWord(id)).thenReturn(word);
 
         var res = adminController.wordEdit(id, model, principal);
@@ -648,7 +648,7 @@ class AdminControllerTest {
         List<Category> mainCategories = new ArrayList<>();
         WordLesson wordLesson = mock(WordLesson.class);
 
-        when(categoryService.mainWordLessonCategoryList(true)).thenReturn(mainCategories);
+        when(categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS)).thenReturn(mainCategories);
         when(wordLessonService.getWordLesson(id)).thenReturn(wordLesson);
 
         var res = adminController.wordLessonEdit(id, model, principal);
@@ -747,7 +747,7 @@ class AdminControllerTest {
     void testNewTranslationPairPageCreate() {
         List<Category> mainTranslationPairsPagesCategories = new ArrayList<>();
 
-        when(categoryService.mainTranslationPairsCategoryList(true)).thenReturn(mainTranslationPairsPagesCategories);
+        when(categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES)).thenReturn(mainTranslationPairsPagesCategories);
 
         var res = adminController.newTranslationPairPageCreate(1L, model, principal);
 
@@ -767,7 +767,7 @@ class AdminControllerTest {
         var id = 1L;
         List<Category> mainTranslationPairsPagesCategories = new ArrayList<>();
         MiniStory miniStory = mock(MiniStory.class);
-        when(categoryService.mainTranslationPairsCategoryList(true)).thenReturn(mainTranslationPairsPagesCategories);
+        when(categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES)).thenReturn(mainTranslationPairsPagesCategories);
         when(miniStoryService.getTranslationPairsPage(id)).thenReturn(miniStory);
 
         var res = adminController.newTranslationPairPageEdit(id, model, principal);

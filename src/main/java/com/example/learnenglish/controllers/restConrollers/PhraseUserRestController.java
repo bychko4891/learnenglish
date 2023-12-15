@@ -1,4 +1,4 @@
-package com.example.learnenglish.controllers;
+package com.example.learnenglish.controllers.restConrollers;
 
 import com.example.learnenglish.dto.FieldErrorDTO;
 import com.example.learnenglish.dto.PhraseUserDto;

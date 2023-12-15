@@ -1,15 +1,16 @@
 package com.example.learnenglish.model;
 
-import com.example.learnenglish.model.users.Image;
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "words")
@@ -41,28 +42,15 @@ public class Word implements Serializable {
     @Column
     private String irregularVerbPp;
 
+    @Column
+    private boolean isActiveURL = true;
+
     @Transient
     private boolean isRepeatable = true;
-
-    @Column(name = "info", columnDefinition = "text")
-    private String info;
-
-    @Column
-    private boolean published = false;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private Image images;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_audio_id")
     private Audio audio;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToMany(mappedBy = "word")
-    private List<PhraseApplication> phraseExamples = new ArrayList<>();
 
 }

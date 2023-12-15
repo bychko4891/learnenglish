@@ -7,7 +7,7 @@ function save() {
         name: $('#editor input[name="name"]').val(),
         mainCategory: $('#toggleSwitch').is(':checked'),
         categoryPages: categoryPages,
-        info: $('#editor textarea[name="info"]').val()
+        description: $('#editor textarea[name="info"]').val()
     };
     var mainCategoryId = $('#subcategorySelect').val();
     var subcategoryId =  $('#subSubcategorySelect').val();

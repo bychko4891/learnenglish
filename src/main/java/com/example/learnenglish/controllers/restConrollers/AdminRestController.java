@@ -1,4 +1,4 @@
-package com.example.learnenglish.controllers;
+package com.example.learnenglish.controllers.restConrollers;
 /*
  * @author: Anatolii Bychko
  * Application Name: Learn English
@@ -120,15 +120,15 @@ public class AdminRestController {
     }
 
     @PostMapping("/word-save")
-    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody WordDto wordDto,
+    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody Word word,
                                                                   Principal principal) {
         if (principal != null) {
             try {
-                Word wordDB = wordService.getWord(wordDto.getWord().getId());
-                return ResponseEntity.ok(wordService.saveWord(wordDB, wordDto));
+                Word wordDB = wordService.getWord(word.getId());
+                return ResponseEntity.ok(wordService.saveWord(wordDB, word));
 
             } catch (RuntimeException e) {
-                return ResponseEntity.ok(wordService.saveNewWord(wordDto));
+                return ResponseEntity.ok(wordService.saveNewWord(word));
             }
         }
         return ResponseEntity.notFound().build();
