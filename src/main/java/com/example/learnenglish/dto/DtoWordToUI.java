@@ -29,7 +29,7 @@ public class DtoWordToUI {
         dtoWordToUI.setName(word.getName());
         dtoWordToUI.setTranscription(word.getUsaTranscription());
         dtoWordToUI.setTranslate(word.getTranslate());
-        dtoWordToUI.setDescription(word.getDescription());
+//        dtoWordToUI.setDescription(word.getDescription());
 //        if(word.getWordLesson() != null){
 //            dtoWordToUI.setWordLessonId(word.getWordLesson().getId());
 //        }

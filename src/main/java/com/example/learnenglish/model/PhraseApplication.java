@@ -47,14 +47,14 @@ public class PhraseApplication {
     @OneToOne
     private Audio audio;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "lesson_id")
-    private PhraseLesson phraseLesson;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "lesson_id")
+//    private PhraseLesson phraseLesson; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        ***********
 
 //    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
 //    @JoinColumn(name = "category_id")
 //    private Category category;
-    @ManyToOne
-    @JoinColumn(name = "word_id")
-    private Word word;
+//    @ManyToOne
+//    @JoinColumn(name = "word_id")
+//    private Word word;
 }

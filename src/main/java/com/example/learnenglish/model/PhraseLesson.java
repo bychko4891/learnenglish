@@ -11,7 +11,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "phrase_lessons") // змінив поле!!!!!!!!!!!!!!!!!!!!!!!
@@ -19,14 +18,13 @@ import java.util.Objects;
 public class PhraseLesson implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OrderBy
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "published")
     private boolean published = false;
 
     @Column(name = "description", columnDefinition = "text")  // змінив поле!!!!!!!!!!!!!!!!!!!!!!!

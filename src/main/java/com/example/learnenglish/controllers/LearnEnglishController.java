@@ -160,12 +160,12 @@ public class LearnEnglishController {
     @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {
         Word word = wordService.getWord(id);
-        Category wordCategory = word.getCategory().getParentCategory();
+//        Category wordCategory = word.getCategory().getParentCategory();
         model.addAttribute("word", word);
-        if(wordCategory != null){
-            model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
-            model.addAttribute("mainCategoryName", wordCategory.getName());
-        }
+//        if(wordCategory != null){
+//            model.addAttribute("mainCategoryId", wordCategory.getParentCategory().getId());
+//            model.addAttribute("mainCategoryName", wordCategory.getName());
+//        }
         return "word";
     }
 

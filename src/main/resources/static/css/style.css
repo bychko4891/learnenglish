@@ -8,7 +8,7 @@ body {
     font-family: "Roboto", sans-serif;
 }
 .box::-webkit-scrollbar {
-    background-color: rgba(0,0,0,0.5);
+    /*background-color: rgba(0,0,0,0.5);*/
 }
 
 /*!* ползунок скроллбара *!*/

@@ -7,14 +7,14 @@ package com.example.learnenglish.dto;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.PhraseLesson;
+//import com.example.learnenglish.model.PhraseLesson;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class PhraseLessonDto {
-    private PhraseLesson phraseLesson;
-    private List<Long> phrasesApplicationId;
+//    private PhraseLesson phraseLesson;
+//    private List<Long> phrasesApplicationId; // !!!!!!
 
 }

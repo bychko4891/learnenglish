@@ -25,8 +25,8 @@ public class Audio implements Serializable {
     @Column
     private String usaAudioName;
 
-    @OneToOne(mappedBy = "audio")
-    private Word word;
+//    @OneToOne(mappedBy = "audio")
+//    private Word word;
 
 //    @OneToOne(mappedBy = "audio")
 //    private TranslationPair translationPair;

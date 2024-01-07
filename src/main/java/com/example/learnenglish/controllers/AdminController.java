@@ -132,16 +132,16 @@ public class AdminController {
                                        Principal principal,
                                        Model model) {
         if (principal != null) {
-            if (page < 0) page = 0;
-            Page<PhraseLesson> lessonPage = phraseLessonService.getLessonsPage(page, size);
-            if (lessonPage.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", lessonPage.getTotalPages());
-            }
-            model.addAttribute("message", message);
-            model.addAttribute("lessons", lessonPage.getContent());
-            model.addAttribute("currentPage", page);
+//            if (page < 0) page = 0;
+//            Page<PhraseLesson> lessonPage = phraseLessonService.getLessonsPage(page, size);
+//            if (lessonPage.getTotalPages() == 0) {
+//                model.addAttribute("totalPages", 1);
+//            } else {
+//                model.addAttribute("totalPages", lessonPage.getTotalPages());
+//            }
+//            model.addAttribute("message", message);
+//            model.addAttribute("lessons", lessonPage.getContent());
+//            model.addAttribute("currentPage", page);
 
             return "admin/phraseLessons";
         }
@@ -150,10 +150,10 @@ public class AdminController {
 
     @GetMapping("/phrase-lessons/new-phrase-lesson")
     public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
-        if (principal != null) {
-            Long count = phraseLessonService.countLessons() + 1;
-            return "redirect:/admin-page/phrase-lessons/phrase-lesson-edit/" + count ;
-        }
+//        if (principal != null) {
+//            Long count = phraseLessonService.countLessons() + 1;
+//            return "redirect:/admin-page/phrase-lessons/phrase-lesson-edit/" + count ;
+//        }
         return "redirect:/login";
     }
 
@@ -163,14 +163,14 @@ public class AdminController {
                                    Model model,
                                    Principal principal) {
         if (principal != null) {
-            List<Category> mainPhraseLessonCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
-            PhraseLesson lesson = phraseLessonService.getLesson(id);
-            model.addAttribute("category", "Відсутня");
-            if (lesson.getCategory() != null) {
-                model.addAttribute("category", lesson.getCategory().getName());
-            }
-            model.addAttribute("lesson", lesson);
-            model.addAttribute("mainCategories", mainPhraseLessonCategories);
+//            List<Category> mainPhraseLessonCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
+//            PhraseLesson lesson = phraseLessonService.getLesson(id);
+//            model.addAttribute("category", "Відсутня");
+//            if (lesson.getCategory() != null) {
+//                model.addAttribute("category", lesson.getCategory().getName());
+//            }
+//            model.addAttribute("lesson", lesson);
+//            model.addAttribute("mainCategories", mainPhraseLessonCategories);
             return "admin/phraseLessonEdit";
         }
         return "redirect:/login";
@@ -315,9 +315,9 @@ public class AdminController {
             model.addAttribute("mainWordsCategories", mainWordsCategories);
             try {
                 Word word = wordService.getWord(id);
-                if (word.getCategory() != null) {
-                    model.addAttribute("category", word.getCategory().getName());
-                }
+//                if (word.getCategory() != null) {
+//                    model.addAttribute("category", word.getCategory().getName());
+//                }
                 model.addAttribute("word", word);
             } catch (RuntimeException e) {
                 model.addAttribute("word", wordService.getNewWord(id));

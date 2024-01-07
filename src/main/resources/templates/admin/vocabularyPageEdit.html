@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+<style>
+  .deleteBtn {
+    margin-right: auto;
+    margin-left: auto;
+    width: 45px;
+  }
+  .phrases-list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+  }
+</style>
+<body class="active">
+<div id="toastContainer" class="toast-container"></div>
+<div class="wrapper">
+  <main class="section">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container layout_page">
+      <h1>Новий урок для слів</h1>
+      <form id="editor">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" th:value="${wordLesson.name}">
+        <label for="name">Опис:</label>
+        <input type="text" id="description" name="description" th:value="${wordLesson.description}"><br>
+        <label for="name">Порядковий номер:</label>
+        <input type="text" id="number" name="serialNumber" th:value="${wordLesson.serialNumber}" th:placeholder="${wordLesson.serialNumber}"><br>
+
+
+        <label>Категорія:</label> <label th:text="${category}"></label><br>
+        <label for="mainCategorySelect">Змінити категорію: </label>
+        <select id="mainCategorySelect" name="selectedPageApplication">
+          <option name="id" value="0">Оберіть категорію</option>
+          <option th:each="mainCategory : ${mainCategories}" th:value="${mainCategory.id}"
+                  th:text="${mainCategory.name}">
+          </option>
+        </select>
+        <select id="subcategorySelect" name="subcategorySelect">
+          <option name="id" value="0">Оберіть підкатегорію</option>
+        </select>
+        <select id="subSubcategorySelect" name="subcategorySelect">
+          <option name="id" value="0">Оберіть підкатегорію</option>
+        </select><br>
+
+
+<!--        <label>Додані слова до уроку: </label>-->
+<!--        <div id="addedItemsContainer"></div>-->
+        <hr>
+
+        <label>Cлова в уроці: </label>
+        <div id="savedItemsContainer" class="d-flex">
+          <div th:each="wordOrdered : ${wordLesson.words}" class="phrases-list">
+            <label th:text="${wordOrdered.word.name + ','}" style="font-size: 28px;"></label>
+            <input name="id" type="hidden" th:value="${wordOrdered.word.id}">
+            <button class="deleteBtn" th:data-id="${wordOrdered.word.id}">X</button>
+          </div>
+        </div><br>
+        <input type="hidden" name="wordLessonId" th:value="${wordLesson.id}">
+        <button type="submit">Зберегти</button>
+      </form>
+
+
+
+
+    </div>
+    <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+  </main>
+  <div th:replace="~{fragments/menu :: menu}"></div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<!--<script type="text/javascript" th:src="@{/js/adminPage_js/wordEdit.js}"></script>-->
+<script>
+  const searchInput = document.getElementById('searchInput');
+
+  searchInput.addEventListener('input', function () {
+    const searchTerm = searchInput.value;
+    if (searchTerm.length > 0) {
+      searchItems(searchTerm);
+    }
+  });
+
+  function searchItems(searchTerm) {
+    $.ajax({
+      url: '/admin-page/search-word',
+      type: 'GET',
+      data: {searchTerm: searchTerm},
+      success: function (response) {
+        // Обробити отримані результати пошуку
+        displaySearchResults(response);
+      },
+      error: function () {
+        console.error('Помилка при виконанні запиту на сервер');
+      }
+    });
+  }
+
+  function displaySearchResults(results) {
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.classList.add('search_result_style');
+    if (results.length === 0) {
+      searchResultsContainer.classList.remove('search_result_style');
+    }
+    // Додайте обробник події click на сторінці
+    document.addEventListener('click', function (event) {
+      const targetElement = event.target;
+
+      // Перевірка, чи клікнули поза блоком результатів пошуку
+      if (!searchResultsContainer.contains(targetElement)) {
+        searchResultsContainer.innerHTML = '';
+        searchResultsContainer.classList.remove('search_result_style');
+      }
+    });
+    searchResultsContainer.innerHTML = '';
+
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i];
+
+      // Створення блоку для кожного результату
+      const resultBlock = document.createElement('div');
+      resultBlock.classList.add('result-block');
+
+      // Створення назви
+      const nameElement = document.createElement('h2');
+      nameElement.textContent = result.name;
+      resultBlock.appendChild(nameElement);
+
+      // Створення скритого поля з id екземпляра
+      const idElement = document.createElement('input');
+      idElement.type = 'hidden';
+      idElement.value = result.id;
+      resultBlock.appendChild(idElement);
+
+      // Створення кнопки "Додати"
+      const addButton = document.createElement('button');
+      addButton.classList.add('add-button');
+      addButton.textContent = 'Додати';
+      addButton.addEventListener('click', function () {
+        const selectedId = this.parentNode.querySelector('input[type="hidden"]').value;
+
+        // const addedItemsContainer = document.getElementById('addedItemsContainer');
+        const addedItemsContainer = document.getElementById('savedItemsContainer');
+        const newItem = document.createElement('div');
+        newItem.classList.add('phrases-list');
+
+        // Створення input з атрибутом name="id" та значенням value="${selectedId}"
+        const inputElement = document.createElement('input');
+        inputElement.type = 'hidden';
+        inputElement.name = 'id';
+        inputElement.value = selectedId;
+        newItem.appendChild(inputElement);
+
+        const labelElement = document.createElement('label');
+        labelElement.textContent = result.name + ',';
+        labelElement.style.fontSize = '28px';
+        newItem.appendChild(labelElement);
+
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.classList.add('deleteBtn');
+        deleteButton.addEventListener('click', function () {
+          addedItemsContainer.removeChild(newItem);
+        });
+
+        newItem.appendChild(deleteButton);
+
+        addedItemsContainer.appendChild(newItem);
+      });
+
+      resultBlock.appendChild(addButton);
+
+      searchResultsContainer.appendChild(resultBlock);
+    }
+  }
+  window.addEventListener('DOMContentLoaded', function () {
+    var deleteButtons = document.getElementsByClassName('deleteBtn');
+    for (var i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].addEventListener('click', function () {
+        var id = this.getAttribute('data-id');
+
+        deleteTranslationPair(id);
+      });
+    }
+  });
+
+  function deleteTranslationPair(id) {
+    var element = document.querySelector('[data-id="' + id + '"]').parentNode;
+    element.parentNode.removeChild(element);
+  }
+
+  $('#editor').submit(function (event) {
+    event.preventDefault();
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+    // const selectedItemsInput = document.querySelectorAll('#addedItemsContainer input[name="id"]');
+    const savedItemsInput = document.querySelectorAll('#savedItemsContainer input[name="id"]');
+    var subcategorySelect = $('#subcategorySelect').val();
+    var categoryId = 0;
+    if(subcategorySelect > 0) {
+      categoryId = subcategorySelect;
+    }
+    // var wordsId = [];
+    // selectedItemsInput.forEach(function (input) {
+    //   wordsId.push(input.value);
+    // });
+    var count = 0;
+    var words = [];
+    savedItemsInput.forEach(function (input) {
+      words.push({
+        listOrder: count += 1,
+        word:{
+          id: input.value
+        }});
+    });
+    console.log(words);
+    var wordLesson = {
+      id: $('#editor input[name="wordLessonId"]').val(),
+      name: $('#editor input[name="name"]').val(),
+      serialNumber: $('#editor input[name="serialNumber"]').val(),
+      description: $('#editor input[name="description"]').val(),
+      category: {
+        id: categoryId
+      },
+      words: words
+    };
+    // var data = {
+    //   wordLesson: wordLesson,
+    //   wordsId: wordsId
+    // };
+    console.log(wordLesson);
+    $.ajax({
+      // url: $(this).attr('action'),
+      url: '/admin-page/word-lesson-save',
+      type: 'POST',
+      contentType: "application/json",
+      data: JSON.stringify(wordLesson),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+      },
+      success: function (result) {
+        var status = result.status;
+        if (status == "Success") {
+          showSuccessToast(result.message);
+        } else {
+          showErrorToast(result.message)
+        }
+      },
+      error: function () {
+        let shel = {};
+        alert(Boolean(shel))
+        showErrorToast('Помилка запиту на сервер');
+      }
+    });
+  });
+
+  $(document).ready(function () {
+    const mainCategorySelect = document.getElementById('mainCategorySelect');
+    const subcategorySelect = document.getElementById('subcategorySelect');
+    const subSubcategorySelect = document.getElementById('subSubcategorySelect');
+    mainCategorySelect.addEventListener('change', function () {
+      const selectedCategoryId = mainCategorySelect.value;
+      fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+              .then(response => response.json())
+              .then(subcategories => {
+                if (subcategories.length > 0) {
+                  subcategories.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.text = subcategory.name;
+                    subcategorySelect.appendChild(option);
+                  });
+
+                  // Показуємо subcategorySelect, якщо є підкатегорії
+                  // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                } else {
+                }
+              })
+              .catch(error => {
+                console.error('Помилка при отриманні підкатегорій:', error);
+              });
+    });
+    subcategorySelect.addEventListener('change', function () {
+      const selectedCategoryId = subcategorySelect.value;
+      fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+              .then(response => response.json())
+              .then(subcategories => {
+                if (subcategories.length > 0) {
+                  subcategories.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.text = subcategory.name;
+                    subSubcategorySelect.appendChild(option);
+                  });
+
+                  // Показуємо subcategorySelect, якщо є підкатегорії
+                  // subcategorySelect.style.display = subcategories.length > 0 ? 'block' : 'none';
+                } else {
+                }
+              })
+              .catch(error => {
+                console.error('Помилка при отриманні підкатегорій:', error);
+              });
+    });
+  });
+</script>
+</body>
+</html>

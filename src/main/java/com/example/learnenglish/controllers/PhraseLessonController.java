@@ -34,18 +34,18 @@ public class PhraseLessonController {
     @GetMapping("/phrase-lessons/categories")
     public String lessonPage(PhraseLesson phraseLesson, Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
-        if (principal != null) {
-            List<Category> subcategoryPhraseLesson = categoryService.getSubcategoriesPhraseLesson();
-
-            PageApplication pageApplication = pageApplicationService.getPageApplication(4l);
-            if (pageApplication.getTextOfAppPage() != null) {
-                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
-            } else {
-                model.addAttribute("pageText", "No text in this page");
-            }
-            model.addAttribute("categories", subcategoryPhraseLesson);
-            return "subcategoriesPhraseLesson";
-        }
+//        if (principal != null) {
+//            List<Category> subcategoryPhraseLesson = categoryService.getSubcategoriesPhraseLesson();
+//
+//            PageApplication pageApplication = pageApplicationService.getPageApplication(4l);
+//            if (pageApplication.getTextOfAppPage() != null) {
+//                model.addAttribute("pageText", pageApplication.getTextOfAppPage().getText());
+//            } else {
+//                model.addAttribute("pageText", "No text in this page");
+//            }
+//            model.addAttribute("categories", subcategoryPhraseLesson);
+//            return "subcategoriesPhraseLesson";
+//        }
         return "redirect:/login";
     }
 }

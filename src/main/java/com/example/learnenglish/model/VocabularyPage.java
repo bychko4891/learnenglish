@@ -42,10 +42,13 @@ public class VocabularyPage {
     private Image image;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @OneToMany(mappedBy = "word")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "phrase_examples",
+            joinColumns = @JoinColumn(name = "vocabulary_page_id"),
+            inverseJoinColumns = @JoinColumn(name = "phrase_application_id"))
     private List<PhraseApplication> phraseExamples = new ArrayList<>();
 
 

@@ -14,6 +14,7 @@ import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.*;
 import com.example.learnenglish.validate.CategoryValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -55,22 +56,7 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/lesson-save")
-    public ResponseEntity<CustomResponseMessage> phraseLessonSave(@RequestBody PhraseLessonDto phraseLessonDto,
-                                                                  Principal principal) {
-        if (principal != null) {
-            if(phraseLessonDto.getPhraseLesson().getId() == null) throw new RuntimeException("Method 'phraseLessonSave' id - NULL");
-            try {
 
-            } catch (RuntimeException e) {
-
-            }
-
-
-            return ResponseEntity.ok(phraseLessonService.saveLesson(phraseLessonDto)); // Додати перевірку на новий чи вже існуючий !!!!!
-        }
-        return ResponseEntity.notFound().build();
-    }
 
 
     @PostMapping("/users/user/user-active")
@@ -95,7 +81,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/category-save")
-    public ResponseEntity<CustomResponseMessage> SaveWordsCategory(@RequestBody DtoCategoryFromEditor categoryRequest,
+    public ResponseEntity<CustomResponseMessage> saveWordsCategory(@RequestBody DtoCategoryFromEditor categoryRequest,
                                                                    Principal principal) {
         if (principal != null && categoryRequest.getMainCategoryId() != null && categoryRequest.getSubcategoryId() != null) {
             Object obj = categoryValidator.categoryIsPresentInBase(categoryRequest);
@@ -119,8 +105,10 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/word-save")
-    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestBody Word word,
+    @PostMapping( "/word-save")
+    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestPart(value = "brAudio", required = false) MultipartFile brAudio,
+                                                                  @RequestPart(value = "usaAudio", required = false) MultipartFile usaAudio,
+                                                                  @RequestPart(value = "word") Word word,
                                                                   Principal principal) {
         if (principal != null) {
             try {
@@ -128,6 +116,8 @@ public class AdminRestController {
                 return ResponseEntity.ok(wordService.saveWord(wordDB, word));
 
             } catch (RuntimeException e) {
+
+
                 return ResponseEntity.ok(wordService.saveNewWord(word));
             }
         }
@@ -173,6 +163,7 @@ public class AdminRestController {
             Audio audio = audioService.getAudio(audioId);
             if(audio.getBrAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getBrAudioName());
             if(audio.getUsaAudioName() != null)audioService.deleteAudioFilesFromDirectory(audio.getUsaAudioName());
+
             Map<String, MultipartFile> audioFiles = new HashMap<>();
             audioFiles.put("brAudio", brAudio);
             audioFiles.put("usaAudio", usaAudio);

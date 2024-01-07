@@ -57,7 +57,7 @@ public class User implements Serializable {
     private UserStatistics statistics;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserWordLessonProgress> wordLessonProgress;
+    private List<UserWordLessonProgress> wordLessonProgress = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<PhraseUser> phraseUsers = new ArrayList<>();

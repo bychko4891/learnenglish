@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PhraseUserService {
     private final TranslationPairService translationPairService;
-    private final PhraseLessonService phraseLessonService;
+//    private final PhraseLessonService phraseLessonService;
     private final UserService userService;
     private final PhraseUserRepository phraseUserRepository;
     private final PhraseAndUserService phraseAndUserService;
@@ -34,9 +34,9 @@ public class PhraseUserService {
     private final PhraseUserMapper mapper;
 
     public CustomResponseMessage saveNewPhraseUser(User user, PhraseUserDto phraseUserDto) {
-        PhraseUser phraseUser = mapper.toModel(phraseUserDto);
-        phraseUser.setUser(user);
-        phraseAndUserService.saveNewPhrasesAndUser(phraseUser);
+//        PhraseUser phraseUser = mapper.toModel(phraseUserDto);
+//        phraseUser.setUser(user);
+//        phraseAndUserService.saveNewPhrasesAndUser(phraseUser);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 

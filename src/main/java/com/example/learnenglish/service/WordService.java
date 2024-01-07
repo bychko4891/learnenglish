@@ -46,7 +46,7 @@ public class WordService {
         Word word = new Word();
         word.setId(id);
         word.setName("Enter name");
-        word.setInfo("Enter text");
+//        word.setDescription("Enter text");
         return word;
     }
 
@@ -65,18 +65,12 @@ public class WordService {
     public CustomResponseMessage saveWord(Word wordDB, Word word) {
         Optional.ofNullable(word.getName()).ifPresent(wordDB::setName);
         Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
-        Optional.ofNullable(word.getDescription()).ifPresent(wordDB::setDescription);
+//        Optional.ofNullable(word.getDescription()).ifPresent(wordDB::setDescription);
         Optional.ofNullable(word.getBrTranscription()).ifPresent(wordDB::setBrTranscription);
         Optional.ofNullable(word.getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
         Optional.ofNullable(word.getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
         Optional.ofNullable(word.getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
-        Optional.ofNullable(word.getInfo()).ifPresent(wordDB::setInfo);
-        wordDB.setPublished(word.isPublished());
-        if (word.getCategory() != null && word.getCategory().getId() != 0) {
-            if (wordDB.getCategory() == null || !word.getCategory().getId().equals(wordDB.getCategory().getId())) {
-                wordDB.setCategory(word.getCategory());
-            }
-        }
+        wordDB.setActiveURL(word.isActiveURL());
         wordRepository.save(wordDB);
         return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
     }
@@ -84,13 +78,8 @@ public class WordService {
 
     @Transactional
     public CustomResponseMessage saveNewWord(Word word) {
-        List<PhraseApplication> id = word.getPhraseExamples();
+//        word.setAudio(new Audio());
 
-        word.setImages(new Image());
-        word.setAudio(new Audio());
-        if (word.getCategory().getId() == 0) {
-            word.setCategory(null);
-        }
 
         /////////// Переробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //        if (id != null && id.size() > 0) {
@@ -121,22 +110,24 @@ public class WordService {
     }
 
     public List<DtoWordToUI> searchWord(String searchTerm) {
-        List<Word> wordsResult = wordRepository.findWord(searchTerm);
-        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr : wordsResult) {
-            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-        }
-        return dtoWordToUIList;
+//        List<Word> wordsResult = wordRepository.findWord(searchTerm);
+//        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+//        for (Word arr : wordsResult) {
+//            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+//        }
+//        return dtoWordToUIList;
+        return null;
     }
 
     @Transactional
     public List<DtoWordToUI> searchWordToAdminPage(String searchTerm) {
-        List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
-        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr : wordsResult) {
-            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-        }
-        return dtoWordToUIList;
+//        List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
+//        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
+//        for (Word arr : wordsResult) {
+//            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
+//        }
+//        return dtoWordToUIList;
+        return null;
     }
 
     @Transactional

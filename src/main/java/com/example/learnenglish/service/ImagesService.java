@@ -168,10 +168,10 @@ public class ImagesService {
             String resultFilename = uuidFile + contentType;
             Path targetLocation = this.storageLocationWordImage.resolve(resultFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            Long imageId = wordService.getWord(wordId).getImages().getId();
-            Image image = imagesRepository.findById(imageId).get();
-            image.setImageName(resultFilename);
-            imagesRepository.save(image);
+//            Long imageId = wordService.getWord(wordId).getImages().getId();
+//            Image image = imagesRepository.findById(imageId).get();
+//            image.setImageName(resultFilename);
+//            imagesRepository.save(image);
             return new CustomResponseMessage(Message.SUCCESS_SAVE_TEXT_OF_PAGE);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

@@ -14,7 +14,7 @@
 
 
             <h1>New text page</h1>
-            <form id="editor">
+            <form id="editor" enctype="multipart/form-data">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${word.name}">
                 <label for="name">Український перевод:</label>
@@ -30,53 +30,32 @@
 
                 <label for="irregularVerbPt">irregular verb: p.t.</label>
                 <input type="text" id="irregularVerbPt" name="irregularVerbPt" th:value="${word.irregularVerbPt}"
-                       placeholder="Український перевод">
+                       placeholder="Непр. дієслово Past Simple">
                 <label for="irregularVerbPp">irregular verb: p.p.</label>
                 <input type="text" id="irregularVerbPp" name="irregularVerbPp" th:value="${word.irregularVerbPp}"
-                       placeholder="Український перевод"><br>
-
-
-                <label>Категорія:</label> <label th:text="${category} + ' | '"></label>
-                <label for="mainCategorySelect">Змінити категорію: </label>
-                <select id="mainCategorySelect" name="selectedPageApplication">
-                    <option name="id" value="0">Оберіть категорію</option>
-                    <option th:each="wordsMainCategory : ${mainWordsCategories}" th:value="${wordsMainCategory.id}"
-                            th:text="${wordsMainCategory.name}">
-                    </option>
-                </select>
-                <select id="subcategorySelect" name="subcategorySelect">
-                    <option name="id" value="0">Оберіть підкатегорію</option>
-                </select>
-                <select id="subSubcategorySelect" name="subcategorySelect">
-                    <option name="id" value="0">Оберіть підкатегорію</option>
-                </select><br>
+                       placeholder="Непр. дієслово Past Participle"><br>
+                <br>
                 <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${word.published}" class="toggle-switch"
+                <input id="toggleSwitch" type="checkbox" th:checked="${word.isActiveURL}" class="toggle-switch"
                        name="published">
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
-                <label>Опис:</label>
-                <textarea type="text" name="description" th:text="${word.description}"></textarea>
+<!--                <label>Опис:</label>-->
+<!--                <textarea type="text" name="description" th:text="${word.description}"></textarea>-->
                 <hr>
 
-
-                <label>Додані фрази на сторінку: </label>
-                <div id="addedItemsContainer"></div>
-                <br>
-
-                <label>Присутні фрази на сторінці: </label>
-                <div id="savedItemsContainer">
-                    <div th:each="phraseExample : ${word.phraseExamples}">
-                        <label th:text="${phraseExample.getEngPhrase}"></label>
-                        <input name="id" type="hidden" th:value="${phraseExample.id}">
-                        <button class="deleteBtn" th:data-id="${phraseExample.id}">Видалити</button>
+                <div style="display: flex;">
+                    <div class="col-md-4">
+                        <label for="brAudio" class="form-label">Бр. аудио</label>
+                        <input class="form-control" type="file" id="brAudio" accept="audio/mpeg">
                     </div>
+                    <div class="col-md-4">
+                        <label for="usaAudio" class="form-label">Ам. аудио</label>
+                        <input class="form-control" type="file" id="usaAudio" accept="audio/mpeg">
+                    </div>
+
                 </div>
 
-
-
                 <hr>
-                <label for="info">Текст:</label>
-                <textarea id="info" name="info" th:text="${word.getInfo}"></textarea>
                 <input type="hidden" name="wordId" th:value="${word.id}">
                 <button type="submit">Зберегти</button>
             </form>
@@ -90,7 +69,7 @@
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script type="text/javascript" th:src="@{/js/adminPage_js/tinyMce.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/adminPage_js/tinyMce.js}"></script>-->
 <script type="text/javascript" th:src="@{/js/adminPage_js/wordEdit.js}"></script>
 </body>
 </html>

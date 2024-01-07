@@ -43,7 +43,7 @@ public class UserWordLessonStatisticService {
         userWordLessonStatistic.setUser(dtoUserWordLessonStatistics.getUser());
         userWordLessonStatistic.setWordLesson(wordLesson);
         userWordLessonStatistic.setWord(word.getName());
-        userWordLessonStatistic.setWordInfo(word.getInfo());
+//        userWordLessonStatistic.setWordInfo(word.getDescription());
         userWordLessonStatistic.setWordLessonCategoryId(wordLesson.getCategory().getId());
         String wordUserAnswer = StringUtils.normalizeSpace(dtoUserWordLessonStatistics.getUserAnswer());
         userWordLessonStatistic.setUserAnswer(wordUserAnswer);

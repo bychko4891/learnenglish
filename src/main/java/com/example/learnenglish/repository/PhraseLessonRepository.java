@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhraseLessonRepository extends CrudRepository<PhraseLesson, Long> {
+
     @Query("SELECT l FROM PhraseLesson l ORDER BY l.id ASC")
     Page<PhraseLesson> findAll(Pageable pageable);
 

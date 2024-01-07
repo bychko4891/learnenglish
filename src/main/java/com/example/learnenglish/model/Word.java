@@ -27,8 +27,8 @@ public class Word implements Serializable {
     @Column
     private String translate;
 
-    @Column
-    private String description;
+//    @Column
+//    private String description;
 
     @Column
     private String brTranscription;
@@ -49,7 +49,7 @@ public class Word implements Serializable {
     private boolean isRepeatable = true;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "word_audio_id")
+    @JoinColumn(name = "audio_id")
     private Audio audio;
 
 
