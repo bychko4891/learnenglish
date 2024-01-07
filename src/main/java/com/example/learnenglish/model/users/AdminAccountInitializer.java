@@ -99,7 +99,7 @@ public class AdminAccountInitializer implements ApplicationRunner {
 
     }
     private void createWayForPayModule() {
-//        WayForPayModule wayForPayModule = new WayForPayModule();
-//        wayForPayModuleService.saveWayForPayModule(wayForPayModule);
+        WayForPayModule wayForPayModule = new WayForPayModule();
+        wayForPayModuleService.saveWayForPayModule(wayForPayModule);
     }
 }
