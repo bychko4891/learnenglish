@@ -13,7 +13,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>learnenglish</name>
-	<description>Lern english code with Spring Boot</description>
+	<description>Learn english code with Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
