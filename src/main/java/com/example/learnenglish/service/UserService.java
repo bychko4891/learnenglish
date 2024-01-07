@@ -83,7 +83,7 @@ public class UserService {
     }
 
     // доробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void updateUserInfo(Long userId, String firstName, String lastName, String gender) {
+    public void updateUserInfo(long userId, String firstName, String lastName, String gender) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             Set<UserGender> newGenders = new HashSet<>();
@@ -101,7 +101,7 @@ public class UserService {
 //        userRepository.save(user);
     }
 
-    public CustomResponseMessage updateUserPassword(Long userId, String oldPassword, String newPassword) {
+    public CustomResponseMessage updateUserPassword(long userId, String oldPassword, String newPassword) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -141,7 +141,7 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public void userActiveEditAdminPage(Long userId, boolean userActive) {
+    public void userActiveEditAdminPage(long userId, boolean userActive) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
 
@@ -201,7 +201,7 @@ public class UserService {
         return true;
     }
 
-    public CustomResponseMessage setUserTextInLesson(Long userId, boolean isChecked) {
+    public CustomResponseMessage setUserTextInLesson(long userId, boolean isChecked) {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();

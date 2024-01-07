@@ -34,7 +34,7 @@ public class TranslationPairUserService {
         this.userRepository = userRepository;
     }
 
-    public CustomResponseMessage userPlusTranslationPairs(User user, Long translationPairsId) {
+    public CustomResponseMessage userPlusTranslationPairs(User user, long translationPairsId) {
         Optional<TranslationPairUser> optionalTranslationPairUser = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairsId, user.getId());
         if(optionalTranslationPairUser.isEmpty()){
         TranslationPair translationPair = translationPairRepository.findById(translationPairsId).get();
@@ -49,7 +49,7 @@ public class TranslationPairUserService {
 
     }
 
-    public CustomResponseMessage setRepetitionPhrase(Long translationPairId, Long userId, boolean isChecked) {
+    public CustomResponseMessage setRepetitionPhrase(Long translationPairId, long userId, boolean isChecked) {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, userId);
         if (translationPairUserOptional.isPresent()) {
             TranslationPairUser translationPairUser = translationPairUserOptional.get();
@@ -59,7 +59,7 @@ public class TranslationPairUserService {
         } else return new CustomResponseMessage(Message.ERROR_SERVER);
     }
 
-    public CustomResponseMessage userPhraseRemove(Long translationPairId, User user) {
+    public CustomResponseMessage userPhraseRemove(long translationPairId, User user) {
         Optional<TranslationPairUser> translationPairUserOptional = translationPairUserRepository.findTranslationPairUserByTranslationPair_IdAndUserId(translationPairId, user.getId());
         TranslationPairUser translationPairUser = translationPairUserOptional.orElseThrow();
         if (translationPairUser.getTranslationPair().getUser().getId().equals(user.getId())) {

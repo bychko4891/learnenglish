@@ -20,7 +20,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getCategoryToEditor(Long id) {
+    public Category getCategoryToEditor(long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
@@ -67,7 +67,7 @@ public class CategoryService {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByIdAsc(mainCategory, CategoryPage.TRANSLATION_PAIRS);
     }
 
-    public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(Long id) {
+    public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(long id) {
         List<Category> subcategories = categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
         List<DtoWordsCategoryToUi> dtoWordsCategoryToUiList = new ArrayList<>();
         for (Category arr : subcategories) {
@@ -76,7 +76,7 @@ public class CategoryService {
         return dtoWordsCategoryToUiList;
     }
 
-    public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
+    public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(long id) {
         return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 

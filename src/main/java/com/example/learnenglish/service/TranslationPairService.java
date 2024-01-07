@@ -31,12 +31,12 @@ public class TranslationPairService {
 
     }
 
-    public boolean existsByEngTextAndUkrText(String engText, Long lessonId, Long userId) {
+    public boolean existsByEngTextAndUkrText(String engText, long lessonId, long userId) {
         return translationPairRepository.existsByEngTextAndUkrText(engText, lessonId, userId);
     }
 
 
-    public DtoTranslationPairToUI getDtoTranslationPair(User user, Long lessonId,  String userGender) {
+    public DtoTranslationPairToUI getDtoTranslationPair(User user, long lessonId,  String userGender) {
         if(!user.isUserPhrasesInLesson()){
             Optional<TranslationPair> translationPairOptional = translationPairRepository.randomTranslationPair(1l, lessonId);
             if(translationPairOptional.isPresent()){
@@ -94,7 +94,7 @@ public class TranslationPairService {
         return dtoTranslationPairToUI;
     }
 
-    public Page<TranslationPair> getUserTranslationPairs(int page, int size, Long userId) {
+    public Page<TranslationPair> getUserTranslationPairs(int page, int size, long userId) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Object[]> resultPage = translationPairRepository.findAll(pageable, userId);
         List<TranslationPair> translationPairs = new ArrayList<>();
@@ -107,7 +107,7 @@ public class TranslationPairService {
         return new PageImpl<>(translationPairs, pageable, resultPage.getTotalElements());
     }
 
-    public Page<TranslationPair> getTranslationPairsFourAdmin(int page, int size, Long userId) {
+    public Page<TranslationPair> getTranslationPairsFourAdmin(int page, int size, long userId) {
         Pageable pageable = PageRequest.of(page, size);
         return translationPairRepository.findAllForAdmin(pageable, userId);
     }

@@ -57,7 +57,7 @@ public class AudioService {
         return audioRepository.findAll(pageable);
     }
 
-    public Audio getAudio(Long id) {
+    public Audio getAudio(long id) {
         Optional<Audio> audioOptional = audioRepository.findById(id);
         if (audioOptional.isPresent()) {
             return audioOptional.get();

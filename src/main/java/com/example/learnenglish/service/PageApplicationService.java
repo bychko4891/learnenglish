@@ -26,7 +26,7 @@ public class PageApplicationService {
         pageApplicationRepository.save(pageApplication);
     }
 
-    public PageApplication getPageApplication(Long id) {
+    public PageApplication getPageApplication(long id) {
         Optional<PageApplication> pageApplicationOptional = pageApplicationRepository.findById(id);
         if (pageApplicationOptional.isPresent()) {
             return pageApplicationOptional.get();

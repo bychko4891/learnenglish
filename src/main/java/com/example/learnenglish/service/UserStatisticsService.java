@@ -36,7 +36,7 @@ public class UserStatisticsService {
     private final HttpSession session;
 
 
-    public DtoUserStatisticsToUi trainingStatistics(Long userId) {
+    public DtoUserStatisticsToUi trainingStatistics(long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             UserStatistics userStatistics = userStatisticsOptional.get();
@@ -75,7 +75,7 @@ public class UserStatisticsService {
 
     }
 
-    public void errorUserRepetitionCount(Long userId) {
+    public void errorUserRepetitionCount(long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             try {
@@ -93,7 +93,7 @@ public class UserStatisticsService {
     }
 
 
-    public List trainingDays(Long userId) {
+    public List trainingDays(long userId) {
         Optional<UserStatistics> userStatisticsOptional = userStatisticsRepository.findById(userId);
         if (userStatisticsOptional.isPresent()) {
             List trainingDaysInMonth = userStatisticsOptional.get().getTrainingDaysInMonth();

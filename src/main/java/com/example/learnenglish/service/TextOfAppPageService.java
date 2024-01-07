@@ -75,7 +75,7 @@ public class TextOfAppPageService {
         }
     }
 
-    private Optional<TextOfAppPage> searchTextOfAppPageByPageApplicationId(Long  pageApplicationId){
+    private Optional<TextOfAppPage> searchTextOfAppPageByPageApplicationId(long  pageApplicationId){
         return textOfAppPageRepository.searchTextOfAppPageByPageApplicationId(pageApplicationId);
     }
 
@@ -87,7 +87,7 @@ public class TextOfAppPageService {
         return textOfAppPageRepository.count();
     }
 
-    public TextOfAppPage findByIdTextOfAppPage(Long id) {
+    public TextOfAppPage findByIdTextOfAppPage(long id) {
         Optional<TextOfAppPage> textOfAppPageOptional = textOfAppPageRepository.findById(id);
         if (textOfAppPageOptional.isPresent()) {
             return textOfAppPageOptional.get();

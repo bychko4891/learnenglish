@@ -70,7 +70,7 @@ public class ImagesService {
     }
 
 
-    public String storeFile(MultipartFile file, Long userId) {
+    public String storeFile(MultipartFile file, long userId) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
@@ -105,7 +105,7 @@ public class ImagesService {
         }
     }
 
-    private void saveUserAvatar(Long userId, String userAvatarName) {
+    private void saveUserAvatar(long userId, String userAvatarName) {
         Optional<Image> optionalUserAvatar = imagesRepository.findById(userId);
         if (optionalUserAvatar.isPresent()) {
             Image avatar = optionalUserAvatar.get();
@@ -157,7 +157,7 @@ public class ImagesService {
 //            System.out.println(ex.getMessage());
         }
     }
-    public CustomResponseMessage saveWordImage(MultipartFile file, Long wordId, String contentType) {
+    public CustomResponseMessage saveWordImage(MultipartFile file, long wordId, String contentType) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {
@@ -179,7 +179,7 @@ public class ImagesService {
         }
     }
 
-    public CustomResponseMessage saveCategoryImage(MultipartFile file, Long categoryId, String contentType) {
+    public CustomResponseMessage saveCategoryImage(MultipartFile file, long categoryId, String contentType) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {

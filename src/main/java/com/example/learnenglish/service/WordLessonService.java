@@ -39,7 +39,7 @@ public class WordLessonService {
         return wordLessonRepository.lastId();
     }
 
-    public WordLesson getWordLesson(Long id) {
+    public WordLesson getWordLesson(long id) {
         Optional<WordLesson> wordLessonOptional = wordLessonRepository.findById(id);
         if (wordLessonOptional.isPresent()) {
             return wordLessonOptional.get();

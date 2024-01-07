@@ -48,7 +48,7 @@ public class TranslationPairPageService {
         return translationPairPageRepository.count();
     }
 
-    public TranslationPairsPage getTranslationPairsPage(Long id) {
+    public TranslationPairsPage getTranslationPairsPage(long id) {
         Optional<TranslationPairsPage> translationPairsPageOptional = translationPairPageRepository.findById(id);
         if (translationPairsPageOptional.isPresent()) {
             return translationPairsPageOptional.get();
@@ -108,7 +108,7 @@ public class TranslationPairPageService {
     } else return saveNewTranslationPairsPage(dtoTranslationPairsPage, categoryId);
 }
 
-    private CustomResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, Long categoryId) {
+    private CustomResponseMessage saveNewTranslationPairsPage(DtoTranslationPairsPage dtoTranslationPairsPage, long categoryId) {
         TranslationPairsPage translationPairsPage = new TranslationPairsPage();
         translationPairsPage.setName(dtoTranslationPairsPage.getTranslationPairsPage().getName());
         translationPairsPage.setPublished(dtoTranslationPairsPage.getTranslationPairsPage().isPublished());

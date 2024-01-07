@@ -117,7 +117,7 @@ public class UserController {
                                Model model)  {
         if (principal != null) {
             if (page < 0) page = 0;
-            Long userId = userService.findByEmail(principal.getName()).getId();
+            long userId = userService.findByEmail(principal.getName()).getId();
             Page<Word> words = wordService.getUserWords(page, size, userId);
             if (words.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);

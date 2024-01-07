@@ -52,11 +52,11 @@ public class UserWordLessonStatisticService {
     }
 
     @Transactional
-    public void deleteWordLessonStatistic(Long userId, Long wordLessonId) {
+    public void deleteWordLessonStatistic(long userId, long wordLessonId) {
         userWordLessonStatisticRepository.removeAllByUserIdAndWordLessonId(userId, wordLessonId);
     }
 
-    public DtoUserWordLessonStatisticToUi resultWordLessonAudit(User user, Long wordLessonId) {
+    public DtoUserWordLessonStatisticToUi resultWordLessonAudit(User user, long wordLessonId) {
         DtoUserWordLessonStatisticToUi wordLessonStatisticToUi = new DtoUserWordLessonStatisticToUi();
         List<UserWordLessonStatistic> userWordLessonStatisticList = userWordLessonStatisticRepository.findAllByUserIdAndWordLessonId(user.getId(), wordLessonId);
         List<DtoUserWordLessonStatistic> dtoUserWordLessonStatisticList = new ArrayList<>();
