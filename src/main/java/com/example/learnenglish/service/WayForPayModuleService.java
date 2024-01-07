@@ -22,15 +22,17 @@ public class WayForPayModuleService {
     private final WayForPayModuleRepository wayForPayModuleRepository;
 
     public void saveWayForPayModule(WayForPayModule wayForPayModule) {
-        Optional<WayForPayModule> wayForPayModuleOptional = wayForPayModuleRepository.findById(wayForPayModule.getId());
-        if (wayForPayModuleOptional.isEmpty()) {
-            wayForPayModuleRepository.save(wayForPayModule);
+        if(wayForPayModule.getId() != null){
+            Optional<WayForPayModule> wayForPayModuleOptional = wayForPayModuleRepository.findById(wayForPayModule.getId());
+            if (wayForPayModuleOptional.isPresent()) {
+                WayForPayModule wayForPayModuleFromDataBase = wayForPayModuleOptional.get();
+                wayForPayModuleFromDataBase.setActive(wayForPayModule.isActive());
+                wayForPayModuleFromDataBase.setMerchantAccount(wayForPayModule.getMerchantAccount());
+                wayForPayModuleFromDataBase.setMerchantSecretKey(wayForPayModule.getMerchantSecretKey());
+                wayForPayModuleRepository.save(wayForPayModuleFromDataBase);
+            } else throw new RuntimeException("Error in method: 'saveWayForPayModule' ");
         } else {
-            WayForPayModule wayForPayModuleFromDataBase = wayForPayModuleOptional.get();
-            wayForPayModuleFromDataBase.setActive(wayForPayModule.isActive());
-            wayForPayModuleFromDataBase.setMerchantAccount(wayForPayModule.getMerchantAccount());
-            wayForPayModuleFromDataBase.setMerchantSecretKey(wayForPayModule.getMerchantSecretKey());
-            wayForPayModuleRepository.save(wayForPayModuleFromDataBase);
+            wayForPayModuleRepository.save(wayForPayModule);
         }
     }
 
