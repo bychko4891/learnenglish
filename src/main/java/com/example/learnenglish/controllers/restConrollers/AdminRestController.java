@@ -42,6 +42,7 @@ public class AdminRestController {
     private final WordLessonService wordLessonService;
     private final CategoryValidator categoryValidator;
     private final WayForPayModuleService wayForPayModuleService;
+    private final FileStorageService fileStorageService;
 
     private final PhraseApplicationService phraseApplicationService;
 
@@ -105,24 +106,7 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping( "/word-save")
-    public ResponseEntity<CustomResponseMessage> uploadAudioFiles(@RequestPart(value = "brAudio", required = false) MultipartFile brAudio,
-                                                                  @RequestPart(value = "usaAudio", required = false) MultipartFile usaAudio,
-                                                                  @RequestPart(value = "word") Word word,
-                                                                  Principal principal) {
-        if (principal != null) {
-            try {
-                Word wordDB = wordService.getWord(word.getId());
-                return ResponseEntity.ok(wordService.saveWord(wordDB, word));
 
-            } catch (RuntimeException e) {
-
-
-                return ResponseEntity.ok(wordService.saveNewWord(word));
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
 
     @PostMapping("/word-lesson-save")
     public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody WordLesson wordLesson,
@@ -183,25 +167,9 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/search-word")
-    public ResponseEntity<List<DtoWordToUI>> searchWord(@RequestParam("searchTerm") String searchTerm) {
 
-        if (!searchTerm.isBlank()) {
-            List<DtoWordToUI> list = wordService.searchWordToAdminPage(searchTerm);
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @GetMapping("/search-word/for-phrase")
-    public ResponseEntity<List<DtoWordToUI>> searchWordForPhrase(@RequestParam("searchTerm") String searchTerm) {
 
-        if (!searchTerm.isBlank()) {
-            List<DtoWordToUI> list = wordService.searchWordForPhraseApplication(searchTerm);
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.notFound().build();
-    }
 
     @PostMapping("/page-phrases-save")
     public ResponseEntity<CustomResponseMessage> translationPairPageSave(@RequestBody DtoTranslationPairsPage dtoTranslationPairsPage,

@@ -13,7 +13,7 @@
             <div class="page-table row">
                 <h3 style="margin-bottom: auto;">Слова додатка</h3>
                 <div style="margin-left: auto; margin-bottom: auto;">
-                    <form action="/admin-page/words/new-word">
+                    <form action="/admin/words/new-word">
                         <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
                     </form>
                 </div>
@@ -22,10 +22,10 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Category</th>
-                        <th>Published</th>
-                        <th>Images</th>
-                        <th>Upload Images</th>
+<!--                        <th>Category</th>-->
+                        <th>Active URL</th>
+<!--                        <th>Images</th>-->
+<!--                        <th>Upload Images</th>-->
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -33,31 +33,31 @@
                     <tr th:each="word : ${words}">
                         <td th:text="${word.id}"></td>
                         <td th:text="${word.name}"></td>
-                        <td th:if="${word.getCategory != null}" th:text="${word.getCategory.name}"></td>
-                        <td th:if="${word.getCategory == null}">Не назначенно</td>
+<!--                        <td th:if="${word.getCategory != null}" th:text="${word.getCategory.name}"></td>-->
+<!--                        <td th:if="${word.getCategory == null}">Не назначенно</td>-->
                         <td>
-                            <span th:if="${word.published}" th:text="Yes"></span>
-                            <span th:if="${!word.published}" th:text="No"></span>
+                            <span th:if="${word.isActiveURL}">Yes</span>
+                            <span th:if="${!word.isActiveURL}">No</span>
                         </td>
+<!--                        <td>-->
+<!--                            &lt;!&ndash;                <div style="width: 100px; height: auto;">&ndash;&gt;-->
+<!--                            <img th:if="${word.images.imageName != null}"-->
+<!--                                 th:src="@{/word-image/{name}(name=${word.images.imageName})}">-->
+<!--                            <span th:if="${word.images.imageName == null}">Відсутнє</span>-->
+<!--                            &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            &lt;!&ndash;                <form th:action="@{/admin-page/word-image/{id}/upload(id=${word.id})}" id="wordImage" class="image-form">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                  <input class="form-control" type="file" id="image" accept="image/*">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                  <button type="submit"><i class="fa-solid fa-upload"></i></button>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                </form>&ndash;&gt;-->
+<!--                            <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"-->
+<!--                                    data-bs-target="#exampleModal" th:data-entity-id="${word.id}">-->
+<!--                                <i class="fa-solid fa-upload"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
                         <td>
-                            <!--                <div style="width: 100px; height: auto;">-->
-                            <img th:if="${word.images.imageName != null}"
-                                 th:src="@{/word-image/{name}(name=${word.images.imageName})}">
-                            <span th:if="${word.images.imageName == null}">Відсутнє</span>
-                            <!--                </div>-->
-                        </td>
-                        <td>
-                            <!--                <form th:action="@{/admin-page/word-image/{id}/upload(id=${word.id})}" id="wordImage" class="image-form">-->
-                            <!--                  <input class="form-control" type="file" id="image" accept="image/*">-->
-                            <!--                  <button type="submit"><i class="fa-solid fa-upload"></i></button>-->
-                            <!--                </form>-->
-                            <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" th:data-entity-id="${word.id}">
-                                <i class="fa-solid fa-upload"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <form th:action="@{/admin-page/words/{id}/word-edit(id=${word.id})}">
+                            <form th:action="@{/admin/words/word-edit/{id}(id=${word.id})}">
                                 <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
                         </td>

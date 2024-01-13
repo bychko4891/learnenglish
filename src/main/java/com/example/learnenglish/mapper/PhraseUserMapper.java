@@ -6,7 +6,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface PhraseUserMapper extends Mappable<PhraseUser, PhraseUserDto>{
+public interface PhraseUserMapper extends Mappable<PhraseUser, PhraseUserDto> {
 
 //    PhraseUser toModel();
 

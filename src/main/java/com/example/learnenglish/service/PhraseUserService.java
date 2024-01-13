@@ -9,7 +9,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.dto.DtoTranslationPair;
 import com.example.learnenglish.dto.PhraseUserDto;
-import com.example.learnenglish.mapper.PhraseUserMapper;
+//import com.example.learnenglish.mapper.PhraseUserMapper;
 import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.repository.PhraseUserRepository;
@@ -31,7 +31,7 @@ public class PhraseUserService {
     private final PhraseUserRepository phraseUserRepository;
     private final PhraseAndUserService phraseAndUserService;
     private final PhrasesAndUserRepository phrasesAndUserRepository;
-    private final PhraseUserMapper mapper;
+//    private final PhraseUserMapper mapper;
 
     public CustomResponseMessage saveNewPhraseUser(User user, PhraseUserDto phraseUserDto) {
 //        PhraseUser phraseUser = mapper.toModel(phraseUserDto);

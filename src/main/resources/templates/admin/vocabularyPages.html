@@ -9,12 +9,11 @@
         <header th:replace="~{fragments/header :: header}"></header>
         <main class="container layout_page">
 
-
             <div class="page-table row">
 
                 <h3 style="margin-bottom: auto;">Слова додатка</h3>
                 <div style="margin-left: auto; margin-bottom: auto;">
-                    <form action="/admin-page/word-lessons/new-lesson">
+                    <form action="/admin/vocabulary-pages/new-vocabulary-page">
                         <button type="submit"><i class="fa-regular fa-square-plus"></i></button>
                     </form>
                 </div>
@@ -22,25 +21,24 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Number</th>
                         <th>Name</th>
-                        <th>Description</th>
+                        <th>Published</th>
                         <th>Category</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="wordLesson : ${wordLessons}">
-                        <td th:text="${wordLesson.id}"></td>
-                        <td th:text="${wordLesson.getSerialNumber}"></td>
-                        <td th:text="${wordLesson.name}"></td>
-                        <td th:text="${wordLesson.description}"></td>
-
-                        <td th:if="${wordLesson.category != null}" th:text="${wordLesson.category.name}"></td>
-                        <td th:if="${wordLesson.category == null}">Не назначенно</td>
-
+                    <tr th:each="vocabularyPage : ${vocabularyPages}">
+                        <td th:text="${vocabularyPage.id}"></td>
                         <td>
-                            <form th:action="@{/admin-page/word-lessons/word-lesson-edit/{id}(id=${wordLesson.id})}">
+                            <span th:if="${vocabularyPage.published}">Yes</span>
+                            <span th:if="${!vocabularyPage.published}">No</span>
+                        </td>
+                        <td th:text="${vocabularyPage.name}"></td>
+                        <td th:if="${vocabularyPage.category != null}" th:text="${vocabularyPage.category.name}"></td>
+                        <td th:if="${vocabularyPage.category == null}">Відсутня</td>
+                        <td>
+                            <form th:action="@{/admin/vocabulary-pages/vocabulary-page-edit/{id}(id=${wordLesson.id})}">
                                 <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
                         </td>

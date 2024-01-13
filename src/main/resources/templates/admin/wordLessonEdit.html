@@ -86,11 +86,10 @@
 
   function searchItems(searchTerm) {
     $.ajax({
-      url: '/admin-page/search-word',
+      url: '/admin/search-word',
       type: 'GET',
       data: {searchTerm: searchTerm},
       success: function (response) {
-        // Обробити отримані результати пошуку
         displaySearchResults(response);
       },
       error: function () {

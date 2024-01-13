@@ -13,6 +13,9 @@ import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,6 +25,32 @@ import java.util.Optional;
 public class VocabularyPageService {
 
     private final VocabularyPageRepository repository;
+
+    public VocabularyPage getVocabularyPage(long id) {
+        Optional<VocabularyPage> vocabularyPageOptional = repository.findById(id);
+        if (vocabularyPageOptional.isPresent()) {
+            return vocabularyPageOptional.get();
+        }
+        throw new RuntimeException("");
+    }
+
+    public VocabularyPage getNewVocabularyPage(long id) {
+        VocabularyPage vocabularyPage= new VocabularyPage();
+        vocabularyPage.setId(id);
+        vocabularyPage.setName("name");
+        vocabularyPage.setDescription("Enter text");
+        return vocabularyPage;
+    }
+
+
+    public Page<VocabularyPage> getVocabularyPages(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllVocabularyPage(pageable);
+    }
+
+    public long countVocabularyPages() {
+        return repository.lastId();
+    }
 
     @Transactional
     public CustomResponseMessage saveWord(VocabularyPage vocabularyPageDB, VocabularyPage vocabularyPage) {

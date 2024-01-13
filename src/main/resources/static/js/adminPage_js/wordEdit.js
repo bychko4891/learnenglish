@@ -118,8 +118,8 @@ $('#editor').submit(function (event) {
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
     var formData = new FormData();
-    formData.append('brAudio', $('#brAudio')[0].files[0]);
-    formData.append('usaAudio', $('#usaAudio')[0].files[0]);
+    formData.append('br', $('#brAudio')[0].files[0]);
+    formData.append('usa', $('#usaAudio')[0].files[0]);
 
     var word = {
         id: $('#editor input[name="wordId"]').val(),
@@ -135,7 +135,7 @@ $('#editor').submit(function (event) {
     formData.append('word', new Blob([JSON.stringify(word)], { type: 'application/json' }));
 
     $.ajax({
-        url: '/admin-page/word-save',
+        url: '/admin/word-save',
         type: 'POST',
         data: formData,
         processData: false,
@@ -158,6 +158,8 @@ $('#editor').submit(function (event) {
         }
     });
 });
+
+
 
 // $(document).ready(function () {
 //     const mainCategorySelect = document.getElementById('mainCategorySelect');

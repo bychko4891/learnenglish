@@ -53,6 +53,15 @@ public class WordLessonService {
         wordLesson.setName("Enter new name");
         wordLesson.setDescription("Enter description");
         wordLesson.setId(id);
+        /////////// Переробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        if (id != null && id.size() > 0) {
+//            for (PhraseApplication arr : id) {
+//                PhraseApplication pa = new PhraseApplication();
+//                pa.setId(arr);
+//                word.getPhraseExamples().add(pa);
+//            }
+//        }
+        /////////////
         return wordLesson;
     }
 

@@ -82,14 +82,14 @@ public class LearnEnglishController {
 
 
 
-    @GetMapping("/words-main-category")
-    public String wordsMainCategories(Model model) {
-        List<Category> wordsMainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
-        if (wordsMainCategories != null) {
-            model.addAttribute("wordsMainCategories", wordsMainCategories);
-        }
-        return "wordsMainCategory";
-    }
+//    @GetMapping("/words-main-category")
+//    public String wordsMainCategories(Model model) {
+//        List<Category> wordsMainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
+//        if (wordsMainCategories != null) {
+//            model.addAttribute("wordsMainCategories", wordsMainCategories);
+//        }
+//        return "wordsMainCategory";
+//    }
 
     @GetMapping("/phrases-categories")
     public String phrasesMainCategories(Model model) {

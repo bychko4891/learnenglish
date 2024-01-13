@@ -273,59 +273,7 @@ public class AdminController {
         return "redirect:/login";
     }
 
-    @GetMapping("/words")
-    public String wordsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "30", required = false) int size,
-                                     Principal principal,
-                                     Model model) {
-        if (principal != null) {
-            if (page < 0) page = 0;
-            Page<Word> wordPage = wordService.getWordsPage(page, size);
-            if (wordPage.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", wordPage.getTotalPages());
-            }
-            model.addAttribute("words", wordPage.getContent());
-            model.addAttribute("currentPage", page);
 
-            return "admin/words";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/words/new-word")
-    public String newWordAdminPage(Principal principal) {
-        if (principal != null) {
-            try {
-                Long count = wordService.countWords() + 1;
-                return "redirect:/admin-page/words/" + count + "/word-edit";
-            } catch (NullPointerException e) {
-                return "redirect:/admin-page/words/1/word-edit";
-            }
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/words/{id}/word-edit")
-    public String wordEdit(@PathVariable("id") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
-            model.addAttribute("category", "Відсутня");
-            model.addAttribute("mainWordsCategories", mainWordsCategories);
-            try {
-                Word word = wordService.getWord(id);
-//                if (word.getCategory() != null) {
-//                    model.addAttribute("category", word.getCategory().getName());
-//                }
-                model.addAttribute("word", word);
-            } catch (RuntimeException e) {
-                model.addAttribute("word", wordService.getNewWord(id));
-            }
-            return "admin/wordEdit";
-        }
-        return "redirect:/login";
-    }
 
     @GetMapping("/word-lessons")
     public String wordLessonsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,

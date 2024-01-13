@@ -8,10 +8,7 @@ package com.example.learnenglish.service;
  */
 
 import com.example.learnenglish.dto.DtoWordToUI;
-import com.example.learnenglish.model.Audio;
-import com.example.learnenglish.model.PhraseApplication;
 import com.example.learnenglish.model.Word;
-import com.example.learnenglish.model.users.Image;
 import com.example.learnenglish.repository.WordRepository;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
@@ -45,7 +42,7 @@ public class WordService {
     public Word getNewWord(Long id) {
         Word word = new Word();
         word.setId(id);
-        word.setName("Enter name");
+        word.setName("name");
 //        word.setDescription("Enter text");
         return word;
     }
@@ -63,37 +60,51 @@ public class WordService {
 
     @Transactional
     public CustomResponseMessage saveWord(Word wordDB, Word word) {
-        Optional.ofNullable(word.getName()).ifPresent(wordDB::setName);
-        Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
-//        Optional.ofNullable(word.getDescription()).ifPresent(wordDB::setDescription);
-        Optional.ofNullable(word.getBrTranscription()).ifPresent(wordDB::setBrTranscription);
-        Optional.ofNullable(word.getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
-        Optional.ofNullable(word.getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
-        Optional.ofNullable(word.getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
-        wordDB.setActiveURL(word.isActiveURL());
-        wordRepository.save(wordDB);
-        return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+        String wordName = StringUtils.normalizeSpace(word.getName());
+        if (!wordRepository.existsWordByNameEqualsIgnoreCase(wordName)) {
+            if (word.getAudio().getUsaAudioName() != null) {
+                String oldUsaAudioName = null;
+                if (wordDB.getAudio().getUsaAudioName() != null) oldUsaAudioName = wordDB.getAudio().getUsaAudioName();
+                wordDB.getAudio().setUsaAudioName(word.getAudio().getUsaAudioName());
+                if (word.getAudio().getBrAudioName() == null && oldUsaAudioName != null && oldUsaAudioName.equals(wordDB.getAudio().getBrAudioName())) {
+                    wordDB.getAudio().setBrAudioName(word.getAudio().getUsaAudioName());
+                }
+            }
+            if (word.getAudio().getBrAudioName() == null && wordDB.getAudio().getBrAudioName() == null)
+                wordDB.getAudio().setBrAudioName(word.getAudio().getUsaAudioName());
+            if (word.getAudio().getBrAudioName() != null)
+                wordDB.getAudio().setBrAudioName(word.getAudio().getBrAudioName());
+
+            Optional.ofNullable(wordName).ifPresent(wordDB::setName);
+            Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
+            Optional.ofNullable(word.getBrTranscription()).ifPresent(wordDB::setBrTranscription);
+            Optional.ofNullable(word.getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
+            Optional.ofNullable(word.getIrregularVerbPt()).ifPresent(wordDB::setIrregularVerbPt);
+            Optional.ofNullable(word.getIrregularVerbPp()).ifPresent(wordDB::setIrregularVerbPp);
+            wordDB.setActiveURL(word.isActiveURL());
+            wordRepository.save(wordDB);
+            return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+        }
+        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
     }
 
 
     @Transactional
     public CustomResponseMessage saveNewWord(Word word) {
-//        word.setAudio(new Audio());
-
-
-        /////////// Переробити !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//        if (id != null && id.size() > 0) {
-//            for (PhraseApplication arr : id) {
-//                PhraseApplication pa = new PhraseApplication();
-//                pa.setId(arr);
-//                word.getPhraseExamples().add(pa);
-//            }
-//        }
-        /////////////
-        wordRepository.save(word);
-        return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+        String wordName = StringUtils.normalizeSpace(word.getName());
+        if (!wordRepository.existsWordByNameEqualsIgnoreCase(wordName)) {
+            if (word.getAudio().getUsaAudioName() == null || word.getAudio().getBrAudioName() == null) {
+                if (word.getAudio().getUsaAudioName() == null)
+                    word.getAudio().setUsaAudioName(word.getAudio().getBrAudioName());
+                if (word.getAudio().getBrAudioName() == null)
+                    word.getAudio().setUsaAudioName(word.getAudio().getUsaAudioName());
+            }
+            word.setName(wordName);
+            wordRepository.save(word);
+            return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+        }
+        return new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT);
     }
-
 
 
     public Page<Word> getUserWords(int page, int size, Long userId) {
@@ -120,24 +131,13 @@ public class WordService {
     }
 
     @Transactional
-    public List<DtoWordToUI> searchWordToAdminPage(String searchTerm) {
-//        List<Word> wordsResult = wordRepository.findWordToAdminPage(searchTerm);
-//        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-//        for (Word arr : wordsResult) {
-//            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-//        }
-//        return dtoWordToUIList;
-        return null;
+    public List<Word> searchWordToAdminPage(String searchTerm) {
+        return wordRepository.findWordToAdmin(searchTerm);
     }
 
     @Transactional
-    public List<DtoWordToUI> searchWordForPhraseApplication(String searchTerm) {
-        List<Word> wordsResult = wordRepository.findWordForPhraseApplication(searchTerm);
-        List<DtoWordToUI> dtoWordToUIList = new ArrayList<>();
-        for (Word arr : wordsResult) {
-            dtoWordToUIList.add(DtoWordToUI.convertToDTO(arr));
-        }
-        return dtoWordToUIList;
+    public List<Word> searchWordForPhraseApplication(String searchTerm) {
+        return wordRepository.findWordForPhraseApplication(searchTerm);
     }
 
     public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId) {

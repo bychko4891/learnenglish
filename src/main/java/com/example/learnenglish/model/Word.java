@@ -7,6 +7,8 @@ package com.example.learnenglish.model;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,9 +21,11 @@ public class Word implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonView(JsonViews.ViewFieldId.class)
     private Long id;
 
     @Column
+    @JsonView(JsonViews.ViewFieldName.class)
     private String name;
 
     @Column
