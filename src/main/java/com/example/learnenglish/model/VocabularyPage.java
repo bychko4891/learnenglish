@@ -37,7 +37,7 @@ public class VocabularyPage {
     @JoinColumn(name = "word_id", referencedColumnName = "id")
     private Word word;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 

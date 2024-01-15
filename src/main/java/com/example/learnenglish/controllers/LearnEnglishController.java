@@ -118,7 +118,7 @@ public class LearnEnglishController {
                                         Model model) {
             if (page < 0) page = 0;
             Page<MiniStory> translationPairsPages = miniStoryService.getTranslationPairsPagesToUser(page, size, id);
-            Category category = categoryService.getCategoryToEditor(id);
+            Category category = categoryService.getCategory(id);
             if (translationPairsPages.getTotalPages() == 0) {
                 model.addAttribute("totalPages", 1);
             } else {
@@ -135,7 +135,7 @@ public class LearnEnglishController {
 
     @GetMapping("/words-main-category/{id}")
     public String wordsSubcategoriesFromMainCategories(@PathVariable Long id, Model model) {
-        Category mainWordsCategory = categoryService.getCategoryToEditor(id);
+        Category mainWordsCategory = categoryService.getCategory(id);
 
         if (mainWordsCategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
             return "wordsSubcategoryNameAndInfo";
@@ -149,7 +149,7 @@ public class LearnEnglishController {
 
     @GetMapping("/subcategory/{id}")
     public String wordsSubcategories(@PathVariable Long id, Model model) {
-        Category subcategory = categoryService.getCategoryToEditor(id);
+        Category subcategory = categoryService.getCategory(id);
         Category parentCategory = subcategory.getParentCategory();
 //        model.addAttribute("words", subcategory.getWords());
         model.addAttribute("subId", subcategory.getId());
@@ -185,7 +185,7 @@ public class LearnEnglishController {
                               Principal principal) {
         if(principal != null) {
             User user = userService.findByEmail(principal.getName());
-            Category wordLessonCategory = categoryService.getCategoryToEditor(categoryId);
+            Category wordLessonCategory = categoryService.getCategory(categoryId);
             List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(user, categoryId);
             int sumWords = 0;
 //            for (WordLesson arr: wordLessonCategory.getWordLessons()) {

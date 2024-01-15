@@ -7,7 +7,6 @@ package com.example.learnenglish.validate;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoCategoryFromEditor;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.repository.CategoryRepository;
@@ -21,13 +20,13 @@ import java.util.Optional;
 public class CategoryValidator {
 
     private final CategoryRepository categoryRepository;
-    public <T> T categoryIsPresentInBase(DtoCategoryFromEditor dtoCategory){
-        Optional<Category> categoryOptional = categoryRepository.findById(dtoCategory.getCategory().getId());
-        return categoryOptional.map(category -> (T) category).orElseGet(() -> (T) Optional.empty());
-    }
+//    public <T> T categoryIsPresentInBase(DtoCategoryFromEditor dtoCategory){
+//        Optional<Category> categoryOptional = categoryRepository.findById(dtoCategory.getCategory().getId());
+//        return categoryOptional.map(category -> (T) category).orElseGet(() -> (T) Optional.empty());
+//    }
 
     public Category categoryPageIsNull(Category category){
-        if (category.getCategoryPages().get(0) == null) {
+        if (category.getCategoryPages() == null) {
             category.getCategoryPages().clear();
             category.getCategoryPages().add(CategoryPage.NO_PAGE);
             return category;

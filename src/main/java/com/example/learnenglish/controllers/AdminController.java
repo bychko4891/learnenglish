@@ -8,10 +8,8 @@ package com.example.learnenglish.controllers;
 
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.Image;
-import com.example.learnenglish.model.users.PhraseUser;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -245,7 +243,7 @@ public class AdminController {
             Long count = 0l;
             try {
                 count = categoryService.countCategory() + 1;
-            } catch (NullPointerException e) {
+            } catch (RuntimeException e) {
                 return "redirect:/admin-page/1/category-edit";
             }
             return "redirect:/admin-page/" + count + "/category-edit";
@@ -258,7 +256,7 @@ public class AdminController {
     public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal != null) {
             List<Category> mainWordsCategories = categoryService.mainCategoryList(true);
-            Category category = categoryService.getCategoryToEditor(id);
+            Category category = categoryService.getCategory(id);
             if (category.isMainCategory()) {
                 mainWordsCategories.removeIf(obj -> obj.getId().equals(id));
             }

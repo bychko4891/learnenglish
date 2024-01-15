@@ -1,4 +1,4 @@
-package com.example.learnenglish.controllers;
+package com.example.learnenglish.controllers.restConrollers;
 
 /**
  * @author: Anatolii Bychko
@@ -28,8 +28,8 @@ import java.io.InputStream;
 import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
-public class ImageController {
-    private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
+public class ImageRestController {
+    private static final Logger logger = LoggerFactory.getLogger(ImageRestController.class);
     private final ImagesService imagesService;
     private final UserService userService;
     private final HttpSession session;

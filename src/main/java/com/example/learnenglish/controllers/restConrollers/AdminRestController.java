@@ -81,30 +81,7 @@ public class AdminRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/category-save")
-    public ResponseEntity<CustomResponseMessage> saveWordsCategory(@RequestBody DtoCategoryFromEditor categoryRequest,
-                                                                   Principal principal) {
-        if (principal != null && categoryRequest.getMainCategoryId() != null && categoryRequest.getSubcategoryId() != null) {
-            Object obj = categoryValidator.categoryIsPresentInBase(categoryRequest);
-            if (obj instanceof Category categoryFromDatabase) {
-                if (categoryFromDatabase.getId().equals(categoryRequest.getMainCategoryId()) ||
-                        categoryFromDatabase.getId().equals(categoryRequest.getSubcategoryId())) {
-                    return ResponseEntity.ok(new CustomResponseMessage(Message.SELF_ASSIGNMENT_CATEGORY_ERROR));
-                } else {
-                    if (categoryRequest.getMainCategoryId() == 0 && categoryRequest.getCategory().isMainCategory()) {
-                        Category category = categoryRequest.getCategory();
-                        category = categoryValidator.categoryPageIsNull(category);
-                        return ResponseEntity.ok(categoryService.saveMainCategory(category, categoryFromDatabase));
-                    } else {
-                        return ResponseEntity.ok(categoryService.saveSubcategory(categoryRequest, categoryFromDatabase));
-                    }
-                }
-            } else {
-                return ResponseEntity.ok(categoryService.saveNewCategory(categoryRequest)); //
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
+
 
 
 
@@ -166,9 +143,6 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
-
-
-
 
 
     @PostMapping("/page-phrases-save")

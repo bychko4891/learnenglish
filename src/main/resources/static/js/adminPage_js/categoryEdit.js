@@ -1,26 +1,31 @@
 function save() {
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+    var mainCategorySelect = $('#mainCategorySelect').val();
+    var subcategorySelect = $('#subcategorySelect').val();
+    var categoryId = 0;
+    if (subcategorySelect > 0) {
+        categoryId = subcategorySelect;
+    } else if(mainCategorySelect > 0){
+        categoryId = mainCategorySelect;
+    }
+
     var categoryPages = [$('#page').val()];
     var category = {
         id: $('#editor input[name="id"]').val(),
         name: $('#editor input[name="name"]').val(),
         mainCategory: $('#toggleSwitch').is(':checked'),
         categoryPages: categoryPages,
-        description: $('#editor textarea[name="info"]').val()
+        description: $('#editor textarea[name="info"]').val(),
+        parentCategory: { id: categoryId }
     };
-    var mainCategoryId = $('#subcategorySelect').val();
-    var subcategoryId =  $('#subSubcategorySelect').val();
-    var data = {
-        category: category,
-        mainCategoryId: mainCategoryId,
-        subcategoryId: subcategoryId
-    };
+
     $.ajax({
-        url: '/admin-page/category-save',
+        url: '/admin/category-edit/save',
         type: 'POST',
         contentType: "application/json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(category),
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
@@ -44,10 +49,10 @@ function save() {
 }
 
 $(document).ready(function () {
+    const mainCategorySelect = document.getElementById('mainCategorySelect');
     const subcategorySelect = document.getElementById('subcategorySelect');
-    const subSubcategorySelect = document.getElementById('subSubcategorySelect');
-    subcategorySelect.addEventListener('change', function () {
-        const selectedCategoryId = subcategorySelect.value;
+    mainCategorySelect.addEventListener('change', function () {
+        const selectedCategoryId = mainCategorySelect.value;
         if (selectedCategoryId != 0) {
         fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
             .then(response => response.json())
@@ -57,7 +62,7 @@ $(document).ready(function () {
                         const option = document.createElement('option');
                         option.value = subcategory.id;
                         option.text = subcategory.name;
-                        subSubcategorySelect.appendChild(option);
+                        subcategorySelect.appendChild(option);
                     });
                 } else {
                 }
@@ -66,9 +71,9 @@ $(document).ready(function () {
                 console.error('Помилка при отриманні підкатегорій:', error);
             });
         }else {
-            var options = subSubcategorySelect.getElementsByTagName("option");
+            var options = subcategorySelect.getElementsByTagName("option");
             for (var i = 1; i < options.length; i++) {
-                subSubcategorySelect.removeChild(options[i]);
+                subcategorySelect.removeChild(options[i]);
             }
         }
     });

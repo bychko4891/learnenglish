@@ -191,7 +191,7 @@ public class ImagesService {
             String resultFilename = uuidFile + contentType;
             Path targetLocation = this.storageLocationCategoryImage.resolve(resultFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            Long imageId = categoryService.getCategoryToEditor(categoryId).getImage().getId();
+            Long imageId = categoryService.getCategory(categoryId).getImage().getId();
             Image image = imagesRepository.findById(imageId).get();
             image.setImageName(resultFilename);
             imagesRepository.save(image);

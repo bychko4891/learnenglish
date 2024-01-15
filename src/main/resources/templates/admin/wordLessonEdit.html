@@ -204,10 +204,6 @@
     if(subcategorySelect > 0) {
       categoryId = subcategorySelect;
     }
-    // var wordsId = [];
-    // selectedItemsInput.forEach(function (input) {
-    //   wordsId.push(input.value);
-    // });
     var count = 0;
     var words = [];
     savedItemsInput.forEach(function (input) {
@@ -217,7 +213,6 @@
           id: input.value
         }});
     });
-    console.log(words);
     var wordLesson = {
       id: $('#editor input[name="wordLessonId"]').val(),
       name: $('#editor input[name="name"]').val(),
@@ -228,11 +223,6 @@
       },
       words: words
     };
-    // var data = {
-    //   wordLesson: wordLesson,
-    //   wordsId: wordsId
-    // };
-    console.log(wordLesson);
     $.ajax({
       // url: $(this).attr('action'),
       url: '/admin-page/word-lesson-save',

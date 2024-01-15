@@ -13,6 +13,7 @@ import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +54,7 @@ public class VocabularyPageService {
     }
 
     @Transactional
-    public CustomResponseMessage saveWord(VocabularyPage vocabularyPageDB, VocabularyPage vocabularyPage) {
+    public CustomResponseMessage saveVocabularyPage(VocabularyPage vocabularyPageDB, VocabularyPage vocabularyPage) {
 //        Optional.ofNullable(word.getName()).ifPresent(wordDB::setName);
 //        Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
 //        Optional.ofNullable(word.getDescription()).ifPresent(wordDB::setDescription);
@@ -70,6 +71,14 @@ public class VocabularyPageService {
 //        }
 //        wordRepository.save(wordDB);
         return new CustomResponseMessage(Message.SUCCESS_SAVE_WORD_USER);
+    }
+
+    public CustomResponseMessage saveNewVocabularyPage(VocabularyPage vocabularyPage) {
+        String vocabularyPageName = StringUtils.normalizeSpace(vocabularyPage.getName());
+        vocabularyPage.setName(vocabularyPageName);
+        if(vocabularyPage.getCategory().getId() == 0) vocabularyPage.setCategory(null);
+        repository.save(vocabularyPage);
+        return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
 }

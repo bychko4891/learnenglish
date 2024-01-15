@@ -21,9 +21,10 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
                         <th>Published</th>
+                        <th>Name</th>
                         <th>Category</th>
+                        <th>Image</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -38,7 +39,11 @@
                         <td th:if="${vocabularyPage.category != null}" th:text="${vocabularyPage.category.name}"></td>
                         <td th:if="${vocabularyPage.category == null}">Відсутня</td>
                         <td>
-                            <form th:action="@{/admin/vocabulary-pages/vocabulary-page-edit/{id}(id=${wordLesson.id})}">
+                            <img th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}" th:src="@{/word-image/{name}(name=${vocabularyPage.image.imageName})}" width="60" height="auto"/>
+                            <span th:if="${vocabularyPage.image == null || vocabularyPage.image.imageName == null}">Відсутнє</span>
+                        </td>
+                        <td>
+                            <form th:action="@{/admin/vocabulary-pages/vocabulary-page-edit/{id}(id=${vocabularyPage.id})}">
                                 <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
                         </td>
@@ -73,15 +78,15 @@
     <!-- відображення пагінації -->
     <div class="pagination">
         <div>
-            <a th:href="@{/admin-page/word-lessons(page=(${currentPage} - 1))}">Попередня</a>
+            <a th:href="@{/admin/vocabulary-pages(page=(${currentPage} - 1))}">Попередня</a>
         </div>
         <div>
             <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/admin-page/word-lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    <a th:href="@{/admin/vocabulary-pages(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
             </span>
         </div>
         <div>
-            <a style="margin-right: auto" th:href="@{/admin-page/word-lessons(page=(${currentPage} + 1))}">Наступна ></a>
+            <a style="margin-right: auto" th:href="@{/admin/vocabulary-pages(page=(${currentPage} + 1))}">Наступна ></a>
         </div>
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>

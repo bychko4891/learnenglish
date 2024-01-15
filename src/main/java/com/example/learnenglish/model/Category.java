@@ -14,7 +14,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -47,9 +49,9 @@ public class Category implements Serializable {
     @ElementCollection(targetClass = CategoryPage.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "category_page", joinColumns = @JoinColumn(name = "category_id"))
     @Enumerated(EnumType.STRING)
-    private List<CategoryPage> categoryPages = new ArrayList<>();
+    private Set<CategoryPage> categoryPages = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 

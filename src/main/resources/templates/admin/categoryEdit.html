@@ -15,14 +15,14 @@
                 <label for="name">Назва:</label>
                 <input type="text" class="input" id="name" name="name" th:value="${category.name}">
                 <label>Батьківська категорія:</label> <label style="color: white;" th:text="${parentCategory}"></label><br>
-                <label for="subcategorySelect">Змінити категорію: </label>
-                <select id="subcategorySelect" name="selectedPageApplication">
+                <label for="mainCategorySelect">Змінити категорію: </label>
+                <select id="mainCategorySelect" name="selectedPageApplication">
                     <option name="id" value="0">Оберіть категорію</option>
                     <option th:each="mainCategory : ${mainCategories}" th:value="${mainCategory.id}"
                             th:text="${mainCategory.name}">
                     </option>
                 </select>
-                <select id="subSubcategorySelect" name="subSubcategorySelect">
+                <select id="subcategorySelect" name="subcategorySelect">
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select>
                 <span style="padding: 10px 0px 0px 25px;">Головна категорія: </span>
