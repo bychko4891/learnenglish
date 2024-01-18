@@ -77,6 +77,8 @@ public class VocabularyPageService {
         String vocabularyPageName = StringUtils.normalizeSpace(vocabularyPage.getName());
         vocabularyPage.setName(vocabularyPageName);
         if(vocabularyPage.getCategory().getId() == 0) vocabularyPage.setCategory(null);
+        if(vocabularyPage.getWord().getId() == null ) vocabularyPage.setWord(null);
+        //TODO(Додати ще фрази)
         repository.save(vocabularyPage);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }

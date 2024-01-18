@@ -7,6 +7,8 @@ public final class JsonViews {
     public interface ViewFieldUserEmail{}
     public interface ViewFieldUserDateOfCreated{}
     public interface ViewFieldUserDateLastVisit{}
+    public interface ViewFieldOther{}
 
     public interface ViewIdAndName extends ViewFieldId, ViewFieldName{}
+    public interface ViewAllCategories extends ViewFieldId, ViewFieldName, ViewFieldOther{}
 }

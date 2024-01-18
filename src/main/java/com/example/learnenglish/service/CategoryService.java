@@ -1,6 +1,5 @@
 package com.example.learnenglish.service;
 
-import com.example.learnenglish.dto.DtoWordsCategoryToUi;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.model.users.Image;
@@ -33,13 +32,9 @@ public class CategoryService {
         return category;
     }
 
-    public List<DtoWordsCategoryToUi> getWordsCategories() {
-        List<Category> categories = (List<Category>) categoryRepository.findAll();
-        List<DtoWordsCategoryToUi> dtoWordsCategoryToUiList = new ArrayList<>();
-        for (Category wordCategory : categories) {
-            dtoWordsCategoryToUiList.add(DtoWordsCategoryToUi.fromEntity(wordCategory));
-        }
-        return dtoWordsCategoryToUiList;
+    public List<Category> getAllCategories() {
+        return (List<Category>) categoryRepository.findAll();
+
     }
 
     public long countCategory() {
@@ -58,13 +53,8 @@ public class CategoryService {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByIdAsc(mainCategory, CategoryPage.MINI_STORIES);
     }
 
-    public List<DtoWordsCategoryToUi> getDtoSubcategoriesInMainCategory(Long id) {
-        List<Category> subcategories = categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
-        List<DtoWordsCategoryToUi> dtoWordsCategoryToUiList = new ArrayList<>();
-        for (Category arr : subcategories) {
-            dtoWordsCategoryToUiList.add(DtoWordsCategoryToUi.subcategoriesEditorConvertToDto(arr));
-        }
-        return dtoWordsCategoryToUiList;
+    public List<Category> getDtoSubcategoriesInMainCategory(Long id) {
+        return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 
     public List<Category> getSubcategoriesPhraseLesson() {
@@ -104,13 +94,10 @@ public class CategoryService {
         categoryDb.setName(category.getName());
         categoryDb.setDescription(category.getDescription());
         categoryDb.setMainCategory(false);
-        if (category.getParentCategory().getId() != 0 && category.getParentCategory().getId().equals(categoryDb.getId())) {
-            categoryDb.setParentCategory(getCategory(category.getId()));
+        categoryDb.getCategoryPages().clear();
+        if (categoryDb.getParentCategory() == null || category.getParentCategory().getId() != 0 && !category.getParentCategory().getId().equals(categoryDb.getParentCategory().getId())) {
+            categoryDb.setParentCategory(getCategory(category.getParentCategory().getId()));
         }
-//        if (categoryDb.getParentCategory() != null) {
-//            Category parentCategoryRemove = categoryDb.getParentCategory();
-//            parentCategoryRemove.getSubcategories().removeIf(obj -> obj.getId().equals(categoryDb.getId()));
-//        }
         categoryRepository.save(categoryDb);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }

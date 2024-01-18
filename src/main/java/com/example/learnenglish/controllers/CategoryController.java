@@ -1,5 +1,12 @@
 package com.example.learnenglish.controllers;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.service.CategoryService;
 import lombok.Data;
@@ -21,9 +28,9 @@ public class CategoryController {
 
     @GetMapping("/admin/categories")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String wordsCategory(Model model, Principal principal) {
+    public String allCategories(Model model, Principal principal) {
         if (principal != null) {
-            model.addAttribute("wordCategories", categoryService.getWordsCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "admin/categories";
         }
         return "redirect:/login";

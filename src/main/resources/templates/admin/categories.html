@@ -19,10 +19,10 @@
                     </div>
                 </div>
                 <div id="categoryTree">
-                    <ul th:each="category : ${wordCategories}">
+                    <ul th:each="category : ${categories}">
                         <li th:if="${category.mainCategory}">
                             <span th:text="${category.name}"></span>
-                            <span th:if="${category.subcategories != null}" class="toggle">▼</span>
+                            <span th:if="${category.subcategories != null && !#lists.isEmpty(category.subcategories)}" class="toggle">▼</span>
                             <a th:href="@{/admin/category-edit/{id}(id=${category.id})}"
                                style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                             <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
@@ -32,7 +32,7 @@
                             <ul th:if="${category.subcategories != null}" class="category">
                                 <li th:each="subcategory : ${category.subcategories}">
                                     <span th:text="${subcategory.name}"></span>
-                                    <span th:if="${subcategory.subcategories != null}" class="toggle">▼</span>
+                                    <span th:if="${subcategory.subcategories != null && !#lists.isEmpty(subcategory.subcategories)}" class="toggle">▼</span>
                                     <a th:href="@{/admin/category-edit/{id}(id=${subcategory.id})}"
                                        style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                                     <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
@@ -40,12 +40,11 @@
                                         <i class="fa-solid fa-upload"></i>
                                     </button>
                                     <ul th:if="${subcategory.subcategories != null}" class="category">
-                                        <li th:each="subcategoryTwo : ${subcategory.subcategories}"
+                                        <li th:each="subSubcategory : ${subcategory.subcategories}"
                                             style="margin-top: 5px;">
-                                            <span th:text="${subcategoryTwo.name}"></span>
-                                            <span th:if="${subcategoryTwo.subcategories != null}"
-                                                  class="toggle">▼</span>
-                                            <a th:href="@{/admin/category-edit/{id}(id=${subcategoryTwo.id})}"
+                                            <span th:text="${subSubcategory.name}"></span>
+                                            <span th:if="${subSubcategory.subcategories != null && !#lists.isEmpty(subSubcategory.subcategories)}" class="toggle">▼</span>
+                                            <a th:href="@{/admin/category-edit/{id}(id=${subSubcategory.id})}"
                                                style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                                         </li>
                                     </ul>
@@ -55,6 +54,8 @@
                         </li>
                         <li th:if="${category.parentCategory == null && !category.mainCategory}">
                             <span th:text="${category.name}"></span>
+                            <a th:href="@{/admin/category-edit/{id}(id=${category.id})}"
+                               style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
                         </li>
                     </ul>
                 </div>

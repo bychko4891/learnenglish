@@ -8,6 +8,8 @@ package com.example.learnenglish.model;
  */
 
 import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,15 +28,18 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonView(JsonViews.ViewFieldId.class)
     private Long id;
 
     @Column
+    @JsonView(JsonViews.ViewFieldName.class)
     private String name;
 
     @Column(name = "description", columnDefinition = "text") //Змінив поле!!!
     private String description; //Змінив поле!!!
 
     @Column
+    @JsonView(JsonViews.ViewFieldOther.class)
     private boolean mainCategory = false;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -53,10 +58,12 @@ public class Category implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_category_id")
+    @JsonView(JsonViews.ViewFieldOther.class)
     private Category parentCategory;
 
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    @JsonView(JsonViews.ViewFieldOther.class)
     private List<Category> subcategories = new ArrayList<>();
 
 //    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "category")

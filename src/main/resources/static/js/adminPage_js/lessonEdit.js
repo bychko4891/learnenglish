@@ -53,7 +53,7 @@
         const subSubcategorySelect = document.getElementById('subSubcategorySelect');
         mainCategorySelect.addEventListener('change', function () {
             const selectedCategoryId = mainCategorySelect.value;
-            fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+            fetch(`/admin/getSubcategories?mainCategoryId=${selectedCategoryId}`)
                 .then(response => response.json())
                 .then(subcategories => {
                     if (subcategories.length > 0) {

@@ -228,50 +228,6 @@ public class AdminController {
         } else return "redirect:/login";
     }
 
-    @GetMapping("/categories")
-    public String wordsCategory(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("wordCategories", categoryService.getWordsCategories());
-            return "admin/categories";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/categories/new-category")
-    public String wordsCategoryNewCategory(Principal principal) {
-        if (principal != null) {
-            Long count = 0l;
-            try {
-                count = categoryService.countCategory() + 1;
-            } catch (RuntimeException e) {
-                return "redirect:/admin-page/1/category-edit";
-            }
-            return "redirect:/admin-page/" + count + "/category-edit";
-        }
-        return "redirect:/login";
-    }
-
-
-    @GetMapping("/{id}/category-edit")
-    public String wordsCategoryEdit(@PathVariable("id") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            List<Category> mainWordsCategories = categoryService.mainCategoryList(true);
-            Category category = categoryService.getCategory(id);
-            if (category.isMainCategory()) {
-                mainWordsCategories.removeIf(obj -> obj.getId().equals(id));
-            }
-            model.addAttribute("parentCategory", "Відсутня");
-            if (category.getParentCategory() != null) {
-                model.addAttribute("parentCategory", category.getParentCategory().getName());
-            }
-            model.addAttribute("category", category);
-            model.addAttribute("mainCategories", mainWordsCategories);
-            return "admin/categoryEdit";
-        }
-        return "redirect:/login";
-    }
-
-
 
     @GetMapping("/word-lessons")
     public String wordLessonsListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,

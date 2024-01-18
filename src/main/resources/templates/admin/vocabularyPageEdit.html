@@ -23,7 +23,7 @@
     <main class="section">
         <header th:replace="~{fragments/header :: header}"></header>
         <div class="container layout_page">
-            <h1>Новий урок для слів</h1>
+            <h1>Сторінка словника</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
                 <input type="text" id="name" name="name" th:value="${vocabularyPage.name}">
@@ -54,22 +54,21 @@
                     <option name="id" value="0">Оберіть підкатегорію</option>
                 </select><br>
                 <input type="file" id="imageInput" name="image" onchange="previewImage()" accept="image/*"/>
-                <img id="preview" th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}"  th:src="@{/word-image/{name}(name=${vocabularyPage.image.imageName})}" width="100" height="auto"/>
-                <img id="preview" th:if="${vocabularyPage.image == null || vocabularyPage.image.imageName == null}" width="100" height="auto"/>
+                <img id="preview" th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}"
+                     th:src="@{/word-image/{name}(name=${vocabularyPage.image.imageName})}" width="100" height="auto"/>
+                <img id="preview" th:if="${vocabularyPage.image == null || vocabularyPage.image.imageName == null}"
+                     width="100" height="auto"/>
 
-
-                <!--        <label>Додані слова до уроку: </label>-->
-                <!--        <div id="addedItemsContainer"></div>-->
                 <hr>
 
-                <label>Cлова в уроці: </label>
-                <!--        <div id="savedItemsContainer" class="d-flex">-->
-                <!--          <div th:each="wordOrdered : ${wordLesson.words}" class="phrases-list">-->
-                <!--            <label th:text="${wordOrdered.word.name + ','}" style="font-size: 28px;"></label>-->
-                <!--            <input name="id" type="hidden" th:value="${wordOrdered.word.id}">-->
-                <!--            <button class="deleteBtn" th:data-id="${wordOrdered.word.id}">X</button>-->
-                <!--          </div>-->
-                <!--        </div>-->
+                <label>Cлово карточки: </label>
+                <div id="savedItemsContainer" class="d-flex">
+                    <div th:if="${vocabularyPage.word != null}" class="phrases-list">
+                        <label th:text="${vocabularyPage.word.name}" style="font-size: 28px;"></label>
+                        <input name="wordId" type="hidden" th:value="${vocabularyPage.word.id}">
+                        <button class="deleteBtn" th:data-id="${vocabularyPage.word.id}">X</button>
+                    </div>
+                </div>
                 <br>
 
                 <hr>
@@ -118,7 +117,7 @@
 
     function searchItems(searchTerm) {
         $.ajax({
-            url: '/admin-page/search-word',
+            url: '/admin/search-word',
             type: 'GET',
             data: {searchTerm: searchTerm},
             success: function (response) {
@@ -181,12 +180,12 @@
                 // Створення input з атрибутом name="id" та значенням value="${selectedId}"
                 const inputElement = document.createElement('input');
                 inputElement.type = 'hidden';
-                inputElement.name = 'id';
+                inputElement.name = 'wordId';
                 inputElement.value = selectedId;
                 newItem.appendChild(inputElement);
 
                 const labelElement = document.createElement('label');
-                labelElement.textContent = result.name + ',';
+                labelElement.textContent = result.name;
                 labelElement.style.fontSize = '28px';
                 newItem.appendChild(labelElement);
 
@@ -236,11 +235,11 @@
         var subcategorySelect = $('#subcategorySelect').val();
         var subSubcategorySelect = $('#subSubcategorySelect').val();
         var categoryId = 0;
-        if(subSubcategorySelect > 0) {
+        if (subSubcategorySelect > 0) {
             categoryId = subSubcategorySelect;
         } else if (subcategorySelect > 0) {
             categoryId = subcategorySelect;
-        } else if(mainCategorySelect > 0){
+        } else if (mainCategorySelect > 0) {
             categoryId = mainCategorySelect;
         }
 
@@ -257,18 +256,17 @@
         formData.append('image', $('#imageInput')[0].files[0]);
 
         var vocabularyPage = {
-            id: $('#editor input[name="wordId"]').val(),
+            id: $('#editor input[name="id"]').val(),
             name: $('#editor input[name="name"]').val(),
-            translate: $('#editor input[name="translate"]').val(),
             published: $('#toggleSwitch').is(':checked'),
-            // translationPairs: translationPairs,
             cardInfo: $('#editor textarea[name="cardInfo"]').val(),
             description: $('#editor textarea[name="description"]').val(),
-            category: {id: categoryId}
+            word: { id: $('#editor input[name="wordId"]').val() },
+            category: { id: categoryId }
         };
-
-        formData.append('vocabularyPage', new Blob([JSON.stringify(vocabularyPage)], { type: 'application/json' }));
-
+        console.log(vocabularyPage);
+        formData.append('vocabularyPage', new Blob([JSON.stringify(vocabularyPage)], {type: 'application/json'}));
+        console.log(formData);
         $.ajax({
             url: '/admin/vocabulary-page/save',
             type: 'POST',
@@ -293,6 +291,7 @@
             }
         });
     }
+
     // $('#editor').submit(function (event) {
     //     event.preventDefault();
     //     var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -366,7 +365,7 @@
         const subSubcategorySelect = document.getElementById('subSubcategorySelect');
         mainCategorySelect.addEventListener('change', function () {
             const selectedCategoryId = mainCategorySelect.value;
-            fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+            fetch(`/admin/getSubcategories?mainCategoryId=${selectedCategoryId}`)
                 .then(response => response.json())
                 .then(subcategories => {
                     if (subcategories.length > 0) {
@@ -388,7 +387,7 @@
         });
         subcategorySelect.addEventListener('change', function () {
             const selectedCategoryId = subcategorySelect.value;
-            fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+            fetch(`/admin/getSubcategories?mainCategoryId=${selectedCategoryId}`)
                 .then(response => response.json())
                 .then(subcategories => {
                     if (subcategories.length > 0) {

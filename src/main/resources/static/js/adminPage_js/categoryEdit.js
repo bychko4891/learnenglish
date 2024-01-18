@@ -54,7 +54,7 @@ $(document).ready(function () {
     mainCategorySelect.addEventListener('change', function () {
         const selectedCategoryId = mainCategorySelect.value;
         if (selectedCategoryId != 0) {
-        fetch(`/admin-page/getSubcategories?mainCategoryId=${selectedCategoryId}`)
+        fetch(`/admin/getSubcategories?mainCategoryId=${selectedCategoryId}`)
             .then(response => response.json())
             .then(subcategories => {
                 if (subcategories.length > 0) {

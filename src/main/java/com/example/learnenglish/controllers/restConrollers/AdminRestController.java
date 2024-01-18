@@ -12,9 +12,7 @@ import com.example.learnenglish.model.*;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.*;
-import com.example.learnenglish.validate.CategoryValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,6 @@ public class AdminRestController {
     private final ImagesService imagesService;
     private final MiniStoryService miniStoryService;
     private final WordLessonService wordLessonService;
-    private final CategoryValidator categoryValidator;
     private final WayForPayModuleService wayForPayModuleService;
     private final FileStorageService fileStorageService;
 
@@ -72,16 +69,6 @@ public class AdminRestController {
         }
 //        return ResponseEntity.ok(new ResponseStatus(Message.ERROR_CREATELESSON));
     }
-
-    @GetMapping("/getSubcategories")
-    public ResponseEntity<List<DtoWordsCategoryToUi>> wordsSubcategories(@RequestParam("mainCategoryId") Long id, Principal principal) {
-        if (principal != null && id != 0) {
-            return ResponseEntity.ok(categoryService.getDtoSubcategoriesInMainCategory(id));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-
 
 
 
