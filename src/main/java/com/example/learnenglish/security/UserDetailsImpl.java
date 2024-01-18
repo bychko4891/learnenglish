@@ -1,6 +1,6 @@
 package com.example.learnenglish.security;
 
-import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.model.users.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

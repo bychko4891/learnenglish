@@ -7,7 +7,7 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.*;
-import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import lombok.RequiredArgsConstructor;

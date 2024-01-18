@@ -1,4 +1,4 @@
-package com.example.learnenglish.model.users;
+package com.example.learnenglish.utils;
 
 /**
  * @author: Anatolii Bychko
@@ -7,10 +7,11 @@ package com.example.learnenglish.model.users;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.model.PageApplication;
 import com.example.learnenglish.model.WayForPayModule;
+import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
-import com.example.learnenglish.repository.WayForPayModuleRepository;
 import com.example.learnenglish.service.PageApplicationService;
 import com.example.learnenglish.service.WayForPayModuleService;
 import lombok.RequiredArgsConstructor;

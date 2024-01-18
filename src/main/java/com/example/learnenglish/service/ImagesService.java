@@ -9,7 +9,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.exception.FileStorageException;
 import com.example.learnenglish.exception.MyFileNotFoundException;
-import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.property.FileStorageProperties;
 import com.example.learnenglish.repository.ImagesRepository;
 import com.example.learnenglish.responsemessage.Message;

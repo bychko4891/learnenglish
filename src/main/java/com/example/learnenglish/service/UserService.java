@@ -7,6 +7,7 @@ package com.example.learnenglish.service;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.model.users.*;
 import com.example.learnenglish.repository.UserRepository;
 import com.example.learnenglish.responsemessage.Message;

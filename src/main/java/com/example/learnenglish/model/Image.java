@@ -1,4 +1,4 @@
-package com.example.learnenglish.model.users;
+package com.example.learnenglish.model;
 
 /**
  * @author: Anatolii Bychko
@@ -7,6 +7,7 @@ package com.example.learnenglish.model.users;
  *  GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.model.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

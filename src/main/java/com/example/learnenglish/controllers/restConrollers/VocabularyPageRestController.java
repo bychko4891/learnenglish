@@ -8,7 +8,7 @@ package com.example.learnenglish.controllers.restConrollers;
  */
 
 import com.example.learnenglish.model.VocabularyPage;
-import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.FileStorageService;
 import com.example.learnenglish.service.VocabularyPageService;

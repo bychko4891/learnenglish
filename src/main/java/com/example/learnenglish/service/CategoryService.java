@@ -2,7 +2,7 @@ package com.example.learnenglish.service;
 
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
-import com.example.learnenglish.model.users.Image;
+import com.example.learnenglish.model.Image;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
