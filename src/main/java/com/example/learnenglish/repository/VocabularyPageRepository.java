@@ -22,4 +22,6 @@ public interface VocabularyPageRepository extends JpaRepository<VocabularyPage, 
 
     @Query("SELECT MAX(v.id) FROM VocabularyPage  v")
     long lastId();
+
+    boolean existsVocabularyPageByNameIgnoreCase(String vocabularyPageName);
 }

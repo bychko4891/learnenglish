@@ -11,6 +11,7 @@ public enum Message {
 
     ERROR("Error"),
     SUCCESS("Success"),
+    ERROR_REQUIRED_FIELD("Error","Відсутне обов'язкове поле!"),
     ADD_BASE_SUCCESS("Success","Операція пройшла успішно"),
     BASE_ERROR("Error","Щось трапилося з базою данних і операція збереження не може бути виконаною.\n" +
             " Напишіть будь ласка про цю помилку адміністратору застосунка"),

@@ -74,13 +74,17 @@ public class VocabularyPageService {
     }
 
     public CustomResponseMessage saveNewVocabularyPage(VocabularyPage vocabularyPage) {
-        String vocabularyPageName = StringUtils.normalizeSpace(vocabularyPage.getName());
-        vocabularyPage.setName(vocabularyPageName);
+        vocabularyPage.setName(vocabularyPage.getWord().getName());
         if(vocabularyPage.getCategory().getId() == 0) vocabularyPage.setCategory(null);
         if(vocabularyPage.getWord().getId() == null ) vocabularyPage.setWord(null);
-        //TODO(Додати ще фрази)
+        //TODO : Add phrases Application
         repository.save(vocabularyPage);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
+    }
+
+    public boolean existVocabularyPageByName(String vocabularyPageName) {
+        String vocabularyPageNameNormalize = StringUtils.normalizeSpace(vocabularyPageName);
+        return repository.existsVocabularyPageByNameIgnoreCase(vocabularyPageNameNormalize);
     }
 
 }

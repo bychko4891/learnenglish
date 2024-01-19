@@ -1584,3 +1584,8 @@ td {
     font-size: 24px;
     text-align: center;
 }
+
+.required {
+    color: #dc4a4a;
+    margin-right: 5px;
+}
