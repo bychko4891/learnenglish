@@ -47,7 +47,7 @@ public class FileStorageService {
             try {
                 Files.createDirectories(storagePath);
             } catch (IOException e) {
-                throw new RuntimeException("Could not create directory: " + storagePath, e);
+                throw new FileStorageException("Could not create directory: " + storagePath, e);
             }
         }
         return storagePath;
@@ -84,8 +84,7 @@ public class FileStorageService {
                 throw new MyFileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
-//            System.out.println(ex.getMessage());
+            throw new FileStorageException("Error load file: " + fileName, ex);
         }
     }
     public void deleteFileFromStorage(String audioFileName, String storagePath) {
