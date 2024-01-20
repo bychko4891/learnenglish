@@ -7,6 +7,7 @@ package com.example.learnenglish.controllers.restConrollers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
@@ -41,7 +42,7 @@ public class CategoryRestController {
                     return ResponseEntity.ok(categoryService.saveMainCategory(category, categoryDb));
                 }
                 return ResponseEntity.ok(categoryService.saveSubcategory(category, categoryDb));
-            } catch (RuntimeException e) {
+            } catch (ObjectNotFoundException e) {
                 return ResponseEntity.ok(categoryService.saveNewCategory(category));
             }
         }

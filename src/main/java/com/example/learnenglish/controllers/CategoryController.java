@@ -7,6 +7,7 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.service.CategoryService;
 import lombok.Data;
@@ -66,7 +67,7 @@ public class CategoryController {
                     model.addAttribute("parentCategory", category.getParentCategory().getName());
                 }
                 model.addAttribute("category", category);
-            } catch (RuntimeException e) {
+            } catch (ObjectNotFoundException e) {
                 Category category = categoryService.getNewCategory(id);
                 model.addAttribute("category", category);
             }

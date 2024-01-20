@@ -1,4 +1,4 @@
-package com.example.learnenglish.controllers;
+package com.example.learnenglish.controllers.restConrollers;
 
 /**
  * @author: Anatolii Bychko
@@ -7,17 +7,21 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 
 
@@ -25,14 +29,20 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class UserRestController {
 
+    @Value("${file.upload-user-avatar}")
+    private String userAvatarStorePath;
+
     private final UserService userService;
 
     private final WordUserService wordUserService;
 
     private final PhraseAndUserService phraseAndUserService;
+
     private final UserWordLessonProgressService userWordLessonProgressService;
 
     private final HttpSession session;
+
+    private final FileStorageService fileStorageService;
 
     @PostMapping("/user/{id}/user-text-check")
     public ResponseEntity<CustomResponseMessage> mytext(@PathVariable("id") Long userId,
@@ -128,6 +138,7 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/user-word/remove")
     public ResponseEntity<CustomResponseMessage> userWordRemove(@RequestParam("wordId") Long wordId,
                                                                 Principal principal) {
@@ -137,7 +148,6 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
 
     @PostMapping("/phrase/repetition-phrase-check")
@@ -177,8 +187,30 @@ public class UserRestController {
                                                   Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
-            userWordLessonProgressService.startWordLesson(user, wordLessonId,start);
+            userWordLessonProgressService.startWordLesson(user, wordLessonId, start);
             return ResponseEntity.ok("tab2");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/upload-image-avatar")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    public ResponseEntity<CustomResponseMessage> uploadFile(@RequestParam("imageFile") MultipartFile imageFile,
+                                                            Principal principal) throws IOException {
+        if (principal != null && imageFile != null) {
+            String contentType = imageFile.getContentType();
+            if (contentType.equals("image/png")) {
+                User user = userService.findByEmail(principal.getName());
+                String imageFileName = fileStorageService.storeFile(imageFile, userAvatarStorePath, user.getLastName());
+                session.setAttribute("avatarName", imageFileName);
+                if (user.getUserAvatar().getImageName() != null && !user.getUserAvatar().getImageName().equalsIgnoreCase("no-avatar.png")) {
+                    fileStorageService.deleteFileFromStorage(user.getUserAvatar().getImageName(), userAvatarStorePath);
+                }
+                user.getUserAvatar().setImageName(imageFileName);
+                userService.saveUser(user);
+                return ResponseEntity.ok(new CustomResponseMessage(Message.SUCCESS_UPLOAD_USER_AVATAR));
+            } else
+                return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_UPLOAD_USER_AVATAR, "Дозволено тільки файли з розширенням .png"));
         }
         return ResponseEntity.notFound().build();
     }

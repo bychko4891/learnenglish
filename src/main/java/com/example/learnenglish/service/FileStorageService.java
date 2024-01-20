@@ -87,14 +87,15 @@ public class FileStorageService {
             throw new FileStorageException("Error load file: " + fileName, ex);
         }
     }
-    public void deleteFileFromStorage(String audioFileName, String storagePath) {
+
+    public void deleteFileFromStorage(String fileName, String storagePath) {
         Path directoryPath = directoryMappings.get(storagePath);
-        Path targetLocation = directoryPath.resolve(audioFileName);
+        Path targetLocation = directoryPath.resolve(fileName);
         try {
             Files.delete(targetLocation);
         } catch (IOException e) {
 //            throw new RuntimeException("Image not found");
-            System.out.println("Error in 'deleteAudioFilesFromDirectory' methods! File not found: " + audioFileName);
+            System.out.println("Error in 'deleteFileFromStorage' methods! File not found: " + fileName);
         }
     }
 }

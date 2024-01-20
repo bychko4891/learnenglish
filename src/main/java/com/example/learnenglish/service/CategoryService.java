@@ -1,5 +1,6 @@
 package com.example.learnenglish.service;
 
+import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
 import com.example.learnenglish.model.Image;
@@ -22,7 +23,8 @@ public class CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
-        } throw new RuntimeException("Category with id: " + id + "not found");
+
+        } throw new ObjectNotFoundException("Category with id: " + id + "not found");
     }
     public Category getNewCategory(long id) {
         Category category = new Category();

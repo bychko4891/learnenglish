@@ -12,17 +12,7 @@ import java.io.IOException;
 
 @RestController
 public class AudioRestController {
-    private final AudioService audioService;
-
-    public AudioRestController(AudioService audioService) {
-        this.audioService = audioService;
-    }
 
 
-    @GetMapping("/audio/{fileName:.+}")
-    public ResponseEntity<Resource> getAudio(@PathVariable String fileName, HttpServletRequest request) throws IOException {
-        Resource resource = audioService.loadFileAsResource(fileName);
-        return ResponseEntity.ok(resource);
-    }
 
 }

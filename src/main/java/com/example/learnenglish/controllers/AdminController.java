@@ -285,36 +285,6 @@ public class AdminController {
     }
 
 
-    @GetMapping("/audios")
-    public String audioListAdminPage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "30", required = false) int size,
-                                     Principal principal,
-                                     Model model) {
-        if (principal != null) {
-            if (page < 0) page = 0;
-            Page<Audio> wordAudioPage = wordAudioService.getAudioPage(page, size);
-            if (wordAudioPage.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", wordAudioPage.getTotalPages());
-            }
-            model.addAttribute("audios", wordAudioPage.getContent());
-            model.addAttribute("currentPage", page);
-
-            return "admin/audios";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/word-audio/{id}/audio-upload-page")
-    public String wordAudioUpload(@PathVariable("id") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            Audio wordAudio = wordAudioService.getAudio(id);
-            model.addAttribute("wordAudio", wordAudio);
-            return "admin/audioUpload";
-        }
-        return "redirect:/login";
-    }
 
     @GetMapping("/phrases-pages")
     public String translationPairsPages(@RequestParam(value = "page", defaultValue = "0") int page,

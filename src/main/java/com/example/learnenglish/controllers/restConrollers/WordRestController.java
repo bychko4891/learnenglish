@@ -7,7 +7,6 @@ package com.example.learnenglish.controllers.restConrollers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -31,7 +30,7 @@ import java.util.List;
 public class WordRestController {
 
     @Value("${file.upload-audio}")
-    String audioStoreName;
+    private String audioStorePath;
 
     private final WordService wordService;
     private final FileStorageService fileStorageService;
@@ -48,14 +47,14 @@ public class WordRestController {
                 Word wordDB = wordService.getWord(word.getId());
                 word.setAudio(new Audio());
                 if (brAudio != null) {
-                    word.getAudio().setBrAudioName(fileStorageService.storeFile(brAudio, audioStoreName, word.getName()));
+                    word.getAudio().setBrAudioName(fileStorageService.storeFile(brAudio, audioStorePath, word.getName()));
                     if (wordDB.getAudio().getBrAudioName() != null && !wordDB.getAudio().getBrAudioName().equals(wordDB.getAudio().getUsaAudioName()))
-                        fileStorageService.deleteFileFromStorage(wordDB.getAudio().getBrAudioName(), audioStoreName);
+                        fileStorageService.deleteFileFromStorage(wordDB.getAudio().getBrAudioName(), audioStorePath);
                 }
                 if (usaAudio != null) {
-                    word.getAudio().setUsaAudioName(fileStorageService.storeFile(usaAudio, audioStoreName, word.getName()));
+                    word.getAudio().setUsaAudioName(fileStorageService.storeFile(usaAudio, audioStorePath, word.getName()));
                     if (wordDB.getAudio().getUsaAudioName() != null)
-                        fileStorageService.deleteFileFromStorage(wordDB.getAudio().getUsaAudioName(), audioStoreName);
+                        fileStorageService.deleteFileFromStorage(wordDB.getAudio().getUsaAudioName(), audioStorePath);
                 }
                 return ResponseEntity.ok(wordService.saveWord(wordDB, word));
 
@@ -63,9 +62,9 @@ public class WordRestController {
                 Audio audio = new Audio();
                 audio.setName(word.getName());
                 if (brAudio != null)
-                    audio.setBrAudioName(fileStorageService.storeFile(brAudio, audioStoreName, word.getName()));
+                    audio.setBrAudioName(fileStorageService.storeFile(brAudio, audioStorePath, word.getName()));
                 if (usaAudio != null)
-                    audio.setBrAudioName(fileStorageService.storeFile(usaAudio, audioStoreName, word.getName()));
+                    audio.setBrAudioName(fileStorageService.storeFile(usaAudio, audioStorePath, word.getName()));
                 word.setAudio(audio);
                 return ResponseEntity.ok(wordService.saveNewWord(word));
             }

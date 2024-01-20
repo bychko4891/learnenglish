@@ -272,8 +272,8 @@ $(document).ready(function () {
                 .then(data => {
                     var userId = data.userId;
                     var formData = new FormData();
-                    formData.append('file', blob, 'image.png');
-                    var url = '/user/' + userId + '/upload-avatar';
+                    formData.append('imageFile', blob, 'image.png');
+                    var url = '/user/upload-image-avatar';
                     var csrfToken = $("meta[name='_csrf']").attr("content");
                     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
                     $.ajax({
@@ -285,8 +285,14 @@ $(document).ready(function () {
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader(csrfHeader, csrfToken);
                         },
-                        success: function (data) {
-                            console.log(data);
+                        success: function (result) {
+                            console.log(result);
+                            var status = result.status;
+                            if (status === "Success") {
+                                showSuccessToast(result.message);
+                            } else {
+                                showErrorToast(result.message)
+                            }
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             console.log(xhr.responseText);

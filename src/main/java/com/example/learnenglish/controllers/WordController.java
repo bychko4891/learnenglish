@@ -46,7 +46,7 @@ public class WordController {
     public String newWordAdminPage(Principal principal) {
         if (principal != null) {
             try {
-                Long count = wordService.countWords() + 1;
+                long count = wordService.countWords() + 1;
                 return "redirect:/admin/words/word-edit/" + count;
             } catch (NullPointerException e) {
                 return "redirect:/admin/words/word-edit/1";
