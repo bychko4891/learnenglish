@@ -41,6 +41,13 @@
                         <option value="LESSON_PHRASES">Заняття для фпаз</option>
                     </select>
                 </div>
+                <h3 style="color: #0a53be;">Зображення категорії</h3>
+                <input type="file" id="imageInput" name="image" onchange="previewImage()" accept="image/*"/>
+                <img id="preview" th:if="${category.image != null && category.image.imageName != null}"
+                     th:src="@{/category-image/{name}(name=${category.image.imageName})}" width="100" height="auto"/>
+                <img id="preview" th:if="${category.image == null || category.image.imageName == null}"
+                     width="100" height="auto"/>
+
                 <hr>
                 <label for="info">Текст:</label>
                 <textarea id="info" name="info" th:text="${category.description}"></textarea>

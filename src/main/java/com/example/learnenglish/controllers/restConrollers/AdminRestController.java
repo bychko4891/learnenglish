@@ -34,7 +34,6 @@ public class AdminRestController {
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
     private final TranslationPairService translationPairService;
-    private final ImagesService imagesService;
     private final MiniStoryService miniStoryService;
     private final WordLessonService wordLessonService;
     private final WayForPayModuleService wayForPayModuleService;
@@ -120,37 +119,6 @@ public class AdminRestController {
         return ResponseEntity.ok(new CustomResponseMessage(Message.ADD_BASE_SUCCESS));
     }
 
-
-    @PostMapping("/image/upload")
-    public ResponseEntity<String> uploadWebImage(@RequestParam("webImage") MultipartFile file,
-                                                 Principal principal) {
-        if (principal != null) {
-            String contentType = file.getContentType();
-            if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
-                System.out.println("Yes");
-                String fileName = imagesService.saveWebImage(file, contentType);
-                return ResponseEntity.ok("/web-image/" + fileName);
-            } else throw new FileFormatException("Дозволено тільки зображення");
-
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-
-
-    @PostMapping("/category-image/{id}/upload")
-    public ResponseEntity<CustomResponseMessage> uploadCategoryImage(@PathVariable("id") Long categoryId, @RequestParam("categoryImage") MultipartFile file,
-                                                                     Principal principal) {
-        if (principal != null) {
-            String contentType = file.getContentType();
-            if (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/webp")) {
-                System.out.println("Yes");
-                return ResponseEntity.ok(imagesService.saveCategoryImage(file, categoryId, contentType));
-            } else throw new FileFormatException("Дозволено тільки зображення");
-
-        }
-        return ResponseEntity.notFound().build();
-    }
 
 
     @PostMapping("/save-wayforpay-module-settings")

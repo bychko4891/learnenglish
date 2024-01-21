@@ -24,7 +24,7 @@ public class CategoryService {
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
 
-        } throw new ObjectNotFoundException("Category with id: " + id + "not found");
+        } else throw new ObjectNotFoundException("Category with id: " + id + "not found");
     }
     public Category getNewCategory(long id) {
         Category category = new Category();
@@ -72,22 +72,23 @@ public class CategoryService {
         return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 
-    public CustomResponseMessage saveMainCategory(Category category, Category categoryFromDatabase) {
-        categoryFromDatabase.setName(category.getName());
-        categoryFromDatabase.setDescription(category.getDescription());
-        categoryFromDatabase.setMainCategory(true);
-        categoryFromDatabase.setViewSubcategoryFullNoInfoOrNameAndInfo(category.isViewSubcategoryFullNoInfoOrNameAndInfo());
+    public CustomResponseMessage saveMainCategory(Category category, Category categoryDb) {
+        categoryDb.setName(category.getName());
+        categoryDb.setDescription(category.getDescription());
+        categoryDb.setMainCategory(true);
+        categoryDb.setViewSubcategoryFullNoInfoOrNameAndInfo(category.isViewSubcategoryFullNoInfoOrNameAndInfo());
 //        String page = category.getCategoryPages().get(0).name();
         if (!category.getCategoryPages().equals(CategoryPage.NO_PAGE)) {
-            categoryFromDatabase.getCategoryPages().clear();
-            categoryFromDatabase.setCategoryPages(category.getCategoryPages());
+            categoryDb.getCategoryPages().clear();
+            categoryDb.setCategoryPages(category.getCategoryPages());
         }
-        if (categoryFromDatabase.getParentCategory() != null) {
-            Category parentCategory = categoryFromDatabase.getParentCategory();
-            parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(categoryFromDatabase.getId()));
+        if (categoryDb.getParentCategory() != null) {
+            Category parentCategory = categoryDb.getParentCategory();
+            parentCategory.getSubcategories().removeIf(obj -> obj.getId().equals(categoryDb.getId()));
         }
-        categoryFromDatabase.setParentCategory(null);
-        categoryRepository.save(categoryFromDatabase);
+        if(category.getImage().getImageName() != null) categoryDb.getImage().setImageName(category.getImage().getImageName());
+        categoryDb.setParentCategory(null);
+        categoryRepository.save(categoryDb);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 
@@ -100,6 +101,7 @@ public class CategoryService {
         if (categoryDb.getParentCategory() == null || category.getParentCategory().getId() != 0 && !category.getParentCategory().getId().equals(categoryDb.getParentCategory().getId())) {
             categoryDb.setParentCategory(getCategory(category.getParentCategory().getId()));
         }
+        if(category.getImage().getImageName() != null) categoryDb.getImage().setImageName(category.getImage().getImageName());
         categoryRepository.save(categoryDb);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
@@ -111,10 +113,7 @@ public class CategoryService {
             Category parentCategory = getCategory(category.getParentCategory().getId());
             category.setParentCategory(parentCategory);
         }
-        Image image = new Image();
-        category.setImage(image);
         categoryRepository.save(category);
-        //TODO(Категорія не зміню батьківську, на нову батьківську!!!!)
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
 }

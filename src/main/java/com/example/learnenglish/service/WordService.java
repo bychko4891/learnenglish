@@ -35,8 +35,7 @@ public class WordService {
         Optional<Word> wordOptional = wordRepository.findById(id);
         if (wordOptional.isPresent()) {
             return wordOptional.get();
-        }
-        throw new RuntimeException("");
+        } else throw new RuntimeException("");
     }
 
     public Word getNewWord(Long id) {

@@ -29,8 +29,8 @@ import java.security.Principal;
 @Data
 public class VocabularyPageRestController {
 
-    @Value("${file.upload-word-image}")
-    private String wordStoreName;
+    @Value("${file.upload-vocabulary-page-image}")
+    private String wordStorePath;
 
     private final VocabularyPageService vocabularyPageService;
 
@@ -47,21 +47,24 @@ public class VocabularyPageRestController {
             }
             try {
                 VocabularyPage vocabularyPageDB = vocabularyPageService.getVocabularyPage(vocabularyPage.getId());
+                if (!vocabularyPage.getWord().getId().equals(vocabularyPageDB.getWord().getId()) && vocabularyPageService.existVocabularyPageByName(vocabularyPage.getWord().getName())) {
+                    return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT));
+                }
+
                 vocabularyPage.setImage(new Image());
                 if (imageFile != null) {
-                    vocabularyPage.getImage().setImageName(fileStorageService.storeFile(imageFile, wordStoreName, vocabularyPage.getName()));
+                    vocabularyPage.getImage().setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getName()));
                     if (vocabularyPageDB.getImage().getImageName() != null)
-                        fileStorageService.deleteFileFromStorage(vocabularyPageDB.getImage().getImageName(), wordStoreName);
+                        fileStorageService.deleteFileFromStorage(vocabularyPageDB.getImage().getImageName(), wordStorePath);
                 }
                 return ResponseEntity.ok(vocabularyPageService.saveVocabularyPage(vocabularyPageDB, vocabularyPage));
-
             } catch (RuntimeException e) {
                 if (vocabularyPageService.existVocabularyPageByName(vocabularyPage.getWord().getName())) {
                     return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT));
                 }
                 Image image = new Image();
                 if (imageFile != null)
-                    image.setImageName(fileStorageService.storeFile(imageFile, wordStoreName, vocabularyPage.getName()));
+                    image.setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getName()));
                 vocabularyPage.setImage(image);
                 return ResponseEntity.ok(vocabularyPageService.saveNewVocabularyPage(vocabularyPage));
             }

@@ -1,4 +1,21 @@
+function previewImage() {
+    var fileInput = document.getElementById('imageInput');
+    var preview = document.getElementById('preview');
+
+    if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}
+
 function save() {
+
+    console.log("Save");
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
@@ -12,6 +29,10 @@ function save() {
     }
 
     var categoryPages = [$('#page').val()];
+
+    var formData = new FormData();
+    formData.append('image', $('#imageInput')[0].files[0]);
+
     var category = {
         id: $('#editor input[name="id"]').val(),
         name: $('#editor input[name="name"]').val(),
@@ -20,12 +41,16 @@ function save() {
         description: $('#editor textarea[name="info"]').val(),
         parentCategory: { id: categoryId }
     };
+    console.log(category);
+    formData.append('category', new Blob([JSON.stringify(category)], {type: 'application/json'}));
 
+    console.log(formData);
     $.ajax({
         url: '/admin/category-edit/save',
         type: 'POST',
-        contentType: "application/json",
-        data: JSON.stringify(category),
+        data: formData,
+        processData: false,
+        contentType: false,
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },

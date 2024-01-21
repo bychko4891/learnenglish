@@ -25,20 +25,20 @@
                             <span th:if="${category.subcategories != null && !#lists.isEmpty(category.subcategories)}" class="toggle">▼</span>
                             <a th:href="@{/admin/category-edit/{id}(id=${category.id})}"
                                style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
-                            <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" th:data-entity-id="${category.id}">
-                                <i class="fa-solid fa-upload"></i>
-                            </button>
+<!--                            <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"-->
+<!--                                    data-bs-target="#exampleModal" th:data-entity-id="${category.id}">-->
+<!--                                <i class="fa-solid fa-upload"></i>-->
+<!--                            </button>-->
                             <ul th:if="${category.subcategories != null}" class="category">
                                 <li th:each="subcategory : ${category.subcategories}">
                                     <span th:text="${subcategory.name}"></span>
                                     <span th:if="${subcategory.subcategories != null && !#lists.isEmpty(subcategory.subcategories)}" class="toggle">▼</span>
                                     <a th:href="@{/admin/category-edit/{id}(id=${subcategory.id})}"
                                        style="border: 1px solid; border-radius: 10px; padding: 3px;">Редагувати</a>
-                                    <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal" th:data-entity-id="${subcategory.id}">
-                                        <i class="fa-solid fa-upload"></i>
-                                    </button>
+<!--                                    <button type="button" class="btn btn-primary open-modal" data-bs-toggle="modal"-->
+<!--                                            data-bs-target="#exampleModal" th:data-entity-id="${subcategory.id}">-->
+<!--                                        <i class="fa-solid fa-upload"></i>-->
+<!--                                    </button>-->
                                     <ul th:if="${subcategory.subcategories != null}" class="category">
                                         <li th:each="subSubcategory : ${subcategory.subcategories}"
                                             style="margin-top: 5px;">

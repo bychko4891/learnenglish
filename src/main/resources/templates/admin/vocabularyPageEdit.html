@@ -25,13 +25,13 @@
         <div class="container layout_page">
             <h1>Сторінка словника</h1>
             <form id="editor">
-                <label for="name">Назва:</label>
-                <input type="text" id="name" name="name" th:value="${vocabularyPage.name}">
-                <label>Категорія:</label> <label th:text="${category}"></label>
+<!--                <label for="name">Назва:</label>-->
+<!--                <input type="text" id="name" name="name" th:value="${vocabularyPage.name}">-->
+                <label>Категорія сторінки словника:</label> <label th:text="${category}"></label>
                 <br>
 
-                <label for="name">Текст картки:</label>
-                <textarea type="text" name="cardInfo" th:text="${vocabularyPage.cardInfo}"></textarea>
+                <label for="cardInfo">Текст картки:</label>
+                <textarea id="cardInfo" type="text" name="cardInfo" th:text="${vocabularyPage.cardInfo}"></textarea>
                 <br>
 
                 <span>Опубліковано: </span>
@@ -55,7 +55,7 @@
                 </select><br>
                 <input type="file" id="imageInput" name="image" onchange="previewImage()" accept="image/*"/>
                 <img id="preview" th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}"
-                     th:src="@{/word-image/{name}(name=${vocabularyPage.image.imageName})}" width="100" height="auto"/>
+                     th:src="@{/vocabulary-page/{name}(name=${vocabularyPage.image.imageName})}" width="100" height="auto"/>
                 <img id="preview" th:if="${vocabularyPage.image == null || vocabularyPage.image.imageName == null}"
                      width="100" height="auto"/>
 
@@ -64,7 +64,7 @@
                 <label>Cлово карточки:<span class="required">*</span></label>
                 <div id="savedItemsContainer" class="d-flex">
                     <div th:if="${vocabularyPage.word != null}" class="phrases-list">
-                        <label th:text="${vocabularyPage.word.name}" style="font-size: 28px;"></label>
+                        <label id="wordName" th:text="${vocabularyPage.word.name}" style="font-size: 28px;"></label>
                         <input name="wordId" type="hidden" th:value="${vocabularyPage.word.id}">
                         <button class="deleteBtn" th:data-id="${vocabularyPage.word.id}">X</button>
                     </div>
@@ -186,6 +186,7 @@
 
                 const labelElement = document.createElement('label');
                 labelElement.textContent = result.name;
+                labelElement.id = 'wordName';
                 labelElement.style.fontSize = '28px';
                 newItem.appendChild(labelElement);
 
@@ -257,16 +258,16 @@
 
         var vocabularyPage = {
             id: $('#editor input[name="id"]').val(),
-            name: $('#editor input[name="name"]').val(),
+            // name: $('#editor input[name="name"]').val(),
             published: $('#toggleSwitch').is(':checked'),
             cardInfo: $('#editor textarea[name="cardInfo"]').val(),
             description: $('#editor textarea[name="description"]').val(),
-            word: { id: $('#editor input[name="wordId"]').val() },
+            word: { id: $('#editor input[name="wordId"]').val(),
+                    name: $('#wordName').text() },
             category: { id: categoryId }
         };
-        console.log(vocabularyPage);
         formData.append('vocabularyPage', new Blob([JSON.stringify(vocabularyPage)], {type: 'application/json'}));
-        console.log(formData);
+
         $.ajax({
             url: '/admin/vocabulary-page/save',
             type: 'POST',

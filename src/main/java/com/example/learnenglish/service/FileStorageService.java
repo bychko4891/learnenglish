@@ -33,10 +33,10 @@ public class FileStorageService {
     private final Map<String, Path> directoryMappings = new HashMap<>();
 
     public FileStorageService(FileStorageProperties fileStorageProperties) {
-        directoryMappings.put(fileStorageProperties.getUploadDir(), createDirectory(fileStorageProperties.getUploadDir()));
+        directoryMappings.put(fileStorageProperties.getUploadWebImage(), createDirectory(fileStorageProperties.getUploadWebImage()));
         directoryMappings.put(fileStorageProperties.getUploadAudio(), createDirectory(fileStorageProperties.getUploadAudio()));
         directoryMappings.put(fileStorageProperties.getUploadUserAvatar(), createDirectory(fileStorageProperties.getUploadUserAvatar()));
-        directoryMappings.put(fileStorageProperties.getUploadWordImage(), createDirectory(fileStorageProperties.getUploadWordImage()));
+        directoryMappings.put(fileStorageProperties.getUploadVocabularyPageImage(), createDirectory(fileStorageProperties.getUploadVocabularyPageImage()));
         directoryMappings.put(fileStorageProperties.getUploadCategoryImage(), createDirectory(fileStorageProperties.getUploadCategoryImage()));
     }
 

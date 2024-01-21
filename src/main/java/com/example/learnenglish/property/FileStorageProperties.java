@@ -11,18 +11,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
-    private String uploadDir;
+    private String uploadWebImage;
     private String uploadAudio;
     private String uploadUserAvatar;
-    private String uploadWordImage;
+    private String uploadVocabularyPageImage;
     private String uploadCategoryImage;
 
 
     public String getUploadUserAvatar() {
         return uploadUserAvatar;
     }
-    public String getUploadDir() {
-        return uploadDir;
+    public String getUploadWebImage() {
+        return uploadWebImage;
     }
     public String getUploadAudio() {
         return uploadAudio;
@@ -31,19 +31,19 @@ public class FileStorageProperties {
         this.uploadUserAvatar = uploadUserAvatar;
     }
 
-    public void setUploadDir(String uploadDir) {
-        this.uploadDir = uploadDir;
+    public void setUploadWebImage(String uploadWebImage) {
+        this.uploadWebImage = uploadWebImage;
     }
     public void setUploadAudio(String uploadAudio) {
         this.uploadAudio = uploadAudio;
     }
 
-    public String getUploadWordImage() {
-        return uploadWordImage;
+    public String getUploadVocabularyPageImage() {
+        return uploadVocabularyPageImage;
     }
 
-    public void setUploadWordImage(String uploadWordImage) {
-        this.uploadWordImage = uploadWordImage;
+    public void setUploadVocabularyPageImage(String uploadVocabularyPageImage) {
+        this.uploadVocabularyPageImage = uploadVocabularyPageImage;
     }
 
     public String getUploadCategoryImage() {

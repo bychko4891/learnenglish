@@ -44,8 +44,7 @@ public class WordLessonService {
         Optional<WordLesson> wordLessonOptional = repository.findById(id);
         if (wordLessonOptional.isPresent()) {
             return wordLessonOptional.get();
-        }
-        throw new RuntimeException("WordLesson no exist");
+        } else throw new RuntimeException("WordLesson no exist");
     }
 
     public WordLesson getNewWordLesson(Long id) {

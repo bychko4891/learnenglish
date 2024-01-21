@@ -38,10 +38,10 @@ $(document).ready(function () {
                 var file = this.files[0];
                 var formData = new FormData();
 
-                formData.append('webImage', file);
+                formData.append('imageFile', file);
 
                 $.ajax({
-                    url: '/admin-page/image/upload',
+                    url: '/admin/web-image/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
             xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
-            xhr.open('POST', '/admin-page/image/upload');
+            xhr.open('POST', '/admin/web-image/upload');
             xhr.setRequestHeader(csrfHeader, csrfToken);
 
             xhr.onload = function () {
@@ -84,7 +84,7 @@ $(document).ready(function () {
             };
 
             formData = new FormData();
-            formData.append('webImage', blobInfo.blob(), blobInfo.filename());
+            formData.append('imageFile', blobInfo.blob(), blobInfo.filename());
 
             xhr.send(formData);
         }

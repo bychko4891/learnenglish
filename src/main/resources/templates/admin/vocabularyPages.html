@@ -39,7 +39,7 @@
                         <td th:if="${vocabularyPage.category != null}" th:text="${vocabularyPage.category.name}"></td>
                         <td th:if="${vocabularyPage.category == null}">Відсутня</td>
                         <td>
-                            <img th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}" th:src="@{/word-image/{name}(name=${vocabularyPage.image.imageName})}" width="60" height="auto"/>
+                            <img th:if="${vocabularyPage.image != null && vocabularyPage.image.imageName != null}" th:src="@{/vocabulary-page/{name}(name=${vocabularyPage.image.imageName})}" width="60" height="auto"/>
                             <span th:if="${vocabularyPage.image == null || vocabularyPage.image.imageName == null}">Відсутнє</span>
                         </td>
                         <td>
