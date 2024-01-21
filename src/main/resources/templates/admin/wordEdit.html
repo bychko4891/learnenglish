@@ -15,7 +15,7 @@
 
             <h1>New text page</h1>
             <form id="editor" enctype="multipart/form-data">
-                <label for="name">Назва:</label>
+                <label for="name">Назва:<span class="required">*</span></label>
                 <input type="text" id="name" name="name" th:value="${word.name}">
                 <label for="name">Український перевод:</label>
                 <input type="text" id="translate" name="translate" th:value="${word.translate}"
@@ -35,8 +35,8 @@
                 <input type="text" id="irregularVerbPp" name="irregularVerbPp" th:value="${word.irregularVerbPp}"
                        placeholder="Непр. дієслово Past Participle"><br>
                 <br>
-                <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${word.isActiveURL}" class="toggle-switch"
+                <span style="padding: 10px 0px 0px 25px;">URL активне: </span>
+                <input id="toggleSwitch" type="checkbox" th:checked="${word.activeURL}" class="toggle-switch"
                        name="published">
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
 <!--                <label>Опис:</label>-->

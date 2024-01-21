@@ -10,8 +10,6 @@ package com.example.learnenglish.controllers.restConrollers;
 import com.example.learnenglish.dto.DtoTextOfAppPage;
 import com.example.learnenglish.dto.DtoTranslationPairToUI;
 import com.example.learnenglish.dto.DtoTranslationPairsPage;
-import com.example.learnenglish.exception.FileFormatException;
-import com.example.learnenglish.model.PhraseApplication;
 import com.example.learnenglish.model.WayForPayModule;
 import com.example.learnenglish.model.WordLesson;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -21,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -37,7 +34,6 @@ public class AdminRestController {
     private final MiniStoryService miniStoryService;
     private final WordLessonService wordLessonService;
     private final WayForPayModuleService wayForPayModuleService;
-    private final PhraseApplicationService phraseApplicationService;
 
 
     @PostMapping("/text-of-app-page/{id}/edit")
@@ -80,24 +76,6 @@ public class AdminRestController {
         }
         return ResponseEntity.notFound().build();
     }
-
-
-    @PostMapping("/phrase-application-save")
-    public ResponseEntity<CustomResponseMessage> savePhraseApplication(@RequestBody PhraseApplication phraseApplication,
-                                                                Principal principal) {
-        if (principal != null) {
-            try {
-                PhraseApplication phraseApplicationDB = phraseApplicationService.getPhraseApplication(phraseApplication.getId());
-                return ResponseEntity.ok(phraseApplicationService.savePhraseApplication(phraseApplicationDB, phraseApplication));
-            } catch (RuntimeException e) {
-               return ResponseEntity.ok(phraseApplicationService.saveNewPhraseApplication(phraseApplication));
-            }
-//            return ResponseEntity.ok(wordLessonService.saveWordLesson(dtoWordLesson));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-
 
     @GetMapping("/search")
     public ResponseEntity<List<DtoTranslationPairToUI>> search(@RequestParam("searchTerm") String searchTerm) {

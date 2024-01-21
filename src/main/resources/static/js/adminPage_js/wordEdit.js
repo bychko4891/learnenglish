@@ -9,11 +9,10 @@ searchInput.addEventListener('input', function () {
 
 function searchItems(searchTerm) {
     $.ajax({
-        url: '/admin-page/search', // Шлях до вашого ендпоінта пошуку на сервері
+        url: '/admin-page/search',
         type: 'GET',
         data: {searchTerm: searchTerm},
         success: function (response) {
-            // Обробити отримані результати пошуку
             displaySearchResults(response);
         },
         error: function () {
@@ -129,7 +128,7 @@ $('#editor').submit(function (event) {
         usaTranscription: $('#editor input[name="usaTranscription"]').val(),
         irregularVerbPt: $('#editor input[name="irregularVerbPt"]').val(),
         irregularVerbPp: $('#editor input[name="irregularVerbPp"]').val(),
-        isActiveURL: $('#toggleSwitch').is(':checked')
+        activeURL: $('#toggleSwitch').is(':checked')
     };
 
     formData.append('word', new Blob([JSON.stringify(word)], { type: 'application/json' }));

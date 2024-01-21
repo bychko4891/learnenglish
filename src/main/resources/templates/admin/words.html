@@ -36,8 +36,8 @@
 <!--                        <td th:if="${word.getCategory != null}" th:text="${word.getCategory.name}"></td>-->
 <!--                        <td th:if="${word.getCategory == null}">Не назначенно</td>-->
                         <td>
-                            <span th:if="${word.isActiveURL}">Yes</span>
-                            <span th:if="${!word.isActiveURL}">No</span>
+                            <span th:if="${word.activeURL}">Yes</span>
+                            <span th:if="${!word.activeURL}">No</span>
                         </td>
 <!--                        <td>-->
 <!--                            &lt;!&ndash;                <div style="width: 100px; height: auto;">&ndash;&gt;-->

@@ -9,21 +9,23 @@ package com.example.learnenglish.controllers.restConrollers;
 
 import com.example.learnenglish.model.VocabularyPage;
 import com.example.learnenglish.model.Image;
+import com.example.learnenglish.model.Word;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.FileStorageService;
 import com.example.learnenglish.service.VocabularyPageService;
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @Data
@@ -68,6 +70,18 @@ public class VocabularyPageRestController {
                 vocabularyPage.setImage(image);
                 return ResponseEntity.ok(vocabularyPageService.saveNewVocabularyPage(vocabularyPage));
             }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/admin/search-vocabulary-page-for-lesson")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @JsonView(JsonViews.ViewIdAndName.class)
+    public ResponseEntity<List<Word>> searchWordForVocabularyPage(@RequestParam("searchTerm") String searchTerm, Principal principal) {
+        if (!searchTerm.isBlank() && principal != null) {
+//            List<Word> words = wordService.searchWordForVocabularyPage(searchTerm);
+//            return ResponseEntity.ok(words);
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.notFound().build();
     }

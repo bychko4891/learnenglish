@@ -10,6 +10,7 @@ package com.example.learnenglish.controllers.restConrollers;
 import com.example.learnenglish.model.Audio;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
+import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.FileStorageService;
 import com.example.learnenglish.service.WordService;
 import com.example.learnenglish.utils.JsonViews;
@@ -43,6 +44,7 @@ public class WordRestController {
                                                                   @RequestPart(value = "word") Word word,
                                                                   Principal principal) throws RuntimeException, IOException {
         if (principal != null) {
+            if(word.getName() == null || word.getName().isEmpty()) return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_REQUIRED_FIELD));
             try {
                 Word wordDB = wordService.getWord(word.getId());
                 word.setAudio(new Audio());
@@ -78,6 +80,17 @@ public class WordRestController {
     public ResponseEntity<List<Word>> searchWordForAdmin(@RequestParam("searchTerm") String searchTerm, Principal principal) {
         if (!searchTerm.isBlank() && principal != null) {
             List<Word> words = wordService.searchWordToAdminPage(searchTerm);
+            return ResponseEntity.ok(words);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/admin/search-word-for-vocabulary-page")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @JsonView(JsonViews.ViewIdAndName.class)
+    public ResponseEntity<List<Word>> searchWordForVocabularyPage(@RequestParam("searchTerm") String searchTerm, Principal principal) {
+        if (!searchTerm.isBlank() && principal != null) {
+            List<Word> words = wordService.searchWordForVocabularyPage(searchTerm);
             return ResponseEntity.ok(words);
         }
         return ResponseEntity.notFound().build();

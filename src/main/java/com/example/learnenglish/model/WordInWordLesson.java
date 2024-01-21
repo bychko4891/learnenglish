@@ -25,8 +25,8 @@ public class WordInWordLesson {
     private WordLesson wordLesson;
 
     @ManyToOne
-    @JoinColumn(name = "word_id")
-    private Word word;
+    @JoinColumn(name = "vocabulary_page_id")
+    private VocabularyPage vocabularyPage;
 
     @Column(name = "list_order")
     private Integer listOrder;

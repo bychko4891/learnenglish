@@ -47,28 +47,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <!--                    </div>-->
-                <!--        </div>-->
-
-
-                <!--        <div class="col-md-6 col-lg-5 block_right">-->
-                <!--          &lt;!&ndash;                <div class="row">&ndash;&gt;-->
-
-
-                <!--          <h3>Додати нове слово</h3>-->
-                <!--          <div>-->
-                <!--            <form action="/admin-page/words/new-wordLesson">-->
-                <!--              <button type="submit">New wordLesson</button>-->
-                <!--            </form>-->
-                <!--          </div>-->
-
-                <!--          &lt;!&ndash;                </div>&ndash;&gt;-->
-                <!--        </div>-->
-
             </div>
-
-
-
         </main>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </div>
@@ -83,7 +62,8 @@
             </span>
         </div>
         <div>
-            <a style="margin-right: auto" th:href="@{/admin-page/word-lessons(page=(${currentPage} + 1))}">Наступна ></a>
+            <a style="margin-right: auto" th:href="@{/admin-page/word-lessons(page=(${currentPage} + 1))}">Наступна
+                ></a>
         </div>
     </div>
     <div th:replace="~{fragments/menu :: menu}"></div>

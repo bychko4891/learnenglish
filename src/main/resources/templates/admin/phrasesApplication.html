@@ -13,14 +13,14 @@
             <div class="page-table row">
                 <h3 style="margin-bottom: auto;">Фрази додатка</h3>
                 <div style="margin-left: auto; margin-bottom: auto;">
-                    <form action="/admin-page/phrases-application/new-phrase-application">
+                    <form action="/admin/phrases-application/new-phrase-application">
                         <button id="newWord" type="submit"><i class="fa-regular fa-square-plus"></i></button>
                     </form>
                 </div>
                 <table style="width: 100%; margin-top: 20px;">
                     <thead>
                     <tr>
-                        <th>Заняття</th>
+                        <th>ID</th>
                         <th>Текст українською</th>
                         <th>Текст англійською</th>
                         <th>Actions</th>
@@ -30,16 +30,16 @@
                     <tr th:each="phrase : ${phrasesApplication}">
                         <td style="display: none"><input type="hidden" name="id" th:value="${phrase.id}"/></td>
                         <td>
-                            <span th:if="${phrase.phraseLesson != null}" th:text="${phrase.phraseLesson.name}"></span>
+                            <span th:text="${phrase.id}"></span>
                         </td>
                         <td>
                             <span th:text="${phrase.ukrTranslate}"></span>
                         </td>
                         <td>
-                            <span th:each="wordWithOrder : ${phrase.engPhrase}" th:text="${wordWithOrder.word.name + ' '}"></span>
+                            <span th:each="wordWithOrder : ${phrase.engPhrase}" th:text="${wordWithOrder.word.name}" style="margin-right: 5px;"></span>
                         </td>
                         <td>
-                            <form th:action="@{/admin-page/phrases-application/phrase-application-edit/{id}(id=${phrase.id})}" method="get">
+                            <form th:action="@{/admin/phrases-application/phrase-application-edit/{id}(id=${phrase.id})}" method="get">
                             <button class="editButton" type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
 <!--                            <button class="cancelButton disabled" onclick="toggleCancelMode(this)"><i class="fa-solid fa-xmark"></i></button>-->
 <!--                            <button class="saveButton disabled" onclick="saveChanges(this)"><i class="fa-regular fa-floppy-disk"></i></button>-->

@@ -7,7 +7,6 @@ package com.example.learnenglish.controllers;
  */
 
 import com.example.learnenglish.model.*;
-import com.example.learnenglish.model.Image;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.*;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,18 +27,15 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RequiredArgsConstructor
 public class AdminController {
-    private final PhraseLessonService phraseLessonService;
+
     private final UserService userService;
     private final TextOfAppPageService textOfAppPageService;
     private final PageApplicationService pageApplicationService;
     private final CategoryService categoryService;
-    private final WordService wordService;
-    private final AudioService wordAudioService;
     private final MiniStoryService miniStoryService;
     private final ImagesService imagesService;
     private final WordLessonService wordLessonService;
     private final WayForPayModuleService wayForPayModuleService;
-    private final PhraseApplicationService phraseApplicationService;
 
 
     @GetMapping
@@ -119,104 +114,6 @@ public class AdminController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", userPage.getTotalPages());
             return "admin/adminUsers";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/phrase-lessons")
-    public String lessonsListAdminPage(@RequestParam(value = "message", required = false) String message,
-                                       @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "size", defaultValue = "8", required = false) int size,
-                                       Principal principal,
-                                       Model model) {
-        if (principal != null) {
-//            if (page < 0) page = 0;
-//            Page<PhraseLesson> lessonPage = phraseLessonService.getLessonsPage(page, size);
-//            if (lessonPage.getTotalPages() == 0) {
-//                model.addAttribute("totalPages", 1);
-//            } else {
-//                model.addAttribute("totalPages", lessonPage.getTotalPages());
-//            }
-//            model.addAttribute("message", message);
-//            model.addAttribute("lessons", lessonPage.getContent());
-//            model.addAttribute("currentPage", page);
-
-            return "admin/phraseLessons";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/phrase-lessons/new-phrase-lesson")
-    public String newLessonAdminPage(Principal principal, RedirectAttributes redirectAttributes) {
-//        if (principal != null) {
-//            Long count = phraseLessonService.countLessons() + 1;
-//            return "redirect:/admin-page/phrase-lessons/phrase-lesson-edit/" + count ;
-//        }
-        return "redirect:/login";
-    }
-
-
-    @GetMapping("/phrase-lessons/phrase-lesson-edit/{id}")
-    public String phraseLessonEdit(@PathVariable("id") Long id,
-                                   Model model,
-                                   Principal principal) {
-        if (principal != null) {
-//            List<Category> mainPhraseLessonCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
-//            PhraseLesson lesson = phraseLessonService.getLesson(id);
-//            model.addAttribute("category", "Відсутня");
-//            if (lesson.getCategory() != null) {
-//                model.addAttribute("category", lesson.getCategory().getName());
-//            }
-//            model.addAttribute("lesson", lesson);
-//            model.addAttribute("mainCategories", mainPhraseLessonCategories);
-            return "admin/phraseLessonEdit";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/phrases-application")
-    public String translationPairsListAdminPage(Model model,
-                                                Principal principal,
-                                                @RequestParam(value = "page", defaultValue = "0") int page,
-                                                @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
-        if (principal != null) {
-            if (page < 0) page = 0;
-            Page<PhraseApplication> phraseApplicationPage = phraseApplicationService.getAllPhraseApplication(page, size);
-            model.addAttribute("phrasesApplication", phraseApplicationPage.getContent());
-            model.addAttribute("currentPage", page);
-            if (phraseApplicationPage.getTotalPages() == 0) {
-                model.addAttribute("totalPages", 1);
-            } else {
-                model.addAttribute("totalPages", phraseApplicationPage.getTotalPages());
-            }
-            return "admin/phrasesApplication";
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/phrases-application/new-phrase-application")
-    public String newPhraseApplication(Principal principal) {
-        if (principal != null) {
-            try {
-                Long count = phraseApplicationService.countPhraseApplication() + 1;
-                return "redirect:/admin-page/phrases-application/phrase-application-edit/" + count;
-            } catch (NullPointerException e) {
-                return "redirect:/admin-page/phrases-application/phrase-application-edit/1";
-            }
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/phrases-application/phrase-application-edit/{id}")
-    public String phraseApplicationEdit(@PathVariable("id") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            try {
-                PhraseApplication pa = phraseApplicationService.getPhraseApplication(id);
-                model.addAttribute("phrase", pa);
-            } catch (RuntimeException e) {
-                model.addAttribute("phrase", phraseApplicationService.newPhraseApplication(id));
-            }
-            return "admin/phraseApplicationEdit";
         }
         return "redirect:/login";
     }

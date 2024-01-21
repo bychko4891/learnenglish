@@ -86,7 +86,7 @@
 
   function searchItems(searchTerm) {
     $.ajax({
-      url: '/admin/search-word',
+      url: '/admin/search-vocabulary-page-for-lesson',
       type: 'GET',
       data: {searchTerm: searchTerm},
       success: function (response) {

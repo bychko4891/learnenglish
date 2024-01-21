@@ -59,8 +59,9 @@ public class WordService {
 
     @Transactional
     public CustomResponseMessage saveWord(Word wordDB, Word word) {
-        String wordName = StringUtils.normalizeSpace(word.getName());
-        if (!wordRepository.existsWordByNameEqualsIgnoreCase(wordName)) {
+        String wordName = StringUtils.normalizeSpace(word.getName()).replaceAll("\\s{2,}", " ");;
+        Optional <Word> wordDuplicate = wordRepository.findWordByNameEqualsIgnoreCase(wordName);
+        if (wordDuplicate.isEmpty() || wordDuplicate.get().getId().equals(wordDB.getId())) {
             if (word.getAudio().getUsaAudioName() != null) {
                 String oldUsaAudioName = null;
                 if (wordDB.getAudio().getUsaAudioName() != null) oldUsaAudioName = wordDB.getAudio().getUsaAudioName();
@@ -74,7 +75,8 @@ public class WordService {
             if (word.getAudio().getBrAudioName() != null)
                 wordDB.getAudio().setBrAudioName(word.getAudio().getBrAudioName());
 
-            Optional.ofNullable(wordName).ifPresent(wordDB::setName);
+//            Optional.ofNullable(wordName).filter(name -> !name.isEmpty()).ifPresent(wordDB::setName);
+            Optional.of(wordName).ifPresent(wordDB::setName);
             Optional.ofNullable(word.getTranslate()).ifPresent(wordDB::setTranslate);
             Optional.ofNullable(word.getBrTranscription()).ifPresent(wordDB::setBrTranscription);
             Optional.ofNullable(word.getUsaTranscription()).ifPresent(wordDB::setUsaTranscription);
@@ -90,7 +92,7 @@ public class WordService {
 
     @Transactional
     public CustomResponseMessage saveNewWord(Word word) {
-        String wordName = StringUtils.normalizeSpace(word.getName());
+        String wordName = StringUtils.normalizeSpace(word.getName()).replaceAll("\\s{2,}", " ");
         if (!wordRepository.existsWordByNameEqualsIgnoreCase(wordName)) {
             if (word.getAudio().getUsaAudioName() == null || word.getAudio().getBrAudioName() == null) {
                 if (word.getAudio().getUsaAudioName() == null)
@@ -113,7 +115,7 @@ public class WordService {
         for (Object[] result : resultPage.getContent()) {
             Word word = (Word) result[0];
             Boolean isRepeatable = (Boolean) result[1];
-            word.setRepeatable(isRepeatable);
+//            word.setRepeatable(isRepeatable);
             words.add(word);
         }
         return new PageImpl<>(words, pageable, resultPage.getTotalElements());
@@ -131,7 +133,13 @@ public class WordService {
 
     @Transactional
     public List<Word> searchWordToAdminPage(String searchTerm) {
-        return wordRepository.findWordToAdmin(searchTerm);
+//        return wordRepository.findWordToAdmin(searchTerm);
+        return null;
+    }
+
+    @Transactional
+    public List<Word> searchWordForVocabularyPage(String searchTerm) {
+        return wordRepository.findWordForVocabularyPage(searchTerm);
     }
 
     @Transactional

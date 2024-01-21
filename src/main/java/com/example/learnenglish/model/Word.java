@@ -47,10 +47,7 @@ public class Word implements Serializable {
     private String irregularVerbPp;
 
     @Column
-    private boolean isActiveURL = true;
-
-    @Transient
-    private boolean isRepeatable = true;
+    private boolean activeURL = true;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "audio_id")

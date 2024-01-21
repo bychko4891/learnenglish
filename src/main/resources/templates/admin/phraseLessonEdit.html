@@ -16,8 +16,10 @@
             <h1>Edit Lesson phrase</h1>
             <form id="editor">
                 <label for="name">Назва:</label>
-                <input type="text" id="name" name="name" th:value="${lesson.name}">
-                <label>&nbsp; Категорія:</label> <label th:text="${category}"></label>
+                <input type="text" id="name" name="name" th:value="${phraseLesson.name}">
+                <label>&nbsp; Категорія:</label>
+                <span th:if="${phraseLesson.category != null}"  th:text="${phraseLesson.category.name}"></span>
+                <span th:if="${phraseLesson.category == null}" >Відсутня</span>
 
                 <br>
 
@@ -38,13 +40,13 @@
                 <br>
 
                 <span style="padding: 10px 0px 0px 25px;">Опубліковано: </span>
-                <input id="toggleSwitch" type="checkbox" th:checked="${lesson.published}" class="toggle-switch"
+                <input id="toggleSwitch" type="checkbox" th:checked="${phraseLesson.published}" class="toggle-switch"
                        name="published">
                 <label for="toggleSwitch" class="toggle-switch-label"></label>
 
                 <hr>
                 <label>Опис:</label>
-                <textarea id="info" name="info" th:text="${lesson.description}"></textarea>
+                <textarea id="info" name="info" th:text="${phraseLesson.description}"></textarea>
 
 
 
@@ -66,7 +68,7 @@
 <!--                <hr>-->
 <!--                <label for="info">Текст:</label>-->
 <!--                <textarea id="info" name="text" th:text="${word.getInfo}"></textarea>-->
-                <input type="hidden" name="lessonId" th:value="${lesson.id}">
+                <input type="hidden" name="lessonId" th:value="${phraseLesson.id}">
                 <button type="submit">Зберегти</button>
             </form>
 

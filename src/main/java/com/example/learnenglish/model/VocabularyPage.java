@@ -32,6 +32,10 @@ public class VocabularyPage {
 
     @Column
     private boolean published = false;
+
+    @Transient
+    private boolean isRepeatable = true;
+
     @OneToOne
     @JoinColumn(name = "word_id", referencedColumnName = "id")
     private Word word;

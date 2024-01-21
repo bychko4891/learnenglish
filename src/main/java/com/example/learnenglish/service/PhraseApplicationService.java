@@ -7,6 +7,7 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.PhraseApplication;
 import com.example.learnenglish.model.WordWithOrder;
 import com.example.learnenglish.repository.PhraseApplicationRepository;
@@ -32,15 +33,15 @@ public class PhraseApplicationService {
         return repository.lastId();
     }
 
-    public PhraseApplication getPhraseApplication(Long id) {
-        Optional<PhraseApplication> phraseApplicationOptional = repository.findById(id);
+    public PhraseApplication getPhraseApplication(long phraseApplicationId) {
+        Optional<PhraseApplication> phraseApplicationOptional = repository.findById(phraseApplicationId);
         if (phraseApplicationOptional.isPresent()) return phraseApplicationOptional.get();
-        throw new RuntimeException("");
+        throw new ObjectNotFoundException("Category with id: " + phraseApplicationId + "not found");
     }
 
-    public PhraseApplication newPhraseApplication(Long id) {
+    public PhraseApplication newPhraseApplication(long phraseApplicationId) {
         PhraseApplication phraseApplication = new PhraseApplication();
-        phraseApplication.setId(id);
+        phraseApplication.setId(phraseApplicationId);
         phraseApplication.setUkrTranslate("Enter translate");
         return phraseApplication;
     }

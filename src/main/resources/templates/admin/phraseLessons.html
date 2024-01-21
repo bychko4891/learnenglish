@@ -5,66 +5,59 @@
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
-    <main class="section">
+    <div class="section">
         <header th:replace="~{fragments/header :: header}"></header>
-        <div class="container layout_page ">
+        <main class="container layout_page">
+
+
             <div class="page-table row">
-<!--                <div class="col-md-6 col-lg-7 block_left" style="height: calc(90vh - 120px);">-->
-                <div class="col-md-6 col-lg-7 block_left">
-                    <h3>Заняття</h3>
-                    <!--                <div style="overflow-x: auto; height: calc(100% - 40px); width: 100%;">-->
-                    <!--                    <div class="page-table">-->
-                    <table style="width: 100%">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="lesson : ${lessons}">
-                            <td th:text="${lesson.id}"></td>
-                            <td th:text="${lesson.name}"></td>
-                            <td>
-                                <a th:href="@{/admin-page/phrase-lessons/phrase-lesson-edit/{id}(id=${lesson.id})}"
-                                   class="btn btn-primary">Edit</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <!--                    </div>-->
+
+                <h3 style="margin-bottom: auto;">Слова додатка</h3>
+                <div style="margin-left: auto; margin-bottom: auto;">
+                    <form action="/admin/phrase-lessons/new-phrase-lesson">
+                        <button type="submit"><i class="fa-regular fa-square-plus"></i></button>
+                    </form>
                 </div>
-
-
-                <div class="col-md-6 col-lg-5 block_right">
-                    <!--                <div class="row">-->
-
-
-                    <h3>Створити нове заняття</h3>
-                    <div>
-                        <form action="/admin-page/phrase-lessons/new-phrase-lesson">
-                            <button type="submit">New phraseLesson</button>
-                        </form>
-                        <div th:text="${message}"></div>
-                    </div>
-
-                    <!--                </div>-->
-                </div>
-
+                <table style="width: 100%; margin-top: 20px;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="lesson : ${lessons}">
+                        <td th:text="${lesson.id}"></td>
+                        <td th:text="${lesson.name}"></td>
+                        <td>
+                            <a th:href="@{/admin/phrase-lessons/phrase-lesson-edit/{id}(id=${lesson.id})}"
+                               class="btn btn-primary">Edit</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- відображення пагінації -->
-            <div style="position: fixed; margin-left: 80px; width: 100%;">
-                <a th:href="@{/admin-page/lessons(page=(${currentPage} - 1))}">Previous</a>
-                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/admin-page/lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-                </span>
-                <a th:href="@{/admin-page/lessons(page=(${currentPage} + 1))}">Next</a>
-            </div>
+        </main>
+        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
+    </div>
+    <!-- відображення пагінації -->
+    <div class="pagination">
+        <div>
+            <a th:href="@{/admin/phrase-lessons(page=(${currentPage} - 1))}">Попередня</a>
         </div>
-    </main>
+        <div>
+            <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/admin/phrase-lessons(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+            </span>
+        </div>
+        <div>
+            <a style="margin-right: auto" th:href="@{/admin/phrase-lessons(page=(${currentPage} + 1))}">Наступна ></a>
+        </div>
+    </div>
     <div th:replace="~{fragments/menu :: menu}"></div>
 </div>
-
+<div th:replace="~{fragments/footer :: footer}"></div>
+<!--<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>-->
 </body>
 </html>
