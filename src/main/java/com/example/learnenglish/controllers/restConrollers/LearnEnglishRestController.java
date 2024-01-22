@@ -40,55 +40,11 @@ public class LearnEnglishRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/word-lesson/{id}/word-next")
-    public ResponseEntity<DtoWordToUI> wordFromLessonNextWord(@PathVariable("id") Long wordLessonId,
-                                                              @RequestParam(name = "size", defaultValue = "1") int size,
-                                                              @RequestParam(name = "page", defaultValue = "0") int page,
-                                                              Principal principal) {
-        if (principal != null) {
-            if (page < 0) page = 0;
-            Page<Word> wordsFromLesson = wordService.wordsFromLesson(page, size, wordLessonId);
-            try {
-                DtoWordToUI word = DtoWordToUI.convertToDTO(wordsFromLesson.getContent().get(0));
-                word.setTotalPage(wordsFromLesson.getTotalPages());
-                return ResponseEntity.ok(word);
-            } catch (IndexOutOfBoundsException e) {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @GetMapping("/word-lesson/{id}/word-start")
-    public ResponseEntity<List<DtoWordToUI>> wordFromLessonStartWord(@PathVariable("id") Long wordLessonId,
-//                             @RequestParam(name = "size", defaultValue = "2") int size,
-//                             @RequestParam(name = "page", defaultValue = "0") int page,
-                                                                     Principal principal) {
-        if (principal != null) {
-//            if (page < 0) page = 0;
-            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
-            List<DtoWordToUI> dtoWordToUIS = new ArrayList<>();
-            try {
-                for (Word arr : wordsFromLesson) {
-                    dtoWordToUIS.add(DtoWordToUI.convertToDTO(arr));
-                }
-                return ResponseEntity.ok(dtoWordToUIS);
-            } catch (IndexOutOfBoundsException e) {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @PostMapping("/{id}/word-confirm")
-    public ResponseEntity<CustomResponseMessage> wordConfirm(@PathVariable("id") Long wordId,
-                                                             @RequestParam(name = "wordConfirm") String word,
-                                                             Principal principal) {
-        if (principal != null) {
-            return ResponseEntity.ok(wordService.confirmWord(word, wordId));
-        }
-        return ResponseEntity.notFound().build();
-    }
+
+
+
 
     @GetMapping("/word-lesson/{id}/word-audit-start")
     public ResponseEntity<List<DtoWordToUI>> startLessonWordAudit(@PathVariable("id") Long wordLessonId,

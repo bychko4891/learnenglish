@@ -30,6 +30,7 @@ public class VocabularyPage {
     private String name;
 
     @Column(columnDefinition = "text")
+    @JsonView(JsonViews.ViewFieldId.class)
     private String cardInfo;
 
     @Column(columnDefinition = "text")
@@ -43,10 +44,12 @@ public class VocabularyPage {
 
     @OneToOne
     @JoinColumn(name = "word_id", referencedColumnName = "id")
+    @JsonView(JsonViews.ViewFieldWord.class)
     private Word word;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JsonView(JsonViews.ViewFieldImage.class)
     private Image image;
 
     @ManyToOne

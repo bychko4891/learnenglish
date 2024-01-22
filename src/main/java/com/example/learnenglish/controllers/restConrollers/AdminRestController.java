@@ -62,20 +62,7 @@ public class AdminRestController {
 
 
 
-    @PostMapping("/word-lesson-save")
-    public ResponseEntity<CustomResponseMessage> saveWordLesson(@RequestBody WordLesson wordLesson,
-                                                                Principal principal) {
-        if (principal != null) {
-            try {
-                WordLesson wordLessonDB = wordLessonService.getWordLesson(wordLesson.getId());
-                return ResponseEntity.ok(wordLessonService.saveWordLesson(wordLessonDB, wordLesson));
-            } catch (RuntimeException e) {
-                return ResponseEntity.ok(wordLessonService.saveNewWordLesson(wordLesson));
-            }
 
-        }
-        return ResponseEntity.notFound().build();
-    }
 
     @GetMapping("/search")
     public ResponseEntity<List<DtoTranslationPairToUI>> search(@RequestParam("searchTerm") String searchTerm) {

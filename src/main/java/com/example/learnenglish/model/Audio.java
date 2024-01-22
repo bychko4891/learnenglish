@@ -1,5 +1,7 @@
 package com.example.learnenglish.model;
 
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +22,11 @@ public class Audio implements Serializable {
     private String name;
 
     @Column
+    @JsonView(JsonViews.ViewFieldName.class)
     private String brAudioName;
 
     @Column
+    @JsonView(JsonViews.ViewFieldName.class)
     private String usaAudioName;
 
 //    @OneToOne(mappedBy = "audio")

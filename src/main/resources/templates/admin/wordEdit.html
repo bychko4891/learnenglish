@@ -47,10 +47,12 @@
                     <div class="col-md-4" style="margin-right: 10px;">
                         <label for="brAudio" class="form-label">Бр. аудио</label>
                         <input class="form-control" type="file" id="brAudio" accept=".mp3">
+                        <span th:if="${word.audio != null && word.audio.brAudioName != null}" th:text="${word.audio.brAudioName}"></span>
                     </div>
                     <div class="col-md-4">
                         <label for="usaAudio" class="form-label">Ам. аудио</label>
                         <input class="form-control" type="file" id="usaAudio" accept=".mp3">
+                        <span th:if="${word.audio != null && word.audio.usaAudioName != null}" th:text="${word.audio.usaAudioName}"></span>
                     </div>
 
                 </div>

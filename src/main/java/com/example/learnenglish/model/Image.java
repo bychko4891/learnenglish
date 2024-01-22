@@ -8,6 +8,8 @@ package com.example.learnenglish.model;
  */
 
 import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +27,7 @@ public class Image implements Serializable {
     private Long id;
 
     @Column(name = "image_name", length = 1000)
+    @JsonView(JsonViews.ViewFieldName.class)
     private String imageName;
 
     @Column(length = 1000)

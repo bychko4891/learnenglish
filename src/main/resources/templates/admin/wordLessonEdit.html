@@ -119,8 +119,6 @@
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
 
-      console.log(result);
-
       // Створення блоку для кожного результату
       const resultBlock = document.createElement('div');
       resultBlock.classList.add('result-block');
@@ -225,9 +223,9 @@
       },
       words: words
     };
+    console.log(wordLesson);
     $.ajax({
-      // url: $(this).attr('action'),
-      url: '/admin-page/word-lesson-save',
+      url: '/admin/word-lesson/save',
       type: 'POST',
       contentType: "application/json",
       data: JSON.stringify(wordLesson),

@@ -242,7 +242,7 @@
             event.preventDefault();
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            var url = '/word-phraseLesson/' + wordLessonId + '/start';
+            var url = '/word-lesson/' + wordLessonId + '/start';
 
             $.ajax({
                 url: url,

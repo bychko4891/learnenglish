@@ -36,8 +36,12 @@ public class WordLessonService {
         return repository.findAll(pageable);
     }
 
-    public Long countWordLesson() {
+    public long countWordLesson() {
         return repository.lastId();
+    }
+
+    public int countWordLessonInCategory(long categoryId) {
+        return repository.countWordLessonByCategoryId(categoryId);
     }
 
     public WordLesson getWordLesson(Long id) {
@@ -76,7 +80,7 @@ public class WordLessonService {
             listUI.get(i).setWordLesson(wordLessonDB);
             wordLessonDB.getWords().add(listUI.get(i));
         }
-        if(wordLessonDB.getCategory() == null || !wordLessonDB.getCategory().getId().equals(wordLesson.getCategory().getId())) {
+        if (wordLessonDB.getCategory() == null && wordLesson.getCategory().getId() != 0 || wordLesson.getCategory().getId() != 0 && !wordLessonDB.getCategory().getId().equals(wordLesson.getCategory().getId())) {
             wordLessonDB.setCategory(wordLesson.getCategory());
         }
         repository.save(wordLessonDB);

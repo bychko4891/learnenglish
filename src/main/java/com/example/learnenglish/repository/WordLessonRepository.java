@@ -27,5 +27,7 @@ public interface WordLessonRepository extends CrudRepository<WordLesson, Long> {
     @Query("SELECT MAX(wl.id) FROM WordLesson wl")
     Long lastId();
 
+    int countWordLessonByCategoryId(Long categoryId);
+
     List<WordLesson> findAllByCategoryIdOrderBySerialNumber(Long categoryId);
 }

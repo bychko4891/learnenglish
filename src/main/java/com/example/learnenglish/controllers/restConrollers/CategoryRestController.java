@@ -56,7 +56,7 @@ public class CategoryRestController {
                     if (categoryDb.getImage().getImageName() != null)
                         fileStorageService.deleteFileFromStorage(categoryDb.getImage().getImageName(), categoryStorePath);
                 }
-                if (category.isMainCategory() && category.getParentCategory() == null || category.getParentCategory().getId() == 0) {
+                if (category.isMainCategory() && category.getParentCategory().getId() == 0) {
                     return ResponseEntity.ok(categoryService.saveMainCategory(category, categoryDb));
                 }
                 return ResponseEntity.ok(categoryService.saveSubcategory(category, categoryDb));

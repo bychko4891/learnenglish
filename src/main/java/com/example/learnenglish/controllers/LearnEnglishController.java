@@ -7,8 +7,10 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.model.*;
-import com.example.learnenglish.model.users.User;
+import com.example.learnenglish.model.Category;
+import com.example.learnenglish.model.MiniStory;
+import com.example.learnenglish.model.PageApplication;
+import com.example.learnenglish.model.Word;
 import com.example.learnenglish.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +27,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class LearnEnglishController {
-    private final HttpSession session;
-    private final UserService userService;
-    private final PhraseLessonService phraseLessonService;
+
     private final PageApplicationService pageApplicationService;
     private final CategoryService categoryService;
     private final WordService wordService;
-    private final WordLessonService wordLessonService;
     private final MiniStoryService miniStoryService;
 
 
@@ -79,17 +78,6 @@ public class LearnEnglishController {
         return "lessons";
     }
 
-
-
-
-//    @GetMapping("/words-main-category")
-//    public String wordsMainCategories(Model model) {
-//        List<Category> wordsMainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.WORDS);
-//        if (wordsMainCategories != null) {
-//            model.addAttribute("wordsMainCategories", wordsMainCategories);
-//        }
-//        return "wordsMainCategory";
-//    }
 
     @GetMapping("/phrases-categories")
     public String phrasesMainCategories(Model model) {
@@ -168,45 +156,6 @@ public class LearnEnglishController {
 //        }
         return "word";
     }
-
-
-
-    @GetMapping("/word-lesson/{id}/lessons")
-    public String wordLessons(@PathVariable("id")Long categoryId,
-                              Model model,
-                              Principal principal) {
-        if(principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            Category wordLessonCategory = categoryService.getCategory(categoryId);
-            List<WordLesson> wordLessons = wordLessonService.getWordLessonsCategory(user, categoryId);
-            int sumWords = 0;
-//            for (WordLesson arr: wordLessonCategory.getWordLessons()) {
-//                sumWords += arr.getWords().size();
-//            }
-            model.addAttribute("wordLessonCategory", wordLessonCategory);
-            model.addAttribute("wordLessons", wordLessons);
-            model.addAttribute("words", sumWords);
-        return "wordLessons";
-        } return "redirect:/login";
-    }
-
-    @GetMapping("/word-lesson/{id}")
-    public String wordLesson(@PathVariable("id") Long wordLessonId,
-                             Model model,
-                             Principal principal) {
-        if(principal != null) {
-//            Page<Word> wordsFromLesson = wordService.wordsFromLesson(0, 2, wordLessonId);
-//            if (wordsFromLesson.getTotalPages() == 0) {
-//                model.addAttribute("totalPages", 1);
-//            } else {
-//                model.addAttribute("totalPages", wordsFromLesson.getTotalPages());
-//            }
-//            model.addAttribute("words", wordsFromLesson.getContent());
-            model.addAttribute("wordLessonId", wordLessonId);
-        return "wordLesson";
-        } return "redirect:/login";
-    }
-
 
 
 }

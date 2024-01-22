@@ -40,7 +40,7 @@ function addEndSlide() {
 }
 
 
-function addWordToSlider(word) {
+function addWordToSlider(result) {
     const slide = document.createElement('div');
     slide.className = 'slide bb';
     slider.append(slide);
@@ -50,26 +50,26 @@ function addWordToSlider(word) {
         method: "GET"
     }).done(function (data) {
         slideDiv.html(data);
-        const letters = word.name.split("");
+        const letters = result.vocabularyPage.name.split("");
         const lettersShuffle = shuffleArray(letters);
 
         const lettersContainer = slideDiv.find(".letters-container");
         const inputsContainer = slideDiv.find(".inputs-container");
 
         const nameHeading = slideDiv.find("h3");
-        nameHeading.text(word.name);
+        nameHeading.text(result.vocabularyPage.name);
 
         const descriptionHeading = slideDiv.find("h5");
-        descriptionHeading.text('"' + word.description + '"');
+        descriptionHeading.text('"' + result.vocabularyPage.cardInfo + '"');
 
         const audioName = slideDiv.find("source");
-        audioName.attr("src", "/audio/" + word.audioName);
+        audioName.attr("src", "/audio/" + result.vocabularyPage.word.audio.usaAudioName);
 
         const image = slideDiv.find("img:first");
-        image.attr("src", "/word-image/" + word.imageName);
+        image.attr("src", "/vocabulary-page/" + result.vocabularyPage.image.imageName);
 
         const wordId = slideDiv.find("input[name='id']");
-        wordId.val(word.id);
+        wordId.val(result.vocabularyPage.id);
 
         letters.forEach(() => {
             const input = document.createElement("input");
@@ -120,7 +120,7 @@ function wordsStart() {
             const objectDivs = document.querySelectorAll(".slide");
 
             objectDivs.forEach((div, index) => {
-                const letters = result[index].name.split("");
+                const letters = result[index].vocabularyPage.name.split("");
                 const lettersShuffle = shuffleArray(letters);
 
                 const lettersContainer = div.querySelector(".letters-container");
@@ -128,16 +128,16 @@ function wordsStart() {
                 const inputsContainer = div.querySelector(".inputs-container");
 
                 const descriptionHeading = div.querySelector("h5");
-                descriptionHeading.textContent = '"' + result[index].description + '"';
+                descriptionHeading.textContent = '"' + result[index].vocabularyPage.cardInfo + '"';
 
                 const audioName = div.querySelector("source");
-                audioName.src = "/audio/" + result[index].audioName;
+                audioName.src = "/audio/" + result[index].vocabularyPage.word.audio.usaAudioName;
 
                 const image = div.querySelector("img");
-                image.src = "/word-image/" + result[index].imageName;
+                image.src = "/vocabulary-page/" + result[index].vocabularyPage.image.imageName;
 
                 const wordId = div.querySelector("input[name='id']");
-                wordId.value = result[index].id;
+                wordId.value = result[index].vocabularyPage.id;
 
                 letters.forEach(() => {
                     const input = document.createElement("input");
@@ -236,22 +236,22 @@ function confirm(element) {
     hintButton.disabled = true;
     element.disabled = true;
 
-    var wordConfirm = "";
+    var userWord = "";
     if (hintCount === 0) {
-        wordConfirm = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
+        userWord = $(element).closest('.block_confirm').find('input[name="wordConfirm"]').val();
     } else {
         lettersContainer.classList.remove('active');
         inputsContainer.querySelectorAll("input").forEach(input => {
             const value = input.value;
             if (value !== "") {
-                wordConfirm += value;
+                userWord += value;
             }
         });
     }
     $.ajax({
-        url: '/' + wordId + '/word-confirm',
+        url: '/vocabulary-page/' + wordId + '/verify-user-word',
         type: "POST",
-        data: {wordConfirm: wordConfirm},
+        data: {userWord: userWord},
         beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeader, csrfToken);
         },
@@ -298,7 +298,7 @@ function nextSlide(event) {
             success: function (result) {
                 currentIndexWord = 0;
                 totalPage = result.totalPage;
-                wordLessonId = result.wordLessonId;
+                wordLessonId = result.wordLesson.id;
                 addWordToSlider(result);
                 currentIndex = slides.children.length - 2;
                 updateSlider();

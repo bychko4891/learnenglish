@@ -21,7 +21,7 @@ public class Word implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @JsonView(JsonViews.ViewFieldId.class)
+    @JsonView(JsonViews.ViewWordId.class)
     private Long id;
 
     @Column
@@ -31,13 +31,11 @@ public class Word implements Serializable {
     @Column
     private String translate;
 
-//    @Column
-//    private String description;
-
     @Column
     private String brTranscription;
 
     @Column
+    @JsonView(JsonViews.ViewFieldOther.class)
     private String usaTranscription;
 
     @Column
@@ -51,6 +49,7 @@ public class Word implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "audio_id")
+    @JsonView(JsonViews.ViewFieldAudio.class)
     private Audio audio;
 
 

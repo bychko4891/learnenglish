@@ -21,7 +21,7 @@ $('#next').submit(function (event) {
                 data: {page: page},
                 success: function (result) {
                     totalPage = result.totalPage;
-                    wordLessonId = result.wordLessonId;
+                    wordLessonId = result.wordLesson.id;
                     addWordToSlider(result);
                     currentIndex = slides.children.length - 2;
                     updateSlider();
@@ -89,36 +89,40 @@ function addEndSlide() {
 }
 
 
-function addWordToSlider(word) {
+function addWordToSlider(result) {
+    // console.log(result);
+    var vocabularyPage = result.vocabularyPage;
+    // console.log(vocabularyPage);
+
     const slide = document.createElement('div');
     slide.className = 'slide bb';
-    slide.id = 'slide-' + word.id;
+    slide.id = 'slide-' + vocabularyPage.id;
     slider.appendChild(slide);
     $.ajax({
         url: "/fragmentsPages/slideReview",
         method: "GET"
     }).done(function (data) {
-        $('#slide-' + word.id).html(data);
+        $('#slide-' + vocabularyPage.id).html(data);
 
         const slideDiv = $(slide);
 
         const nameHeading = slideDiv.find("h3");
-        nameHeading.text(word.name);
+        nameHeading.text(vocabularyPage.name);
 
         const descriptionHeading = slideDiv.find("h5");
-        descriptionHeading.text(word.description);
+        descriptionHeading.text(vocabularyPage.cardInfo);
 
         const transcriptionHeading = slideDiv.find("h6");
-        transcriptionHeading.text(word.transcription);
+        transcriptionHeading.text(vocabularyPage.word.usaTranscription);
 
         const audioName = slideDiv.find("source");
-        audioName.attr("src", "/audio/" + word.audioName);
+        audioName.attr("src", "/audio/" + vocabularyPage.word.audio.usaAudioName);
 
         const image = slideDiv.find("img:first");
-        image.attr("src", "/word-image/" + word.imageName);
+        image.attr("src", "/vocabulary-page/" + vocabularyPage.image.imageName);
 
         const wordId = slideDiv.find("input");
-        wordId.val(word.id);
+        wordId.val(vocabularyPage.id);
 
     });
     currentIndex++;
@@ -134,29 +138,31 @@ function playAudio(element) {
 
 function wordsStart() {
     slider = document.querySelector('.slider_word');
-
     var url = '/word-lesson/' + wordLessonId + '/word-start';
     $.ajax({
         url: url,
         type: "GET",
         success: function (result) {
+
             const objectDivs = document.querySelectorAll(".slide");
 
             objectDivs.forEach((div, index) => {
                 const nameHeading = div.querySelector("h3");
-                nameHeading.textContent = result[index].name;
+                nameHeading.textContent = result[index].vocabularyPage.name;
 
                 const descriptionHeading = div.querySelector("h5");
-                descriptionHeading.textContent = result[index].description;
+                descriptionHeading.textContent = result[index].vocabularyPage.cardInfo;
 
                 const transcriptionHeading = div.querySelector("h6");
-                transcriptionHeading.textContent = result[index].transcription;
+                transcriptionHeading.textContent = result[index].vocabularyPage.word.usaTranscription;
 
                 const audioName = div.querySelector("source");
-                audioName.src = "/audio/" + result[index].audioName;
+                audioName.src = "/audio/" + result[index].vocabularyPage.word.audio.usaAudioName;
 
                 const image = div.querySelector("img");
-                image.src = "/word-image/" + result[index].imageName;
+                image.width = 270;
+                image.height = 270;
+                image.src = "/vocabulary-page/" + result[index].vocabularyPage.image.imageName;
 
                 const wordId = div.querySelector("input");
                 wordId.value = result[index].id;

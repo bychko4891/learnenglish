@@ -9,7 +9,6 @@ package com.example.learnenglish.controllers.restConrollers;
 
 import com.example.learnenglish.model.VocabularyPage;
 import com.example.learnenglish.model.Image;
-import com.example.learnenglish.model.Word;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.FileStorageService;
@@ -52,21 +51,21 @@ public class VocabularyPageRestController {
                 if (!vocabularyPage.getWord().getId().equals(vocabularyPageDB.getWord().getId()) && vocabularyPageService.existVocabularyPageByName(vocabularyPage.getWord().getName())) {
                     return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT));
                 }
-
                 vocabularyPage.setImage(new Image());
                 if (imageFile != null) {
-                    vocabularyPage.getImage().setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getName()));
+                    vocabularyPage.getImage().setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getWord().getName()));
                     if (vocabularyPageDB.getImage().getImageName() != null)
                         fileStorageService.deleteFileFromStorage(vocabularyPageDB.getImage().getImageName(), wordStorePath);
                 }
                 return ResponseEntity.ok(vocabularyPageService.saveVocabularyPage(vocabularyPageDB, vocabularyPage));
+
             } catch (RuntimeException e) {
                 if (vocabularyPageService.existVocabularyPageByName(vocabularyPage.getWord().getName())) {
                     return ResponseEntity.ok(new CustomResponseMessage(Message.ERROR_DUPLICATE_TEXT));
                 }
                 Image image = new Image();
                 if (imageFile != null)
-                    image.setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getName()));
+                    image.setImageName(fileStorageService.storeFile(imageFile, wordStorePath, vocabularyPage.getWord().getName()));
                 vocabularyPage.setImage(image);
                 return ResponseEntity.ok(vocabularyPageService.saveNewVocabularyPage(vocabularyPage));
             }
@@ -81,6 +80,16 @@ public class VocabularyPageRestController {
         if (!searchTerm.isBlank() && principal != null) {
             List<VocabularyPage> vocabularyPageList = vocabularyPageService.searchVocabularyPageForWordLesson(searchTerm);
             return ResponseEntity.ok(vocabularyPageList);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/vocabulary-page/{id}/verify-user-word")
+    public ResponseEntity<CustomResponseMessage> wordConfirm(@PathVariable("id") long vocabularyPageId,
+                                                             @RequestParam(name = "userWord") String userWord,
+                                                             Principal principal) {
+        if (principal != null) {
+            return ResponseEntity.ok(vocabularyPageService.verifyUserWord(userWord, vocabularyPageId));
         }
         return ResponseEntity.notFound().build();
     }

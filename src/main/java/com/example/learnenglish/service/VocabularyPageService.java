@@ -98,4 +98,11 @@ public class VocabularyPageService {
         return vocabularyPageRepository.findVocabularyPageForWordLesson(searchTerm);
     }
 
+    public CustomResponseMessage verifyUserWord(String wordVerify, long vocabularyPageId) {
+        VocabularyPage vocabularyPage = getVocabularyPage(vocabularyPageId);
+            if (vocabularyPage.getName().equals(StringUtils.normalizeSpace(wordVerify))) {
+                return new CustomResponseMessage(Message.SUCCESS, vocabularyPage.getName());
+            } else return new CustomResponseMessage(Message.ERROR, vocabularyPage.getName());
+    }
+
 }

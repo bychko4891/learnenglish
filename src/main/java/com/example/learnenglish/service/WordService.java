@@ -62,18 +62,26 @@ public class WordService {
         String wordName = StringUtils.normalizeSpace(word.getName()).replaceAll("\\s{2,}", " ");;
         Optional <Word> wordDuplicate = wordRepository.findWordByNameEqualsIgnoreCase(wordName);
         if (wordDuplicate.isEmpty() || wordDuplicate.get().getId().equals(wordDB.getId())) {
-            if (word.getAudio().getUsaAudioName() != null) {
-                String oldUsaAudioName = null;
-                if (wordDB.getAudio().getUsaAudioName() != null) oldUsaAudioName = wordDB.getAudio().getUsaAudioName();
-                wordDB.getAudio().setUsaAudioName(word.getAudio().getUsaAudioName());
-                if (word.getAudio().getBrAudioName() == null && oldUsaAudioName != null && oldUsaAudioName.equals(wordDB.getAudio().getBrAudioName())) {
+            if(wordDB.getAudio().getUsaAudioName() != null &&  wordDB.getAudio().getBrAudioName().equals(wordDB.getAudio().getUsaAudioName())
+                    && word.getAudio().getUsaAudioName() == null && word.getAudio().getBrAudioName() != null
+                    || word.getAudio().getUsaAudioName() != null && word.getAudio().getBrAudioName() == null) {
+                if(word.getAudio().getBrAudioName() != null) {
+                    wordDB.getAudio().setBrAudioName(word.getAudio().getBrAudioName());
+                    wordDB.getAudio().setUsaAudioName(word.getAudio().getBrAudioName());
+                }
+                if(word.getAudio().getUsaAudioName() != null) {
                     wordDB.getAudio().setBrAudioName(word.getAudio().getUsaAudioName());
+                    wordDB.getAudio().setUsaAudioName(word.getAudio().getUsaAudioName());
                 }
             }
-            if (word.getAudio().getBrAudioName() == null && wordDB.getAudio().getBrAudioName() == null)
+            Optional.ofNullable(word.getAudio().getBrAudioName()).ifPresent(audioName -> wordDB.getAudio().setBrAudioName(audioName));
+            Optional.ofNullable(word.getAudio().getUsaAudioName()).ifPresent(audioName -> wordDB.getAudio().setUsaAudioName(audioName));
+
+            if (wordDB.getAudio().getUsaAudioName() == null && word.getAudio().getBrAudioName() != null)
+                wordDB.getAudio().setUsaAudioName(word.getAudio().getBrAudioName());
+
+            if (wordDB.getAudio().getBrAudioName() == null && word.getAudio().getUsaAudioName() != null)
                 wordDB.getAudio().setBrAudioName(word.getAudio().getUsaAudioName());
-            if (word.getAudio().getBrAudioName() != null)
-                wordDB.getAudio().setBrAudioName(word.getAudio().getBrAudioName());
 
 //            Optional.ofNullable(wordName).filter(name -> !name.isEmpty()).ifPresent(wordDB::setName);
             Optional.of(wordName).ifPresent(wordDB::setName);
@@ -98,7 +106,7 @@ public class WordService {
                 if (word.getAudio().getUsaAudioName() == null)
                     word.getAudio().setUsaAudioName(word.getAudio().getBrAudioName());
                 if (word.getAudio().getBrAudioName() == null)
-                    word.getAudio().setUsaAudioName(word.getAudio().getUsaAudioName());
+                    word.getAudio().setBrAudioName(word.getAudio().getUsaAudioName());
             }
             word.setName(wordName);
             wordRepository.save(word);
@@ -147,21 +155,7 @@ public class WordService {
         return wordRepository.findWordForPhraseApplication(searchTerm);
     }
 
-    public Page<Word> wordsFromLesson(int page, int size, Long wordLessonId) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return wordRepository.wordsFromLesson(pageable, wordLessonId);
-        return null;
-    }
 
-    public CustomResponseMessage confirmWord(String wordConfirm, Long id) {
-        Optional<Word> wordOptional = wordRepository.findById(id);
-        if (wordOptional.isPresent()) {
-            Word word = wordOptional.get();
-            if (word.getName().equals(StringUtils.normalizeSpace(wordConfirm))) {
-                return new CustomResponseMessage(Message.SUCCESS, word.getName());
-            } else return new CustomResponseMessage(Message.ERROR, word.getName());
-        } else return new CustomResponseMessage(Message.BASE_ERROR);
-    }
 
     public List<DtoWordToUI> wordsToAudit(List<Long> wordsId, int wordAuditCounter) {
         List<Word> words = wordRepository.findByIds(wordsId);
