@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -90,6 +91,11 @@ public class VocabularyPageService {
     public boolean existVocabularyPageByName(String vocabularyPageName) {
         String vocabularyPageNameNormalize = StringUtils.normalizeSpace(vocabularyPageName);
         return vocabularyPageRepository.existsVocabularyPageByNameIgnoreCase(vocabularyPageNameNormalize);
+    }
+
+    @Transactional
+    public List<VocabularyPage> searchVocabularyPageForWordLesson(String searchTerm) {
+        return vocabularyPageRepository.findVocabularyPageForWordLesson(searchTerm);
     }
 
 }

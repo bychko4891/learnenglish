@@ -55,9 +55,9 @@
         <label>Cлова в уроці: </label>
         <div id="savedItemsContainer" class="d-flex">
           <div th:each="wordOrdered : ${wordLesson.words}" class="phrases-list">
-            <label th:text="${wordOrdered.word.name + ','}" style="font-size: 28px;"></label>
-            <input name="id" type="hidden" th:value="${wordOrdered.word.id}">
-            <button class="deleteBtn" th:data-id="${wordOrdered.word.id}">X</button>
+            <label th:text="${wordOrdered.vocabularyPage.name + ','}" style="font-size: 28px;"></label>
+            <input name="id" type="hidden" th:value="${wordOrdered.vocabularyPage.id}">
+            <button class="deleteBtn" th:data-id="${wordOrdered.vocabularyPage.id}">X</button>
           </div>
         </div><br>
         <input type="hidden" name="wordLessonId" th:value="${wordLesson.id}">
@@ -118,6 +118,8 @@
 
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
+
+      console.log(result);
 
       // Створення блоку для кожного результату
       const resultBlock = document.createElement('div');
@@ -209,7 +211,7 @@
     savedItemsInput.forEach(function (input) {
       words.push({
         listOrder: count += 1,
-        word:{
+        vocabularyPage:{
           id: input.value
         }});
     });

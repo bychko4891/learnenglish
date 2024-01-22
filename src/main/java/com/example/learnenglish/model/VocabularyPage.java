@@ -7,6 +7,8 @@ package com.example.learnenglish.model;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.utils.JsonViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,11 +19,14 @@ import java.util.List;
 @Table(name = "vocabulary_page")
 @Data
 public class VocabularyPage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.ViewFieldId.class)
     private Long id;
 
     @Column
+    @JsonView(JsonViews.ViewFieldName.class)
     private String name;
 
     @Column(columnDefinition = "text")

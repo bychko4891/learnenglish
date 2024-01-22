@@ -169,15 +169,7 @@ public class LearnEnglishController {
         return "word";
     }
 
-    @GetMapping("/word-lessons/categories")
-    public String wordLessonsCategories(Model model,
-                                        Principal principal) {
-        if(principal != null) {
-            List<Category> wordLessonMainCategory = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
-            model.addAttribute("wordLessonMainCategory", wordLessonMainCategory);
-        return "wordLessonsCategory";
-        } return "redirect:/login";
-    }
+
 
     @GetMapping("/word-lesson/{id}/lessons")
     public String wordLessons(@PathVariable("id")Long categoryId,

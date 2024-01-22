@@ -77,11 +77,10 @@ public class VocabularyPageRestController {
     @GetMapping("/admin/search-vocabulary-page-for-lesson")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @JsonView(JsonViews.ViewIdAndName.class)
-    public ResponseEntity<List<Word>> searchWordForVocabularyPage(@RequestParam("searchTerm") String searchTerm, Principal principal) {
+    public ResponseEntity<List<VocabularyPage>> searchWordForVocabularyPage(@RequestParam("searchTerm") String searchTerm, Principal principal) {
         if (!searchTerm.isBlank() && principal != null) {
-//            List<Word> words = wordService.searchWordForVocabularyPage(searchTerm);
-//            return ResponseEntity.ok(words);
-            return ResponseEntity.ok(null);
+            List<VocabularyPage> vocabularyPageList = vocabularyPageService.searchVocabularyPageForWordLesson(searchTerm);
+            return ResponseEntity.ok(vocabularyPageList);
         }
         return ResponseEntity.notFound().build();
     }

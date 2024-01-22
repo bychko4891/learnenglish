@@ -76,6 +76,9 @@ public class WordLessonService {
             listUI.get(i).setWordLesson(wordLessonDB);
             wordLessonDB.getWords().add(listUI.get(i));
         }
+        if(wordLessonDB.getCategory() == null || !wordLessonDB.getCategory().getId().equals(wordLesson.getCategory().getId())) {
+            wordLessonDB.setCategory(wordLesson.getCategory());
+        }
         repository.save(wordLessonDB);
         return new CustomResponseMessage(Message.ADD_BASE_SUCCESS);
     }
