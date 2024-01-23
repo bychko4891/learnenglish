@@ -39,18 +39,18 @@
 
                                 <div th:if="${wordLesson.userWordLessonProgress != null}">
                                     <!--                                    <span>оцінка,%: </span>-->
-                                    <div th:if="${wordLesson.userWordLessonProgress.rating >= 90}" class="rating-phraseLesson">
+                                    <div th:if="${wordLesson.userWordLessonProgress.rating >= 90}" class="rating-lesson">
                                         <img src="/images/sun.png" alt="" width="55"
                                              style="filter: invert(57%) sepia(73%) saturate(2704%) hue-rotate(122deg) brightness(92%) contrast(102%);">
                                         <span th:text="${wordLesson.userWordLessonProgress.rating + '%'} " style="color: white; font-weight: 600;"></span>
                                     </div>
-                                    <div th:if="${wordLesson.userWordLessonProgress.rating >= 70 && wordLesson.userWordLessonProgress.rating < 90}" class="rating-phraseLesson">
+                                    <div th:if="${wordLesson.userWordLessonProgress.rating >= 70 && wordLesson.userWordLessonProgress.rating < 90}" class="rating-lesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(77%) sepia(54%) saturate(490%) hue-rotate(348deg) brightness(101%) contrast(101%);">
                                         <span th:text="${wordLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
                                         <span style="color: black; font-size: 16px;">%</span>
                                     </div>
-                                    <div th:if="${wordLesson.userWordLessonProgress.rating < 70}" class="rating-phraseLesson">
+                                    <div th:if="${wordLesson.userWordLessonProgress.rating < 70}" class="rating-lesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(82%) sepia(60%) saturate(2032%) hue-rotate(303deg) brightness(93%) contrast(96%);">
                                         <span th:text="${wordLesson.userWordLessonProgress.rating} " style="color: black; font-weight: 600; font-size: 20px; margin-left: 12px;"></span>
@@ -61,7 +61,7 @@
                                 <div th:if="${wordLesson.userWordLessonProgress == null}"
                                      style="position: relative; ">
                                     <!--                                    <span>оцінка,%: </span>-->
-                                    <div class="rating-phraseLesson">
+                                    <div class="rating-lesson">
                                         <img src="/images/sun.png" alt="" width="50"
                                              style="filter: invert(100%) sepia(0) saturate(7462%) hue-rotate(51deg) brightness(11%) contrast(59%);">
 <!--                                        <span style="margin-left: 12px;">0%</span>-->

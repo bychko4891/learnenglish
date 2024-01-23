@@ -40,4 +40,9 @@ public class WordInWordLesson {
     @JsonView(JsonViews.ViewFieldOther.class)
     private int totalPage;
 
+    @Transient
+    @JsonView(JsonViews.ViewFieldOther.class)
+    private String wordAuditSlide;
+
+
 }

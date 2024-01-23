@@ -157,26 +157,6 @@ public class WordService {
 
 
 
-    public List<DtoWordToUI> wordsToAudit(List<Long> wordsId, int wordAuditCounter) {
-        List<Word> words = wordRepository.findByIds(wordsId);
-        List<DtoWordToUI> wordToUIS = new ArrayList<>();
-        for (Word arr : words) {
-            wordToUIS.add(DtoWordToUI.convertToDTO(arr));
-            wordToUIS.get(wordToUIS.size() - 1).setTotalPage(wordAuditCounter);
-        }
-        return wordToUIS;
-    }
-
-    public DtoWordToUI getWordForWordLessonAudit(Long wordId, int wordAuditCounter, int wordsIdListLength) {
-        Word word = getWord(wordId);
-        DtoWordToUI dtoWordToUI = DtoWordToUI.convertToDTO(word);
-        dtoWordToUI.setTotalPage(wordAuditCounter - 1);
-        int count = (int) (Math.random() * 10);
-        if (count % 2 != 0 && wordsIdListLength > 2) {
-            dtoWordToUI.setWordAuditSlide("slideAuditRadios");
-        }
-        return dtoWordToUI;
-    }
 
 
 }

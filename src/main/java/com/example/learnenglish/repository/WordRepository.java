@@ -47,9 +47,5 @@ public interface WordRepository extends CrudRepository<Word, Long> {
     @Query("SELECT w FROM Word w WHERE LOWER(w.name) LIKE CONCAT(LOWER(:firstLetter), '%')")
     List<Word> findWordForPhraseApplication(@Param("firstLetter") String firstLetter);
 
-    @Query("SELECT w FROM Word w WHERE w.id IN :ids")
-    List<Word> findByIds(@Param("ids") List<Long> ids);
-
-
 
 }

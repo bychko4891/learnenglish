@@ -182,8 +182,8 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/word-lesson/{id}/start")
-    public ResponseEntity<String> wordLessonStart(@PathVariable("id") Long wordLessonId, @RequestParam("start") boolean start,
+    @PostMapping("/word-lesson/{wordLessonId}/start-lesson/save")
+    public ResponseEntity<String> wordLessonStart(@PathVariable long wordLessonId, @RequestParam("start") boolean start,
                                                   Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());

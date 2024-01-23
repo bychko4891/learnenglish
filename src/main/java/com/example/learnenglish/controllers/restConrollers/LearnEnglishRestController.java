@@ -46,49 +46,9 @@ public class LearnEnglishRestController {
 
 
 
-    @GetMapping("/word-lesson/{id}/word-audit-start")
-    public ResponseEntity<List<DtoWordToUI>> startLessonWordAudit(@PathVariable("id") Long wordLessonId,
-                                                                  Principal principal) {
-        if (principal != null) {
-            List<Long> wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
-            wordsId = wordLessonService.wordsIdInWordLesson(wordLessonId);
-            int wordAuditCounter = (wordsId.size() > 9 && wordsId.size() < 16) ? (int) Math.ceil(wordsId.size() * 0.8) : wordsId.size() > 16 ? (int) Math.ceil(wordsId.size() * 0.6) : wordsId.size();
-            Collections.shuffle(wordsId);
-            List<Long> wordsIdStart = new ArrayList<>(wordsId.subList(0, 2));
-            wordsId.subList(0, 2).clear();
-            session.setAttribute("wordsId", wordsId);
-            session.setAttribute("totalPage", wordAuditCounter);
-            session.setAttribute("wordAuditCounter", wordAuditCounter - 2);
-            session.setAttribute("wordLessonId", wordLessonId);
-            return ResponseEntity.ok(wordService.wordsToAudit(wordsIdStart, wordAuditCounter));
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @GetMapping("/word-lesson/{id}/word-audit-next")
-    public ResponseEntity<DtoWordToUI> nextWordForLessonWordAudit(@PathVariable("id") Long wordLessonId,
-                                                                  Principal principal) {
-        if (principal != null) {
-            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
-            int totalPage = (int) session.getAttribute("totalPage"); //Додати перевірку довжини масива та на null
-            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter");
-            if (wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
-                --wordAuditCounter;
-                Collections.shuffle(wordsId);
-                Long wordId = wordsId.get(0);
-                wordsId.remove(0);
-                if (wordsId.size() != 0) {
-                    session.setAttribute("wordsId", wordsId);
-                    session.setAttribute("wordAuditCounter", wordAuditCounter);
-                } else {
-                    session.removeAttribute("wordsId");
-                    session.removeAttribute("wordAuditCounter");
-                }
-                return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
+
+
 
 
     @GetMapping("/word-lesson/{id}/word-lesson-audit-add-words")

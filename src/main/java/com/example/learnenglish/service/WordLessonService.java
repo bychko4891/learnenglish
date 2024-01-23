@@ -114,12 +114,12 @@ public class WordLessonService {
         return wordLessonList;
     }
 
-    public List<Long> wordsIdInWordLesson(Long wordLessonId) {
+    public List<Long> getWordInWordLessonIdsForWordLessonAudit(long wordLessonId) {
         WordLesson wordLesson = repository.findById(wordLessonId).get();
         List<Long> wordsId = new ArrayList<>();
-//        for (Word arr : wordLesson.getWords()) {
-//            wordsId.add(arr.getId());
-//        }
+        for (WordInWordLesson arr : wordLesson.getWords()) {
+            wordsId.add(arr.getId());
+        }
         return wordsId;
     }
 

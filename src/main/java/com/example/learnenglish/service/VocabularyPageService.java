@@ -7,6 +7,7 @@ package com.example.learnenglish.service;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
+import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.VocabularyPage;
 import com.example.learnenglish.model.Word;
 import com.example.learnenglish.repository.VocabularyPageRepository;
@@ -20,6 +21,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,5 +106,7 @@ public class VocabularyPageService {
                 return new CustomResponseMessage(Message.SUCCESS, vocabularyPage.getName());
             } else return new CustomResponseMessage(Message.ERROR, vocabularyPage.getName());
     }
+
+
 
 }

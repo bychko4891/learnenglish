@@ -138,7 +138,7 @@ function playAudio(element) {
 
 function wordsStart() {
     slider = document.querySelector('.slider_word');
-    var url = '/word-lesson/' + wordLessonId + '/word-start';
+    var url = '/word-lesson/' + wordLessonId + '/start-lesson';
     $.ajax({
         url: url,
         type: "GET",
