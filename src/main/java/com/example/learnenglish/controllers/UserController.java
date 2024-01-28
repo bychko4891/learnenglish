@@ -22,7 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -85,13 +84,23 @@ public class UserController {
         return "forgotPassword";
     }
 
-    @GetMapping("/user")
-    public String userPage(Principal principal, Model model) {
+    @GetMapping("/user/profile")
+    public String userProfile(Principal principal, Model model) {
         model.addAttribute("title", "About the app Learn English");
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
             model.addAttribute("user", user);
-            return "userInfo";
+            return "userProfile";
+        }
+        return "redirect:/login";
+    }
+    @GetMapping("/user/settings")
+    public String editUserInfo(Principal principal, Model model) {
+        model.addAttribute("title", "About the app Learn English");
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("user", user);
+            return "userSettings";
         }
         return "redirect:/login";
     }
@@ -125,9 +134,5 @@ public class UserController {
         } else return "redirect:/login";
     }
 
-//    @ExceptionHandler(CustomAuthenticationException.class)
-//    public String handleFileFormatException(CustomAuthenticationException ex, Model model) {
-//        model.addAttribute("message", ex.getMessage());
-//        return "login";
-//    }
+
 }

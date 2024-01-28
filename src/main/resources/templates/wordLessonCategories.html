@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
 <style>
     .category-container {
@@ -32,7 +32,7 @@
 <body class="active">
 <div class="wrapper">
     <div class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <div th:each="mainCategory, iter : ${wordLessonMainCategory}" th:limit="1" class="d-flex flex-column">
             <h1 th:text="${mainCategory.name}"></h1>
             <div th:utext="${mainCategory.getDescription}"></div>
@@ -68,7 +68,7 @@
         <!--        </div>-->
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </div>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 
 </body>

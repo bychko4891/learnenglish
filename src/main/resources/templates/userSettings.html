@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <link rel="stylesheet" th:href="@{/css/userInfoStyle.css}">
 <link rel="stylesheet" th:href="@{/css/dycalendar.css}">
 <link rel="stylesheet" th:href="@{/css/croppie.css}">
@@ -216,7 +216,7 @@
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <div class="profile_container">
             <div class="profile_tabs">
                 <input type="radio" name="tab-control" id="profile" checked>
@@ -239,10 +239,10 @@
                         <form id="update_profile" th:action="@{/user/{id}/edit(id = ${user.id})}" method="post">
                             <h5>Ім'я</h5>
                             <input type="text" class="input" id="first-name"
-                                   name="firstName" th:value="${user.firstName}">
+                                   name="firstName" th:value="${user.getLogin}">
                             <h5>Призвіще</h5>
                             <input type="text" class="input" id="last-name"
-                                   name="lastName" th:value="${user.lastName}">
+                                   name="lastName" th:value="${user.getName}">
 
                             <h5>Стать:</h5>
                             <input type="radio" id="male" name="gender" value="MALE" th:field="${user.gender}"
@@ -355,7 +355,7 @@
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script type="text/javascript" th:src="@{/js/croppie.js}"></script>

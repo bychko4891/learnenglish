@@ -17,10 +17,10 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public String getLastName() {
-        return user.getLastName();
+        return user.getName();
     }
     public String getFirstName() {
-        return user.getFirstName();
+        return user.getLogin();
     }
     public Long getId() {
         return user.getId();

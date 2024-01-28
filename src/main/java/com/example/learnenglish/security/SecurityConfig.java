@@ -107,7 +107,9 @@ public class SecurityConfig {
             "/payment-donate",
             "/start-pay*",
             "/payment-success**",
-            "/api/pay-success/*"
+            "/api/pay-success/*",
+            "/test*",
+            "/jsTemp/**"
     };
     public static final String LOGIN_URL = "/login";
     //    public static final String LOGOUT_URL = "/logout";
@@ -154,7 +156,7 @@ public class SecurityConfig {
                                     session.setAttribute("userFirstName", user.getFirstName());
                                     session.setAttribute("userLastName", user.getLastName());
                                     session.setAttribute("userId", user.getId());
-                                    response.sendRedirect("/user");
+                                    response.sendRedirect("/user/profile");
                                 })
                 )
 

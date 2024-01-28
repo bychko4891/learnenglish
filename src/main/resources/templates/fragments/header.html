@@ -1,37 +1,173 @@
-<!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
-<header th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <!--    <div class="section">-->
-    <div class="top_navbar">
-        <div class="hamburger">
-            <a style="z-index: 9999; border: 1px solid; padding: 4px 5px 0 5px; border-radius: 5px;" class="menu-toggle" href="#">
-                <i class="fas fa-bars"></i>
-            </a>
-        </div>
+<div class="header" th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!--    <div class="header">-->
+        <!-- navbar -->
+        <div class="navbar-custom navbar navbar-expand-lg">
+            <li class="container-fluid px-0">
+                <a id="nav-toggle" href="#!" class="ms-md-0 me-0 me-lg-3 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                         class="bi bi-text-indent-left text-muted" viewBox="0 0 16 16">
+                        <path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm.646 2.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L4.293 8 2.646 6.354a.5.5 0 0 1 0-.708zM7 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                </a>
 
-        <div class="search__container">
-            <input class="search__input" type="text" placeholder="Пошук..." id="searchInput">
-            <div id="searchResults"></div>
-        </div>
+                <a class="navbar-brand d-block d-md-none" href="index.html">
+<!--                    <img th:src="@{/images/logo.png}" width="auto" height="31" alt="Learn English">-->
+                    <div class="logo">
+                        <span>Learn</span><span class="danger">English</span>
+                    </div>
+                </a>
 
-        <div style="display: flex; margin-left: auto; gap: 10px;">
-            <div sec:authorize="isAnonymous()">
-                <form action="/login" target="_parent">
-                    <button class="btn_main" type="submit">Вхід</button>
-                </form>
-            </div>
-            <div sec:authorize="isAnonymous()">
-                <form action="/registration-page" target="_parent">
-                    <button class="btn_main">Реєстрація</button>
-                </form>
-            </div>
 
-            <div sec:authorize="isAuthenticated()">
-                <form action="/logout?logout" method="post">
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    <button class="btn_main" type="submit">Вихід</button>
-                </form>
-            </div>
+
+                <ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
+                    <li>
+                        <a href="#" class="form-check form-switch theme-switch btn btn-ghost btn-icon rounded-circle mb-0 ">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                        </a>
+                    </li>
+                    <!--    alert    -->
+
+                    <li sec:authorize="isAuthenticated()" class="dropdown stopevent ms-2">
+                        <a class="btn btn-ghost btn-icon rounded-circle" href="#!" role="button"
+                           id="dropdownNotification" data-bs-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="icon-xs" data-feather="bell"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
+                             aria-labelledby="dropdownNotification">
+                            <div>
+                                <div class="border-bottom px-3 pt-2 pb-3 d-flex
+              justify-content-between align-items-center">
+                                    <p class="mb-0 text-dark fw-medium fs-4">Notifications</p>
+                                    <a href="#!" class="text-muted">
+                <span>
+                  <i class="me-1 icon-xs" data-feather="settings"></i>
+                </span>
+                                    </a>
+                                </div>
+                                <div data-simplebar style="height: 250px;">
+                                    <ul class="list-group list-group-flush notification-list-scroll">
+                                        <li class="list-group-item bg-light">
+                                            <a href="#!" class="text-muted">
+                                                <h5 class=" mb-1">Rishi Chopra</h5>
+                                                <p class="mb-0">
+                                                    Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="#!" class="text-muted">
+                                                <h5 class=" mb-1">Neha Kannned</h5>
+                                                <p class="mb-0">
+                                                    Proin at elit vel est condimentum elementum id in ante. Maecenas et
+                                                    sapien metus.
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="#!" class="text-muted">
+                                                <h5 class=" mb-1">Nirmala Chauhan</h5>
+                                                <p class="mb-0">
+                                                    Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit
+                                                    vel pretium.
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="#!" class="text-muted">
+                                                <h5 class=" mb-1">Sina Ray</h5>
+                                                <p class="mb-0">
+                                                    Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu
+                                                    diam.
+                                                </p>
+                                            </a>
+
+
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="border-top px-3 py-2 text-center">
+                                    <a href="#!" class="text-inherit ">
+                                        View all Notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!--    profile   -->
+                    <li sec:authorize="isAuthenticated()" class="dropdown ms-2">
+                        <a class="rounded-circle" href="#!" role="button" id="dropdownUser"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-md avatar-indicators avatar-online">
+                                <!--                                <img alt="avatar" src="images/avatar-11.jpg" class="rounded-circle">-->
+                                <img th:if="${session.avatarName}" id="userAvatar"
+                                     th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}"
+                                     alt="User avatar" class="rounded-circle"/>
+                                <img th:unless="${session.avatarName}" id="userAvatar"
+                                     src="https://via.placeholder.com/200x200" alt="User avatar"
+                                     class="rounded-circle"/>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end"
+                             aria-labelledby="dropdownUser">
+                            <div class="px-4 pb-0 pt-2">
+
+
+                                <div class="lh-1 ">
+                                    <h5 class="mb-1"> John E. Grainger</h5>
+                                    <a href="#!" class="text-inherit fs-6">View my profile</a>
+                                </div>
+                                <div class=" dropdown-divider mt-3 mb-2"></div>
+                            </div>
+
+                            <ul class="list-unstyled">
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="#!">
+                                        <i class="me-2 icon-xxs dropdown-item-icon" data-feather="user"></i>Edit
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="#!">
+                                        <i class="me-2 icon-xxs dropdown-item-icon"
+                                           data-feather="activity"></i>Activity Log
+                                    </a>
+
+
+                                </li>
+
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="#!">
+
+                                        <i class="me-2 icon-xxs dropdown-item-icon"
+                                           data-feather="settings"></i>Settings
+                                    </a>
+                                </li>
+                                <li>
+<!--                                    <a class="dropdown-item" href="index.html">-->
+<!--                                        <i class="me-2 icon-xxs dropdown-item-icon"-->
+<!--                                           data-feather="power"></i>Вихід-->
+                                        <form class="dropdown-item" action="/logout?logout" method="post">
+                                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                            <button class="reset-styles" type="submit"><i class="me-2 icon-xxs dropdown-item-icon" data-feather="power"></i>Вихід</button>
+                                        </form>
+<!--                                    </a>-->
+                                </li>
+                            </ul>
+
+                        </div>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <form action="/login" target="_parent">
+                            <button class="btn_main" type="submit">Вхід</button>
+                        </form>
+                    </li>
+
+                </ul>
         </div>
-    </div>
-</header>
-<!--    </th:block>-->
+<!--    </div>-->
+</div>

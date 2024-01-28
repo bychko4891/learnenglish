@@ -25,11 +25,14 @@ public class User implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column
+    private String uuid;
 
-    @Column(name="last_name")
-    private String lastName;
+    @Column(name = "login")
+    private String login;
+
+    @Column(name="name")
+    private String name;
 
     @Column(name = "email")
     private String email;
@@ -53,6 +56,9 @@ public class User implements Serializable {
     @Column(name = "password", length = 1000)
     private String password;
 
+    @Column(length = 300)
+    private String about;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "statistics_id")
     private UserStatistics statistics;
@@ -62,9 +68,6 @@ public class User implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<PhraseUser> phraseUsers = new ArrayList<>();
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-//    private List<Word> words = new ArrayList<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
@@ -78,63 +81,16 @@ public class User implements Serializable {
 
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
+
+    @Column(name = "last_visit")
+    private LocalDateTime lastVisit;
     @PrePersist
     private void init(){
-        dateOfCreated = LocalDateTime.now();
+        this.dateOfCreated = LocalDateTime.now();
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public User() {
     }
 
-    // -------    security     ---------- //
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return authority;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return active;
-//    }
-
-//    public Set<Role> getRoles() {
-//        return authority;
-//    }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        User user = (User) o;
-//        return Objects.equals(id, user.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id);
-//    }
 }

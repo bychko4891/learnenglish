@@ -1,0 +1,29 @@
+<footer th:fragment="footer_old">
+
+<!--    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/responseAlert.js}"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltips = document.querySelectorAll('.custom-tooltip');
+
+            tooltips.forEach(function(tooltip) {
+                tooltip.addEventListener('mouseenter', function() {
+                    var tooltipText = this.dataset.tooltip;
+                    var tooltipElement = this.nextElementSibling;
+
+                    tooltipElement.innerText = tooltipText;
+                    tooltipElement.style.left = this.offsetLeft + 'px';
+                    tooltipElement.style.top = (this.offsetTop + this.offsetHeight) + 'px';
+                    tooltipElement.style.display = 'block';
+                });
+
+                tooltip.addEventListener('mouseleave', function() {
+                    var tooltipElement = this.nextElementSibling;
+                    tooltipElement.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</footer>

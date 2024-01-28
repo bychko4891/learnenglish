@@ -54,6 +54,22 @@ public class LearnEnglishController {
         }
     }
 
+    @GetMapping("/test")
+    public String indexTest(Model model) {
+        PageApplication mainTop = pageApplicationService.getPageApplication(5l);
+        PageApplication mainBottom = pageApplicationService.getPageApplication(6l);
+        if (mainTop.getTextOfAppPage() != null) {
+            model.addAttribute("mainTop", mainTop.getTextOfAppPage().getText());
+        } else {
+            model.addAttribute("mainTop", "No text in this page");
+        }
+        if (mainBottom.getTextOfAppPage() != null) {
+            model.addAttribute("mainBottom", mainBottom.getTextOfAppPage().getText());
+        }
+        model.addAttribute("title", "Англійська за 16 годин - e-learn.top");
+            return "temp";
+    }
+
 
     @GetMapping("/about-the-app")
     public String aboutApp(Model model) {

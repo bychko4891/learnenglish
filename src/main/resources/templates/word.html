@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <!--<style>-->
 <!--    .sound_pic {-->
@@ -12,7 +12,7 @@
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <div class="container layout_page">
 
             <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 5px; margin: 20px 5px;">
@@ -119,7 +119,7 @@
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script>

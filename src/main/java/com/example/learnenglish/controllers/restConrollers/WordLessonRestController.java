@@ -93,25 +93,25 @@ public class WordLessonRestController {
     @GetMapping("/word-lesson/{id}/word-audit-next")
     public ResponseEntity<DtoWordToUI> nextWordForLessonWordAudit(@PathVariable("id") long wordLessonId,
                                                                   Principal principal) {
-        if (principal != null) {
-            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
-            int totalPage = (int) session.getAttribute("totalPage"); //Додати перевірку довжини масива та на null
-            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter");
-            if (wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
-                --wordAuditCounter;
-                Collections.shuffle(wordsId);
-                Long wordId = wordsId.get(0);
-                wordsId.remove(0);
-                if (wordsId.size() != 0) {
-                    session.setAttribute("wordsId", wordsId);
-                    session.setAttribute("wordAuditCounter", wordAuditCounter);
-                } else {
-                    session.removeAttribute("wordsId");
-                    session.removeAttribute("wordAuditCounter");
-                }
-                return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
-            }
-        }
+//        if (principal != null) {
+//            List<Long> wordsId = (List<Long>) session.getAttribute("wordsId"); //Додати перевірку довжини масива та на null
+//            int totalPage = (int) session.getAttribute("totalPage"); //Додати перевірку довжини масива та на null
+//            int wordAuditCounter = (int) session.getAttribute("wordAuditCounter");
+//            if (wordsId != null && wordsId.size() != 0 && wordAuditCounter != 0) {
+//                --wordAuditCounter;
+//                Collections.shuffle(wordsId);
+//                Long wordId = wordsId.get(0);
+//                wordsId.remove(0);
+//                if (wordsId.size() != 0) {
+//                    session.setAttribute("wordsId", wordsId);
+//                    session.setAttribute("wordAuditCounter", wordAuditCounter);
+//                } else {
+//                    session.removeAttribute("wordsId");
+//                    session.removeAttribute("wordAuditCounter");
+//                }
+//                return ResponseEntity.ok(wordService.getWordForWordLessonAudit(wordId, totalPage, wordsId.size()));
+//            }
+//        }
         return ResponseEntity.notFound().build();
     }
 

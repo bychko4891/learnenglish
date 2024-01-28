@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+<main id="main-wrapper" class="main-wrapper">
+
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+
+    <div id="app-content">
+
+        <div class="app-content-area">
+            <div class="table-responsive" th:utext="${mainTop}"
+                 style="padding: 20px 40px 20px 40px; text-align: center;"></div>
+<!--            <div class="layout_page">-->
+                <div class="main_info" th:utext="${mainBottom}" style="padding: 40px 40px 10px 40px;"></div>
+<!--            </div>-->
+            <script>
+                window.addEventListener('resize', rearrangeColumns);
+
+                function rearrangeColumns() {
+                    const firstTable = document.getElementById('firstTable');
+                    const secondTable = document.getElementById('secondTable');
+
+                    if (window.innerWidth < 768) {
+                        swapColumns(firstTable);
+                        swapColumns(secondTable);
+                    } else {
+                        restoreColumnsOrder(firstTable);
+                        // restoreColumnsOrder(secondTable);
+                    }
+                }
+
+                function swapColumns(table) {
+                    const rows = table.getElementsByTagName('tr');
+
+                    for (let i = 0; i < rows.length; i++) {
+                        const cells = rows[i].getElementsByTagName('td');
+
+                        if (cells.length === 2) {
+                            rows[i].appendChild(cells[0]);
+                        }
+                    }
+                }
+
+                function restoreColumnsOrder(table) {
+                    const rows = table.getElementsByTagName('tr');
+
+                    for (let i = 0; i < rows.length; i++) {
+                        const cells = rows[i].getElementsByTagName('td');
+
+                        if (cells.length === 2) {
+                            rows[i].insertBefore(cells[1], cells[0]);
+                        }
+                    }
+                }
+
+                rearrangeColumns();
+            </script>
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
+
+<!-- Libs JS -->
+<script th:src="@{js/jquery-3.6.4.min.js}"></script>
+<script th:src="@{jsTemp/bootstrap.bundle.min.js}"></script>
+<!--<script th:src="@{js/bootstrap.min.js}"></script>-->
+<script th:src="@{jsTemp/feather.min.js}"></script>
+<script th:src="@{jsTemp/simplebar.min.js}"></script>
+
+
+<!-- Theme JS -->
+<script th:src="@{jsTemp/theme.min.js}"></script>
+
+
+
+</body>
+
+</html>

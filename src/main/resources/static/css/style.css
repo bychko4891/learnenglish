@@ -91,6 +91,9 @@ img {
     background: rgba(45, 45,52, 0.9);
     border-radius: 20px;
 }
+li {
+    list-style: none !important;
+}
 .sound_pic {
     cursor: pointer;
 }

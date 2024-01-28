@@ -7,7 +7,6 @@ package com.example.learnenglish.controllers.restConrollers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.exception.FileFormatException;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -201,7 +200,7 @@ public class UserRestController {
             String contentType = imageFile.getContentType();
             if (contentType.equals("image/png")) {
                 User user = userService.findByEmail(principal.getName());
-                String imageFileName = fileStorageService.storeFile(imageFile, userAvatarStorePath, user.getLastName());
+                String imageFileName = fileStorageService.storeFile(imageFile, userAvatarStorePath, user.getName());
                 session.setAttribute("avatarName", imageFileName);
                 if (user.getUserAvatar().getImageName() != null && !user.getUserAvatar().getImageName().equalsIgnoreCase("no-avatar.png")) {
                     fileStorageService.deleteFileFromStorage(user.getUserAvatar().getImageName(), userAvatarStorePath);

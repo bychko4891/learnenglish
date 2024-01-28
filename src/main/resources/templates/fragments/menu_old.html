@@ -1,0 +1,108 @@
+<!--<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">-->
+<div class="sidebar" th:fragment="menu_old" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!--    <div class="sidebar">-->
+
+        <div class="profile" sec:authorize="isAnonymous()">
+                            <img id="avatar" src="/images/logo.png" alt="Фото користувача">
+            <h3 style="margin-top: 15px;">Learn English</h3>
+<!--            <p>Designer</p>-->
+        </div>
+        <div class="profile" sec:authorize="isAuthenticated()">
+<!--                            <img src="https://via.placeholder.com/200x200" alt="Фото користувача">-->
+
+            <img th:if="${session.avatarName}" id="userAvatar"  th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
+            <img th:unless="${session.avatarName}" id="userAvatar" src="https://via.placeholder.com/200x200"  alt="User avatar"/>
+            <h6 th:text="${session.userFirstName} + ' ' + ${session.userLastName}" style="margin-top: 15px;"></h6>
+<!--            <p>Designer</p>-->
+        </div>
+
+        <ul class="main-menu">
+            <li>
+                <a sec:authorize="isAnonymous()" href="/">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span class="item">Головна</span>
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/user/profile">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span class="item">Профіль</span>
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="user/statistics">
+                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <span class="item">Статистика</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/lessons">
+                    <span class="icon"><i class="fas fa-desktop"></i></span>
+                    <span class="item">Заняття</span>
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}/translation-pairs (id=${session.userId})}">
+                    <span class="icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
+                    <span class="item">Мої фрази</span>
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/user/words">
+                    <span class="icon"><i class="fa-solid fa-table"></i></span>
+                    <span class="item">Мої слова</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/words-main-category">
+                    <span class="icon"><i class="fas fa-spell-check"></i></span>
+                    <span class="item">Словник</span>
+                </a>
+            </li>
+            <li>
+                <a href="/phrases-categories">
+                    <span class="icon"><i class="fas fa-comments"></i></span>
+                    <span class="item">Міні історії</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/about-the-app">
+                    <span class="icon"><i class="fa-solid fa-circle-info"></i></span>
+                    <span class="item">Про нас</span>
+                </a>
+            </li>
+            <li>
+                <a href="/payment-donate">
+                    <span class="icon"><i class="fa-solid fa-money-bill-1-wave"></i></span>
+                    <span class="item">Задонатити</span>
+                </a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
+                <a href="/admin-page">
+                    <span class="icon"><i class="fas fa-user-shield"></i></span>
+                    <span class="item">Admin</span>
+                </a>
+            </li>
+<!--            </th:block>-->
+<!--            <li th:unless="${userId}">-->
+<!--                <a th:href="@{/user/{id}(id=${userId})}">-->
+<!--                    <span class="icon"><i class="fas fa-cog"></i></span>-->
+<!--                    <span class="item">Profile</span>-->
+<!--                </a>-->
+<!--            </li>-->
+        </ul>
+<!--    </div>-->
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $('.main-menu a').each(function () {
+                if ('https://e-learn.top' + $(this).attr('href') == window.location.href) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+</div>
+<!--</th:block>-->

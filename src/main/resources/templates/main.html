@@ -1,88 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head th:replace="~{fragments/head :: head}"></head>
-<style>
-    .main_info table img {
-        width: 100%;
-        height: auto;
-        border-radius: 20px;
-    }
 
-    .main_info table {
-        border: none;
-    }
+<body>
+<main id="main-wrapper" class="main-wrapper">
 
-
-    .main_info table {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    .main_info td {
-        display: table-cell;
-    }
-
-    @media (max-width: 768px) {
-        .main_info tr {
-            display: block;
-        }
-
-        .main_info td {
-            display: block;
-            width: 100%;
-        }
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    .table-responsive img{
-        border-radius: 20px;
-    }
-
-    /* Додаткові стилі для респонсивної таблиці */
-    .table-responsive table {
-        width: 100%;
-        border-collapse: collapse;
-        border: none;
-    }
-
-    /* Застосовуємо Flexbox для респонсивних стовпців */
-    .table-responsive table tr {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    /* Застосовуємо Flexbox для респонсивних комірок */
-    .table-responsive table td,
-    .table-responsive table th {
-        flex-basis: 33.3155%; /* Задаємо ширину комірок - наприклад, розмір на дві колонки */
-    }
-
-    /* Додаткові стилі для планшетних і менших пристроїв */
-    @media (max-width: 768px) {
-        .table-responsive table td,
-        .table-responsive table th {
-            flex-basis: 100%; /* Коли розмір екрану менше 768px, комірки будуть займати всю ширину */
-        }
-    }
-</style>
-<body class="active">
-<div class="wrapper">
-    <main class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
-        <div class="table-responsive" th:utext="${mainTop}" style="padding: 20px 40px 20px 40px; text-align: center;"></div>
-        <div class="container layout_page">
-
-            <div class="main_info" th:utext="${mainBottom}" style="padding: 40px 40px 10px 40px;"></div>
-        </div>
-        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div th:replace="~{fragments/menu :: menu}"></div>
-</div>
+
+    <div id="app-content">
+        <div class="app-content-area">
+            <div class="table-responsive" th:utext="${mainTop}"
+                 style="padding: 20px 40px 20px 40px; text-align: center;"></div>
+            <!--            <div class="layout_page">-->
+            <div class="main_info" th:utext="${mainBottom}" style="padding: 40px 40px 10px 40px;"></div>
+            <!--            </div>-->
+
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
 <script>
+    $(document).ready(function () {
     window.addEventListener('resize', rearrangeColumns);
 
     function rearrangeColumns() {
@@ -122,9 +63,15 @@
         }
     }
 
-    // Викликати функцію при завантаженні сторінки
     rearrangeColumns();
+    });
 </script>
-<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
+
+<!-- Libs JS -->
+<script th:src="@{jsTemp/feather.min.js}"></script>
+
+<!-- Theme JS -->
+<script th:src="@{jsTemp/theme.min.js}"></script>
 </body>
+
 </html>

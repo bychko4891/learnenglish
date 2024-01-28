@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
 <!--    <main class="section" style="position: relative; padding-bottom: 90px;">-->
     <div class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <main class="container layout_page">
 
 
@@ -65,7 +65,7 @@ border-image: linear-gradient(to right, rgba(34, 34, 42, 0.5), white, rgba(34, 3
                th:href="@{/phrases-category/{id}/phrases-pages(page=(${currentPage} + 1), id=${categoryId})}">Наступна ></a>
         </div>
     </div>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 </body>
 </html>

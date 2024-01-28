@@ -45,8 +45,8 @@ public class AdminAccountInitializer implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         if (userRepository.count() == 0) {
             User admin = new User();
-            admin.setFirstName("Admin");
-            admin.setLastName("Admin");
+            admin.setLogin("Admin");
+            admin.setName("Admin");
             admin.setEmail(adminEmail);
             admin.setActive(true);
             admin.setUserPhrasesInLesson(false);
@@ -67,8 +67,8 @@ public class AdminAccountInitializer implements ApplicationRunner {
 
     public void createUserDemo() {
         User demo = new User();
-        demo.setFirstName("Demo");
-        demo.setLastName("Demo");
+        demo.setLogin("Demo");
+        demo.setName("Demo");
         demo.setEmail("demo@mail.com");
         demo.setActive(true);
         demo.setUserPhrasesInLesson(false);

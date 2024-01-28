@@ -70,7 +70,7 @@ public class UserService {
         userRepository.save(user);
         if (!StringUtils.isEmpty(user.getEmail())) {
             String mailText = String.format("Hello, %s \n" + "Welcome to Learn English. Please, visit next link: %s/activate/%s",
-                    user.getFirstName(), host, user.getActivationCode());
+                    user.getLogin(), host, user.getActivationCode());
             mailSender.sendSimpleMessage(user.getEmail(), "Activation code", mailText);
         }
         return true;
@@ -102,8 +102,8 @@ public class UserService {
             Set<UserGender> newGenders = new HashSet<>();
             newGenders.add(UserGender.valueOf(gender.toUpperCase()));
             User user = optionalUser.get();
-            user.setLastName(lastName);
-            user.setFirstName(firstName);
+            user.setName(lastName);
+            user.setLogin(firstName);
             user.getGender().clear();
             user.getGender().add(UserGender.valueOf(gender.toUpperCase()));
             userRepository.save(user);
@@ -187,7 +187,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(rawPassword));
             userRepository.save(user);
             String mailText = String.format("Hello, %s \n" + "New password: %s \n" + "to enter the application cabinet %s/login ",
-                    user.getFirstName(), rawPassword, host);
+                    user.getLogin(), rawPassword, host);
             mailSender.sendSimpleMessage(user.getEmail(), "New password fo login", mailText);
             return new CustomResponseMessage(Message.SUCCESS_FORGOT_PASSWORD);
         } else

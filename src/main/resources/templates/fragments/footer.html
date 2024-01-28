@@ -1,7 +1,14 @@
 <footer th:fragment="footer">
 
-    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <!-- Libs JS -->
+    <script type="text/javascript" th:src="@{/jsTemp/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jsTemp/feather.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jsTemp/simplebar.min.js}"></script>
+
+    <!-- Theme JS -->
+    <script type="text/javascript" th:src="@{/jsTemp/theme.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/responseAlert.js}"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var tooltips = document.querySelectorAll('.custom-tooltip');

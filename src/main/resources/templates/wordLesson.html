@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <link rel="stylesheet" th:href="@{/css/word_lesson_style.css}">
 <style>
     .icon-box {
@@ -456,7 +456,7 @@
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <div class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <div style="height: calc(100vh - 70px);">
 <!--        <div class="d-flex flex-column overflow-hidden align-items-center container-fluid slider_block" style="height: 100vh;">-->
         <div class="d-flex flex-column align-items-center container-fluid slider_block" style="height: 100vh;">
@@ -509,7 +509,7 @@
         </div>
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-        <div th:replace="~{fragments/menu :: menu}"></div>
+        <div th:replace="~{fragments/menu_old :: menu_old}"></div>
     </div>
 
 </div>

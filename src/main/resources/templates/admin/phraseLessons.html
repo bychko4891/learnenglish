@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <link rel="stylesheet" th:href="@{/css/tableInPage.css}">
 <body class="active">
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <div class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <main class="container layout_page">
 
 
@@ -55,7 +55,7 @@
             <a style="margin-right: auto" th:href="@{/admin/phrase-lessons(page=(${currentPage} + 1))}">Наступна ></a>
         </div>
     </div>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <!--<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>-->

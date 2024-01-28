@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/head_old :: head_old}"></head>
 <script src="https://cdn.tiny.cloud/1/j8dxs8puyiugoamq11vn3bctaonh1jhzvd0cewcb1jiyl2c6/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
@@ -8,7 +8,7 @@
 <div id="toastContainer" class="toast-container"></div>
 <div class="wrapper">
     <main class="section">
-        <header th:replace="~{fragments/header :: header}"></header>
+        <header th:replace="~{fragments/header_2 :: header_2}"></header>
         <div class="container layout_page">
             <h1>Нова сторінка для фраз</h1>
             <form id="editor">
@@ -57,7 +57,7 @@
         </div>
         <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
     </main>
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
 </div>
 <script>
     // window.addEventListener('DOMContentLoaded', function () {
