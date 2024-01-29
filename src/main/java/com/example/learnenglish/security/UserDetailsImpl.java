@@ -16,10 +16,10 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
-    public String getLastName() {
+    public String getName() {
         return user.getName();
     }
-    public String getFirstName() {
+    public String getLogin() {
         return user.getLogin();
     }
     public Long getId() {
@@ -27,6 +27,9 @@ public class UserDetailsImpl implements UserDetails {
     }
     public Image getUserAvatar() {
         return user.getUserAvatar();
+    }
+    public String getUserGender() {
+        return user.getGender().toString();
     }
 
 

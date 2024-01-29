@@ -10,51 +10,67 @@
     <div th:replace="~{fragments/menu :: menu}"></div>
 
     <div id="app-content">
-        <div class="app-content-area row mx-auto">
-            <div class="col-md-8 main-content overflow-hidden p-0">
+        <div class="app-content-area row row-cols-1 row-cols-md-2 mx-auto">
+
+            <div class="col-md-8 col-12 main-content overflow-hidden p-0 col">
                 <div class="container_2 overflow-visible">
-                    <img class="background-image" th:src="@{/images/profile_fone.jpg}" alt="profile"  />
-                    <img class="user-avatar" th:src="@{/avatar/{name}(name=${user.userAvatar.imageName})}" alt="profile" />
+                    <img class="background-image" th:src="@{/images/profile_fone.jpg}" alt="profile"/>
+                    <img class="user-avatar" th:src="@{/avatar/{name}(name=${user.userAvatar.imageName})}"
+                         alt="profile"/>
                 </div>
-                <div class="row">
-                    <div class="col-md-3" style="padding: 100px 50px;">
-                        <h3 th:text="${user.login}"></h3>
-                        <h3 th:text="${user.name}"></h3>
-                        <p th:text="${user.about}"></p>
-
-<!--                        <img class="image-container" th:src="@{/avatar/{name}(name=${user.userAvatar.imageName})}" alt="profile" />-->
-<!--                        <img class="w-100" th:src="@{/avatar/{name}(name=${user.userAvatar.imageName})}" />-->
-<!--                        <img class="colored-svg reset-styles ms-auto" th:src="@{../images/settings.svg}" alt="profile" width="25" height="25" />-->
+                <div class="w-100 d-flex flex-column">
+                    <div class="ms-auto" style="margin: 20px 20px 0 0;">
+                        <a class="btn btn-ghost btn-icon rounded-circle" href="/user/settings" role="button">
+                            <img class="colored-svg reset-styles ms-auto" th:src="@{../images/settings.svg}"
+                                 alt="profile" width="25" height="25"/>
+                        </a>
                     </div>
-                    <div class="col-md-9 d-flex ms-auto">
-                        <img class="colored-svg reset-styles ms-auto" th:src="@{../images/settings.svg}" alt="profile" width="25" height="25" />
-                    </div>
+                    <div class="row profile-content">
+                        <div class="col-md-6 col-12">
+                            <span style="font-size: 20px;">@</span><span style="font-size: 20px;"
+                                                                         th:text="${user.login}"></span>
+                            <div class="row">
+                                <h3 th:text="${user.name}"></h3>
+                                <div th:if="${session.userGender == '[MALE]'}">
+                                    <img class="colored-svg reset-styles" style="margin-left: -20px;"
+                                         th:src="@{/images/male.svg}" alt="profile" width="20" height="20"/>
+                                </div>
+                                <div th:if="${session.userGender == '[FEMALE]'}">
+                                    <img class="colored-svg reset-styles" style="margin: 20px 0 0 -20px;"
+                                         th:src="@{/images/female.svg}" alt="profile" width="20" height="20"/>
+                                </div>
+                            </div>
+                            <img class="colored-svg reset-styles mb-2" th:src="@{/images/mail.svg}" alt="profile"
+                                 width="20" height="20"/>
+                            <span style="font-size: 20px;" th:text="${user.email}"></span><br>
+                            <img class="colored-svg reset-styles mb-2" th:src="@{/images/date.svg}" alt="profile"
+                                 width="20" height="20"/>
+                            <span style="font-size: 20px;"
+                                  th:text="${#temporals.format(user.dateOfCreated, 'dd.MM.yyyy')}"></span>
+                            <div style="border: 1px solid #7b61ff; border-radius: 15px; min-height: 60px; padding: 6px;">
+                                <p th:text="${user.about}"></p>
+                            </div>
+                        </div>
 
+                        <div class="col-md-6 col-12">
+
+                            <div class="row">
+                                <button class="btn btn-primary me-2">Повідомлення</button>
+                                <button class="btn btn-primary">Друзі</button>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-
             </div>
-            <div class="col-md-3 main-content">
-                <span th:text="${user.name}"></span>
+            <div class="col-md-3 col-12 main-content col">
+                <div class="d-flex flex-column align-items-center p-3">
+                    <h4>Рейтинг юзерів</h4>
+                </div>
             </div>
-
-
-<!--            <div class="main-content overflow-hidden">-->
-<!--                -->
-
-
-
-
-
-<!--                <div class="p-3">-->
-<!--                    <span th:text="${user.name}"></span>-->
-<!--                </div>-->
-
-
-<!--            </div>-->
         </div>
     </div>
 </main>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
-
 </html>

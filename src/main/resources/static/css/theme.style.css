@@ -7698,7 +7698,7 @@ a {
     font-weight: 400;
     height: 2.5rem;
     justify-content: center;
-    padding: 0;
+    /*padding: 0;*/
     position: relative;
     width: 2.5rem
 }
@@ -11967,11 +11967,6 @@ div.table-responsive > div.dataTables_wrapper > div.row {
 
 
 
-
-
-
-
-
 .main-menu {
     padding-left: 0 !important;
 }
@@ -12059,10 +12054,8 @@ img.reset-styles {
     margin: 0;
 }
 
-/* Зміна стилів для вигляду посилання */
 button.reset-styles:hover {
     text-decoration: underline;
-    /* Додайте будь-які інші стилі по наведенню за необхідності */
 }
 
 .main-content {
@@ -12071,17 +12064,13 @@ button.reset-styles:hover {
     background: var(--dashui-block-content-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 20, .08), 0 1px 2px rgba(0, 0, 20, .08);
     border-radius: 20px;
-    /*width: 95%;*/
 }
-
-
-
 
 .container_2 {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: auto; /* Або задайте фіксовану висоту, якщо потрібно */
+    height: auto;
 }
 
 .background-image {
@@ -12098,6 +12087,10 @@ button.reset-styles:hover {
     height: auto;
     border: 3px solid var(--dashui-indigo);
     border-radius: 50%;
+}
+
+.profile-content {
+    margin: 40px 0 0 50px;
 }
 
 @media (max-width: 767.99px) {
@@ -12135,4 +12128,13 @@ button.reset-styles:hover {
         max-width: 200px;
     }
 
+}
+
+@media (max-width: 767px) {
+    .row-cols-1 > * {
+        margin-bottom: 16px;
+    }
+    .profile-content {
+        margin: 0 0 0 20px;
+    }
 }

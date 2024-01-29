@@ -9,7 +9,6 @@ package com.example.learnenglish.security;
 
 import com.example.learnenglish.config.CustomRequestLoggingFilter;
 import com.example.learnenglish.config.MySessionInformationExpiredStrategy;
-import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.*;
@@ -153,9 +152,10 @@ public class SecurityConfig {
                                     session.setAttribute("authorities", authentication.getAuthorities());
                                     UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
                                     session.setAttribute("avatarName", user.getUserAvatar().getImageName());
-                                    session.setAttribute("userFirstName", user.getFirstName());
-                                    session.setAttribute("userLastName", user.getLastName());
+                                    session.setAttribute("userLogin", user.getLogin());
+                                    session.setAttribute("userName", user.getName());
                                     session.setAttribute("userId", user.getId());
+                                    session.setAttribute("userGender", user.getUserGender());
                                     response.sendRedirect("/user/profile");
                                 })
                 )

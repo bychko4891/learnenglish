@@ -18,7 +18,7 @@
              th:src="@{/avatar/{avatarName}(avatarName = ${session.avatarName})}" alt="User avatar"/>
         <img th:unless="${session.avatarName}" id="userAvatarM" src="https://via.placeholder.com/200x200"
              alt="User avatar"/>
-        <h6 th:text="${session.userFirstName} + ' ' + ${session.userLastName}" style="margin-top: 15px;"></h6>
+        <h6 th:text="${session.userLogin} + ' ' + ${session.userName}" style="margin-top: 15px;"></h6>
         <!--            <p>Designer</p>-->
     </div>
 

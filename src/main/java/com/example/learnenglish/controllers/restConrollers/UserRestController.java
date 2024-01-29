@@ -90,8 +90,8 @@ public class UserRestController {
             userId = userService.findByEmail(principal.getName()).getId();
             User user = userService.findByEmail(principal.getName());
             userService.updateUserInfo(userId, firstName, lastName, gender);
-            session.setAttribute("userFirstName", firstName);
-            session.setAttribute("userLastName", lastName);
+            session.setAttribute("userLogin", firstName);
+            session.setAttribute("userName", lastName);
             session.setAttribute("userGender", "[" + gender + "]");
             return ResponseEntity.ok("Інформація успішно оновлена");
         }
