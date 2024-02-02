@@ -10,7 +10,6 @@ package com.example.learnenglish.controllers.restConrollers;
 import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.Image;
-import com.example.learnenglish.model.VocabularyPage;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.service.CategoryService;
@@ -76,7 +75,7 @@ public class CategoryRestController {
     @JsonView(JsonViews.ViewAllCategories.class)
     public ResponseEntity<List<Category>> wordsSubcategories(@RequestParam("mainCategoryId") Long id, Principal principal) {
         if (principal != null && id != 0) {
-            return ResponseEntity.ok(categoryService.getDtoSubcategoriesInMainCategory(id));
+            return ResponseEntity.ok(categoryService.getSubcategoriesFromMainCategory(id));
         }
         return ResponseEntity.notFound().build();
     }

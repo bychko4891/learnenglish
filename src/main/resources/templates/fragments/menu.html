@@ -12,70 +12,70 @@
                     <ul class="main-menu">
                         <li>
                             <a sec:authorize="isAnonymous()" href="/">
-                                <span class="colored-svg reset-styles"><img th:src="@{../images/home.svg}"  alt="home" width="25" height="25" /></span>
+                                <span class="colored-svg reset-styles"><img th:src="@{/images/home.svg}"  alt="home" width="25" height="25" /></span>
                                 <span class="item">Головна</span>
                             </a>
                         </li>
                         <li sec:authorize="isAuthenticated()">
                             <a href="/user/profile">
-                                <img class="colored-svg reset-styles" th:src="@{../images/profile.svg}" alt="profile" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/profile.svg}" alt="profile" width="25" height="25" />
                                 <span class="item">Профіль</span>
                             </a>
                         </li>
                         <li sec:authorize="isAuthenticated()">
                             <a href="user/statistics">
-                                <img class="colored-svg reset-styles" th:src="@{../images/statistics.svg}" alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/statistics.svg}" alt="home" width="25" height="25" />
                                 <span class="item">Статистика</span>
                             </a>
                         </li>
 
                         <li>
                             <a href="/lessons">
-                                <img class="colored-svg reset-styles" th:src="@{../images/lesson.svg}" alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/lesson.svg}" alt="home" width="25" height="25" />
                                 <span class="item">Заняття</span>
                             </a>
                         </li>
                         <li sec:authorize="isAuthenticated()">
                             <a th:href="@{/user/{id}/translation-pairs (id=${session.userId})}">
-                                <img class="colored-svg reset-styles" th:src="@{../images/phrases.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/phrases.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Мої фрази</span>
                             </a>
                         </li>
                         <li sec:authorize="isAuthenticated()">
                             <a href="/user/words">
-                                <img class="colored-svg reset-styles" th:src="@{../images/word.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/word.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Мої слова</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="/words-main-category">
-                                <img class="colored-svg reset-styles" th:src="@{../images/vocabulary.svg}"  alt="home" width="25" height="25" />
+                            <a href="/vocabulary/main-categories">
+                                <img class="colored-svg reset-styles" th:src="@{/images/vocabulary.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Словник</span>
                             </a>
                         </li>
                         <li>
                             <a href="/phrases-categories">
-                                <img class="colored-svg reset-styles" th:src="@{../images/mini-stories.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/mini-stories.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Міні історії</span>
                             </a>
                         </li>
 
                         <li>
                             <a href="/about-the-app">
-                                <img class="colored-svg reset-styles" th:src="@{../images/info.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/info.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Про нас</span>
                             </a>
                         </li>
                         <li>
                             <a href="/payment-donate">
-                                <img class="colored-svg reset-styles" th:src="@{../images/donate.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/donate.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Задонатити</span>
                             </a>
                         </li>
                         <li sec:authorize="hasRole('ROLE_ADMIN')">
                             <a href="/admin-page">
-                                <img class="colored-svg reset-styles" th:src="@{../images/user-admin.svg}"  alt="home" width="25" height="25" />
+                                <img class="colored-svg reset-styles" th:src="@{/images/user-admin.svg}"  alt="home" width="25" height="25" />
                                 <span class="item">Admin</span>
                             </a>
                         </li>

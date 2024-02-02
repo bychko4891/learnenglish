@@ -96,7 +96,7 @@ public class PhraseLessonController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String phraseLessonEdit(@PathVariable("id") long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainPhraseLessonCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
+            List<Category> mainPhraseLessonCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
             try {
                 PhraseLesson lesson = phraseLessonService.getPhraseLesson(id);
                 model.addAttribute("phraseLesson", lesson);

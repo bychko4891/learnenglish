@@ -29,6 +29,7 @@ import java.util.List;
 public class VocabularyPageController {
 
     private final VocabularyPageService vocabularyPageService;
+
     private final CategoryService categoryService;
 
     @GetMapping("/admin/vocabulary-pages")
@@ -71,7 +72,7 @@ public class VocabularyPageController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editVocabularyPage(@PathVariable("id") long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.VOCABULARY_PAGE);
+            List<Category> mainCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.VOCABULARY_PAGE);
             model.addAttribute("category", "Відсутня");
             model.addAttribute("mainCategories", mainCategories);
             try {
@@ -86,6 +87,41 @@ public class VocabularyPageController {
             return "admin/vocabularyPageEdit";
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/vocabulary/main-categories")
+    public String wordsMainCategories(Model model) {
+        List<Category> mainCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.VOCABULARY_PAGE);
+        if (mainCategories != null) {
+            model.addAttribute("mainCategories", mainCategories);
+        }
+        return "vocabularyMainCategories";
+    }
+
+    @GetMapping("/vocabulary/subcategory/{uiid}")
+    public String getWordsFromSubcategory(@PathVariable String uuid, Model model) {
+        Category subcategory = categoryService.getCategoryByUIID(uuid);
+        Category parentCategory = subcategory.getParentCategory();
+//        model.addAttribute("words", subcategory.getWords());
+        model.addAttribute("subId", subcategory.getId());
+        model.addAttribute("mainId", parentCategory.getParentCategory().getId());
+        return "vocabularySubcategoryWords";
+        //TODO
+    }
+
+
+    @GetMapping("/vocabulary/main-category/{uuid}")
+    public String wordsSubcategoriesFromMainCategories(@PathVariable String uuid, Model model) {
+        Category mainCategory = categoryService.getCategoryByUIID(uuid);
+
+        if (mainCategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
+            return "vocabularySubcategories_And_Info_Field";
+        } else {
+//            List<Category> wordsSubCategoriesAndSubSubInMainCategory = categoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
+            model.addAttribute("mainCategory", mainCategory);
+//            model.addAttribute("mainCategoryId", mainCategory.getId());
+            return "vocabularySubcategories_No_Info_Field";
+        }
     }
 
 }

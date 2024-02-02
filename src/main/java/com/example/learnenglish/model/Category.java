@@ -14,10 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Setter
@@ -29,6 +26,9 @@ public class Category implements Serializable {
     @Column
     @JsonView(JsonViews.ViewFieldId.class)
     private Long id;
+
+    @Column
+    private String uuid;
 
     @Column
     @JsonView(JsonViews.ViewFieldName.class)
@@ -65,14 +65,15 @@ public class Category implements Serializable {
     @JsonView(JsonViews.ViewFieldOther.class)
     private List<Category> subcategories = new ArrayList<>();
 
-//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "category")
-//    private List<Word> words;
-
-//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "translationPairsPageCategory")
-//    private List<TranslationPairsPage> translationPairsPages;
 
     @Transient
     private int countWordLessons;
+
+    @PrePersist
+    private void init(){
+        this.uuid = UUID.randomUUID().toString();
+    }
+
 
     public Category() {
     }

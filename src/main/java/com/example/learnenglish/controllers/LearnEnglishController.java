@@ -137,29 +137,9 @@ public class LearnEnglishController {
 
     }
 
-    @GetMapping("/words-main-category/{id}")
-    public String wordsSubcategoriesFromMainCategories(@PathVariable Long id, Model model) {
-        Category mainWordsCategory = categoryService.getCategory(id);
 
-        if (mainWordsCategory.isViewSubcategoryFullNoInfoOrNameAndInfo()) {
-            return "wordsSubcategoryNameAndInfo";
-        } else {
-            List<Category> wordsSubCategoriesAndSubSubInMainCategory = categoryService.getSubcategoriesAndSubSubcategoriesInMainCategory(id);
-            model.addAttribute("wordsSubCategories", wordsSubCategoriesAndSubSubInMainCategory);
-            model.addAttribute("mainCategoryId", mainWordsCategory.getId());
-            return "wordsSubcategoryFullAndNoInfo";
-        }
-    }
 
-    @GetMapping("/subcategory/{id}")
-    public String wordsSubcategories(@PathVariable Long id, Model model) {
-        Category subcategory = categoryService.getCategory(id);
-        Category parentCategory = subcategory.getParentCategory();
-//        model.addAttribute("words", subcategory.getWords());
-        model.addAttribute("subId", subcategory.getId());
-        model.addAttribute("mainId", parentCategory.getParentCategory().getId());
-        return "wordsSubcategoryView";
-    }
+
 
     @GetMapping("/word/{id}")
     public String word(@PathVariable Long id, Model model) {

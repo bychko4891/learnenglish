@@ -165,7 +165,7 @@ public class AdminController {
                                                Model model,
                                                Principal principal) {
         if (principal != null) {
-            List<Category> mainTranslationPairsPagesCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
+            List<Category> mainTranslationPairsPagesCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
             if (mainTranslationPairsPagesCategories != null) {
                 model.addAttribute("mainTranslationPairsPagesCategories", mainTranslationPairsPagesCategories);
             }
@@ -186,7 +186,7 @@ public class AdminController {
                                              Model model,
                                              Principal principal) {
         if (principal != null) {
-            List<Category> mainTranslationPairsPagesCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
+            List<Category> mainTranslationPairsPagesCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.MINI_STORIES);
             MiniStory miniStory = miniStoryService.getTranslationPairsPage(id);
             model.addAttribute("category", "Відсутня");
             if (miniStory.getCategory() != null) {

@@ -1,9 +1,15 @@
 package com.example.learnenglish.service;
 
+/**
+ * @author: Anatolii Bychko
+ * Application Name: Learn English
+ * Description: My Description
+ * GitHub source code: https://github.com/bychko4891/learnenglish
+ */
+
 import com.example.learnenglish.exception.ObjectNotFoundException;
 import com.example.learnenglish.model.Category;
 import com.example.learnenglish.model.CategoryPage;
-import com.example.learnenglish.model.Image;
 import com.example.learnenglish.repository.CategoryRepository;
 import com.example.learnenglish.responsemessage.Message;
 import com.example.learnenglish.responsemessage.CustomResponseMessage;
@@ -26,6 +32,14 @@ public class CategoryService {
 
         } else throw new ObjectNotFoundException("Category with id: " + id + "not found");
     }
+
+    public Category getCategoryByUIID(String uiid) {
+        Optional<Category> categoryOptional = categoryRepository.findCategoriesByUuid(uiid);
+        if (categoryOptional.isPresent()) {
+            return categoryOptional.get();
+
+        } else throw new ObjectNotFoundException("Category with id: " + uiid + "not found");
+    }
     public Category getNewCategory(long id) {
         Category category = new Category();
         category.setId(id);
@@ -47,7 +61,7 @@ public class CategoryService {
         return categoryRepository.findCategoriesByMainCategoryOrderByNameAsc(mainCategory);
     }
 
-    public List<Category> mainCategoryListByCategoryPage(boolean mainCategory, CategoryPage categoryPage) {
+    public List<Category> getMainCategoryListByCategoryPage(boolean mainCategory, CategoryPage categoryPage) {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByNameAsc(mainCategory, categoryPage);
     }
 
@@ -55,12 +69,12 @@ public class CategoryService {
         return categoryRepository.findCategoriesByMainCategoryAndCategoryPagesOrderByIdAsc(mainCategory, CategoryPage.MINI_STORIES);
     }
 
-    public List<Category> getDtoSubcategoriesInMainCategory(Long id) {
+    public List<Category> getSubcategoriesFromMainCategory(long id) {
         return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
     }
 
     public List<Category> getSubcategoriesPhraseLesson() {
-        List<Category> phraseLessonMainCategories = mainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
+        List<Category> phraseLessonMainCategories = getMainCategoryListByCategoryPage(true, CategoryPage.LESSON_PHRASES);
         List<Category> subcategories = new ArrayList<>();
         for (Category arr: phraseLessonMainCategories) {
             subcategories.addAll(arr.getSubcategories());
@@ -68,17 +82,14 @@ public class CategoryService {
         return subcategories;
     }
 
-    public List<Category> getSubcategoriesAndSubSubcategoriesInMainCategory(Long id) {
-        return categoryRepository.findCategoriesByParentCategory_IdOrderByNameAsc(id);
-    }
-
     public CustomResponseMessage saveMainCategory(Category category, Category categoryDb) {
         categoryDb.setName(category.getName());
         categoryDb.setDescription(category.getDescription());
         categoryDb.setMainCategory(true);
         categoryDb.setViewSubcategoryFullNoInfoOrNameAndInfo(category.isViewSubcategoryFullNoInfoOrNameAndInfo());
-//        String page = category.getCategoryPages().get(0).name();
-        if (!category.getCategoryPages().equals(CategoryPage.NO_PAGE)) {
+
+        List<CategoryPage> categoryPages = new ArrayList<>(category.getCategoryPages());
+        if (!categoryPages.isEmpty() && !categoryPages.get(0).equals(CategoryPage.NO_PAGE)) {
             categoryDb.getCategoryPages().clear();
             categoryDb.setCategoryPages(category.getCategoryPages());
         }

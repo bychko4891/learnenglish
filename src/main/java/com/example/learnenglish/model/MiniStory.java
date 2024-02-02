@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "mini_story")
@@ -20,6 +21,9 @@ public class MiniStory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
+    @Column
+    private String uuid;
 
     @Column
     private String name;
@@ -51,4 +55,9 @@ public class MiniStory implements Serializable {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @PrePersist
+    private void init(){
+        this.uuid = UUID.randomUUID().toString();
+    }
 }

@@ -1,55 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head_old :: head_old}"></head>
 
-<body class="active">
-<div class="wrapper">
-    <main class="section" style="z-index: 2">
-        <header th:replace="~{fragments/header_2 :: header_2}"></header>
+<head th:replace="~{fragments/head :: head}"></head>
 
-            <div class="d-flex flex-column flex-lg-row lessons">
-                <div class="flex-fill  lessons-block">
-                    <h3>Вчимо мову по методиці Дмитра Петрова</h3>
-                    <img src="/images/phrase_lessons.webp">
-                    <a href="/phrase-lessons/categories" class="btn btn_main">Навчитися</a>
+<body>
+<main id="main-wrapper" class="main-wrapper">
+
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/menu :: menu}"></div>
+
+    <div id="app-content">
+        <div class="app-content-area row row-cols-1 row-cols-md-2 mx-auto col">
+<!--            <div class="main-content p-3 w-95">-->
+<!--                <div class="col-xl-8 col-12 mb-5 main-content">-->
+                <div class="col-md-8 col-12 main-content">
+                    <nav aria-label="breadcrumb" style="border-bottom: 2px solid; padding-left: 20px; margin: 20px;">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="/about-the-app">Про додаток</a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="flex-column">
+
+                        <div class="d-flex flex-column p-2 p-xl-3">
+                            <h3 style="border-bottom: 1px solid;">Заняття по фразам</h3>
+                            <div class="row">
+                                <div class="col-md-3 m-1">
+                                    <img src="/images/phrase_lessons.webp" width="250" height="auto" style="border-radius: 20px">
+                                </div>
+                                <div class="col-md-8 m-0 d-flex flex-column me-sm-2">
+                                    <p>It is now illegal to sell vapes to people under 18.
+                                        The new rules want to stop marketing vapes to children. Children under 18 will not have the chance to buy vape.
+                                        Many adults use vape, too. They often do it when they want to stop smoking cigarettes.</p>
+                                    <a href="/phrase-lessons/categories" class="btn btn_main mt-auto ms-auto">Навчитися</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column p-2 p-xl-3">
+                            <h3 style="border-bottom: 1px solid;">Поповнення словникового запаса</h3>
+                            <div class="row">
+                                <div class="col-md-3 m-1">
+                                    <img src="/images/word_lessons.webp" width="250" height="auto" style="border-radius: 20px">
+                                </div>
+                                <div class="col-md-8 m-0 d-flex flex-column me-sm-2">
+                                    <p>It is now illegal to sell vapes to people under 18.
+                                        The new rules want to stop marketing vapes to children. Children under 18 will not have the chance to buy vape.
+                                        Many adults use vape, too. They often do it when they want to stop smoking cigarettes.</p>
+                                    <a href="/word-lesson-categories" class="btn btn_main mt-auto ms-auto">Навчитися</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column p-2 p-xl-3">
+                            <h3 style="border-bottom: 1px solid;">Поповнення словникового запаса</h3>
+                            <div class="row">
+                                <div class="col-md-3 m-1">
+                                    <img src="/images/word_lessons.webp" width="250" height="auto" style="border-radius: 20px">
+                                </div>
+                                <div class="col-md-8 m-0 d-flex flex-column me-sm-2">
+                                    <p>It is now illegal to sell vapes to people under 18.
+                                        The new rules want to stop marketing vapes to children. Children under 18 will not have the chance to buy vape.
+                                        Many adults use vape, too. They often do it when they want to stop smoking cigarettes.</p>
+                                    <a href="/word-lesson-categories" class="btn btn_main mt-auto ms-auto">Навчитися</a>
+                                </div>
+                            </div>
+                        </div>
+
+<!--                        <div class="flex-fill ">-->
+<!--                            <h3>Поповнення словникового запаса</h3>-->
+<!--                            <img src="/images/word_lessons.webp">-->
+<!--                            <a href="/word-lesson-categories" class="btn btn_main">Навчитися</a>-->
+<!--                        </div>-->
+<!--                        <div th:utext="${pageText}" style="padding: 0 50px 50px 50px;"></div>-->
+                    </div>
                 </div>
-                <div class="flex-fill lessons-block">
-                    <h3>Поповнення свого словникового запаса</h3>
-                    <img src="/images/word_lessons.webp">
-                    <a href="/word-lesson-categories" class="btn btn_main">Навчитися</a>
+                <div class="col-md-3 col-12 main-content col">
+
                 </div>
-            </div>
 
-        <div th:replace="~{fragments/menuMobile :: menuMobile}"></div>
-    </main>
-    <div th:replace="~{fragments/menu_old :: menu_old}"></div>
-</div>
-<script type="text/javascript" th:src="@{/js/searchWord.js}"></script>
-<!--<script>-->
-<!--    // window.onload = function() {-->
-<!--        const pageHeight = Math.max(-->
-<!--            document.body.scrollHeight,-->
-<!--            document.documentElement.scrollHeight,-->
-<!--            document.body.offsetHeight,-->
-<!--            document.documentElement.offsetHeight,-->
-<!--            document.body.clientHeight,-->
-<!--            document.documentElement.clientHeight-->
-<!--        );-->
-<!--        const windowHeight = window.innerHeight;-->
-<!--        const hasScrollbar = pageHeight > windowHeight;-->
-<!--    // };-->
 
-<!--    // Отримати userAgent-->
-<!--    const userAgent = navigator.userAgent;-->
-<!--    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {-->
-<!--        if (hasScrollbar) {-->
-<!--            console.log("Є полоса прокрутки.");-->
-<!--        } else {-->
-<!--            console.log("Немає полоси прокрутки.");-->
-<!--        }-->
-<!--    } else {-->
-<!--        console.log("Сторінка відкрита з мобільного браузера.");-->
-<!--    }-->
-<!--</script>-->
+
+
+<!--            </div>-->
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
+
 </html>

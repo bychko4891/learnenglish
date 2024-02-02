@@ -7,7 +7,6 @@ package com.example.learnenglish.controllers;
  * GitHub source code: https://github.com/bychko4891/learnenglish
  */
 
-import com.example.learnenglish.dto.DtoWordToUI;
 import com.example.learnenglish.model.*;
 import com.example.learnenglish.model.users.User;
 import com.example.learnenglish.service.CategoryService;
@@ -16,7 +15,6 @@ import com.example.learnenglish.service.WordInWordLessonService;
 import com.example.learnenglish.service.WordLessonService;
 import lombok.Data;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +81,7 @@ public class WordLessonController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String wordLessonEdit(@PathVariable("id") long id, Model model, Principal principal) {
         if (principal != null) {
-            List<Category> mainCategories = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
+            List<Category> mainCategories = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
             model.addAttribute("category", "Відсутня");
             model.addAttribute("mainCategories", mainCategories);
             try {
@@ -103,7 +101,7 @@ public class WordLessonController {
     @GetMapping("/word-lesson-categories")
     public String wordLessonsCategories(Model model, Principal principal) {
         if(principal != null) {
-            List<Category> wordLessonMainCategory = categoryService.mainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
+            List<Category> wordLessonMainCategory = categoryService.getMainCategoryListByCategoryPage(true, CategoryPage.LESSON_WORDS);
             List<Category> subcategories = new ArrayList<>();
             if(!wordLessonMainCategory.isEmpty()) {
                 subcategories = wordLessonMainCategory.get(0).getSubcategories();
